@@ -37,12 +37,15 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 
 #### Compiler Support
 
-[![Compiler](https://img.shields.io/badge/GNU-v5.2.0+-brightgreen.svg)]()
+[![Compiler](https://img.shields.io/badge/GNU-v5.2.0+-orange.svg)]()
 [![Compiler](https://img.shields.io/badge/Intel-v15.x+-brightgreen.svg)]()
 [![Compiler](https://img.shields.io/badge/IBM%20XL-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/g95-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/NAG-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/PGI-not%20tested-yellow.svg)]()
+
+##### GNU partial support
+> GNU gfortran does not support user-defined-type-IO, thus some class features are disabled if GNU is used.
 
 ## What is StringiFor?
 
