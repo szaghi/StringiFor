@@ -57,10 +57,10 @@ Go to [Top](#top)
 
 StringiFor exposes only one class (OO-designed), the `string` type, that should be used as a more powerful string variable with respect a standard Fortran `character` variable. The main features of this class are:
 
-* [ ] seamless interchangeability with standard character variables, i.e.:
-  + [ ] I/O operation;
-  + [ ] string/character concatenation;
-  + [ ] string/character assignment;
+* [x] seamless interchangeability with standard character variables, i.e.:
+  + [x] I/O operation (disabled if GNU gfortran is used);
+  + [x] string/character concatenation;
+  + [x] string/character assignment;
 * [ ] handy builtin methods:
   + [ ] UPPER/lower case transformartion;
   + [ ] tokenization;
