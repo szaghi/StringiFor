@@ -1,0 +1,4 @@
+[default]
+compiler  = intel
+cflags    = -c -assume realloc_lhs -standard-semantics -std08
+build_dir = tests
