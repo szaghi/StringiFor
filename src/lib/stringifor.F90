@@ -20,10 +20,13 @@ type :: string
     procedure, pass(self) :: chars !< Return the raw characters data.
     ! operators
     generic :: assignment(=) => string_assign_string, &
-                                string_assign_character   !< Assignment operator overloading.
+                                string_assign_character             !< Assignment operator overloading.
     generic :: operator(//) => string_concat_string,    &
                                string_concat_character, &
-                               character_concat_string    !< Concatenation operator overloading.
+                               character_concat_string              !< Concatenation operator overloading.
+    generic :: operator(.cat.) => string_concat_string_string,    &
+                                  string_concat_character_string, &
+                                  character_concat_string_string    !< Concatenation operator (string output) overloading.
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
@@ -31,15 +34,18 @@ type :: string
     generic :: write(unformatted) => write_unformatted    !< Unformatted output.
 #endif
     ! private methods
-    procedure, private, pass(lhs) :: string_assign_string    !< Assignment operator from string input.
-    procedure, private, pass(lhs) :: string_assign_character !< Assignment operator from character input.
-    procedure, private, pass(lhs) :: string_concat_string    !< Concatenation with string.
-    procedure, private, pass(lhs) :: string_concat_character !< Concatenation with character.
-    procedure, private, pass(rhs) :: character_concat_string !< Concatenation with character (inverted).
-    procedure, private, pass(dtv) :: read_formatted          !< Formatted input.
-    procedure, private, pass(dtv) :: write_formatted         !< Formatted output.
-    procedure, private, pass(dtv) :: read_unformatted        !< Unformatted input.
-    procedure, private, pass(dtv) :: write_unformatted       !< Unformatted output.
+    procedure, private, pass(lhs) :: string_assign_string           !< Assignment operator from string input.
+    procedure, private, pass(lhs) :: string_assign_character        !< Assignment operator from character input.
+    procedure, private, pass(lhs) :: string_concat_string           !< Concatenation with string.
+    procedure, private, pass(lhs) :: string_concat_character        !< Concatenation with character.
+    procedure, private, pass(rhs) :: character_concat_string        !< Concatenation with character (inverted).
+    procedure, private, pass(lhs) :: string_concat_string_string    !< Concatenation with string (string output).
+    procedure, private, pass(lhs) :: string_concat_character_string !< Concatenation with character (string output).
+    procedure, private, pass(rhs) :: character_concat_string_string !< Concatenation with character (inverted, string output).
+    procedure, private, pass(dtv) :: read_formatted                 !< Formatted input.
+    procedure, private, pass(dtv) :: write_formatted                !< Formatted output.
+    procedure, private, pass(dtv) :: read_unformatted               !< Unformatted input.
+    procedure, private, pass(dtv) :: write_unformatted              !< Unformatted output.
 endtype string
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
@@ -95,10 +101,65 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with string.
   !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)     :: lhs    !< Left hand side.
+  type(string),  intent(in)     :: rhs    !< Right hand side.
+  character(len=:), allocatable :: concat !< Concatenated string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  concat = ''
+  if (allocated(lhs%raw)) concat = lhs%raw
+  if (allocated(rhs%raw)) concat = concat//rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_concat_string
+
+  pure function string_concat_character(lhs, rhs) result(concat)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Concatenation with character.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in)  :: lhs    !< Left hand side.
+  character(len=*), intent(in)  :: rhs    !< Right hand side.
+  character(len=:), allocatable :: concat !< Concatenated string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(lhs%raw)) then
+    concat = lhs%raw//rhs
+  else
+    concat = rhs
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_concat_character
+
+  pure function character_concat_string(lhs, rhs) result(concat)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Concatenation with character (inverted).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(len=*), intent(in)  :: lhs    !< Left hand side.
+  class(string),    intent(in)  :: rhs    !< Right hand side.
+  character(len=:), allocatable :: concat !< Concatenated string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(rhs%raw)) then
+    concat = lhs//rhs%raw
+  else
+    concat = lhs
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction character_concat_string
+
+  pure function string_concat_string_string(lhs, rhs) result(concat)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Concatenation with string.
+  !---------------------------------------------------------------------------------------------------------------------------------
   class(string), intent(in)     :: lhs       !< Left hand side.
   type(string),  intent(in)     :: rhs       !< Right hand side.
   type(string)                  :: concat    !< Concatenated string.
-  character(len=:), allocatable :: temporary !< Temporary storage string.
+  character(len=:), allocatable :: temporary !< Temporary concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -108,15 +169,15 @@ contains
   if (temporary/='') concat%raw = temporary
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction string_concat_string
+  endfunction string_concat_string_string
 
-  pure function string_concat_character(lhs, rhs) result(concat)
+  pure function string_concat_character_string(lhs, rhs) result(concat)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with character.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in) :: lhs    !< Left hand side.
-  character(len=*), intent(in) :: rhs    !< Right hand side.
-  type(string)                 :: concat !< Concatenated string.
+  class(string),    intent(in)  :: lhs    !< Left hand side.
+  character(len=*), intent(in)  :: rhs    !< Right hand side.
+  type(string)                  :: concat !< Concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -127,15 +188,15 @@ contains
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction string_concat_character
+  endfunction string_concat_character_string
 
-  pure function character_concat_string(lhs, rhs) result(concat)
+  pure function character_concat_string_string(lhs, rhs) result(concat)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with character (inverted).
   !---------------------------------------------------------------------------------------------------------------------------------
-  character(len=*), intent(in) :: lhs    !< Left hand side.
-  class(string),    intent(in) :: rhs    !< Right hand side.
-  type(string)                 :: concat !< Concatenated string.
+  character(len=*), intent(in)  :: lhs    !< Left hand side.
+  class(string),    intent(in)  :: rhs    !< Right hand side.
+  type(string)                  :: concat !< Concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -146,7 +207,7 @@ contains
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction character_concat_string
+  endfunction character_concat_string_string
 
   subroutine read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
