@@ -17,6 +17,8 @@ type :: string
   character(len=:), allocatable :: raw !< Raw data.
   contains
     ! public methods
+    procedure, pass(self) :: chars !< Return the raw characters data.
+    ! operators
     generic :: assignment(=) => string_assign_string, &
                                 string_assign_character   !< Assignment operator overloading.
     generic :: operator(//) => string_concat_string,    &
@@ -41,6 +43,26 @@ type :: string
 endtype string
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
+  ! public methods
+  pure function chars(self) result(raw)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the raw characters data.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)     :: self !< The string.
+  character(len=:), allocatable :: raw  !< Raw characters data.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    raw = self%raw
+  else
+    raw = ''
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction chars
+
+  ! private methods
   elemental subroutine string_assign_string(lhs, rhs)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Assignment operator from string input.

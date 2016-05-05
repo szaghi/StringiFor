@@ -22,6 +22,13 @@ acharacter = 'World!'
 write(stdout, "(DT)") astring//acharacter
 write(stdout, "(DT)") acharacter//astring
 write(stdout, "(DT)") astring//anotherstring
+#else
+astring = astring//acharacter
+write(stdout, "(A)") astring%chars()
+astring = acharacter//astring
+write(stdout, "(A)") astring%chars()
+astring = astring//anotherstring
+write(stdout, "(A)") astring%chars()
 #endif
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
