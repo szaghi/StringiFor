@@ -33,6 +33,7 @@ type :: string
     procedure, pass(self) :: sindex    !< Index replacement.
     procedure, pass(self) :: slen      !< Len replacement.
     procedure, pass(self) :: slen_trim !< Len_trim replacement.
+    procedure, nopass     :: srepeat   !< Repeat replacement.
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
@@ -73,6 +74,36 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction chars
+
+  pure function sadjustl(self) result(adjusted)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Left adjust a string by removing leading spaces.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  type(string)              :: adjusted !< Adjusted string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  adjusted = self
+  if (allocated(adjusted%raw)) adjusted%raw = adjustl(adjusted%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction sadjustl
+
+  pure function sadjustr(self) result(adjusted)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Right adjust a string by removing leading spaces.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  type(string)              :: adjusted !< Adjusted string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  adjusted = self
+  if (allocated(adjusted%raw)) adjusted%raw = adjustr(adjusted%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction sadjustr
 
   pure function sindex(self, substring, back) result(i)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -132,35 +163,20 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction slen_trim
 
-  pure function sadjustl(self) result(adjusted)
+  pure function srepeat(rstring, ncopies) result(repeated)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Left adjust a string by removing leading spaces.
+  !<
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self     !< The string.
-  type(string)              :: adjusted !< Adjusted string.
+  character(len=*), intent(in) :: rstring  !< String to be repeated.
+  integer,          intent(in) :: ncopies  !< Number of string copies.
+  type(string)                 :: repeated !< Repeated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  adjusted = self
-  if (allocated(adjusted%raw)) adjusted%raw = adjustl(adjusted%raw)
+  repeated%raw = repeat(string=rstring, ncopies=ncopies)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction sadjustl
-
-  pure function sadjustr(self) result(adjusted)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Right adjust a string by removing leading spaces.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self     !< The string.
-  type(string)              :: adjusted !< Adjusted string.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  adjusted = self
-  if (allocated(adjusted%raw)) adjusted%raw = adjustr(adjusted%raw)
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction sadjustr
+  endfunction srepeat
 
   ! private methods
   elemental subroutine string_assign_string(lhs, rhs)
