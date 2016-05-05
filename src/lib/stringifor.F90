@@ -35,6 +35,7 @@ type :: string
     procedure, pass(self) :: slen_trim !< Len_trim replacement.
     procedure, nopass     :: srepeat   !< Repeat replacement.
     procedure, pass(self) :: sscan     !< Scan replacement.
+    procedure, pass(self) :: strim     !< Trim replacement.
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
@@ -198,6 +199,21 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction sscan
+
+  pure function strim(self) result(trimmed)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Remove leading spaces.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self    !< The string.
+  type(string)              :: trimmed !< Trimmed string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  trimmed = self
+  if (allocated(trimmed%raw)) trimmed%raw = trim(trimmed%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction strim
 
   ! private methods
   elemental subroutine string_assign_string(lhs, rhs)
