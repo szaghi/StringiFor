@@ -36,6 +36,7 @@ type :: string
     procedure, nopass     :: srepeat   !< Repeat replacement.
     procedure, pass(self) :: sscan     !< Scan replacement.
     procedure, pass(self) :: strim     !< Trim replacement.
+    procedure, pass(self) :: sverify   !< Verify replacement.
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
@@ -214,6 +215,27 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction strim
+
+  pure function sverify(self, set, back) result(i)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is not
+  !< in `set`. If all characters of `string` are found in `set`, the result is zero.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in)           :: self  !< The string.
+  character(len=*), intent(in)           :: set   !< Searched set.
+  logical,          intent(in), optional :: back  !< Start of the last occurrence rather than the first.
+  integer                                :: i     !< Result of the search.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    i = verify(string=self%raw, set=set, back=back)
+  else
+    i = 0
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction sverify
 
   ! private methods
   elemental subroutine string_assign_string(lhs, rhs)
