@@ -13,6 +13,18 @@ public :: string
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 type :: string
+  !< OOP designed string class.
+  !<
+  !< Provides:
+  !<
+  !< * [X] seamless interchangeability with standard character variables, i.e.:
+  !<   + [X] I/O operation;
+  !<   + [X] string/character concatenation;
+  !<   + [X] string/character assignment;
+  !< * [ ] handy builtin methods:
+  !<   + [ ] UPPER/lower case transformartion;
+  !<   + [ ] tokenization;
+  !<   + [ ] number-to-string (and viceversa) casting;
   private
   character(len=:), allocatable :: raw !< Raw data.
   contains
@@ -37,11 +49,17 @@ type :: string
     procedure, pass(self) :: sscan     !< Scan replacement.
     procedure, pass(self) :: strim     !< Trim replacement.
     procedure, pass(self) :: sverify   !< Verify replacement.
+    ! IO
 #ifndef __GFORTRAN__
-    generic :: read(formatted) => read_formatted          !< Formatted input.
-    generic :: write(formatted) => write_formatted        !< Formatted output.
-    generic :: read(unformatted) => read_unformatted      !< Unformatted input.
-    generic :: write(unformatted) => write_unformatted    !< Unformatted output.
+    generic :: read(formatted) => read_formatted_       !< Formatted input.
+    generic :: write(formatted) => write_formatted_     !< Formatted output.
+    generic :: read(unformatted) => read_unformatted_   !< Unformatted input.
+    generic :: write(unformatted) => write_unformatted_ !< Unformatted output.
+#else
+    procedure, pass(dtv) :: read_formatted => read_formatted_   !< Formatted input.
+    procedure, pass(dtv) :: read_formatted_internal             !< Formatted input from internal.
+    procedure, pass(dtv) :: write_formatted => write_formatted_ !< Formatted output.
+    procedure, pass(dtv) :: write_formatted_internal            !< Formatted output to internal.
 #endif
     ! private methods
     procedure, private, pass(lhs) :: string_assign_string           !< Assignment operator from string input.
@@ -52,10 +70,10 @@ type :: string
     procedure, private, pass(lhs) :: string_concat_string_string    !< Concatenation with string (string output).
     procedure, private, pass(lhs) :: string_concat_character_string !< Concatenation with character (string output).
     procedure, private, pass(rhs) :: character_concat_string_string !< Concatenation with character (inverted, string output).
-    procedure, private, pass(dtv) :: read_formatted                 !< Formatted input.
-    procedure, private, pass(dtv) :: write_formatted                !< Formatted output.
-    procedure, private, pass(dtv) :: read_unformatted               !< Unformatted input.
-    procedure, private, pass(dtv) :: write_unformatted              !< Unformatted output.
+    procedure, private, pass(dtv) :: read_formatted_                !< Formatted input.
+    procedure, private, pass(dtv) :: write_formatted_               !< Formatted output.
+    procedure, private, pass(dtv) :: read_unformatted_              !< Unformatted input.
+    procedure, private, pass(dtv) :: write_unformatted_             !< Unformatted output.
 endtype string
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
@@ -378,7 +396,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction character_concat_string_string
 
-  subroutine read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
+  subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted input.
   !<
@@ -398,9 +416,31 @@ contains
   dtv%raw = trim(temporary)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_formatted
+  endsubroutine read_formatted_
 
-  subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
+  subroutine read_formatted_internal(dtv, iunit, iotype, v_list, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Formatted input from internal.
+  !<
+  !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(inout) :: dtv       !< The string.
+  character(len=*), intent(in)    :: iunit     !< Internal unit.
+  character(len=*), intent(in)    :: iotype    !< Edit descriptor.
+  integer,          intent(in)    :: v_list(:) !< Edit descriptor list.
+  integer,          intent(out)   :: iostat    !< IO status code.
+  character(len=*), intent(inout) :: iomsg     !< IO status message.
+  character(len=100)              :: temporary !< Temporary storage string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  read(iunit, "(A)", iostat=iostat, iomsg=iomsg)temporary
+  dtv%raw = trim(temporary)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_formatted_internal
+
+  subroutine write_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted output.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -420,9 +460,31 @@ contains
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_formatted
+  endsubroutine write_formatted_
 
-  subroutine read_unformatted(dtv, unit, iostat, iomsg)
+  subroutine write_formatted_internal(dtv, iunit, iotype, v_list, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Formatted output to internal.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in)    :: dtv       !< The string.
+  character(len=*), intent(inout) :: iunit     !< Interanl unit.
+  character(len=*), intent(in)    :: iotype    !< Edit descriptor.
+  integer,          intent(in)    :: v_list(:) !< Edit descriptor list.
+  integer,          intent(out)   :: iostat    !< IO status code.
+  character(len=*), intent(inout) :: iomsg     !< IO status message.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(dtv%raw)) then
+    write(iunit, "(A)", iostat=iostat, iomsg=iomsg)dtv%raw
+  else
+    write(iunit, "(A)", iostat=iostat, iomsg=iomsg)''
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine write_formatted_internal
+
+  subroutine read_unformatted_(dtv, unit, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Unformatted input.
   !<
@@ -440,9 +502,9 @@ contains
   dtv%raw = trim(temporary)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_unformatted
+  endsubroutine read_unformatted_
 
-  subroutine write_unformatted(dtv, unit, iostat, iomsg)
+  subroutine write_unformatted_(dtv, unit, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Unformatted output.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -460,5 +522,5 @@ contains
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_unformatted
+  endsubroutine write_unformatted_
 endmodule stringifor
