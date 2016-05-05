@@ -28,9 +28,11 @@ type :: string
                                   string_concat_character_string, &
                                   character_concat_string_string    !< Concatenation operator (string output) overloading.
     ! builtins replacements
-    procedure, pass(self) :: sindex   !< Index replacement.
-    procedure, pass(self) :: sadjustl !< Adjustl replacement.
-    procedure, pass(self) :: sadjustr !< Adjustr replacement.
+    procedure, pass(self) :: sadjustl  !< Adjustl replacement.
+    procedure, pass(self) :: sadjustr  !< Adjustr replacement.
+    procedure, pass(self) :: sindex    !< Index replacement.
+    procedure, pass(self) :: slen      !< Len replacement.
+    procedure, pass(self) :: slen_trim !< Len_trim replacement.
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
@@ -93,6 +95,42 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction sindex
+
+  pure function slen(self) result(l)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the length of a string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self !< The string.
+  integer                   :: l    !< String length.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    l = len(string=self%raw)
+  else
+    l = 0
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction slen
+
+  pure function slen_trim(self) result(l)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the length of a string, ignoring any trailing blanks.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self !< The string.
+  integer                   :: l    !< String length.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    l = len_trim(string=self%raw)
+  else
+    l = 0
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction slen_trim
 
   pure function sadjustl(self) result(adjusted)
   !---------------------------------------------------------------------------------------------------------------------------------
