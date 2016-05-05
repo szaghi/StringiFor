@@ -27,6 +27,8 @@ type :: string
     generic :: operator(.cat.) => string_concat_string_string,    &
                                   string_concat_character_string, &
                                   character_concat_string_string    !< Concatenation operator (string output) overloading.
+    ! builtins replacements
+    procedure, pass(self) :: sindex !< Index function replacement.
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
@@ -67,6 +69,28 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction chars
+
+  pure function sindex(self, substring, back) result(i)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
+  !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
+  !< the start of the last occurrence rather than the first.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in)           :: self      !< The string.
+  character(len=*), intent(in)           :: substring !< Searched substring.
+  logical,          intent(in), optional :: back      !< Start of the last occurrence rather than the first.
+  integer                                :: i         !< Result of the search.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    i = index(string=self%raw, substring=substring, back=back)
+  else
+    i = 0
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction sindex
 
   ! private methods
   elemental subroutine string_assign_string(lhs, rhs)
