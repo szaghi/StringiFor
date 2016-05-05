@@ -28,7 +28,9 @@ type :: string
                                   string_concat_character_string, &
                                   character_concat_string_string    !< Concatenation operator (string output) overloading.
     ! builtins replacements
-    procedure, pass(self) :: sindex !< Index function replacement.
+    procedure, pass(self) :: sindex   !< Index replacement.
+    procedure, pass(self) :: sadjustl !< Adjustl replacement.
+    procedure, pass(self) :: sadjustr !< Adjustr replacement.
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
@@ -91,6 +93,36 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction sindex
+
+  pure function sadjustl(self) result(adjusted)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Left adjust a string by removing leading spaces.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  type(string)              :: adjusted !< Adjusted string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  adjusted = self
+  if (allocated(adjusted%raw)) adjusted%raw = adjustl(adjusted%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction sadjustl
+
+  pure function sadjustr(self) result(adjusted)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Right adjust a string by removing leading spaces.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  type(string)              :: adjusted !< Adjusted string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  adjusted = self
+  if (allocated(adjusted%raw)) adjusted%raw = adjustr(adjusted%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction sadjustr
 
   ! private methods
   elemental subroutine string_assign_string(lhs, rhs)
