@@ -22,10 +22,12 @@ type :: string
     generic :: operator(//) => string_concat_string,    &
                                string_concat_character, &
                                character_concat_string    !< Concatenation operator overloading.
+#ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted          !< Formatted input.
     generic :: write(formatted) => write_formatted        !< Formatted output.
     generic :: read(unformatted) => read_unformatted      !< Unformatted input.
     generic :: write(unformatted) => write_unformatted    !< Unformatted output.
+#endif
     ! private methods
     procedure, private, pass(lhs) :: string_assign_string    !< Assignment operator from string input.
     procedure, private, pass(lhs) :: string_assign_character !< Assignment operator from character input.

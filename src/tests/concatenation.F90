@@ -18,9 +18,11 @@ character(len=:), allocatable :: acharacter    !< A character.
 astring = 'Hello '
 anotherstring = 'Bye bye'
 acharacter = 'World!'
+#ifndef __GFORTRAN__
 write(stdout, "(DT)") astring//acharacter
 write(stdout, "(DT)") acharacter//astring
 write(stdout, "(DT)") astring//anotherstring
+#endif
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
 endprogram concatenation

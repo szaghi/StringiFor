@@ -14,11 +14,19 @@ type(string) :: astring !< A string.
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 astring = 'Hello World!'
+#ifndef __GFORTRAN__
 write(stdout, "(DT)") astring
 print "(A)", "Type a string and press enter:"
 read(stdout, "(DT)") astring
 print "(A)", "You type:"
 print "(DT)", astring
+#else
+! write(stdout, "(A)") astring%raw
+! print "(A)", "Type a string and press enter:"
+! read(stdout, "(A)") astring%raw
+! print "(A)", "You type:"
+! print "(A)", astring%raw
+#endif
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
 endprogram io_basic
