@@ -1,7 +1,7 @@
-!< StringiFor `concatenation` test.
-program concatenation
+!< StringiFor `io_basic` test.
+program io_basic
 !-----------------------------------------------------------------------------------------------------------------------------------
-!< StringiFor `concatenation` test.
+!< StringiFor `io_basic` test.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string
@@ -9,25 +9,24 @@ use stringifor, only : string
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-type(string)                  :: astring          !< A string.
-type(string)                  :: anotherstring    !< Another string.
-type(string)                  :: yetanotherstring !< Yet another string.
-character(len=:), allocatable :: acharacter       !< A character.
+type(string)                  :: astring    !< A string.
+character(len=:), allocatable :: acharacter !< A character.
+integer                       :: iostat     !< IO status code.
+character(len=99)             :: iomsg      !< IO status message.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-astring = 'Hello '
-anotherstring = 'Bye bye'
-acharacter = 'World!'
-write(stdout, "(A)") astring//acharacter
-write(stdout, "(A)") acharacter//astring
-write(stdout, "(A)") astring//anotherstring
-yetanotherstring = astring.cat.acharacter
-write(stdout, "(A)") yetanotherstring%chars()
-yetanotherstring = acharacter.cat.astring
-write(stdout, "(A)") yetanotherstring%chars()
-yetanotherstring = astring.cat.anotherstring
-write(stdout, "(A)") yetanotherstring%chars()
+astring = 'Hello World!'
+acharacter = 'New Hello World!'
+#ifndef __GFORTRAN__
+write(stdout, "(DT)") astring
+read(acharacter, "(DT)") astring
+print "(DT)", astring
+#else
+call astring%write_formatted(stdout, "(DT)", [1], iostat, iomsg)
+call astring%read_formatted_internal(acharacter, "(DT)", [1], iostat, iomsg)
+write(stdout, "(A)") astring%chars()
+#endif
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
-endprogram concatenation
+endprogram io_basic

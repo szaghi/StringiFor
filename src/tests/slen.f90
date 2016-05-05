@@ -1,7 +1,7 @@
-!< StringiFor `concatenation` test.
-program concatenation
+!< StringiFor `slen` test.
+program slen
 !-----------------------------------------------------------------------------------------------------------------------------------
-!< StringiFor `concatenation` test.
+!< StringiFor `slen` test.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string
@@ -9,25 +9,14 @@ use stringifor, only : string
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-type(string)                  :: astring          !< A string.
-type(string)                  :: anotherstring    !< Another string.
-type(string)                  :: yetanotherstring !< Yet another string.
-character(len=:), allocatable :: acharacter       !< A character.
+type(string) :: astring !< A string.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-astring = 'Hello '
-anotherstring = 'Bye bye'
-acharacter = 'World!'
-write(stdout, "(A)") astring//acharacter
-write(stdout, "(A)") acharacter//astring
-write(stdout, "(A)") astring//anotherstring
-yetanotherstring = astring.cat.acharacter
-write(stdout, "(A)") yetanotherstring%chars()
-yetanotherstring = acharacter.cat.astring
-write(stdout, "(A)") yetanotherstring%chars()
-yetanotherstring = astring.cat.anotherstring
-write(stdout, "(A)") yetanotherstring%chars()
+astring = 'Hello World!   '
+write(stdout, "(A)") 'Original: "'//astring//'"'
+write(stdout, "(A,I2)") 'Len: ', astring%slen()
+write(stdout, "(A,I2)") 'Len_trim: ', astring%slen_trim()
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
-endprogram concatenation
+endprogram slen

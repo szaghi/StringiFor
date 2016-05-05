@@ -1,7 +1,7 @@
-!< StringiFor `concatenation` test.
-program concatenation
+!< StringiFor `sindex` test.
+program sindex
 !-----------------------------------------------------------------------------------------------------------------------------------
-!< StringiFor `concatenation` test.
+!< StringiFor `sindex` test.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string
@@ -10,24 +10,22 @@ use stringifor, only : string
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 type(string)                  :: astring          !< A string.
-type(string)                  :: anotherstring    !< Another string.
-type(string)                  :: yetanotherstring !< Yet another string.
 character(len=:), allocatable :: acharacter       !< A character.
+character(len=:), allocatable :: anothercharacter !< Another character.
+integer                       :: i                !< Index result.
+integer                       :: ic               !< Index result comparison.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-astring = 'Hello '
-anotherstring = 'Bye bye'
-acharacter = 'World!'
-write(stdout, "(A)") astring//acharacter
-write(stdout, "(A)") acharacter//astring
-write(stdout, "(A)") astring//anotherstring
-yetanotherstring = astring.cat.acharacter
-write(stdout, "(A)") yetanotherstring%chars()
-yetanotherstring = acharacter.cat.astring
-write(stdout, "(A)") yetanotherstring%chars()
-yetanotherstring = astring.cat.anotherstring
-write(stdout, "(A)") yetanotherstring%chars()
+acharacter = 'Hello World Hello!'
+anothercharacter = 'llo'
+astring = acharacter
+i = astring%sindex(substring=anothercharacter)
+ic = index(string=acharacter, substring=anothercharacter)
+write(stdout, "(A,I2,A,L1)") 'Basic call result: ', i, ' is correct? ', i==ic
+i = astring%sindex(substring=anothercharacter, back=.true.)
+ic = index(string=acharacter, substring=anothercharacter, back=.true.)
+write(stdout, "(A,I2,A,L1)") 'Back call result: ', i, ' is correct? ', i==ic
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
-endprogram concatenation
+endprogram sindex
