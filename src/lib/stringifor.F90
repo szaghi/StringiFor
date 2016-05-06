@@ -14,22 +14,13 @@ public :: string
 !-----------------------------------------------------------------------------------------------------------------------------------
 type :: string
   !< OOP designed string class.
-  !<
-  !< Provides:
-  !<
-  !< * [X] seamless interchangeability with standard character variables, i.e.:
-  !<   + [X] I/O operation;
-  !<   + [X] string/character concatenation;
-  !<   + [X] string/character assignment;
-  !< * [ ] handy builtin methods:
-  !<   + [ ] UPPER/lower case transformartion;
-  !<   + [ ] tokenization;
-  !<   + [ ] number-to-string (and viceversa) casting;
   private
   character(len=:), allocatable :: raw !< Raw data.
   contains
     ! public methods
     procedure, pass(self) :: chars !< Return the raw characters data.
+    procedure, pass(self) :: upper !< Return a string with all uppercase characters.
+    procedure, pass(self) :: lower !< Return a string with all lowercase characters.
     ! operators
     generic :: assignment(=) => string_assign_string, &
                                 string_assign_character             !< Assignment operator overloading.
@@ -75,6 +66,9 @@ type :: string
     procedure, private, pass(dtv) :: read_unformatted_              !< Unformatted input.
     procedure, private, pass(dtv) :: write_unformatted_             !< Unformatted output.
 endtype string
+
+character(len=26), parameter :: upper_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
+character(len=26), parameter :: lower_alphabet = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
   ! public methods
@@ -95,6 +89,46 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction chars
+
+  elemental function upper(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all uppercase characters.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self  !< The string.
+  type(string)              :: upper !< Upper case string.
+  integer                   :: n1    !< Characters counter.
+  integer                   :: n2    !< Characters counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  upper = self
+  do n1=1, len(self%raw)
+    n2 = index(lower_alphabet, self%raw(n1:n1))
+    if (n2>0) upper%raw(n1:n1) = upper_alphabet(n2:n2)
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction upper
+
+  elemental function lower(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all lowercase characters.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self  !< The string.
+  type(string)              :: lower !< Upper case string.
+  integer                   :: n1    !< Characters counter.
+  integer                   :: n2    !< Characters counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lower = self
+  do n1=1, len(self%raw)
+    n2 = index(upper_alphabet, self%raw(n1:n1))
+    if (n2>0) lower%raw(n1:n1) = lower_alphabet(n2:n2)
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction lower
 
   pure function sadjustl(self) result(adjusted)
   !---------------------------------------------------------------------------------------------------------------------------------
