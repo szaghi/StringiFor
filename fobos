@@ -1,6 +1,6 @@
 [modes]
 modes = tests-gnu tests-gnu-debug
-        tests-intel
+        tests-intel tests-intel-debug
 
 [common-variables]
 $CSHARED_GNU = -c -fPIC -frealloc-lhs
@@ -9,7 +9,7 @@ $LSHARED     = -shared
 $CSTATIC_GNU = -c -frealloc-lhs -std=f2008 -fall-intrinsics
 $CSTATIC_INT = -c -assume realloc_lhs -standard-semantics -std08
 $DEBUG_GNU   = -O0 -g3 -Warray-bounds -Wcharacter-truncation -Wline-truncation -Wimplicit-interface -Wimplicit-procedure -Wunderflow -fcheck=all -fmodule-private -ffree-line-length-132 -fimplicit-none -fbacktrace -fdump-core -finit-real=nan
-$DEBUG_INT   = -O0 -debug all -check all -warn all -extend-source 132 -traceback -gen-interfaces#-fpe-all=0 -fp-stack-check -fstack-protector-all -ftrapuv -no-ftz
+$DEBUG_INT   = -O0 -debug all -warn all -extend-source 132 -traceback
 $OPTIMIZE    = -O2
 
 # main modes
@@ -23,6 +23,10 @@ build_dir = exe
 
 [tests-intel]
 template  = template-static-intel
+build_dir = exe
+
+[tests-intel-debug]
+template  = template-static-intel-debug
 build_dir = exe
 
 # templates
@@ -56,6 +60,16 @@ quiet           = False
 log             = True
 jobs            = 10
 
+[template-static-intel-debug]
+compiler        = intel
+cflags          = $CSTATIC_INT $DEBUG_INT
+lflags          = $DEBUG_INT
+cflags_heritage = True
+colors          = True
+quiet           = False
+log             = True
+jobs            = 10
+
 # rules
 [rule-makedoc]
 help   = Rule for building documentation from source files
@@ -70,11 +84,12 @@ rule_2  = FoBiS.py build -mode tests-gnu -coverage
 rule_3  = ./exe/concatenation
 rule_4  = ./exe/io_basic
 rule_5  = ./exe/sadjustlr
-rule_6  = ./exe/sindex
-rule_7  = ./exe/slen
-rule_8  = ./exe/srepeat
-rule_9  = ./exe/sscan
-rule_10 = ./exe/strim
-rule_11 = ./exe/sverify
-rule_12 = gcov -o exe/obj/ src/lib/stringifor.f90
-
+rule_6  = ./exe/pythonishes
+rule_7  = ./exe/sindex
+rule_8  = ./exe/slen
+rule_9  = ./exe/srepeat
+rule_10 = ./exe/sscan
+rule_11 = ./exe/strim
+rule_12 = ./exe/sverify
+rule_13 = ./exe/upper_lower
+rule_14 = gcov -o exe/obj/ src/lib/stringifor.f90
