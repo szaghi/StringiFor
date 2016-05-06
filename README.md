@@ -37,12 +37,15 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 
 #### Compiler Support
 
-[![Compiler](https://img.shields.io/badge/GNU-v5.2.0+-brightgreen.svg)]()
+[![Compiler](https://img.shields.io/badge/GNU-v5.2.0+-orange.svg)]()
 [![Compiler](https://img.shields.io/badge/Intel-v15.x+-brightgreen.svg)]()
 [![Compiler](https://img.shields.io/badge/IBM%20XL-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/g95-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/NAG-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/PGI-not%20tested-yellow.svg)]()
+
+##### GNU partial support
+> GNU gfortran does not support user-defined-type-IO, thus some class features are disabled if GNU is used.
 
 ## What is StringiFor?
 
@@ -54,10 +57,10 @@ Go to [Top](#top)
 
 StringiFor exposes only one class (OO-designed), the `string` type, that should be used as a more powerful string variable with respect a standard Fortran `character` variable. The main features of this class are:
 
-* [ ] seamless interchangeability with standard character variables, i.e.:
-  + [ ] I/O operation;
-  + [ ] string/character concatenation;
-  + [ ] string/character assignment;
+* [x] seamless interchangeability with standard character variables, i.e.:
+  + [x] I/O operation (disabled if GNU gfortran is used);
+  + [x] string/character concatenation;
+  + [x] string/character assignment;
 * [ ] handy builtin methods:
   + [ ] UPPER/lower case transformartion;
   + [ ] tokenization;
