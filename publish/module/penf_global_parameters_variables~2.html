@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	 
+	 <meta name="description" content="Strings Fortran Manipulator, yet another strings Fortran module">
+    
+    <meta name="author" content="Chris MacMackin" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>penf_global_parameters_variables &ndash; StringiFor</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">StringiFor </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+				
+                
+            <li><a href="../lists/files.html">Source Files</a></li>
+				
+				
+            <li><a href="../lists/modules.html">Modules</a></li>
+				
+				
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+				
+								
+            <li><a href="../lists/types.html">Derived Types</a></li>
+				
+				
+            <li><a href="../lists/programs.html">Programs</a></li>
+				
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>penf_global_parameters_variables 
+    <small>Module</small>
+    
+    </h1>
+	 
+<div class="row">
+<div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+    <li><i class="fa fa-code"></i><a href="../src/penf.F90"> Source File</a></li>
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+     <li><a href='../sourcefile/penf.f90.html'>penf.F90</a></li>
+  
+     <li class="active">penf_global_parameters_variables</li>
+  </ol>
+</div>
+</div>
+</div>
+    
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-3">
+    
+<div id="sidebar">
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars">Variables</a></h3></div>
+    <div id="vars" class="panel-collapse collapse">
+      <div class="list-group">
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-is_initialized">is_initialized</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-endianl">endianL</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-endianb">endianB</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-endian">endian</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-r16p">R16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-r8p">R8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-r4p">R4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-r_p">R_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-i8p">I8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-i4p">I4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-i2p">I2P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-i1p">I1P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-i_p">I_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fr16p">FR16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fr8p">FR8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fr4p">FR4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fr_p">FR_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi8p">FI8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi8pzp">FI8PZP</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi4p">FI4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi4pzp">FI4PZP</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi2p">FI2P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi2pzp">FI2PZP</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi1p">FI1P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi1pzp">FI1PZP</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi_p">FI_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-fi_pzp">FI_PZP</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-dr16p">DR16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-dr8p">DR8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-dr4p">DR4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-dr_p">DR_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-di8p">DI8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-di4p">DI4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-di2p">DI2P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-di1p">DI1P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-di_p">DI_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-real_kinds_list">REAL_KINDS_LIST</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-real_formats_list">REAL_FORMATS_LIST</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-integer_kinds_list">INTEGER_KINDS_LIST</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-integer_formats_list">INTEGER_FORMATS_LIST</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-minr16p">MinR16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxr16p">MaxR16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-minr8p">MinR8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxr8p">MaxR8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-minr4p">MinR4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxr4p">MaxR4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-minr_p">MinR_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxr_p">MaxR_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-mini8p">MinI8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-mini4p">MinI4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-mini2p">MinI2P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-mini1p">MinI1P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-mini_p">MinI_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxi8p">MaxI8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxi4p">MaxI4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxi2p">MaxI2P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxi1p">MaxI1P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-maxi_p">MaxI_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-smallr16p">smallR16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-smallr8p">smallR8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-smallr4p">smallR4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-smallr_p">smallR_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-zeror16">ZeroR16</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-zeror8">ZeroR8</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-zeror4">ZeroR4</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-zero">Zero</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bir16p">BIR16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bir8p">BIR8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bir4p">BIR4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bir_p">BIR_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byr16p">BYR16P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byr8p">BYR8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byr4p">BYR4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byr_p">BYR_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bii8p">BII8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bii4p">BII4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bii2p">BII2P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bii1p">BII1P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-bii_p">BII_P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byi8p">BYI8P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byi4p">BYI4P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byi2p">BYI2P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byi1p">BYI1P</a>
+        
+        <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html#variable-byi_p">BYI_P</a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <hr>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods">All Modules</a></h3></div>
+    <div id="allmods" class="panel-collapse collapse">
+        <div class="list-group">
+          
+          <a class="list-group-item" href="../module/penf%7E2.html">penf</a>
+          
+          <a class="list-group-item" href="../module/penf.html">penf</a>
+          
+          <a class="list-group-item" href="../module/penf_b_size.html">penf_b_size</a>
+          
+          <a class="list-group-item" href="../module/penf_b_size%7E2.html">penf_b_size</a>
+          
+          <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html">penf_global_parameters_variables</a>
+          
+          <a class="list-group-item" href="../module/penf_global_parameters_variables.html">penf_global_parameters_variables</a>
+          
+          <a class="list-group-item" href="../module/penf_stringify.html">penf_stringify</a>
+          
+          <a class="list-group-item" href="../module/penf_stringify%7E2.html">penf_stringify</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html">stringifor</a>
+          
+        </div>
+    </div>
+  </div>
+  
+</div>
+
+    </div>
+    
+    <div class="col-lg-9" id='text'>
+    
+    
+  
+
+    
+    
+    <p>PENF global (exposed) parameters and variables.</p>
+<p></p><div class="alert alert-info" role="alert"><h4>Note</h4>All module defined entities are public.</div>
+    
+    
+    <h3>Used By</h3>
+    
+                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.26.3 (20100126.1600)
+ -->
+<!-- Title: module~~penf_global_parameters_variables~2~~UsedByGraph Pages: 1 -->
+<svg id="modulepenf_global_parameters_variables2UsedByGraph" width="641pt" height="995pt"
+ viewBox="0.00 0.00 641.00 995.28" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~penf_global_parameters_variables~2~~UsedByGraph" class="graph" transform="scale(0.913105 0.913105) rotate(0) translate(4 1086)">
+<title>module~~penf_global_parameters_variables~2~~UsedByGraph</title>
+<polygon fill="white" stroke="white" points="-4,5 -4,-1086 699,-1086 699,5 -4,5"/>
+<!-- module~penf_global_parameters_variables~2 -->
+<g id="node1" class="node"><title>module~penf_global_parameters_variables~2</title>
+<polygon fill="none" stroke="black" points="178,-630 8.52651e-14,-630 0,-604 178,-604 178,-630"/>
+<text text-anchor="middle" x="89" y="-614.55" font-family="Helvetica,sans-Serif" font-size="10.50">penf_global_parameters_variables</text>
+</g>
+<!-- module~penf_b_size~2 -->
+<g id="node2" class="node"><title>module~penf_b_size~2</title>
+<a xlink:href="../module/penf_b_size%7E2.html" xlink:title="penf_b_size">
+<polygon fill="#337ab7" stroke="#337ab7" points="284,-702 214,-702 214,-676 284,-676 284,-702"/>
+<text text-anchor="middle" x="249" y="-686.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_b_size</text>
+</a>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf_b_size~2 -->
+<g id="edge68" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf_b_size~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M117.975,-630.039C143.946,-641.726 182.231,-658.954 210.718,-671.773"/>
+<polygon fill="black" stroke="black" points="209.415,-675.025 219.971,-675.937 212.288,-668.641 209.415,-675.025"/>
+</g>
+<!-- module~penf_stringify -->
+<g id="node3" class="node"><title>module~penf_stringify</title>
+<a xlink:href="../module/penf_stringify.html" xlink:title="penf_stringify">
+<polygon fill="#337ab7" stroke="#337ab7" points="396,-620 320,-620 320,-594 396,-594 396,-620"/>
+<text text-anchor="middle" x="358" y="-604.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_stringify</text>
+</a>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf_stringify -->
+<g id="edge70" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M132.702,-630.081C164.619,-638.498 209.105,-647.891 249,-648"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M249,-648C277.179,-648.077 306.983,-635.918 328.291,-624.823"/>
+<polygon fill="black" stroke="black" points="330.039,-627.856 337.159,-620.01 326.7,-621.703 330.039,-627.856"/>
+</g>
+<!-- module~penf_stringify~2 -->
+<g id="node4" class="node"><title>module~penf_stringify~2</title>
+<a xlink:href="../module/penf_stringify%7E2.html" xlink:title="penf_stringify">
+<polygon fill="#337ab7" stroke="#337ab7" points="396,-538 320,-538 320,-512 396,-512 396,-538"/>
+<text text-anchor="middle" x="358" y="-522.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_stringify</text>
+</a>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf_stringify~2 -->
+<g id="edge72" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf_stringify~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M249,-484C278.585,-476.326 311.238,-492.012 333.02,-506.145"/>
+<polygon fill="black" stroke="black" points="331.132,-509.095 341.367,-511.834 335.074,-503.31 331.132,-509.095"/>
+</g>
+<!-- module~penf -->
+<g id="node5" class="node"><title>module~penf</title>
+<a xlink:href="../module/penf.html" xlink:title="penf">
+<polygon fill="#337ab7" stroke="#337ab7" points="486,-620 432,-620 432,-594 486,-594 486,-620"/>
+<text text-anchor="middle" x="459" y="-604.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf</text>
+</a>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf -->
+<g id="edge74" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M249,-648C314.877,-648.18 331.892,-644.163 396,-629 404.589,-626.968 413.646,-624.197 422.132,-621.307"/>
+<polygon fill="black" stroke="black" points="423.508,-624.533 431.768,-617.897 421.173,-617.934 423.508,-624.533"/>
+</g>
+<!-- module~penf~2 -->
+<g id="node6" class="node"><title>module~penf~2</title>
+<a xlink:href="../module/penf%7E2.html" xlink:title="penf">
+<polygon fill="#337ab7" stroke="#337ab7" points="486,-576 432,-576 432,-550 486,-550 486,-576"/>
+<text text-anchor="middle" x="459" y="-560.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf</text>
+</a>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf~2 -->
+<g id="edge76" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M98.2507,-603.745C120.167,-573.824 178.722,-502.23 249,-484"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M249,-484C312.766,-467.459 336.533,-474.656 396,-503 414.743,-511.934 431.523,-528.574 443.044,-542.068"/>
+<polygon fill="black" stroke="black" points="440.466,-544.445 449.507,-549.967 445.883,-540.011 440.466,-544.445"/>
+</g>
+<!-- module~penf_b_size -->
+<g id="node7" class="node"><title>module~penf_b_size</title>
+<a xlink:href="../module/penf_b_size.html" xlink:title="penf_b_size">
+<polygon fill="#337ab7" stroke="#337ab7" points="284,-599 214,-599 214,-573 284,-573 284,-599"/>
+<text text-anchor="middle" x="249" y="-583.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_b_size</text>
+</a>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf_b_size -->
+<g id="edge78" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf_b_size</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M156.391,-603.943C172.489,-600.824 189.287,-597.569 204.086,-594.702"/>
+<polygon fill="black" stroke="black" points="204.828,-598.123 213.98,-592.785 203.497,-591.251 204.828,-598.123"/>
+</g>
+<!-- module~penf_stringify&#45;&gt;module~penf -->
+<g id="edge4" class="edge"><title>module~penf_stringify&#45;&gt;module~penf</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M396.184,-607C404.511,-607 413.313,-607 421.609,-607"/>
+<polygon fill="black" stroke="black" points="421.772,-610.5 431.772,-607 421.772,-603.5 421.772,-610.5"/>
+</g>
+<!-- module~penf_stringify&#45;&gt;module~penf~2 -->
+<g id="edge2" class="edge"><title>module~penf_stringify&#45;&gt;module~penf~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M388.03,-593.918C398.842,-589.208 411.161,-583.841 422.466,-578.916"/>
+<polygon fill="black" stroke="black" points="423.899,-582.109 431.669,-574.907 421.103,-575.692 423.899,-582.109"/>
+</g>
+<!-- program~test_all -->
+<g id="node10" class="node"><title>program~test_all</title>
+<a xlink:href="../program/test_all.html" xlink:title="test_all">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="576,-598 522,-598 522,-572 576,-572 576,-598"/>
+<text text-anchor="middle" x="549" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">test_all</text>
+</a>
+</g>
+<!-- module~penf~2&#45;&gt;program~test_all -->
+<g id="edge56" class="edge"><title>module~penf~2&#45;&gt;program~test_all</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M486.003,-569.601C494.116,-571.584 503.163,-573.795 511.813,-575.91"/>
+<polygon fill="black" stroke="black" points="511.16,-579.353 521.705,-578.328 512.822,-572.553 511.16,-579.353"/>
+</g>
+<!-- module~stringifor -->
+<g id="node11" class="node"><title>module~stringifor</title>
+<a xlink:href="../module/stringifor.html" xlink:title="stringifor">
+<polygon fill="#337ab7" stroke="#337ab7" points="576,-554 522,-554 522,-528 576,-528 576,-554"/>
+<text text-anchor="middle" x="549" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor</text>
+</a>
+</g>
+<!-- module~penf~2&#45;&gt;module~stringifor -->
+<g id="edge58" class="edge"><title>module~penf~2&#45;&gt;module~stringifor</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M486.003,-556.399C494.116,-554.416 503.163,-552.205 511.813,-550.09"/>
+<polygon fill="black" stroke="black" points="512.822,-553.447 521.705,-547.672 511.16,-546.647 512.822,-553.447"/>
+</g>
+<!-- module~penf_b_size&#45;&gt;module~penf_stringify -->
+<g id="edge62" class="edge"><title>module~penf_b_size&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M284.088,-592.76C292.319,-594.346 301.229,-596.062 309.918,-597.737"/>
+<polygon fill="black" stroke="black" points="309.482,-601.217 319.963,-599.672 310.806,-594.343 309.482,-601.217"/>
+</g>
+<!-- module~penf_b_size&#45;&gt;module~penf_stringify~2 -->
+<g id="edge60" class="edge"><title>module~penf_b_size&#45;&gt;module~penf_stringify~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M272.383,-572.914C287.901,-564.23 308.479,-552.713 325.572,-543.148"/>
+<polygon fill="black" stroke="black" points="327.638,-546.002 334.655,-538.064 324.22,-539.894 327.638,-546.002"/>
+</g>
+<!-- module~penf_b_size&#45;&gt;module~penf -->
+<g id="edge64" class="edge"><title>module~penf_b_size&#45;&gt;module~penf</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M358,-566C383.976,-566.058 411.133,-577.841 430.736,-588.759"/>
+<polygon fill="black" stroke="black" points="429.044,-591.823 439.447,-593.831 432.566,-585.774 429.044,-591.823"/>
+</g>
+<!-- module~penf_b_size&#45;&gt;module~penf~2 -->
+<g id="edge66" class="edge"><title>module~penf_b_size&#45;&gt;module~penf~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M284.046,-576.194C305.271,-571.102 332.989,-565.944 358,-566"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M358,-566C379.166,-566.047 402.816,-565.384 421.907,-564.669"/>
+<polygon fill="black" stroke="black" points="422.145,-568.162 431.999,-564.27 421.869,-561.168 422.145,-568.162"/>
+</g>
+<!-- program~slen -->
+<g id="node12" class="node"><title>program~slen</title>
+<a xlink:href="../program/slen.html" xlink:title="slen">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-1082 626,-1082 626,-1056 680,-1056 680,-1082"/>
+<text text-anchor="middle" x="653" y="-1066.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~slen -->
+<g id="edge6" class="edge"><title>module~stringifor&#45;&gt;program~slen</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M569.03,-554.027C571.789,-556.672 574.267,-559.676 576,-563 625.868,-658.632 553.23,-956.566 612,-1047 613.464,-1049.25 615.239,-1051.29 617.22,-1053.13"/>
+<polygon fill="black" stroke="black" points="615.518,-1056.22 625.657,-1059.3 619.65,-1050.57 615.518,-1056.22"/>
+</g>
+<!-- program~split -->
+<g id="node13" class="node"><title>program~split</title>
+<a xlink:href="../program/split.html" xlink:title="split">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-1038 626,-1038 626,-1012 680,-1012 680,-1038"/>
+<text text-anchor="middle" x="653" y="-1022.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~split -->
+<g id="edge8" class="edge"><title>module~stringifor&#45;&gt;program~split</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M569.009,-554.038C571.771,-556.681 574.254,-559.682 576,-563 621.682,-649.82 558.239,-920.938 612,-1003 613.472,-1005.25 615.253,-1007.28 617.238,-1009.12"/>
+<polygon fill="black" stroke="black" points="615.543,-1012.22 625.685,-1015.28 619.669,-1006.56 615.543,-1012.22"/>
+</g>
+<!-- program~assignments -->
+<g id="node14" class="node"><title>program~assignments</title>
+<a xlink:href="../program/assignments.html" xlink:title="assignments">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="689,-994 617,-994 617,-968 689,-968 689,-994"/>
+<text text-anchor="middle" x="653" y="-978.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assignments</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~assignments -->
+<g id="edge10" class="edge"><title>module~stringifor&#45;&gt;program~assignments</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M568.983,-554.052C571.748,-556.693 574.239,-559.69 576,-563 658.996,-719.025 514.488,-811.611 612,-959 612.348,-959.526 612.713,-960.041 613.094,-960.544"/>
+<polygon fill="black" stroke="black" points="610.824,-963.221 620.41,-967.733 615.731,-958.228 610.824,-963.221"/>
+</g>
+<!-- program~srepeat -->
+<g id="node15" class="node"><title>program~srepeat</title>
+<a xlink:href="../program/srepeat.html" xlink:title="srepeat">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-950 626,-950 626,-924 680,-924 680,-950"/>
+<text text-anchor="middle" x="653" y="-934.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~srepeat -->
+<g id="edge12" class="edge"><title>module~stringifor&#45;&gt;program~srepeat</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M568.951,-554.069C571.72,-556.708 574.221,-559.7 576,-563 650.635,-701.421 524.491,-784.336 612,-915 613.495,-917.232 615.293,-919.255 617.29,-921.086"/>
+<polygon fill="black" stroke="black" points="615.612,-924.193 625.762,-927.231 619.722,-918.526 615.612,-924.193"/>
+</g>
+<!-- program~basename_dir -->
+<g id="node16" class="node"><title>program~basename_dir</title>
+<a xlink:href="../program/basename_dir.html" xlink:title="basename_dir">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="693,-906 613,-906 613,-880 693,-880 693,-906"/>
+<text text-anchor="middle" x="653" y="-890.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">basename_dir</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~basename_dir -->
+<g id="edge14" class="edge"><title>module~stringifor&#45;&gt;program~basename_dir</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M568.91,-554.091C571.684,-556.728 574.197,-559.713 576,-563 642.283,-683.835 534.484,-757.044 612,-871 612.443,-871.651 612.912,-872.285 613.404,-872.901"/>
+<polygon fill="black" stroke="black" points="611.215,-875.649 620.888,-879.971 616.022,-870.56 611.215,-875.649"/>
+</g>
+<!-- program~sscan -->
+<g id="node17" class="node"><title>program~sscan</title>
+<a xlink:href="../program/sscan.html" xlink:title="sscan">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-862 626,-862 626,-836 680,-836 680,-862"/>
+<text text-anchor="middle" x="653" y="-846.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sscan -->
+<g id="edge16" class="edge"><title>module~stringifor&#45;&gt;program~sscan</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M568.856,-554.121C571.636,-556.754 574.166,-559.731 576,-563 633.945,-666.274 544.461,-729.729 612,-827 613.532,-829.206 615.358,-831.211 617.375,-833.028"/>
+<polygon fill="black" stroke="black" points="615.725,-836.152 625.888,-839.145 619.809,-830.468 615.725,-836.152"/>
+</g>
+<!-- program~capitalize -->
+<g id="node18" class="node"><title>program~capitalize</title>
+<a xlink:href="../program/capitalize.html" xlink:title="capitalize">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="681,-818 625,-818 625,-792 681,-792 681,-818"/>
+<text text-anchor="middle" x="653" y="-802.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">capitalize</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~capitalize -->
+<g id="edge18" class="edge"><title>module~stringifor&#45;&gt;program~capitalize</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M568.781,-554.164C571.57,-556.792 574.122,-559.755 576,-563 625.629,-648.752 554.412,-702.377 612,-783 613.197,-784.676 614.563,-786.237 616.051,-787.688"/>
+<polygon fill="black" stroke="black" points="614.253,-790.722 624.307,-794.064 618.532,-785.182 614.253,-790.722"/>
+</g>
+<!-- program~start_end -->
+<g id="node19" class="node"><title>program~start_end</title>
+<a xlink:href="../program/start_end.html" xlink:title="start_end">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="682,-774 624,-774 624,-748 682,-748 682,-774"/>
+<text text-anchor="middle" x="653" y="-758.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">start_end</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~start_end -->
+<g id="edge20" class="edge"><title>module~stringifor&#45;&gt;program~start_end</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M568.671,-554.229C571.474,-556.849 574.058,-559.793 576,-563 617.352,-631.299 564.316,-674.961 612,-739 613.061,-740.425 614.243,-741.768 615.517,-743.032"/>
+<polygon fill="black" stroke="black" points="613.601,-745.98 623.617,-749.435 617.942,-740.488 613.601,-745.98"/>
+</g>
+<!-- program~concatenation -->
+<g id="node20" class="node"><title>program~concatenation</title>
+<a xlink:href="../program/concatenation.html" xlink:title="concatenation">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="692,-730 614,-730 614,-704 692,-704 692,-730"/>
+<text text-anchor="middle" x="653" y="-714.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">concatenation</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~concatenation -->
+<g id="edge22" class="edge"><title>module~stringifor&#45;&gt;program~concatenation</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M568.221,-554.088C571.148,-556.759 573.89,-559.756 576,-563 609.155,-613.975 574.13,-647.423 612,-695 612.594,-695.747 613.221,-696.471 613.876,-697.174"/>
+<polygon fill="black" stroke="black" points="611.894,-700.083 621.777,-703.899 616.43,-694.752 611.894,-700.083"/>
+</g>
+<!-- program~strim -->
+<g id="node21" class="node"><title>program~strim</title>
+<a xlink:href="../program/strim.html" xlink:title="strim">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-686 626,-686 626,-660 680,-660 680,-686"/>
+<text text-anchor="middle" x="653" y="-670.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~strim -->
+<g id="edge24" class="edge"><title>module~stringifor&#45;&gt;program~strim</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M567.615,-554.068C570.679,-556.778 573.624,-559.794 576,-563 601.158,-596.952 583.716,-619.605 612,-651 613.703,-652.891 615.608,-654.649 617.639,-656.279"/>
+<polygon fill="black" stroke="black" points="615.705,-659.196 625.939,-661.939 619.649,-653.413 615.705,-659.196"/>
+</g>
+<!-- program~free -->
+<g id="node22" class="node"><title>program~free</title>
+<a xlink:href="../program/free.html" xlink:title="free">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-642 626,-642 626,-616 680,-616 680,-642"/>
+<text text-anchor="middle" x="653" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">free</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~free -->
+<g id="edge26" class="edge"><title>module~stringifor&#45;&gt;program~free</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M566.303,-554.23C569.628,-557.01 573.004,-560.01 576,-563 593.884,-580.848 592.493,-590.94 612,-607 613.544,-608.271 615.172,-609.501 616.854,-610.688"/>
+<polygon fill="black" stroke="black" points="615.256,-613.819 625.572,-616.233 619.013,-607.913 615.256,-613.819"/>
+</g>
+<!-- program~strip -->
+<g id="node23" class="node"><title>program~strip</title>
+<a xlink:href="../program/strip.html" xlink:title="strip">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-598 626,-598 626,-572 680,-572 680,-598"/>
+<text text-anchor="middle" x="653" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strip</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~strip -->
+<g id="edge28" class="edge"><title>module~stringifor&#45;&gt;program~strip</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M576.053,-552.446C588.355,-557.65 603.097,-563.887 616.371,-569.503"/>
+<polygon fill="black" stroke="black" points="615.147,-572.786 625.721,-573.459 617.875,-566.339 615.147,-572.786"/>
+</g>
+<!-- program~io_basic -->
+<g id="node24" class="node"><title>program~io_basic</title>
+<a xlink:href="../program/io_basic.html" xlink:title="io_basic">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-554 626,-554 626,-528 680,-528 680,-554"/>
+<text text-anchor="middle" x="653" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">io_basic</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~io_basic -->
+<g id="edge30" class="edge"><title>module~stringifor&#45;&gt;program~io_basic</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M576.053,-541C588.116,-541 602.525,-541 615.596,-541"/>
+<polygon fill="black" stroke="black" points="615.721,-544.5 625.721,-541 615.721,-537.5 615.721,-544.5"/>
+</g>
+<!-- program~sverify -->
+<g id="node25" class="node"><title>program~sverify</title>
+<a xlink:href="../program/sverify.html" xlink:title="sverify">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-510 626,-510 626,-484 680,-484 680,-510"/>
+<text text-anchor="middle" x="653" y="-494.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sverify -->
+<g id="edge32" class="edge"><title>module~stringifor&#45;&gt;program~sverify</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M576.053,-529.554C588.355,-524.35 603.097,-518.113 616.371,-512.497"/>
+<polygon fill="black" stroke="black" points="617.875,-515.661 625.721,-508.541 615.147,-509.214 617.875,-515.661"/>
+</g>
+<!-- program~is_digit -->
+<g id="node26" class="node"><title>program~is_digit</title>
+<a xlink:href="../program/is_digit.html" xlink:title="is_digit">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-466 626,-466 626,-440 680,-440 680,-466"/>
+<text text-anchor="middle" x="653" y="-450.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_digit</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_digit -->
+<g id="edge34" class="edge"><title>module~stringifor&#45;&gt;program~is_digit</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M559.338,-527.911C571.042,-513.672 591.202,-490.829 612,-475 613.591,-473.789 615.257,-472.607 616.97,-471.459"/>
+<polygon fill="black" stroke="black" points="619.103,-474.256 625.781,-466.031 615.431,-468.296 619.103,-474.256"/>
+</g>
+<!-- program~swapcase -->
+<g id="node27" class="node"><title>program~swapcase</title>
+<a xlink:href="../program/swapcase.html" xlink:title="swapcase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="683,-422 623,-422 623,-396 683,-396 683,-422"/>
+<text text-anchor="middle" x="653" y="-406.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swapcase</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~swapcase -->
+<g id="edge36" class="edge"><title>module~stringifor&#45;&gt;program~swapcase</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M553.696,-527.946C562.268,-505.65 582.343,-459.849 612,-431 612.945,-430.081 613.935,-429.19 614.962,-428.327"/>
+<polygon fill="black" stroke="black" points="617.317,-430.945 623.387,-422.261 613.227,-425.264 617.317,-430.945"/>
+</g>
+<!-- program~is_integer -->
+<g id="node28" class="node"><title>program~is_integer</title>
+<a xlink:href="../program/is_integer.html" xlink:title="is_integer">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="682,-378 624,-378 624,-352 682,-352 682,-378"/>
+<text text-anchor="middle" x="653" y="-362.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_integer</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_integer -->
+<g id="edge38" class="edge"><title>module~stringifor&#45;&gt;program~is_integer</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M551.256,-527.848C556.797,-499.075 573.523,-429.709 612,-387 613.014,-385.875 614.099,-384.796 615.24,-383.764"/>
+<polygon fill="black" stroke="black" points="617.527,-386.423 623.406,-377.608 613.314,-380.833 617.527,-386.423"/>
+</g>
+<!-- program~unique -->
+<g id="node29" class="node"><title>program~unique</title>
+<a xlink:href="../program/unique.html" xlink:title="unique">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-334 626,-334 626,-308 680,-308 680,-334"/>
+<text text-anchor="middle" x="653" y="-318.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~unique -->
+<g id="edge40" class="edge"><title>module~stringifor&#45;&gt;program~unique</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M549.837,-527.833C552.658,-493.538 564.516,-400.161 612,-343 613.626,-341.043 615.473,-339.234 617.461,-337.567"/>
+<polygon fill="black" stroke="black" points="619.479,-340.426 625.665,-331.824 615.465,-334.691 619.479,-340.426"/>
+</g>
+<!-- program~is_number -->
+<g id="node30" class="node"><title>program~is_number</title>
+<a xlink:href="../program/is_number.html" xlink:title="is_number">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="684,-290 622,-290 622,-264 684,-264 684,-290"/>
+<text text-anchor="middle" x="653" y="-274.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_number</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_number -->
+<g id="edge42" class="edge"><title>module~stringifor&#45;&gt;program~is_number</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M551.011,-527.821C558.091,-482.8 583.013,-335.853 612,-299 612.59,-298.25 613.213,-297.522 613.864,-296.817"/>
+<polygon fill="black" stroke="black" points="616.421,-299.235 621.741,-290.072 611.868,-293.918 616.421,-299.235"/>
+</g>
+<!-- program~upper_lower -->
+<g id="node31" class="node"><title>program~upper_lower</title>
+<a xlink:href="../program/upper_lower.html" xlink:title="upper_lower">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="689,-246 617,-246 617,-220 689,-220 689,-246"/>
+<text text-anchor="middle" x="653" y="-230.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper_lower</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~upper_lower -->
+<g id="edge44" class="edge"><title>module~stringifor&#45;&gt;program~upper_lower</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M550.424,-527.93C556.085,-477.95 578.339,-299.504 612,-255 612.475,-254.372 612.974,-253.76 613.493,-253.163"/>
+<polygon fill="black" stroke="black" points="616.09,-255.536 621.215,-246.263 611.426,-250.316 616.09,-255.536"/>
+</g>
+<!-- program~is_real -->
+<g id="node32" class="node"><title>program~is_real</title>
+<a xlink:href="../program/is_real.html" xlink:title="is_real">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-202 626,-202 626,-176 680,-176 680,-202"/>
+<text text-anchor="middle" x="653" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_real</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_real -->
+<g id="edge46" class="edge"><title>module~stringifor&#45;&gt;program~is_real</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M550.011,-527.845C554.443,-473.025 573.676,-263.181 612,-211 613.548,-208.892 615.36,-206.966 617.345,-205.208"/>
+<polygon fill="black" stroke="black" points="619.576,-207.915 625.662,-199.243 615.497,-202.227 619.576,-207.915"/>
+</g>
+<!-- program~partition -->
+<g id="node33" class="node"><title>program~partition</title>
+<a xlink:href="../program/partition.html" xlink:title="partition">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-158 626,-158 626,-132 680,-132 680,-158"/>
+<text text-anchor="middle" x="653" y="-142.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">partition</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~partition -->
+<g id="edge48" class="edge"><title>module~stringifor&#45;&gt;program~partition</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M549.691,-527.738C553.014,-468.321 568.995,-226.909 612,-167 613.525,-164.875 615.32,-162.936 617.293,-161.17"/>
+<polygon fill="black" stroke="black" points="619.524,-163.876 625.583,-155.185 615.426,-158.201 619.524,-163.876"/>
+</g>
+<!-- program~replace -->
+<g id="node34" class="node"><title>program~replace</title>
+<a xlink:href="../program/replace.html" xlink:title="replace">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-114 626,-114 626,-88 680,-88 680,-114"/>
+<text text-anchor="middle" x="653" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~replace -->
+<g id="edge50" class="edge"><title>module~stringifor&#45;&gt;program~replace</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M549.424,-527.917C551.703,-464.659 564.224,-190.785 612,-123 613.547,-120.805 615.384,-118.808 617.41,-116.996"/>
+<polygon fill="black" stroke="black" points="619.845,-119.558 625.941,-110.892 615.772,-113.865 619.845,-119.558"/>
+</g>
+<!-- program~sadjustlr -->
+<g id="node35" class="node"><title>program~sadjustlr</title>
+<a xlink:href="../program/sadjustlr.html" xlink:title="sadjustlr">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-70 626,-70 626,-44 680,-44 680,-70"/>
+<text text-anchor="middle" x="653" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustlr</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sadjustlr -->
+<g id="edge52" class="edge"><title>module~stringifor&#45;&gt;program~sadjustlr</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M549.216,-527.909C550.553,-460.7 559.482,-154.636 612,-79 613.532,-76.7937 615.358,-74.7895 617.375,-72.9719"/>
+<polygon fill="black" stroke="black" points="619.809,-75.5324 625.888,-66.855 615.725,-69.8476 619.809,-75.5324"/>
+</g>
+<!-- program~sindex -->
+<g id="node36" class="node"><title>program~sindex</title>
+<a xlink:href="../program/sindex.html" xlink:title="sindex">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="680,-26 626,-26 626,-1.24345e-14 680,-3.55271e-15 680,-26"/>
+<text text-anchor="middle" x="653" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sindex -->
+<g id="edge54" class="edge"><title>module~stringifor&#45;&gt;program~sindex</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M549.927,-527.701C555.3,-451.965 583.213,-76.98 612,-35 613.519,-32.7848 615.335,-30.774 617.345,-28.9517"/>
+<polygon fill="black" stroke="black" points="619.779,-31.5118 625.845,-22.8248 615.686,-25.8334 619.779,-31.5118"/>
+</g>
+</g>
+</svg>
+</div>
+                <script>var panmodulepenf_global_parameters_variables2UsedByGraph = svgPanZoom('#modulepenf_global_parameters_variables2UsedByGraph', {
+                    zoomEnabled: true,
+                    controlIconsEnabled: true,
+                    fit: true,
+                    center: true,});
+                    </script>
+                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                      </div>
+                      <div class="modal-body">
+                        
+Nodes of different colours represent the following:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.26.3 (20100126.1600)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph1" class="graph" transform="scale(0.817602 0.817602) rotate(0) translate(4 30)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="white" points="-4,5 -4,-30 781,-30 781,5 -4,5"/>
+<!-- Module -->
+<g id="node1" class="node"><title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-26 2.13163e-14,-26 0,-1.24345e-14 54,-3.55271e-15 54,-26"/>
+<text text-anchor="middle" x="27" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node"><title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="138,-26 72,-26 72,-1.24345e-14 138,-3.55271e-15 138,-26"/>
+<text text-anchor="middle" x="105" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Type -->
+<g id="node3" class="node"><title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="210,-26 156,-26 156,-1.24345e-14 210,-3.55271e-15 210,-26"/>
+<text text-anchor="middle" x="183" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- Subroutine -->
+<g id="node4" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="292,-26 228,-26 228,-1.24345e-14 292,-3.55271e-15 292,-26"/>
+<text text-anchor="middle" x="260" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node5" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="364,-26 310,-26 310,-1.24345e-14 364,-3.55271e-15 364,-26"/>
+<text text-anchor="middle" x="337" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node6" class="node"><title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="436,-26 382,-26 382,-1.24345e-14 436,-3.55271e-15 436,-26"/>
+<text text-anchor="middle" x="409" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node7" class="node"><title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="590,-26 454,-26 454,-1.24345e-14 590,-3.55271e-15 590,-26"/>
+<text text-anchor="middle" x="522" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node8" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="662,-26 608,-26 608,-1.24345e-14 662,-3.55271e-15 662,-26"/>
+<text text-anchor="middle" x="635" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node9" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="776,-26 680,-26 680,-1.24345e-14 776,-3.55271e-15 776,-26"/>
+<text text-anchor="middle" x="728" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<h5>Module Graph</h5>
+<p>Solid arrows point from a parent (sub)module to the submodule which is
+descended from it. Dashed arrows point from a module being used to the
+module using it.</p>
+<h5>Type Graph</h5>
+<p>Solid arrows point from one derived type to another which extends
+(inherits from) it. Dashed arrows point from a derived type to another
+type containing it as a components, with a label listing the name(s) of
+said component(s).</p>
+<h5>Call Graph</h5>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+    <br>
+    
+
+    
+    <section>
+    <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-is_initialized"></span>logical,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>is_initialized</strong></td><td> =</td><td>.false.</td><td><p>Check the initialization of some variables that must be initialized.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-endianl"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>endianL</strong></td><td> =</td><td>1</td><td><p>Little endian parameter.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-endianb"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>endianB</strong></td><td> =</td><td>0</td><td><p>Big endian parameter.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-endian"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>endian</strong></td><td> =</td><td>endianL</td><td><p>Bit ordering: Little endian (endianL), or Big endian (endianB).</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-r16p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>R16P</strong></td><td> =</td><td>selected_real_kind(15, 307)</td><td><p>Defined as R8P; 64 bits.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-r8p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>R8P</strong></td><td> =</td><td>selected_real_kind(15, 307)</td><td><p>15 digits, range \([10^{-307} , 10^{+307}  - 1]\); 64 bits.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-r4p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>R4P</strong></td><td> =</td><td>selected_real_kind(6, 37)</td><td><p>6  digits, range \([10^{-37}  , 10^{+37}   - 1]\); 32 bits.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-r_p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>R_P</strong></td><td> =</td><td>R8P</td><td><p>Default real precision.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-i8p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>I8P</strong></td><td> =</td><td>selected_int_kind(18)</td><td><p>Range \([-2^{63},+2^{63} - 1]\), 19 digits plus sign; 64 bits.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-i4p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>I4P</strong></td><td> =</td><td>selected_int_kind(9)</td><td><p>Range \([-2^{31},+2^{31} - 1]\), 10 digits plus sign; 32 bits.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-i2p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>I2P</strong></td><td> =</td><td>selected_int_kind(4)</td><td><p>Range \([-2^{15},+2^{15} - 1]\), 5  digits plus sign; 16 bits.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-i1p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>I1P</strong></td><td> =</td><td>selected_int_kind(2)</td><td><p>Range \([-2^{7} ,+2^{7}  - 1]\), 3  digits plus sign; 8  bits.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-i_p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>I_P</strong></td><td> =</td><td>I4P</td><td><p>Default integer precision.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fr16p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FR16P</strong></td><td> =</td><td>'(E23.15E3)'</td><td><p>Output format for kind=R16P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fr8p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FR8P</strong></td><td> =</td><td>'(E23.15E3)'</td><td><p>Output format for kind=R8P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fr4p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FR4P</strong></td><td> =</td><td>'(E13.6E2)'</td><td><p>Output format for kind=R4P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fr_p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FR_P</strong></td><td> =</td><td>FR8P</td><td><p>Output format for kind=R_P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi8p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI8P</strong></td><td> =</td><td>'(I20)'</td><td><p>Output format for kind=I8P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi8pzp"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI8PZP</strong></td><td> =</td><td>'(I20.19)'</td><td><p>Output format for kind=I8P integer with zero prefixing.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi4p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI4P</strong></td><td> =</td><td>'(I11)'</td><td><p>Output format for kind=I4P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi4pzp"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI4PZP</strong></td><td> =</td><td>'(I11.10)'</td><td><p>Output format for kind=I4P integer with zero prefixing.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi2p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI2P</strong></td><td> =</td><td>'(I6)'</td><td><p>Output format for kind=I2P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi2pzp"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI2PZP</strong></td><td> =</td><td>'(I6.5)'</td><td><p>Output format for kind=I2P integer with zero prefixing.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi1p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI1P</strong></td><td> =</td><td>'(I4)'</td><td><p>Output format for kind=I1P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi1pzp"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI1PZP</strong></td><td> =</td><td>'(I4.3)'</td><td><p>Output format for kind=I1P integer with zero prefixing.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi_p"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI_P</strong></td><td> =</td><td>FI4P</td><td><p>Output format for kind=I_P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fi_pzp"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>FI_PZP</strong></td><td> =</td><td>FI4PZP</td><td><p>Output format for kind=I_P integer with zero prefixing.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dr16p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DR16P</strong></td><td> =</td><td>23</td><td><p>Number of digits of output format FR16P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dr8p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DR8P</strong></td><td> =</td><td>23</td><td><p>Number of digits of output format FR8P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dr4p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DR4P</strong></td><td> =</td><td>13</td><td><p>Number of digits of output format FR4P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dr_p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DR_P</strong></td><td> =</td><td>DR8P</td><td><p>Number of digits of output format FR_P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-di8p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DI8P</strong></td><td> =</td><td>20</td><td><p>Number of digits of output format I8P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-di4p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DI4P</strong></td><td> =</td><td>11</td><td><p>Number of digits of output format I4P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-di2p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DI2P</strong></td><td> =</td><td>6</td><td><p>Number of digits of output format I2P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-di1p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DI1P</strong></td><td> =</td><td>4</td><td><p>Number of digits of output format I1P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-di_p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>DI_P</strong></td><td> =</td><td>DI4P</td><td><p>Number of digits of output format I_P.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-real_kinds_list"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>REAL_KINDS_LIST</strong>(1:4)</td><td> =</td><td>[R16P, R8P, R4P, R_P]</td><td><p>List of real kinds.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-real_formats_list"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>REAL_FORMATS_LIST</strong>(1:4)</td><td> =</td><td>[FR16P, FR8P, FR4P//' ', FR_P]</td><td><p>List of real formats.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-integer_kinds_list"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>INTEGER_KINDS_LIST</strong>(1:5)</td><td> =</td><td>[I8P, I4P, I2P, I1P, I_P]</td><td><p>List of integer kinds.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-integer_formats_list"></span>character(len=*),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>INTEGER_FORMATS_LIST</strong>(1:5)</td><td> =</td><td>[FI8P, FI4P, FI2P//' ', FI1P//' ', FI_P]</td><td><p>List of integer formats.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-minr16p"></span>real(kind=R16P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinR16P</strong></td><td> =</td><td>-huge(1._R16P)</td><td><p>Minimum value of kind=R16P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxr16p"></span>real(kind=R16P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxR16P</strong></td><td> =</td><td>huge(1._R16P)</td><td><p>Maximum value of kind=R16P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-minr8p"></span>real(kind=R8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinR8P</strong></td><td> =</td><td>-huge(1._R8P)</td><td><p>Minimum value of kind=R8P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxr8p"></span>real(kind=R8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxR8P</strong></td><td> =</td><td>huge(1._R8P)</td><td><p>Maximum value of kind=R8P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-minr4p"></span>real(kind=R4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinR4P</strong></td><td> =</td><td>-huge(1._R4P)</td><td><p>Minimum value of kind=R4P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxr4p"></span>real(kind=R4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxR4P</strong></td><td> =</td><td>huge(1._R4P)</td><td><p>Maximum value of kind=R4P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-minr_p"></span>real(kind=R_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinR_P</strong></td><td> =</td><td>MinR8P</td><td><p>Minimum value of kind=R_P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxr_p"></span>real(kind=R_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxR_P</strong></td><td> =</td><td>MaxR8P</td><td><p>Maximum value of kind=R_P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-mini8p"></span>integer(kind=I8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinI8P</strong></td><td> =</td><td>-huge(1_I8P)</td><td><p>Minimum value of kind=I8P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-mini4p"></span>integer(kind=I4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinI4P</strong></td><td> =</td><td>-huge(1_I4P)</td><td><p>Minimum value of kind=I4P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-mini2p"></span>integer(kind=I2P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinI2P</strong></td><td> =</td><td>-huge(1_I2P)</td><td><p>Minimum value of kind=I2P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-mini1p"></span>integer(kind=I1P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinI1P</strong></td><td> =</td><td>-huge(1_I1P)</td><td><p>Minimum value of kind=I1P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-mini_p"></span>integer(kind=I_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MinI_P</strong></td><td> =</td><td>MinI4P</td><td><p>Minimum value of kind=I_P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxi8p"></span>integer(kind=I8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxI8P</strong></td><td> =</td><td>huge(1_I8P)</td><td><p>Maximum value of kind=I8P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxi4p"></span>integer(kind=I4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxI4P</strong></td><td> =</td><td>huge(1_I4P)</td><td><p>Maximum value of kind=I4P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxi2p"></span>integer(kind=I2P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxI2P</strong></td><td> =</td><td>huge(1_I2P)</td><td><p>Maximum value of kind=I2P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxi1p"></span>integer(kind=I1P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxI1P</strong></td><td> =</td><td>huge(1_I1P)</td><td><p>Maximum value of kind=I1P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-maxi_p"></span>integer(kind=I_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>MaxI_P</strong></td><td> =</td><td>MaxI4P</td><td><p>Maximum value of kind=I_P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-smallr16p"></span>real(kind=R16P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>smallR16P</strong></td><td> =</td><td>tiny(1._R16P)</td><td><p>Smallest representable value of kind=R16P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-smallr8p"></span>real(kind=R8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>smallR8P</strong></td><td> =</td><td>tiny(1._R8P)</td><td><p>Smallest representable value of kind=R8P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-smallr4p"></span>real(kind=R4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>smallR4P</strong></td><td> =</td><td>tiny(1._R4P)</td><td><p>Smallest representable value of kind=R4P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-smallr_p"></span>real(kind=R_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>smallR_P</strong></td><td> =</td><td>smallR8P</td><td><p>Smallest representable value of kind=R_P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-zeror16"></span>real(kind=R16P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>ZeroR16</strong></td><td> =</td><td>nearest(1._R16P, 1._R16P)-nearest(1._R16P, -1._R16P)</td><td><p>Smallest representable difference of kind=R16P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-zeror8"></span>real(kind=R8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>ZeroR8</strong></td><td> =</td><td>nearest(1._R8P, 1._R8P)-nearest(1._R8P, -1._R8P)</td><td><p>Smallest representable difference of kind=R8P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-zeror4"></span>real(kind=R4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>ZeroR4</strong></td><td> =</td><td>nearest(1._R4P, 1._R4P)-nearest(1._R4P, -1._R4P)</td><td><p>Smallest representable difference of kind=R4P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-zero"></span>real(kind=R_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>Zero</strong></td><td> =</td><td>ZeroR8</td><td><p>Smallest representable difference of kind=R_P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bir16p"></span>integer(kind=I2P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BIR16P</strong></td><td></td><td></td><td><p>Number of bits of kind=R16P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bir8p"></span>integer(kind=I1P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BIR8P</strong></td><td></td><td></td><td><p>Number of bits of kind=R8P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bir4p"></span>integer(kind=I1P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BIR4P</strong></td><td></td><td></td><td><p>Number of bits of kind=R4P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bir_p"></span>integer(kind=I1P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BIR_P</strong></td><td></td><td></td><td><p>Number of bits of kind=R_P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byr16p"></span>integer(kind=I2P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BYR16P</strong></td><td></td><td></td><td><p>Number of bytes of kind=R16P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byr8p"></span>integer(kind=I1P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BYR8P</strong></td><td></td><td></td><td><p>Number of bytes of kind=R8P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byr4p"></span>integer(kind=I1P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BYR4P</strong></td><td></td><td></td><td><p>Number of bytes of kind=R4P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byr_p"></span>integer(kind=I1P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>BYR_P</strong></td><td></td><td></td><td><p>Number of bytes of kind=R_P real.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bii8p"></span>integer(kind=I8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BII8P</strong></td><td> =</td><td>bit_size(MaxI8P)</td><td><p>Number of bits of kind=I8P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bii4p"></span>integer(kind=I4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BII4P</strong></td><td> =</td><td>bit_size(MaxI4P)</td><td><p>Number of bits of kind=I4P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bii2p"></span>integer(kind=I2P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BII2P</strong></td><td> =</td><td>bit_size(MaxI2P)</td><td><p>Number of bits of kind=I2P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bii1p"></span>integer(kind=I1P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BII1P</strong></td><td> =</td><td>bit_size(MaxI1P)</td><td><p>Number of bits of kind=I1P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bii_p"></span>integer(kind=I_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BII_P</strong></td><td> =</td><td>bit_size(MaxI_P)</td><td><p>Number of bits of kind=I_P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byi8p"></span>integer(kind=I8P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BYI8P</strong></td><td> =</td><td>bit_size(MaxI8P)/8_I8P</td><td><p>Number of bytes of kind=I8P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byi4p"></span>integer(kind=I4P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BYI4P</strong></td><td> =</td><td>bit_size(MaxI4P)/8_I4P</td><td><p>Number of bytes of kind=I4P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byi2p"></span>integer(kind=I2P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BYI2P</strong></td><td> =</td><td>bit_size(MaxI2P)/8_I2P</td><td><p>Number of bytes of kind=I2P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byi1p"></span>integer(kind=I1P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BYI1P</strong></td><td> =</td><td>bit_size(MaxI1P)/8_I1P</td><td><p>Number of bytes of kind=I1P integer.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-byi_p"></span>integer(kind=I_P),</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BYI_P</strong></td><td> =</td><td>bit_size(MaxI_P)/8_I_P</td><td><p>Number of bytes of kind=I_P integer.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    </div>
+  </div>
+
+    <hr>
+    <footer>
+        <div class="row">
+        <div class="col-md-4">&copy; 2016 </div>
+	<div class="col-md-4"><span class="text-center"> StringiFor was developed by Stefano Zaghi</span></div>
+        <div class="col-md-4"><span class="pull-right">Documentation generated by <a href="https://github.com/cmacmackin/ford">FORD</a></span></div>
+        </div>
+        <br>
+    </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
+        'HTML-CSS': { 
+           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
+        }
+      });
+    </script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  </body>
+</html>

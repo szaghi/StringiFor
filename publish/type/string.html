@@ -194,6 +194,8 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-is_lower">is_lower</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-is_number">is_number</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-is_real">is_real</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-is_upper">is_upper</a>
@@ -237,6 +239,18 @@
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_string">string_assign_string</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_character">string_assign_character</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_integer_i1p">string_assign_integer_I1P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_integer_i2p">string_assign_integer_I2P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_integer_i4p">string_assign_integer_I4P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_integer_i8p">string_assign_integer_I8P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_real_r4p">string_assign_real_R4P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_real_r8p">string_assign_real_R8P</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_concat_string">string_concat_string</a>
           
@@ -1972,7 +1986,7 @@ private elemental function <a href='../proc/is_integer.html'>is_integer</a>(self
   <td>optional</td>
   
   <td></td><td>::</td>
-  <td><strong>allow_spaces</strong></td><td><p>Allow leading-trailing spaces .</p></td>
+  <td><strong>allow_spaces</strong></td><td><p>Allow leading-trailing spaces.</p></td>
   
 </tr>
 
@@ -2096,6 +2110,107 @@ private elemental function <a href='../proc/is_lower.html'>is_lower</a>(self)
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-is_number"></span><h3>procedure, public, pass(self) :: <strong>is_number</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return true if the string contains a number (real or integer).</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/is_number.html'>is_number</a>(self, allow_spaces)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>allow_spaces</strong></td><td><p>Allow leading-trailing spaces.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Result of the test.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return true if the string contains a number (real or integer).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-is_real"></span><h3>procedure, public, pass(self) :: <strong>is_real</strong>  
     
   </h3></div>
@@ -2159,7 +2274,7 @@ private elemental function <a href='../proc/is_real.html'>is_real</a>(self, allo
   <td>optional</td>
   
   <td></td><td>::</td>
-  <td><strong>allow_spaces</strong></td><td><p>Allow leading-trailing spaces .</p></td>
+  <td><strong>allow_spaces</strong></td><td><p>Allow leading-trailing spaces.</p></td>
   
 </tr>
 
@@ -2185,7 +2300,7 @@ private elemental function <a href='../proc/is_real.html'>is_real</a>(self, allo
 
 
        
-       <p>Return true if the string contains an real.</p>
+       <p>Return true if the string contains a real.</p>
         
 
       
@@ -2414,7 +2529,7 @@ private elemental function <a href='../proc/start_with.html'>start_with</a>(self
     
 	   
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-assignment%28%3D%29"></span><h3>generic, public :: <strong>assignment(=)</strong>  => <a href='../type/string.html#boundprocedure-string_assign_string'>string_assign_string</a>, <a href='../type/string.html#boundprocedure-string_assign_character'>string_assign_character</a> 
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-assignment%28%3D%29"></span><h3>generic, public :: <strong>assignment(=)</strong>  => <a href='../type/string.html#boundprocedure-string_assign_string'>string_assign_string</a>, <a href='../type/string.html#boundprocedure-string_assign_character'>string_assign_character</a>, <a href='../type/string.html#boundprocedure-string_assign_integer_i1p'>string_assign_integer_I1P</a>, <a href='../type/string.html#boundprocedure-string_assign_integer_i2p'>string_assign_integer_I2P</a>, <a href='../type/string.html#boundprocedure-string_assign_integer_i4p'>string_assign_integer_I4P</a>, <a href='../type/string.html#boundprocedure-string_assign_integer_i8p'>string_assign_integer_I8P</a>, <a href='../type/string.html#boundprocedure-string_assign_real_r4p'>string_assign_real_R4P</a>, <a href='../type/string.html#boundprocedure-string_assign_real_r8p'>string_assign_real_R8P</a> 
     
   </h3></div>
   
@@ -2571,6 +2686,456 @@ private elemental subroutine <a href='../proc/string_assign_character.html'>stri
 
        
        <p>Assignment operator from character input.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i1p.html'>string_assign_integer_I1P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i2p.html'>string_assign_integer_I2P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i4p.html'>string_assign_integer_I4P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i8p.html'>string_assign_integer_I8P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_real_r4p.html'>string_assign_real_R4P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_real_r8p.html'>string_assign_real_R8P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
         
 
          
@@ -4927,6 +5492,558 @@ private elemental subroutine <a href='../proc/string_assign_character.html'>stri
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_assign_integer_i1p"></span><h3>procedure, private, pass(lhs) :: <strong>string_assign_integer_I1P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Assignment operator from integer input.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i1p.html'>string_assign_integer_I1P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_assign_integer_i2p"></span><h3>procedure, private, pass(lhs) :: <strong>string_assign_integer_I2P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Assignment operator from integer input.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i2p.html'>string_assign_integer_I2P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_assign_integer_i4p"></span><h3>procedure, private, pass(lhs) :: <strong>string_assign_integer_I4P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Assignment operator from integer input.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i4p.html'>string_assign_integer_I4P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_assign_integer_i8p"></span><h3>procedure, private, pass(lhs) :: <strong>string_assign_integer_I8P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Assignment operator from integer input.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_integer_i8p.html'>string_assign_integer_I8P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_assign_real_r4p"></span><h3>procedure, private, pass(lhs) :: <strong>string_assign_real_R4P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Assignment operator from real input.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_real_r4p.html'>string_assign_real_R4P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_assign_real_r8p"></span><h3>procedure, private, pass(lhs) :: <strong>string_assign_real_R8P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Assignment operator from real input.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_real_r8p.html'>string_assign_real_R8P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_concat_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_concat_string</strong>  
     
   </h3></div>
@@ -6226,12 +7343,19 @@ private elemental function <a href='../proc/replace_one_occurrence.html'>replace
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_digit</span>     <span class="c">!&lt; Return true if all characters in the string are digits.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_integer</span>   <span class="c">!&lt; Return true if the string contains an integer.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_lower</span>     <span class="c">!&lt; Return true if all characters in the string are lowercase.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_number</span>    <span class="c">!&lt; Return true if the string contains a number (real or integer).</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_real</span>      <span class="c">!&lt; Return true if the string contains an real.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_upper</span>     <span class="c">!&lt; Return true if all characters in the string are uppercase.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">start_with</span>   <span class="c">!&lt; Return true if a string starts with a specified prefix.</span>
     <span class="c">! operators</span>
-    <span class="k">generic</span> <span class="kd">::</span> <span class="n">assignment</span><span class="p">(</span><span class="o">=</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_assign_string</span><span class="p">,</span> <span class="p">&amp;</span>
-                                <span class="n">string_assign_character</span>             <span class="c">!&lt; Assignment operator overloading.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">assignment</span><span class="p">(</span><span class="o">=</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_assign_string</span><span class="p">,</span>      <span class="p">&amp;</span>
+                                <span class="n">string_assign_character</span><span class="p">,</span>   <span class="p">&amp;</span>
+                                <span class="n">string_assign_integer_I1P</span><span class="p">,</span> <span class="p">&amp;</span>
+                                <span class="n">string_assign_integer_I2P</span><span class="p">,</span> <span class="p">&amp;</span>
+                                <span class="n">string_assign_integer_I4P</span><span class="p">,</span> <span class="p">&amp;</span>
+                                <span class="n">string_assign_integer_I8P</span><span class="p">,</span> <span class="p">&amp;</span>
+                                <span class="n">string_assign_real_R4P</span><span class="p">,</span>    <span class="p">&amp;</span>
+                                <span class="n">string_assign_real_R8P</span>              <span class="c">!&lt; Assignment operator overloading.</span>
     <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">//</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_concat_string</span><span class="p">,</span>    <span class="p">&amp;</span>
                                <span class="n">string_concat_character</span><span class="p">,</span> <span class="p">&amp;</span>
                                <span class="n">character_concat_string</span>              <span class="c">!&lt; Concatenation operator overloading.</span>
@@ -6264,6 +7388,12 @@ private elemental function <a href='../proc/replace_one_occurrence.html'>replace
     <span class="c">! private methods</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_string</span>           <span class="c">!&lt; Assignment operator from string input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_character</span>        <span class="c">!&lt; Assignment operator from character input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_integer_I1P</span>      <span class="c">!&lt; Assignment operator from integer input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_integer_I2P</span>      <span class="c">!&lt; Assignment operator from integer input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_integer_I4P</span>      <span class="c">!&lt; Assignment operator from integer input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_integer_I8P</span>      <span class="c">!&lt; Assignment operator from integer input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R4P</span>         <span class="c">!&lt; Assignment operator from real input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R8P</span>         <span class="c">!&lt; Assignment operator from real input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_string</span>           <span class="c">!&lt; Concatenation with string.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_character</span>        <span class="c">!&lt; Concatenation with character.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_concat_string</span>        <span class="c">!&lt; Concatenation with character (inverted).</span>
