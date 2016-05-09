@@ -39,6 +39,7 @@ type :: string
     procedure, pass(self) :: is_digit     !< Return true if all characters in the string are digits.
     procedure, pass(self) :: is_integer   !< Return true if the string contains an integer.
     procedure, pass(self) :: is_lower     !< Return true if all characters in the string are lowercase.
+    procedure, pass(self) :: is_number    !< Return true if the string contains a number (real or integer).
     procedure, pass(self) :: is_real      !< Return true if the string contains an real.
     procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
     procedure, pass(self) :: start_with   !< Return true if a string starts with a specified prefix.
@@ -564,15 +565,15 @@ contains
   !<
   !< Exit on stages-parsing results in:
   !<
-  !< | S0  | S1 | S2 | S3 | S4 | S5 | S6 |
-  !< |-----|----|----|----|----|----|----|
-  !< |  F  |  F |  T |  F |  F |  T |  T |
+  !< | S0 | S1 | S2 | S3 | S4 | S5 | S6 |
+  !< |----|----|----|----|----|----|----|
+  !< |  F |  F |  T |  F |  F |  T |  T |
   !<
   !< @note This implementation is courtesy of
   !< [tomedunn](https://github.com/tomedunn/fortran-string-utility-module/blob/master/src/string_utility_module.f90#L294)
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string), intent(in)           :: self          !< The string.
-  logical,       intent(in), optional :: allow_spaces  !< Allow leading-trailing spaces .
+  logical,       intent(in), optional :: allow_spaces  !< Allow leading-trailing spaces.
   logical                             :: is_integer    !< Result of the test.
   logical                             :: allow_spaces_ !< Allow leading-trailing spaces, local variable.
   integer                             :: stage         !< Stages counter.
@@ -670,9 +671,24 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction is_lower
 
+  elemental function is_number(self, allow_spaces)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if the string contains a number (real or integer).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)           :: self         !< The string.
+  logical,       intent(in), optional :: allow_spaces !< Allow leading-trailing spaces.
+  logical                             :: is_number    !< Result of the test.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_number = (self%is_integer(allow_spaces=allow_spaces).or.self%is_real(allow_spaces=allow_spaces))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction is_number
+
   elemental function is_real(self, allow_spaces)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if the string contains an real.
+  !< Return true if the string contains a real.
   !<
   !< The regular expression is `\s*[\+\-]?\d*(|\.?\d*([deDE][\+\-]?\d+)?)\s*`. The parse algorithm is done in stages:
   !<
@@ -690,7 +706,7 @@ contains
   !< [tomedunn](https://github.com/tomedunn/fortran-string-utility-module/blob/master/src/string_utility_module.f90#L614)
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string), intent(in)           :: self              !< The string.
-  logical,       intent(in), optional :: allow_spaces      !< Allow leading-trailing spaces .
+  logical,       intent(in), optional :: allow_spaces      !< Allow leading-trailing spaces.
   logical                             :: is_real           !< Result of the test.
   logical                             :: allow_spaces_     !< Allow leading-trailing spaces, local variable.
   logical                             :: has_leading_digit !< Check the presence of leading digits.
