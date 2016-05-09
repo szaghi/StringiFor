@@ -1,7 +1,7 @@
-!< StringiFor `srepeat` test.
-program srepeat
+!< StringiFor `free` test.
+program free
 !-----------------------------------------------------------------------------------------------------------------------------------
-!< StringiFor `srepeat` test.
+!< StringiFor `free` test.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string
@@ -10,16 +10,22 @@ use stringifor, only : string
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 type(string) :: astring        !< A string.
-logical      :: test_passed(1) !< List of passed tests.
+logical      :: test_passed(2) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 test_passed = .false.
 
-test_passed(1) = astring%srepeat(rstring='x', ncopies=5)//''=='xxxxx'
-write(stdout, "(A,I2)") 'Repeat x 5 times: "'//astring%srepeat(rstring='x', ncopies=5)//'"'
+astring = 'say all Hello WorLD!'
+write(stdout, "(A)") 'Original: "'//astring//'"'
+test_passed(1) = astring%is_allocated().eqv..true.
+write(stdout, "(A,L1)") 'Is allocated? ', astring%is_allocated()
+
+call astring%free
+test_passed(2) = astring%is_allocated().eqv..false.
+write(stdout, "(A,L1)") 'Is allocated? ', astring%is_allocated()
 
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
-endprogram srepeat
+endprogram free
