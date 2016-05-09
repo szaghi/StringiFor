@@ -34,6 +34,7 @@ type :: string
     procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition  !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace    !< Return a string with all occurrences of substring old replaced by new.
+    procedure, pass(self) :: reverse    !< Return a reversed string.
     procedure, pass(self) :: split      !< Return a list of substring in the string, using sep as the delimiter string.
     procedure, pass(self) :: strip      !< Return a copy of the string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase   !< Return a copy of the string with uppercase chars converted to lowercase and vice versa.
@@ -243,9 +244,6 @@ contains
   type(string)                                    :: escaped   !< Escaped string.
   character(kind=CK, len=:), allocatable          :: esc_      !< Character to be escaped, local variable.
   integer                                         :: c         !< Character counter.
-#ifdef __GFORTRAN__
-  character(kind=CK, len=:), allocatable          :: temporary !< Temporary storage, workaround for GNU bug.
-#endif
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -426,6 +424,28 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction replace
+
+  elemental function reverse(self) result(reversed)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a reversed string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  type(string)              :: reversed !< The reversed string.
+  integer                   :: length   !< Length of the string.
+  integer                   :: c        !< Counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    reversed = self
+    length = len(self%raw)
+    do c=1, length
+      reversed%raw(c:c) = self%raw(length-c+1:length-c+1)
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction reverse
 
   pure subroutine split(self, tokens, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
