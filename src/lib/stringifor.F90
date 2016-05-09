@@ -22,6 +22,8 @@ type :: string
     ! public methods
     procedure, pass(self) :: free       !< Free dynamic memory.
     procedure, pass(self) :: chars      !< Return the raw characters data.
+    procedure, pass(self) :: basedir    !< Return the base directory name of a string containing a file name.
+    procedure, pass(self) :: basename   !< Return the base file name of a string containing a file name.
     procedure, pass(self) :: upper      !< Return a string with all uppercase characters.
     procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
     procedure, pass(self) :: capitalize !< Return a string with its first character capitalized and the rest lowercased.
@@ -88,7 +90,8 @@ endtype string
 
 character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
 character(kind=CK, len=26), parameter :: LOWER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
-character(kind=CK, len=*),  parameter :: SPACE          = ' '                          !< Space character.
+character(kind=CK, len=1),  parameter :: SPACE          = ' '                          !< Space character.
+character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator.
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
   ! public methods
@@ -122,6 +125,90 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction chars
+
+  elemental function basedir(self, sep)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the base directory name of a string containing a file name.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self    !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep     !< Directory separator.
+  type(string)                                    :: basedir !< Base directory name.
+  character(kind=CK, len=:), allocatable          :: sep_    !< Separator, default value.
+  integer                                         :: pos     !< Character position.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    sep_ = UIX_DIR_SEP ; if (present(sep)) sep_ = sep
+    basedir = self
+    pos = index(self%raw, sep_, back=.true.)
+    if (pos>0) basedir%raw = self%raw(1:pos-1)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction basedir
+
+  elemental function basename(self, sep, extension, strip_last_extension)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the base file name of a string containing a file name.
+  !<
+  !< @note Optionally, the extension is also stripped if provided or the last one if required, e.g.
+  !< ```fortran
+  !< type(string) :: astring
+  !< astring = 'bar/foo.tar.bz2'
+  !< print '(A)', astring%basename(extension='.tar.bz2')//''        !< print "foo"
+  !< print '(A)', astring%basename(strip_last_extension=.true.)//'' !< print "foo.tar"
+  !< ```
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self                 !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep                  !< Directory separator.
+  character(kind=CK, len=*), intent(in), optional :: extension            !< File extension.
+  logical,                   intent(in), optional :: strip_last_extension !< Flag to enable the stripping of last extension.
+  type(string)                                    :: basename             !< Base file name.
+  character(kind=CK, len=:), allocatable          :: sep_                 !< Separator, default value.
+  integer                                         :: pos                  !< Character position.
+#ifdef __GFORTRAN__
+  character(kind=CK, len=:), allocatable          :: temporary            !< Temporary storage, workaround for GNU bug.
+#endif
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    sep_ = UIX_DIR_SEP ; if (present(sep)) sep_ = sep
+    basename = self
+#ifdef __GFORTRAN__
+    temporary = basename%raw
+    pos = index(temporary, sep_, back=.true.)
+    if (pos>0) basename%raw = temporary(pos+1:)
+#else
+    pos = index(basename%raw, sep_, back=.true.)
+    if (pos>0) basename%raw = self%raw(pos+1:)
+#endif
+    if (present(extension)) then
+#ifdef __GFORTRAN__
+      temporary = basename%raw
+      pos = index(temporary, extension, back=.true.)
+      if (pos>0) basename%raw = temporary(1:pos-1)
+#else
+      pos = index(basename%raw, extension, back=.true.)
+      if (pos>0) basename%raw = basename%raw(1:pos-1)
+#endif
+    elseif (present(strip_last_extension)) then
+      if (strip_last_extension) then
+#ifdef __GFORTRAN__
+        temporary = basename%raw
+        pos = index(temporary, '.', back=.true.)
+        basename%raw = temporary(1:pos-1)
+#else
+        pos = index(basename%raw, '.', back=.true.)
+        basename%raw = basename%raw(1:pos-1)
+#endif
+      endif
+    endif
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction basename
 
   elemental function upper(self)
   !---------------------------------------------------------------------------------------------------------------------------------
