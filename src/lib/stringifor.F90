@@ -23,19 +23,20 @@ type :: string
   character(kind=CK, len=:), allocatable :: raw !< Raw data.
   contains
     ! public methods
-    procedure, pass(self) :: free       !< Free dynamic memory.
-    procedure, pass(self) :: chars      !< Return the raw characters data.
     procedure, pass(self) :: basedir    !< Return the base directory name of a string containing a file name.
     procedure, pass(self) :: basename   !< Return the base file name of a string containing a file name.
-    procedure, pass(self) :: upper      !< Return a string with all uppercase characters.
-    procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
     procedure, pass(self) :: capitalize !< Return a string with its first character capitalized and the rest lowercased.
+    procedure, pass(self) :: chars      !< Return the raw characters data.
+    procedure, pass(self) :: extension  !< Return the extension of a string containing a file name.
+    procedure, pass(self) :: free       !< Free dynamic memory.
+    procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition  !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace    !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: split      !< Return a list of substring in the string, using sep as the delimiter string.
     procedure, pass(self) :: strip      !< Return a copy of the string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase   !< Return a copy of the string with uppercase chars converted to lowercase and vice versa.
     procedure, pass(self) :: unique     !< Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.
+    procedure, pass(self) :: upper      !< Return a string with all uppercase characters.
     ! inquire
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
@@ -228,6 +229,33 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction basename
+
+  elemental function extension(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the extension of a string containing a file name.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)              :: self      !< The string.
+  type(string)                           :: extension !< Extension file name.
+  integer                                :: pos       !< Character position.
+#ifdef __GFORTRAN__
+  character(kind=CK, len=:), allocatable :: temporary !< Temporary storage, workaround for GNU bug.
+#endif
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    extension = ''
+    pos = index(self%raw, '.', back=.true.)
+#ifdef __GFORTRAN__
+    temporary = self%raw
+    if (pos>0) extension%raw = temporary(pos:)
+#else
+    if (pos>0) extension%raw = self%raw(pos:)
+#endif
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction extension
 
   elemental function upper(self)
   !---------------------------------------------------------------------------------------------------------------------------------
