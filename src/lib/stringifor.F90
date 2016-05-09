@@ -24,22 +24,25 @@ type :: string
   character(kind=CK, len=:), allocatable :: raw !< Raw data.
   contains
     ! public methods
-    procedure, pass(self) :: basedir    !< Return the base directory name of a string containing a file name.
-    procedure, pass(self) :: basename   !< Return the base file name of a string containing a file name.
-    procedure, pass(self) :: capitalize !< Return a string with its first character capitalized and the rest lowercased.
-    procedure, pass(self) :: chars      !< Return the raw characters data.
-    procedure, pass(self) :: escape     !< Escape backslahes (or custom escape character).
-    procedure, pass(self) :: extension  !< Return the extension of a string containing a file name.
-    procedure, pass(self) :: free       !< Free dynamic memory.
-    procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
-    procedure, pass(self) :: partition  !< Split string at separator and return the 3 parts (before, the separator and after).
-    procedure, pass(self) :: replace    !< Return a string with all occurrences of substring old replaced by new.
-    procedure, pass(self) :: reverse    !< Return a reversed string.
-    procedure, pass(self) :: split      !< Return a list of substring in the string, using sep as the delimiter string.
-    procedure, pass(self) :: strip      !< Return a copy of the string with the leading and trailing characters removed.
-    procedure, pass(self) :: swapcase   !< Return a copy of the string with uppercase chars converted to lowercase and vice versa.
-    procedure, pass(self) :: unique     !< Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.
-    procedure, pass(self) :: upper      !< Return a string with all uppercase characters.
+    procedure, pass(self) :: basedir         !< Return the base directory name of a string containing a file name.
+    procedure, pass(self) :: basename        !< Return the base file name of a string containing a file name.
+    procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
+    procedure, pass(self) :: chars           !< Return the raw characters data.
+    procedure, pass(self) :: escape          !< Escape backslahes (or custom escape character).
+    procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
+    procedure, pass(self) :: free            !< Free dynamic memory.
+    generic               :: join =>       &
+                             join_strings, &
+                             join_characters !< Return a string that is a join of an array of strings or characters.
+    procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
+    procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
+    procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
+    procedure, pass(self) :: reverse         !< Return a reversed string.
+    procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
+    procedure, pass(self) :: strip           !< Return a string with the leading and trailing characters removed.
+    procedure, pass(self) :: swapcase        !< Return a string with uppercase chars converted to lowercase and vice versa.
+    procedure, pass(self) :: unique          !< Reduce to one (unique) multiple occurrences of a substring into a string.
+    procedure, pass(self) :: upper           !< Return a string with all uppercase characters.
     ! inquire
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
@@ -108,6 +111,8 @@ type :: string
     procedure, private, pass(dtv)  :: read_unformatted_              !< Unformatted input.
     procedure, private, pass(dtv)  :: write_unformatted_             !< Unformatted output.
     procedure, private, pass(self) :: replace_one_occurrence         !< Replace the first occurrence of substring old by new.
+    procedure, private, pass(self) :: join_strings                   !< Return join string of an array of strings.
+    procedure, private, pass(self) :: join_characters                !< Return join string of an array of characters.
 endtype string
 
 character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
@@ -1531,4 +1536,58 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction replace_one_occurrence
+
+  pure function join_strings(self, array, sep) result(join)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string that is a join of an array of strings.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  type(string),              intent(in)           :: array(1:) !< Array to be joined.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: join      !< The join of array.
+  character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+  integer                                         :: a         !< Counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  sep_ = '' ; if (present(sep)) sep_ = sep
+  join = ''
+  do a=2, size(array, dim=1)
+    if (allocated(array(a)%raw)) join%raw = join%raw//sep_//array(a)%raw
+  enddo
+  if (allocated(array(1)%raw)) then
+    join%raw = array(1)%raw//join%raw
+  else
+    join%raw = join%raw(len(sep_)+1:len(join%raw))
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction join_strings
+
+  pure function join_characters(self, array, sep) result(join)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string that is a join of an array of characters.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in)           :: array(1:) !< Array to be joined.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: join      !< The join of array.
+  character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+  integer                                         :: a         !< Counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  sep_ = '' ; if (present(sep)) sep_ = sep
+  join = ''
+  do a=2, size(array, dim=1)
+    if (array(a)/='') join%raw = join%raw//sep_//array(a)
+  enddo
+  if (array(1)/='') then
+    join%raw = array(1)//join%raw
+  else
+    join%raw = join%raw(len(sep_)+1:len(join%raw))
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction join_characters
 endmodule stringifor
