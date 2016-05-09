@@ -11,6 +11,7 @@ implicit none
 private
 save
 public :: string, CK
+! expose PENF kinds
 public :: I1P, I2P, I4P, I8P, R4P, R8P
 !-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -27,6 +28,7 @@ type :: string
     procedure, pass(self) :: basename   !< Return the base file name of a string containing a file name.
     procedure, pass(self) :: capitalize !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars      !< Return the raw characters data.
+    procedure, pass(self) :: escape     !< Escape backslahes (or custom escape character).
     procedure, pass(self) :: extension  !< Return the extension of a string containing a file name.
     procedure, pass(self) :: free       !< Free dynamic memory.
     procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
@@ -111,7 +113,8 @@ character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTU
 character(kind=CK, len=26), parameter :: LOWER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
 character(kind=CK, len=1),  parameter :: SPACE          = ' '                          !< Space character.
 character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
-character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator.
+character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
+character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)                     !< Backslash character.
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
   ! public methods
@@ -229,6 +232,37 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction basename
+
+  elemental function escape(self, to_escape, esc) result(escaped)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Escape backslahes (or custom escape character).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=1), intent(in)           :: to_escape !< Character to be escaped.
+  character(kind=CK, len=*), intent(in), optional :: esc       !< Character used to escape.
+  type(string)                                    :: escaped   !< Escaped string.
+  character(kind=CK, len=:), allocatable          :: esc_      !< Character to be escaped, local variable.
+  integer                                         :: c         !< Character counter.
+#ifdef __GFORTRAN__
+  character(kind=CK, len=:), allocatable          :: temporary !< Temporary storage, workaround for GNU bug.
+#endif
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    esc_ = BACKSLASH ; if (present(esc)) esc_ = esc
+    escaped%raw = ''
+    do c=1, len(self%raw)
+      if (self%raw(c:c)==to_escape) then
+        escaped%raw = escaped%raw//esc_//to_escape
+      else
+        escaped%raw = escaped%raw//self%raw(c:c)
+      endif
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction escape
 
   elemental function extension(self)
   !---------------------------------------------------------------------------------------------------------------------------------
