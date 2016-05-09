@@ -1,7 +1,7 @@
-!< StringiFor `pythonishes` test.
-program pythonishes
+!< StringiFor `unique` test.
+program unique
 !-----------------------------------------------------------------------------------------------------------------------------------
-!< StringiFor `pythonishes` test.
+!< StringiFor `unique` test.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string
@@ -9,50 +9,22 @@ use stringifor, only : string
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-type(string)              :: astring       !< A string.
-type(string), allocatable :: strings(:)    !< A set of strings.
-integer                   :: s          !< Counter.
+type(string)              :: astring        !< A string.
+type(string), allocatable :: strings(:)     !< A set of strings.
+integer                   :: s              !< Counter.
+logical                   :: test_passed(1) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
+test_passed = .false.
+
 write(stdout, "(A)") new_line('A')//'Unique'
 astring = '+++ab-++cre-++cre-ab+++++'
 write(stdout, "(A)") 'Original: "'//astring//'"'
+test_passed(1) = astring%unique(substring='+')//''=='+ab-+cre-+cre-ab+'
 write(stdout, "(A)") 'Unique:   "'//astring%unique(substring='+')//'"'
-write(stdout, "(A)") new_line('A')//'Split'
-astring = '+ab-++cre-++cre-ab+'
-write(stdout, "(A)") 'Split "'//astring//'" at "+"'
-call astring%split(sep='+', tokens=strings)
-do s=1, size(strings)
-  write(stdout, "(A)") '+ "'//strings(s)//'"'
-enddo
-astring = 'ab-++cre-++cre-ab+'
-write(stdout, "(A)") 'Split "'//astring//'" at "+"'
-call astring%split(sep='+', tokens=strings)
-do s=1, size(strings)
-  write(stdout, "(A)") '+ "'//strings(s)//'"'
-enddo
-astring = 'ab-++cre-++cre-ab'
-write(stdout, "(A)") 'Split "'//astring//'" at "+"'
-call astring%split(sep='+', tokens=strings)
-do s=1, size(strings)
-  write(stdout, "(A)") '+ "'//strings(s)//'"'
-enddo
-astring = 'Hello '//new_line('a')//'World!'
-write(stdout, "(A)") 'Split "'//astring//'" at "new_line"'
-call astring%split(sep=new_line('a'), tokens=strings)
-do s=1, size(strings)
-  write(stdout, "(A)") '+ "'//strings(s)//'"'
-enddo
-deallocate(strings)
-write(stdout, "(A)") new_line('A')//'Strip'
-astring = '  Hello World!   '
-write(stdout, "(A)") 'Original: "'//astring//'"'
-write(stdout, "(A)") 'Strip:    "'//astring%strip()//'"'
-write(stdout, "(A)") new_line('A')//'Swapcase'
-astring = '  Hello World!   '
-write(stdout, "(A)") 'Original: "'//astring//'"'
-write(stdout, "(A)") 'Swapcase: "'//astring%swapcase()//'"'
+
+write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
-endprogram pythonishes
+endprogram unique

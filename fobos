@@ -78,18 +78,8 @@ rule_2 = ford doc/main_page.md --debug
 rule_3 = cp -r doc/html/publish/* doc/html/
 
 [rule-makecoverage]
-help    = Rule for performing coverage analysis
-rule_1  = FoBiS.py clean -mode tests-gnu
-rule_2  = FoBiS.py build -mode tests-gnu -coverage
-rule_3  = ./exe/concatenation
-rule_4  = ./exe/io_basic
-rule_5  = ./exe/sadjustlr
-rule_6  = ./exe/pythonishes
-rule_7  = ./exe/sindex
-rule_8  = ./exe/slen
-rule_9  = ./exe/srepeat
-rule_10 = ./exe/sscan
-rule_11 = ./exe/strim
-rule_12 = ./exe/sverify
-rule_13 = ./exe/upper_lower
-rule_14 = gcov -o exe/obj/ src/lib/stringifor.f90
+help   = Rule for performing coverage analysis
+rule_1 = FoBiS.py clean -mode tests-gnu
+rule_2 = FoBiS.py build -mode tests-gnu -coverage
+rule_3 = ./run_tests.sh
+rule_4 = gcov -o exe/obj/ src/lib/stringifor.f90

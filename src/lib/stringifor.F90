@@ -18,21 +18,24 @@ type :: string
   character(len=:), allocatable :: raw !< Raw data.
   contains
     ! public methods
+    procedure, pass(self) :: free       !< Free dynamic memory.
     procedure, pass(self) :: chars      !< Return the raw characters data.
     procedure, pass(self) :: upper      !< Return a string with all uppercase characters.
     procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
     procedure, pass(self) :: capitalize !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: end_with   !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: start_with !< Return true if a string starts with a specified prefix.
-    procedure, pass(self) :: is_upper   !< Return true if all characters in the string are uppercase.
-    procedure, pass(self) :: is_lower   !< Return true if all characters in the string are lowercase.
-    procedure, pass(self) :: is_digit   !< Return true if all characters in the string are digits.
     procedure, pass(self) :: partition  !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace    !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: split      !< Return a list of substring in the string, using sep as the delimiter string.
     procedure, pass(self) :: strip      !< Return a copy of the string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase   !< Return a copy of the string with uppercase chars converted to lowercase and vice versa.
     procedure, pass(self) :: unique     !< Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.
+    ! inquire
+    procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
+    procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
+    procedure, pass(self) :: is_lower     !< Return true if all characters in the string are lowercase.
+    procedure, pass(self) :: is_digit     !< Return true if all characters in the string are digits.
     ! operators
     generic :: assignment(=) => string_assign_string, &
                                 string_assign_character             !< Assignment operator overloading.
@@ -86,6 +89,19 @@ character(len=26), parameter :: lower_alphabet = 'abcdefghijklmnopqrstuvwxyz' !<
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
   ! public methods
+  elemental subroutine free(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Free dynamic memory.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: self !< The string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) deallocate(self%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine free
+
   pure function chars(self) result(raw)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the raw characters data.
@@ -218,80 +234,6 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction start_with
-
-  elemental function is_digit(self)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if all characters in the string are digits.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self     !< The string.
-  logical                   :: is_digit !< Result of the test.
-  integer                   :: c        !< Character counter.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  is_digit = .false.
-  if (allocated(self%raw)) then
-    do c=1, len(self%raw)
-      select case (self%raw(c:c))
-      case ('0':'9')
-        is_digit = .true.
-      case default
-        is_digit = .false.
-        exit
-      end select
-    enddo
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction is_digit
-
-  elemental function is_upper(self)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if all characters in the string are uppercase.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self     !< The string.
-  logical                   :: is_upper !< Result of the test.
-  integer                   :: c        !< Character counter.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  is_upper = .false.
-  if (allocated(self%raw)) then
-    is_upper = .true.
-    do c=1, len(self%raw)
-      if (index(lower_alphabet, self%raw(c:c))>0) then
-        is_upper = .false.
-        exit
-      endif
-    enddo
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction is_upper
-
-  elemental function is_lower(self)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if all characters in the string are lowercase.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self     !< The string.
-  logical                   :: is_lower !< Result of the test.
-  integer                   :: c        !< Character counter.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  is_lower = .false.
-  if (allocated(self%raw)) then
-    is_lower = .true.
-    do c=1, len(self%raw)
-      if (index(upper_alphabet, self%raw(c:c))>0) then
-        is_lower = .false.
-        exit
-      endif
-    enddo
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction is_lower
 
   pure function partition(self, sep) result(partitions)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -490,6 +432,96 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction unique
 
+  ! inquire
+  elemental function is_allocated(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if the string is allocated.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  logical                   :: is_allocated !< Result of the test.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_allocated = allocated(self%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction is_allocated
+
+  elemental function is_digit(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if all characters in the string are digits.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  logical                   :: is_digit !< Result of the test.
+  integer                   :: c        !< Character counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_digit = .false.
+  if (allocated(self%raw)) then
+    do c=1, len(self%raw)
+      select case (self%raw(c:c))
+      case ('0':'9')
+        is_digit = .true.
+      case default
+        is_digit = .false.
+        exit
+      end select
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction is_digit
+
+  elemental function is_upper(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if all characters in the string are uppercase.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  logical                   :: is_upper !< Result of the test.
+  integer                   :: c        !< Character counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_upper = .false.
+  if (allocated(self%raw)) then
+    is_upper = .true.
+    do c=1, len(self%raw)
+      if (index(lower_alphabet, self%raw(c:c))>0) then
+        is_upper = .false.
+        exit
+      endif
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction is_upper
+
+  elemental function is_lower(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if all characters in the string are lowercase.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  logical                   :: is_lower !< Result of the test.
+  integer                   :: c        !< Character counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_lower = .false.
+  if (allocated(self%raw)) then
+    is_lower = .true.
+    do c=1, len(self%raw)
+      if (index(upper_alphabet, self%raw(c:c))>0) then
+        is_lower = .false.
+        exit
+      endif
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction is_lower
+
+  ! builtins replacements
   elemental function sadjustl(self) result(adjusted)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Left adjust a string by removing leading spaces.
