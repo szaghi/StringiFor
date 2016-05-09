@@ -164,6 +164,8 @@
     <div id="allfiles" class="panel-collapse collapse">
         <div class="list-group">
           
+          <a class="list-group-item" href="../sourcefile/basename_dir.f90.html">basename_dir.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/capitalize.f90.html">capitalize.f90</a>
           
           <a class="list-group-item" href="../sourcefile/concatenation.f90.html">concatenation.f90</a>
@@ -173,6 +175,10 @@
           <a class="list-group-item" href="../sourcefile/io_basic.f90.html">io_basic.F90</a>
           
           <a class="list-group-item" href="../sourcefile/is_digit.f90.html">is_digit.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/is_integer.f90.html">is_integer.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/is_real.f90.html">is_real.f90</a>
           
           <a class="list-group-item" href="../sourcefile/partition.f90.html">partition.f90</a>
           
@@ -238,18 +244,16 @@
 <a name="ln-18"></a>
 <a name="ln-19"></a><span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;   -1212112.3 &#39;</span>
 <a name="ln-20"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">().</span><span class="n">eqv</span><span class="p">..</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-21"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Original: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
-<a name="ln-22"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
-<a name="ln-23"></a>
-<a name="ln-24"></a><span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;12121123&#39;</span>
-<a name="ln-25"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">().</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.</span>
-<a name="ln-26"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Original: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
-<a name="ln-27"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
-<a name="ln-28"></a>
-<a name="ln-29"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
-<a name="ln-30"></a><span class="k">stop</span>
-<a name="ln-31"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-32"></a><span class="n">endprogram</span> <span class="n">is_digit</span>
+<a name="ln-21"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
+<a name="ln-22"></a>
+<a name="ln-23"></a><span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;12121123&#39;</span>
+<a name="ln-24"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">().</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.</span>
+<a name="ln-25"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
+<a name="ln-26"></a>
+<a name="ln-27"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
+<a name="ln-28"></a><span class="k">stop</span>
+<a name="ln-29"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-30"></a><span class="n">endprogram</span> <span class="n">is_digit</span>
 </pre></div>
 
     </section>

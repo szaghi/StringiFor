@@ -129,9 +129,9 @@
     <div id="vars" class="panel-collapse collapse">
       <div class="list-group">
         
-        <a class="list-group-item" href="../program/is_digit.html#variable-astring%7E5">astring</a>
+        <a class="list-group-item" href="../program/is_digit.html#variable-astring%7E6">astring</a>
         
-        <a class="list-group-item" href="../program/is_digit.html#variable-test_passed%7E5">test_passed</a>
+        <a class="list-group-item" href="../program/is_digit.html#variable-test_passed%7E6">test_passed</a>
         
       </div>
     </div>
@@ -169,6 +169,8 @@
     <div id="allprogs" class="panel-collapse collapse">
         <div class="list-group">
           
+          <a class="list-group-item" href="../program/basename_dir.html">basename_dir</a>
+          
           <a class="list-group-item" href="../program/capitalize.html">capitalize</a>
           
           <a class="list-group-item" href="../program/concatenation.html">concatenation</a>
@@ -178,6 +180,10 @@
           <a class="list-group-item" href="../program/io_basic.html">io_basic</a>
           
           <a class="list-group-item" href="../program/is_digit.html">is_digit</a>
+          
+          <a class="list-group-item" href="../program/is_integer.html">is_integer</a>
+          
+          <a class="list-group-item" href="../program/is_real.html">is_real</a>
           
           <a class="list-group-item" href="../program/partition.html">partition</a>
           
@@ -388,7 +394,7 @@ implementation in a submodule of an interface in a parent module.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-astring%7E5"></span>type(<a href='../type/string.html'>string</a>)</td>
+  <td><span class="anchor" id="variable-astring%7E6"></span>type(<a href='../type/string.html'>string</a>)</td>
   
   
   <td></td><td>::</td>
@@ -402,7 +408,7 @@ implementation in a submodule of an interface in a parent module.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-test_passed%7E5"></span>logical</td>
+  <td><span class="anchor" id="variable-test_passed%7E6"></span>logical</td>
   
   
   <td></td><td>::</td>
@@ -452,13 +458,11 @@ implementation in a submodule of an interface in a parent module.</p>
 
 <span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;   -1212112.3 &#39;</span>
 <span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">().</span><span class="n">eqv</span><span class="p">..</span><span class="n">false</span><span class="p">.</span>
-<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Original: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
-<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
+<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
 
 <span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;12121123&#39;</span>
 <span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">().</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.</span>
-<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Original: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
-<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
+<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is digit? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">is_digit</span><span class="p">()</span>
 
 <span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
 <span class="k">stop</span>
