@@ -34,12 +34,14 @@ type :: string
     procedure, pass(self) :: swapcase   !< Return a copy of the string with uppercase chars converted to lowercase and vice versa.
     procedure, pass(self) :: unique     !< Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.
     ! inquire
+    procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
-    procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
-    procedure, pass(self) :: is_lower     !< Return true if all characters in the string are lowercase.
     procedure, pass(self) :: is_digit     !< Return true if all characters in the string are digits.
-    procedure, pass(self) :: end_with   !< Return true if a string ends with a specified suffix.
-    procedure, pass(self) :: start_with !< Return true if a string starts with a specified prefix.
+    procedure, pass(self) :: is_integer   !< Return true if the string contains an integer.
+    procedure, pass(self) :: is_lower     !< Return true if all characters in the string are lowercase.
+    procedure, pass(self) :: is_real      !< Return true if the string contains an real.
+    procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
+    procedure, pass(self) :: start_with   !< Return true if a string starts with a specified prefix.
     ! operators
     generic :: assignment(=) => string_assign_string, &
                                 string_assign_character             !< Assignment operator overloading.
@@ -91,6 +93,7 @@ endtype string
 character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
 character(kind=CK, len=26), parameter :: LOWER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
 character(kind=CK, len=1),  parameter :: SPACE          = ' '                          !< Space character.
+character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator.
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
@@ -483,6 +486,32 @@ contains
   endfunction unique
 
   ! inquire
+  elemental function end_with(self, suffix, start, end)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if a string ends with a specified suffix.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self     !< The string.
+  character(kind=CK, len=*), intent(in)           :: suffix   !< Searched suffix.
+  integer,                   intent(in), optional :: start    !< Start position into the string.
+  integer,                   intent(in), optional :: end      !< End position into the string.
+  logical                                         :: end_with !< Result of the test.
+  integer                                         :: start_   !< Start position into the string, local variable.
+  integer                                         :: end_     !< End position into the string, local variable.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  end_with = .false.
+  if (allocated(self%raw)) then
+    start_ = 1             ; if (present(start)) start_ = start
+    end_   = len(self%raw) ; if (present(end))   end_   = end
+    if (len(suffix)<=len(self%raw(start_:end_))) then
+      end_with = index(self%raw(start_:end_), suffix)==(len(self%raw(start_:end_)) - len(suffix) + 1)
+    endif
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction end_with
+
   elemental function is_allocated(self)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return true if the string is allocated.
@@ -523,29 +552,99 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction is_digit
 
-  elemental function is_upper(self)
+  elemental function is_integer(self, allow_spaces)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if all characters in the string are uppercase.
+  !< Return true if the string contains an integer.
+  !<
+  !< The regular expression is `\s*[\+\-]?\d+([eE]\+?\d+)?\s*`. The parse algorithm is done in stages:
+  !<
+  !< | S0  | S1      | S2  | S3   | S4  | S5  | S6  |
+  !< |-----|---------|-----|------|-----|-----|-----|
+  !< |`\s*`|`[\+\-]?`|`\d+`|`[eE]`|`\+?`|`\d+`|`\s*`|
+  !<
+  !< Exit on stages-parsing results in:
+  !<
+  !< | S0  | S1 | S2 | S3 | S4 | S5 | S6 |
+  !< |-----|----|----|----|----|----|----|
+  !< |  F  |  F |  T |  F |  F |  T |  T |
+  !<
+  !< @note This implementation is courtesy of
+  !< [tomedunn](https://github.com/tomedunn/fortran-string-utility-module/blob/master/src/string_utility_module.f90#L294)
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self     !< The string.
-  logical                   :: is_upper !< Result of the test.
-  integer                   :: c        !< Character counter.
+  class(string), intent(in)           :: self          !< The string.
+  logical,       intent(in), optional :: allow_spaces  !< Allow leading-trailing spaces .
+  logical                             :: is_integer    !< Result of the test.
+  logical                             :: allow_spaces_ !< Allow leading-trailing spaces, local variable.
+  integer                             :: stage         !< Stages counter.
+  integer                             :: c             !< Character counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  is_upper = .false.
   if (allocated(self%raw)) then
-    is_upper = .true.
+    allow_spaces_ = .true. ; if (present(allow_spaces)) allow_spaces_ = allow_spaces
+    stage = 0
+    is_integer = .true.
     do c=1, len(self%raw)
-      if (index(LOWER_ALPHABET, self%raw(c:c))>0) then
-        is_upper = .false.
-        exit
-      endif
+      select case(self%raw(c:c))
+      case(SPACE, TAB)
+        select case(stage)
+        case(0, 6)
+          is_integer = allow_spaces_
+        case(2, 5)
+          is_integer = allow_spaces_
+          stage = 6
+        case default
+          is_integer = .false.
+        endselect
+      case('-')
+        select case(stage)
+        case(0)
+          stage = 1
+        case default
+          is_integer = .false.
+        end select
+      case('+')
+        select case(stage)
+        case(0)
+          stage = 1
+        case(3)
+          stage = 4
+        case default
+          is_integer = .false.
+        endselect
+      case('0':'9')
+        select case(stage)
+        case(0:1)
+          stage = 2
+        case(3:4)
+          stage = 5
+        case default
+          continue
+        endselect
+      case ('e','E')
+        select case(stage)
+        case(2)
+          stage = 3
+        case default
+          is_integer = .false.
+        endselect
+      case default
+        is_integer = .false.
+      endselect
+      if (.not.is_integer) exit
     enddo
+  endif
+  if (is_integer) then
+    select case(stage)
+    case(2, 5, 6)
+      is_integer = .true.
+    case default
+      is_integer = .false.
+    end select
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction is_upper
+  endfunction is_integer
 
   elemental function is_lower(self)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -571,31 +670,131 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction is_lower
 
-  elemental function end_with(self, suffix, start, end)
+  elemental function is_real(self, allow_spaces)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if a string ends with a specified suffix.
+  !< Return true if the string contains an real.
+  !<
+  !< The regular expression is `\s*[\+\-]?\d*(|\.?\d*([deDE][\+\-]?\d+)?)\s*`. The parse algorithm is done in stages:
+  !<
+  !< | S0  | S1      | S2  | S3  | S4  | S5     | S6      | S7  | S8  |
+  !< |-----|---------|-----|-----|-----|--------|---------|-----|-----|
+  !< |`\s*`|`[\+\-]?`|`\d*`|`\.?`|`\d*`|`[deDE]`|`[\+\-]?`|`\d*`|`\s*`|
+  !<
+  !< Exit on stages-parsing results in:
+  !<
+  !< | S0 | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 |
+  !< |----|----|----|----|----|----|----|----|----|
+  !  |  F |  F |  T |  T |  T |  F |  F |  T |  T |
+  !<
+  !< @note This implementation is courtesy of
+  !< [tomedunn](https://github.com/tomedunn/fortran-string-utility-module/blob/master/src/string_utility_module.f90#L614)
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(in)           :: self     !< The string.
-  character(kind=CK, len=*), intent(in)           :: suffix   !< Searched suffix.
-  integer,                   intent(in), optional :: start    !< Start position into the string.
-  integer,                   intent(in), optional :: end      !< End position into the string.
-  logical                                         :: end_with !< Result of the test.
-  integer                                         :: start_   !< Start position into the string, local variable.
-  integer                                         :: end_     !< End position into the string, local variable.
+  class(string), intent(in)           :: self              !< The string.
+  logical,       intent(in), optional :: allow_spaces      !< Allow leading-trailing spaces .
+  logical                             :: is_real           !< Result of the test.
+  logical                             :: allow_spaces_     !< Allow leading-trailing spaces, local variable.
+  logical                             :: has_leading_digit !< Check the presence of leading digits.
+  integer                             :: stage             !< Stages counter.
+  integer                             :: c                 !< Character counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  end_with = .false.
   if (allocated(self%raw)) then
-    start_ = 1             ; if (present(start)) start_ = start
-    end_   = len(self%raw) ; if (present(end))   end_   = end
-    if (len(suffix)<=len(self%raw(start_:end_))) then
-      end_with = index(self%raw(start_:end_), suffix)==(len(self%raw(start_:end_)) - len(suffix) + 1)
-    endif
+    allow_spaces_ = .true. ; if (present(allow_spaces)) allow_spaces_ = allow_spaces
+    stage = 0
+    is_real = .true.
+    has_leading_digit = .false.
+    do c=1, len(self%raw)
+      select case(self%raw(c:c))
+      case(SPACE, TAB)
+        select case(stage)
+        case(0, 8)
+          is_real = allow_spaces_
+          continue
+        case(2:4, 7)
+          is_real = allow_spaces_
+          stage = 8
+        case default
+          is_real = .false.
+        endselect
+      case('+', '-')
+        select case(stage)
+        case(0)
+          stage = 1
+        case(5)
+          stage = 6
+        case default
+          is_real = .false.
+        endselect
+      case('0':'9')
+        select case(stage)
+        case(0:1)
+          stage = 2
+          has_leading_digit = .true.
+        case(3)
+          stage = 4
+        case(5:6)
+          stage = 7
+        case default
+          continue
+        endselect
+      case('.')
+        select case(stage)
+        case(0:2)
+          stage = 3
+        case default
+          is_real = .false.
+        endselect
+      case('e','E','d','D')
+        select case(stage)
+        case(2:4)
+          stage = 5
+        case default
+          is_real = .false.
+        endselect
+      case default
+        is_real = .false.
+      endselect
+      if (.not.is_real) exit
+    enddo
+  endif
+  if (is_real) then
+    select case(stage)
+    case(2, 4, 7, 8)
+      is_real = .true.
+    case(3)
+      is_real = has_leading_digit
+    case default
+      is_real = .false.
+    endselect
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction end_with
+  endfunction is_real
+
+  elemental function is_upper(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if all characters in the string are uppercase.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self     !< The string.
+  logical                   :: is_upper !< Result of the test.
+  integer                   :: c        !< Character counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_upper = .false.
+  if (allocated(self%raw)) then
+    is_upper = .true.
+    do c=1, len(self%raw)
+      if (index(LOWER_ALPHABET, self%raw(c:c))>0) then
+        is_upper = .false.
+        exit
+      endif
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction is_upper
 
   elemental function start_with(self, prefix, start, end)
   !---------------------------------------------------------------------------------------------------------------------------------
