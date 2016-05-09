@@ -129,13 +129,15 @@
     <div id="vars" class="panel-collapse collapse">
       <div class="list-group">
         
-        <a class="list-group-item" href="../program/io_basic.html#variable-astring%7E2">astring</a>
+        <a class="list-group-item" href="../program/io_basic.html#variable-astring%7E4">astring</a>
         
         <a class="list-group-item" href="../program/io_basic.html#variable-acharacter%7E2">acharacter</a>
         
         <a class="list-group-item" href="../program/io_basic.html#variable-iostat%7E7">iostat</a>
         
         <a class="list-group-item" href="../program/io_basic.html#variable-iomsg%7E7">iomsg</a>
+        
+        <a class="list-group-item" href="../program/io_basic.html#variable-test_passed%7E4">test_passed</a>
         
       </div>
     </div>
@@ -173,9 +175,19 @@
     <div id="allprogs" class="panel-collapse collapse">
         <div class="list-group">
           
+          <a class="list-group-item" href="../program/capitalize.html">capitalize</a>
+          
           <a class="list-group-item" href="../program/concatenation.html">concatenation</a>
           
+          <a class="list-group-item" href="../program/free.html">free</a>
+          
           <a class="list-group-item" href="../program/io_basic.html">io_basic</a>
+          
+          <a class="list-group-item" href="../program/is_digit.html">is_digit</a>
+          
+          <a class="list-group-item" href="../program/partition.html">partition</a>
+          
+          <a class="list-group-item" href="../program/replace.html">replace</a>
           
           <a class="list-group-item" href="../program/sadjustlr.html">sadjustlr</a>
           
@@ -183,13 +195,25 @@
           
           <a class="list-group-item" href="../program/slen.html">slen</a>
           
+          <a class="list-group-item" href="../program/split.html">split</a>
+          
           <a class="list-group-item" href="../program/srepeat.html">srepeat</a>
           
           <a class="list-group-item" href="../program/sscan.html">sscan</a>
           
+          <a class="list-group-item" href="../program/start_end.html">start_end</a>
+          
           <a class="list-group-item" href="../program/strim.html">strim</a>
           
+          <a class="list-group-item" href="../program/strip.html">strip</a>
+          
           <a class="list-group-item" href="../program/sverify.html">sverify</a>
+          
+          <a class="list-group-item" href="../program/swapcase.html">swapcase</a>
+          
+          <a class="list-group-item" href="../program/unique.html">unique</a>
+          
+          <a class="list-group-item" href="../program/upper_lower.html">upper_lower</a>
           
         </div>
     </div>
@@ -370,7 +394,7 @@ implementation in a submodule of an interface in a parent module.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-astring%7E2"></span>type(<a href='../type/string.html'>string</a>)</td>
+  <td><span class="anchor" id="variable-astring%7E4"></span>type(<a href='../type/string.html'>string</a>)</td>
   
   
   <td></td><td>::</td>
@@ -420,6 +444,20 @@ implementation in a submodule of an interface in a parent module.</p>
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-test_passed%7E4"></span>logical</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>test_passed</strong>(2)</td><td></td><td></td><td><p>List of passed tests.</p></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -453,24 +491,34 @@ implementation in a submodule of an interface in a parent module.</p>
 
 <span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 <span class="k">implicit none</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                  <span class="kd">::</span> <span class="n">astring</span>    <span class="c">!&lt; A string.</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">acharacter</span> <span class="c">!&lt; A character.</span>
-<span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">iostat</span>     <span class="c">!&lt; IO status code.</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">iomsg</span>      <span class="c">!&lt; IO status message.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                  <span class="kd">::</span> <span class="n">astring</span>        <span class="c">!&lt; A string.</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">acharacter</span>     <span class="c">!&lt; A character.</span>
+<span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">iostat</span>         <span class="c">!&lt; IO status code.</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">iomsg</span>          <span class="c">!&lt; IO status message.</span>
+<span class="kt">logical</span>                       <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
 <span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 
 <span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="n">test_passed</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
 <span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello World!&#39;</span>
 <span class="n">acharacter</span> <span class="o">=</span> <span class="s1">&#39;New Hello World!&#39;</span>
 <span class="cp">#ifndef __GFORTRAN__</span>
-<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">)</span> <span class="n">astring</span>
-<span class="k">read</span><span class="p">(</span><span class="n">acharacter</span><span class="p">,</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">)</span> <span class="n">astring</span>
+<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span> <span class="n">astring</span>
+<span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">iostat</span><span class="o">==</span><span class="mi">0</span>
+
+<span class="k">read</span><span class="p">(</span><span class="n">acharacter</span><span class="p">,</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">)</span> <span class="n">astring</span>
+<span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">iostat</span><span class="o">==</span><span class="mi">0</span>
 <span class="k">print</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="n">astring</span>
 <span class="cp">#else</span>
 <span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">write_formatted</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">iostat</span><span class="p">,</span> <span class="n">iomsg</span><span class="p">)</span>
+<span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">iostat</span><span class="o">==</span><span class="mi">0</span>
 <span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">read_formatted_internal</span><span class="p">(</span><span class="n">acharacter</span><span class="p">,</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">iostat</span><span class="p">,</span> <span class="n">iomsg</span><span class="p">)</span>
+<span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">iostat</span><span class="o">==</span><span class="mi">0</span>
 <span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="n">astring</span><span class="p">%</span><span class="n">chars</span><span class="p">()</span>
 <span class="cp">#endif</span>
+
+<span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
 <span class="k">stop</span>
 <span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 <span class="n">endprogram</span> <span class="n">io_basic</span>

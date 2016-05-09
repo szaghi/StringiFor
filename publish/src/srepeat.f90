@@ -9,11 +9,17 @@ use stringifor, only : string
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-type(string) :: astring !< A string.
+type(string) :: astring        !< A string.
+logical      :: test_passed(1) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
+test_passed = .false.
+
+test_passed(1) = astring%srepeat(rstring='x', ncopies=5)//''=='xxxxx'
 write(stdout, "(A,I2)") 'Repeat x 5 times: "'//astring%srepeat(rstring='x', ncopies=5)//'"'
+
+write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
 endprogram srepeat

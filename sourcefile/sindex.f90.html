@@ -164,9 +164,19 @@
     <div id="allfiles" class="panel-collapse collapse">
         <div class="list-group">
           
+          <a class="list-group-item" href="../sourcefile/capitalize.f90.html">capitalize.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/concatenation.f90.html">concatenation.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/free.f90.html">free.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/io_basic.f90.html">io_basic.F90</a>
+          
+          <a class="list-group-item" href="../sourcefile/is_digit.f90.html">is_digit.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/partition.f90.html">partition.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/replace.f90.html">replace.f90</a>
           
           <a class="list-group-item" href="../sourcefile/sadjustlr.f90.html">sadjustlr.f90</a>
           
@@ -174,15 +184,27 @@
           
           <a class="list-group-item" href="../sourcefile/slen.f90.html">slen.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/split.f90.html">split.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/srepeat.f90.html">srepeat.f90</a>
           
           <a class="list-group-item" href="../sourcefile/sscan.f90.html">sscan.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/start_end.f90.html">start_end.f90</a>
           
           <a class="list-group-item" href="../sourcefile/strim.f90.html">strim.f90</a>
           
           <a class="list-group-item" href="../sourcefile/stringifor.f90.html">stringifor.F90</a>
           
+          <a class="list-group-item" href="../sourcefile/strip.f90.html">strip.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/sverify.f90.html">sverify.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/swapcase.f90.html">swapcase.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/unique.f90.html">unique.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/upper_lower.f90.html">upper_lower.f90</a>
           
         </div>
     </div>
@@ -212,21 +234,30 @@
 <a name="ln-14"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">anothercharacter</span> <span class="c">!&lt; Another character.</span>
 <a name="ln-15"></a><span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">i</span>                <span class="c">!&lt; Index result.</span>
 <a name="ln-16"></a><span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">ic</span>               <span class="c">!&lt; Index result comparison.</span>
-<a name="ln-17"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-18"></a>
-<a name="ln-19"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-20"></a><span class="n">acharacter</span> <span class="o">=</span> <span class="s1">&#39;Hello World Hello!&#39;</span>
-<a name="ln-21"></a><span class="n">anothercharacter</span> <span class="o">=</span> <span class="s1">&#39;llo&#39;</span>
-<a name="ln-22"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">acharacter</span>
-<a name="ln-23"></a><span class="n">i</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">sindex</span><span class="p">(</span><span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">)</span>
-<a name="ln-24"></a><span class="n">ic</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">acharacter</span><span class="p">,</span> <span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">)</span>
-<a name="ln-25"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,I2,A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Basic call result: &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39; is correct? &#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">==</span><span class="n">ic</span>
-<a name="ln-26"></a><span class="n">i</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">sindex</span><span class="p">(</span><span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">,</span> <span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
-<a name="ln-27"></a><span class="n">ic</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">acharacter</span><span class="p">,</span> <span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">,</span> <span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
-<a name="ln-28"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,I2,A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Back call result: &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39; is correct? &#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">==</span><span class="n">ic</span>
-<a name="ln-29"></a><span class="k">stop</span>
-<a name="ln-30"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-31"></a><span class="n">endprogram</span> <span class="n">sindex</span>
+<a name="ln-17"></a><span class="kt">logical</span>                       <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>   <span class="c">!&lt; List of passed tests.</span>
+<a name="ln-18"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-19"></a>
+<a name="ln-20"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-21"></a><span class="n">test_passed</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-22"></a>
+<a name="ln-23"></a><span class="n">acharacter</span> <span class="o">=</span> <span class="s1">&#39;Hello World Hello!&#39;</span>
+<a name="ln-24"></a><span class="n">anothercharacter</span> <span class="o">=</span> <span class="s1">&#39;llo&#39;</span>
+<a name="ln-25"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">acharacter</span>
+<a name="ln-26"></a>
+<a name="ln-27"></a><span class="n">i</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">sindex</span><span class="p">(</span><span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">)</span>
+<a name="ln-28"></a><span class="n">ic</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">acharacter</span><span class="p">,</span> <span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">)</span>
+<a name="ln-29"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span><span class="o">==</span><span class="n">ic</span>
+<a name="ln-30"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,I2,A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Basic call result: &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39; is correct? &#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">==</span><span class="n">ic</span>
+<a name="ln-31"></a>
+<a name="ln-32"></a><span class="n">i</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">sindex</span><span class="p">(</span><span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">,</span> <span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<a name="ln-33"></a><span class="n">ic</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">acharacter</span><span class="p">,</span> <span class="n">substring</span><span class="o">=</span><span class="n">anothercharacter</span><span class="p">,</span> <span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<a name="ln-34"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span><span class="o">==</span><span class="n">ic</span>
+<a name="ln-35"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,I2,A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Back call result: &#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39; is correct? &#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">==</span><span class="n">ic</span>
+<a name="ln-36"></a>
+<a name="ln-37"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
+<a name="ln-38"></a><span class="k">stop</span>
+<a name="ln-39"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-40"></a><span class="n">endprogram</span> <span class="n">sindex</span>
 </pre></div>
 
     </section>

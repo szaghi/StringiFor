@@ -158,7 +158,39 @@
     <div id="boundprocs" class="panel-collapse collapse">
         <div class="list-group">
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-free">free</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-chars">chars</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-upper">upper</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-lower">lower</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-capitalize">capitalize</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-end_with">end_with</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-start_with">start_with</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-partition">partition</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-replace">replace</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-split">split</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-strip">strip</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-swapcase">swapcase</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-unique">unique</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-is_allocated">is_allocated</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-is_upper">is_upper</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-is_lower">is_lower</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-is_digit">is_digit</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-assignment%28%3D%29">assignment(=)</a>
           
@@ -169,6 +201,8 @@
           <a class="list-group-item" href="../type/string.html#boundprocedure-sadjustl">sadjustl</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-sadjustr">sadjustr</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-scount">scount</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-sindex">sindex</a>
           
@@ -216,6 +250,8 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-write_unformatted_">write_unformatted_</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-replace_one_occurrence">replace_one_occurrence</a>
+          
         </div>
     </div>
   </div>
@@ -251,17 +287,6 @@
     <h2>type, public :: string</h2>
     
     <p>OOP designed string class.</p>
-<p>Provides:</p>
-<ul class="checklist">
-<li><input type="checkbox" disabled checked> seamless interchangeability with standard character variables, i.e.:</li>
-<li><input type="checkbox" disabled checked> I/O operation;</li>
-<li><input type="checkbox" disabled checked> string/character concatenation;</li>
-<li><input type="checkbox" disabled checked> string/character assignment;</li>
-<li><input type="checkbox" disabled> handy builtin methods:</li>
-<li><input type="checkbox" disabled> UPPER/lower case transformartion;</li>
-<li><input type="checkbox" disabled> tokenization;</li>
-<li><input type="checkbox" disabled> number-to-string (and viceversa) casting;</li>
-</ul>
     <br>
     
     
@@ -305,6 +330,83 @@
      
     <section>
     <h2>Type-Bound Procedures</h2>
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-free"></span><h3>procedure, public, pass(self) :: <strong>free</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Free dynamic memory.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/free.html'>free</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Free dynamic memory.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
     
 	   
 <div class="panel panel-default">
@@ -383,6 +485,1482 @@ private pure function <a href='../proc/chars.html'>chars</a>(self) result(raw)
 
        
        <p>Return the raw characters data.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-upper"></span><h3>procedure, public, pass(self) :: <strong>upper</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a string with all uppercase characters.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/upper.html'>upper</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Upper case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all uppercase characters.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-lower"></span><h3>procedure, public, pass(self) :: <strong>lower</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a string with all lowercase characters.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/lower.html'>lower</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Upper case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all lowercase characters.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-capitalize"></span><h3>procedure, public, pass(self) :: <strong>capitalize</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a string with its first character capitalized and the rest lowercased.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/capitalize.html'>capitalize</a>(self) result(capitalized)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Upper case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with its first character capitalized and the rest lowercased.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-end_with"></span><h3>procedure, public, pass(self) :: <strong>end_with</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return true if a string ends with a specified suffix.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/end_with.html'>end_with</a>(self, suffix, start, end)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>suffix</strong></td><td><p>Searched suffix.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>start</strong></td><td><p>Start position into the string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>end</strong></td><td><p>End position into the string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Result of the test.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return true if a string ends with a specified suffix.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-start_with"></span><h3>procedure, public, pass(self) :: <strong>start_with</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return true if a string starts with a specified prefix.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/start_with.html'>start_with</a>(self, prefix, start, end)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>prefix</strong></td><td><p>Searched prefix.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>start</strong></td><td><p>Start position into the string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>end</strong></td><td><p>End position into the string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Result of the test.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return true if a string starts with a specified prefix.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-partition"></span><h3>procedure, public, pass(self) :: <strong>partition</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Split string at separator and return the 3 parts (before, the separator and after).</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private pure function <a href='../proc/partition.html'>partition</a>(self, sep) result(partitions)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  (1:3)</small></h4>
+  <p>Partions: before the separator, the separator itsels and after the separator.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Split string at separator and return the 3 parts (before, the separator and after).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-replace"></span><h3>procedure, public, pass(self) :: <strong>replace</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a string with all occurrences of substring old replaced by new.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/replace.html'>replace</a>(self, old, new, count) result(replaced)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>old</strong></td><td><p>Old substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>new</strong></td><td><p>New substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>count</strong></td><td><p>Number of old occurences to be replaced.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>The string with old replaced by new.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all occurrences of substring old replaced by new.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-split"></span><h3>procedure, public, pass(self) :: <strong>split</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a list of substring in the string, using sep as the delimiter string.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private pure subroutine <a href='../proc/split.html'>split</a>(self, sep, tokens)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>tokens</strong>(:)</td><td><p>Tokens substring.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a list of substring in the string, using sep as the delimiter string.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-strip"></span><h3>procedure, public, pass(self) :: <strong>strip</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a copy of the string with the leading and trailing characters removed.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/strip.html'>strip</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>The stripped string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a copy of the string with the leading and trailing characters removed.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-swapcase"></span><h3>procedure, public, pass(self) :: <strong>swapcase</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a copy of the string with uppercase chars converted to lowercase and vice versa.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/swapcase.html'>swapcase</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Upper case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a copy of the string with uppercase characters converted to lowercase and vice versa.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-unique"></span><h3>procedure, public, pass(self) :: <strong>unique</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/unique.html'>unique</a>(self, substring) result(uniq)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>substring</strong></td><td><p>Substring which multiple occurences must be reduced to one.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>String parsed.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-is_allocated"></span><h3>procedure, public, pass(self) :: <strong>is_allocated</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return true if the string is allocated.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/is_allocated.html'>is_allocated</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Result of the test.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return true if the string is allocated.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-is_upper"></span><h3>procedure, public, pass(self) :: <strong>is_upper</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return true if all characters in the string are uppercase.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/is_upper.html'>is_upper</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Result of the test.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return true if all characters in the string are uppercase.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-is_lower"></span><h3>procedure, public, pass(self) :: <strong>is_lower</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return true if all characters in the string are lowercase.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/is_lower.html'>is_lower</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Result of the test.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return true if all characters in the string are lowercase.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-is_digit"></span><h3>procedure, public, pass(self) :: <strong>is_digit</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return true if all characters in the string are digits.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/is_digit.html'>is_digit</a>(self)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Result of the test.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return true if all characters in the string are digits.</p>
         
 
       
@@ -853,7 +2431,7 @@ private pure function <a href='../proc/character_concat_string.html'>character_c
             
     
     <h3>
-private pure function <a href='../proc/string_concat_string_string.html'>string_concat_string_string</a>(lhs, rhs) result(concat)
+private elemental function <a href='../proc/string_concat_string_string.html'>string_concat_string_string</a>(lhs, rhs) result(concat)
     
     
     
@@ -937,7 +2515,7 @@ private pure function <a href='../proc/string_concat_string_string.html'>string_
             
     
     <h3>
-private pure function <a href='../proc/string_concat_character_string.html'>string_concat_character_string</a>(lhs, rhs) result(concat)
+private elemental function <a href='../proc/string_concat_character_string.html'>string_concat_character_string</a>(lhs, rhs) result(concat)
     
     
     
@@ -1021,7 +2599,7 @@ private pure function <a href='../proc/string_concat_character_string.html'>stri
             
     
     <h3>
-private pure function <a href='../proc/character_concat_string_string.html'>character_concat_string_string</a>(lhs, rhs) result(concat)
+private elemental function <a href='../proc/character_concat_string_string.html'>character_concat_string_string</a>(lhs, rhs) result(concat)
     
     
     
@@ -1123,7 +2701,7 @@ private pure function <a href='../proc/character_concat_string_string.html'>char
          
     
     <h3>
-private pure function <a href='../proc/sadjustl.html'>sadjustl</a>(self) result(adjusted)
+private elemental function <a href='../proc/sadjustl.html'>sadjustl</a>(self) result(adjusted)
     
     
     
@@ -1209,7 +2787,7 @@ private pure function <a href='../proc/sadjustl.html'>sadjustl</a>(self) result(
          
     
     <h3>
-private pure function <a href='../proc/sadjustr.html'>sadjustr</a>(self) result(adjusted)
+private elemental function <a href='../proc/sadjustr.html'>sadjustr</a>(self) result(adjusted)
     
     
     
@@ -1277,6 +2855,122 @@ private pure function <a href='../proc/sadjustr.html'>sadjustr</a>(self) result(
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-scount"></span><h3>procedure, public, pass(self) :: <strong>scount</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Count replacement.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/scount.html'>scount</a>(self, substring, ignore_isolated) result(No)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>substring</strong></td><td><p>Substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>ignore_isolated</strong></td><td><p>Ignore "isolated" occurrences.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer
+  </small></h4>
+  <p>Number of occurrences.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Count the number of occurences of a substring into a string.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-sindex"></span><h3>procedure, public, pass(self) :: <strong>sindex</strong>  
     
   </h3></div>
@@ -1295,7 +2989,7 @@ private pure function <a href='../proc/sadjustr.html'>sadjustr</a>(self) result(
          
     
     <h3>
-private pure function <a href='../proc/sindex.html'>sindex</a>(self, substring, back) result(i)
+private elemental function <a href='../proc/sindex.html'>sindex</a>(self, substring, back) result(i)
     
     
     
@@ -1413,7 +3107,7 @@ private pure function <a href='../proc/sindex.html'>sindex</a>(self, substring, 
          
     
     <h3>
-private pure function <a href='../proc/slen.html'>slen</a>(self) result(l)
+private elemental function <a href='../proc/slen.html'>slen</a>(self) result(l)
     
     
     
@@ -1499,7 +3193,7 @@ private pure function <a href='../proc/slen.html'>slen</a>(self) result(l)
          
     
     <h3>
-private pure function <a href='../proc/slen_trim.html'>slen_trim</a>(self) result(l)
+private elemental function <a href='../proc/slen_trim.html'>slen_trim</a>(self) result(l)
     
     
     
@@ -1605,7 +3299,7 @@ p</p>
          
     
     <h3>
-private pure function <a href='../proc/srepeat.html'>srepeat</a>(rstring, ncopies) result(repeated)
+private elemental function <a href='../proc/srepeat.html'>srepeat</a>(rstring, ncopies) result(repeated)
     
     
     
@@ -1698,7 +3392,7 @@ private pure function <a href='../proc/srepeat.html'>srepeat</a>(rstring, ncopie
          
     
     <h3>
-private pure function <a href='../proc/sscan.html'>sscan</a>(self, set, back) result(i)
+private elemental function <a href='../proc/sscan.html'>sscan</a>(self, set, back) result(i)
     
     
     
@@ -1814,7 +3508,7 @@ private pure function <a href='../proc/sscan.html'>sscan</a>(self, set, back) re
          
     
     <h3>
-private pure function <a href='../proc/strim.html'>strim</a>(self) result(trimmed)
+private elemental function <a href='../proc/strim.html'>strim</a>(self) result(trimmed)
     
     
     
@@ -1900,7 +3594,7 @@ private pure function <a href='../proc/strim.html'>strim</a>(self) result(trimme
          
     
     <h3>
-private pure function <a href='../proc/sverify.html'>sverify</a>(self, set, back) result(i)
+private elemental function <a href='../proc/sverify.html'>sverify</a>(self, set, back) result(i)
     
     
     
@@ -3112,7 +4806,7 @@ private pure function <a href='../proc/character_concat_string.html'>character_c
          
     
     <h3>
-private pure function <a href='../proc/string_concat_string_string.html'>string_concat_string_string</a>(lhs, rhs) result(concat)
+private elemental function <a href='../proc/string_concat_string_string.html'>string_concat_string_string</a>(lhs, rhs) result(concat)
     
     
     
@@ -3213,7 +4907,7 @@ private pure function <a href='../proc/string_concat_string_string.html'>string_
          
     
     <h3>
-private pure function <a href='../proc/string_concat_character_string.html'>string_concat_character_string</a>(lhs, rhs) result(concat)
+private elemental function <a href='../proc/string_concat_character_string.html'>string_concat_character_string</a>(lhs, rhs) result(concat)
     
     
     
@@ -3314,7 +5008,7 @@ private pure function <a href='../proc/string_concat_character_string.html'>stri
          
     
     <h3>
-private pure function <a href='../proc/character_concat_string_string.html'>character_concat_string_string</a>(lhs, rhs) result(concat)
+private elemental function <a href='../proc/character_concat_string_string.html'>character_concat_string_string</a>(lhs, rhs) result(concat)
     
     
     
@@ -3943,6 +5637,122 @@ private subroutine <a href='../proc/write_unformatted_.html'>write_unformatted_<
 </div>
 
     
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-replace_one_occurrence"></span><h3>procedure, private, pass(self) :: <strong>replace_one_occurrence</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Replace the first occurrence of substring old by new.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/replace_one_occurrence.html'>replace_one_occurrence</a>(self, old, new) result(replaced)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>old</strong></td><td><p>Old substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>new</strong></td><td><p>New substring.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>The string with old replaced by new.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with the first occurrence of substring old replaced by new.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
     </section>
     
     
@@ -3951,22 +5761,28 @@ private subroutine <a href='../proc/write_unformatted_.html'>write_unformatted_<
     <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="highlight"><pre><span></span><span class="k">type</span> <span class="kd">::</span> <span class="n">string</span>
   <span class="c">!&lt; OOP designed string class.</span>
-  <span class="c">!&lt;</span>
-  <span class="c">!&lt; Provides:</span>
-  <span class="c">!&lt;</span>
-  <span class="c">!&lt; * [X] seamless interchangeability with standard character variables, i.e.:</span>
-  <span class="c">!&lt;   + [X] I/O operation;</span>
-  <span class="c">!&lt;   + [X] string/character concatenation;</span>
-  <span class="c">!&lt;   + [X] string/character assignment;</span>
-  <span class="c">!&lt; * [ ] handy builtin methods:</span>
-  <span class="c">!&lt;   + [ ] UPPER/lower case transformartion;</span>
-  <span class="c">!&lt;   + [ ] tokenization;</span>
-  <span class="c">!&lt;   + [ ] number-to-string (and viceversa) casting;</span>
   <span class="k">private</span>
 <span class="k">  </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">raw</span> <span class="c">!&lt; Raw data.</span>
   <span class="k">contains</span>
     <span class="c">! public methods</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">chars</span> <span class="c">!&lt; Return the raw characters data.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">free</span>       <span class="c">!&lt; Free dynamic memory.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">chars</span>      <span class="c">!&lt; Return the raw characters data.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">upper</span>      <span class="c">!&lt; Return a string with all uppercase characters.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">lower</span>      <span class="c">!&lt; Return a string with all lowercase characters.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">capitalize</span> <span class="c">!&lt; Return a string with its first character capitalized and the rest lowercased.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">end_with</span>   <span class="c">!&lt; Return true if a string ends with a specified suffix.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">start_with</span> <span class="c">!&lt; Return true if a string starts with a specified prefix.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">partition</span>  <span class="c">!&lt; Split string at separator and return the 3 parts (before, the separator and after).</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">replace</span>    <span class="c">!&lt; Return a string with all occurrences of substring old replaced by new.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">split</span>      <span class="c">!&lt; Return a list of substring in the string, using sep as the delimiter string.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">strip</span>      <span class="c">!&lt; Return a copy of the string with the leading and trailing characters removed.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">swapcase</span>   <span class="c">!&lt; Return a copy of the string with uppercase chars converted to lowercase and vice versa.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">unique</span>     <span class="c">!&lt; Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.</span>
+    <span class="c">! inquire</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_allocated</span> <span class="c">!&lt; Return true if the string is allocated.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_upper</span>     <span class="c">!&lt; Return true if all characters in the string are uppercase.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_lower</span>     <span class="c">!&lt; Return true if all characters in the string are lowercase.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">is_digit</span>     <span class="c">!&lt; Return true if all characters in the string are digits.</span>
     <span class="c">! operators</span>
     <span class="k">generic</span> <span class="kd">::</span> <span class="n">assignment</span><span class="p">(</span><span class="o">=</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_assign_string</span><span class="p">,</span> <span class="p">&amp;</span>
                                 <span class="n">string_assign_character</span>             <span class="c">!&lt; Assignment operator overloading.</span>
@@ -3979,6 +5795,7 @@ private subroutine <a href='../proc/write_unformatted_.html'>write_unformatted_<
     <span class="c">! builtins replacements</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sadjustl</span>  <span class="c">!&lt; Adjustl replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sadjustr</span>  <span class="c">!&lt; Adjustr replacement.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">scount</span>    <span class="c">!&lt; Count replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sindex</span>    <span class="c">!&lt; Index replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">slen</span>      <span class="c">!&lt; Len replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">slen_trim</span> <span class="c">!&lt; Len_trim replacement.</span>
@@ -3999,18 +5816,19 @@ private subroutine <a href='../proc/write_unformatted_.html'>write_unformatted_<
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span> <span class="kd">::</span> <span class="n">write_formatted_internal</span>            <span class="c">!&lt; Formatted output to internal.</span>
 <span class="cp">#endif</span>
     <span class="c">! private methods</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">string_assign_string</span>           <span class="c">!&lt; Assignment operator from string input.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">string_assign_character</span>        <span class="c">!&lt; Assignment operator from character input.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">string_concat_string</span>           <span class="c">!&lt; Concatenation with string.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">string_concat_character</span>        <span class="c">!&lt; Concatenation with character.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">character_concat_string</span>        <span class="c">!&lt; Concatenation with character (inverted).</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">string_concat_string_string</span>    <span class="c">!&lt; Concatenation with string (string output).</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">string_concat_character_string</span> <span class="c">!&lt; Concatenation with character (string output).</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span> <span class="kd">::</span> <span class="n">character_concat_string_string</span> <span class="c">!&lt; Concatenation with character (inverted, string output).</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span> <span class="kd">::</span> <span class="n">read_formatted_</span>                <span class="c">!&lt; Formatted input.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span> <span class="kd">::</span> <span class="n">write_formatted_</span>               <span class="c">!&lt; Formatted output.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span> <span class="kd">::</span> <span class="n">read_unformatted_</span>              <span class="c">!&lt; Unformatted input.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span> <span class="kd">::</span> <span class="n">write_unformatted_</span>             <span class="c">!&lt; Unformatted output.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_string</span>           <span class="c">!&lt; Assignment operator from string input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_character</span>        <span class="c">!&lt; Assignment operator from character input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_string</span>           <span class="c">!&lt; Concatenation with string.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_character</span>        <span class="c">!&lt; Concatenation with character.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_concat_string</span>        <span class="c">!&lt; Concatenation with character (inverted).</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_string_string</span>    <span class="c">!&lt; Concatenation with string (string output).</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_character_string</span> <span class="c">!&lt; Concatenation with character (string output).</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_concat_string_string</span> <span class="c">!&lt; Concatenation with character (inverted, string output).</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">read_formatted_</span>                <span class="c">!&lt; Formatted input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">write_formatted_</span>               <span class="c">!&lt; Formatted output.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">read_unformatted_</span>              <span class="c">!&lt; Unformatted input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">write_unformatted_</span>             <span class="c">!&lt; Unformatted output.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">replace_one_occurrence</span>         <span class="c">!&lt; Replace the first occurrence of substring old by new.</span>
 <span class="n">endtype</span> <span class="n">string</span>
 </pre></div>
 

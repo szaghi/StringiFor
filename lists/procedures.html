@@ -94,11 +94,29 @@ All Procedures &ndash; StringiFor
 			 <thead><tr><th>Procedure</th><th>Location</th><th>Procedure Type</th><th>Description</th></tr></thead>
 			 <tbody>
 			 
+			   <tr><td><a href='../proc/capitalize.html'>capitalize</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return a string with its first character capitalized and the rest lowercased.</p></td></tr>
+			 
 			   <tr><td><a href='../proc/character_concat_string.html'>character_concat_string</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Concatenation with character (inverted).</p></td></tr>
 			 
 			   <tr><td><a href='../proc/character_concat_string_string.html'>character_concat_string_string</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Concatenation with character (inverted).</p></td></tr>
 			 
 			   <tr><td><a href='../proc/chars.html'>chars</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return the raw characters data.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/end_with.html'>end_with</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return true if a string ends with a specified suffix.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/free.html'>free</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Subroutine</td><td><p>Free dynamic memory.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/is_allocated.html'>is_allocated</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return true if the string is allocated.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/is_digit.html'>is_digit</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return true if all characters in the string are digits.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/is_lower.html'>is_lower</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return true if all characters in the string are lowercase.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/is_upper.html'>is_upper</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return true if all characters in the string are uppercase.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/lower.html'>lower</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return a string with all lowercase characters.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/partition.html'>partition</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Split string at separator and return the 3 parts (before, the separator and after).</p></td></tr>
 			 
 			   <tr><td><a href='../proc/read_formatted_.html'>read_formatted_</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Subroutine</td><td><p>Formatted input.</p></td></tr>
 			 
@@ -106,9 +124,15 @@ All Procedures &ndash; StringiFor
 			 
 			   <tr><td><a href='../proc/read_unformatted_.html'>read_unformatted_</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Subroutine</td><td><p>Unformatted input.</p></td></tr>
 			 
+			   <tr><td><a href='../proc/replace.html'>replace</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return a string with all occurrences of substring old replaced by new.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/replace_one_occurrence.html'>replace_one_occurrence</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return a string with the first occurrence of substring old replaced by new.</p></td></tr>
+			 
 			   <tr><td><a href='../proc/sadjustl.html'>sadjustl</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Left adjust a string by removing leading spaces.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/sadjustr.html'>sadjustr</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Right adjust a string by removing leading spaces.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/scount.html'>scount</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Count the number of occurences of a substring into a string.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/sindex.html'>sindex</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return the position of the start of the first occurrence of string <code>substring</code> as a substring in <code>string</code>, counting from one.
  If <code>substring</code> is not present in <code>string</code>, zero is returned. If the back argument is present and true, the return value is
@@ -117,6 +141,8 @@ All Procedures &ndash; StringiFor
 			   <tr><td><a href='../proc/slen.html'>slen</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return the length of a string.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/slen_trim.html'>slen_trim</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return the length of a string, ignoring any trailing blanks.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/split.html'>split</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Subroutine</td><td><p>Return a list of substring in the string, using sep as the delimiter string.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/srepeat.html'>srepeat</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>&lt;
 p</p>
@@ -142,6 +168,8 @@ p</p>
 			 
 			   <tr><td><a href='../proc/sscan.html'>sscan</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return the leftmost (if <code>back</code> is either absent or equals false, otherwise the rightmost) character of string that is in <code>set</code>.</p></td></tr>
 			 
+			   <tr><td><a href='../proc/start_with.html'>start_with</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return true if a string starts with a specified prefix.</p></td></tr>
+			 
 			   <tr><td><a href='../proc/strim.html'>strim</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Remove leading spaces.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/string_assign_character.html'>string_assign_character</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Subroutine</td><td><p>Assignment operator from character input.</p></td></tr>
@@ -156,8 +184,16 @@ p</p>
 			 
 			   <tr><td><a href='../proc/string_concat_string_string.html'>string_concat_string_string</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Concatenation with string.</p></td></tr>
 			 
+			   <tr><td><a href='../proc/strip.html'>strip</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return a copy of the string with the leading and trailing characters removed.</p></td></tr>
+			 
 			   <tr><td><a href='../proc/sverify.html'>sverify</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return the leftmost (if <code>back</code> is either absent or equals false, otherwise the rightmost) character of string that is not
  in <code>set</code>. If all characters of <code>string</code> are found in <code>set</code>, the result is zero.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/swapcase.html'>swapcase</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return a copy of the string with uppercase characters converted to lowercase and vice versa.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/unique.html'>unique</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/upper.html'>upper</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Function</td><td><p>Return a string with all uppercase characters.</p></td></tr>
 			 
 			   <tr><td><a href='../proc/write_formatted_.html'>write_formatted_</a></td><td><a href='../module/stringifor.html'>stringifor</a></td><td>Subroutine</td><td><p>Formatted output.</p></td></tr>
 			 
@@ -173,11 +209,11 @@ p</p>
 <!-- Generated by graphviz version 2.26.3 (20100126.1600)
  -->
 <!-- Title: call~~graph~~CallGraph Pages: 1 -->
-<svg id="callgraphCallGraph" width="168pt" height="1046pt"
- viewBox="0.00 0.00 168.00 1046.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="call~~graph~~CallGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 1042)">
+<svg id="callgraphCallGraph" width="168pt" height="1838pt"
+ viewBox="0.00 0.00 168.00 1838.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="call~~graph~~CallGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 1834)">
 <title>call~~graph~~CallGraph</title>
-<polygon fill="white" stroke="white" points="-4,5 -4,-1042 165,-1042 165,5 -4,5"/>
+<polygon fill="white" stroke="white" points="-4,5 -4,-1834 165,-1834 165,5 -4,5"/>
 <!-- proc~string_concat_string -->
 <g id="node1" class="node"><title>proc~string_concat_string</title>
 <a xlink:href="../proc/string_concat_string.html" xlink:title="string_concat_string">
@@ -185,11 +221,11 @@ p</p>
 <text text-anchor="middle" x="80" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_concat_string</text>
 </a>
 </g>
-<!-- proc~strim -->
-<g id="node2" class="node"><title>proc~strim</title>
-<a xlink:href="../proc/strim.html" xlink:title="strim">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-70 53,-70 53,-44 107,-44 107,-70"/>
-<text text-anchor="middle" x="80" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
+<!-- proc~read_formatted_ -->
+<g id="node2" class="node"><title>proc~read_formatted_</title>
+<a xlink:href="../proc/read_formatted_.html" xlink:title="read_formatted_">
+<polygon fill="#d9534f" stroke="#d9534f" points="126,-70 34,-70 34,-44 126,-44 126,-70"/>
+<text text-anchor="middle" x="80" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_formatted_</text>
 </a>
 </g>
 <!-- proc~slen_trim -->
@@ -199,151 +235,277 @@ p</p>
 <text text-anchor="middle" x="80" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen_trim</text>
 </a>
 </g>
-<!-- proc~string_concat_character -->
-<g id="node4" class="node"><title>proc~string_concat_character</title>
-<a xlink:href="../proc/string_concat_character.html" xlink:title="string_concat_character">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="143,-158 17,-158 17,-132 143,-132 143,-158"/>
-<text text-anchor="middle" x="80" y="-142.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_concat_character</text>
-</a>
-</g>
-<!-- proc~character_concat_string_string -->
-<g id="node5" class="node"><title>proc~character_concat_string_string</title>
-<a xlink:href="../proc/character_concat_string_string.html" xlink:title="character_concat_string_string">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="160,-202 7.10543e-14,-202 0,-176 160,-176 160,-202"/>
-<text text-anchor="middle" x="80" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">character_concat_string_string</text>
-</a>
-</g>
-<!-- proc~srepeat -->
-<g id="node6" class="node"><title>proc~srepeat</title>
-<a xlink:href="../proc/srepeat.html" xlink:title="srepeat">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-246 53,-246 53,-220 107,-220 107,-246"/>
-<text text-anchor="middle" x="80" y="-230.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
-</a>
-</g>
-<!-- proc~sverify -->
-<g id="node7" class="node"><title>proc~sverify</title>
-<a xlink:href="../proc/sverify.html" xlink:title="sverify">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-290 53,-290 53,-264 107,-264 107,-290"/>
-<text text-anchor="middle" x="80" y="-274.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
-</a>
-</g>
-<!-- proc~sscan -->
-<g id="node8" class="node"><title>proc~sscan</title>
-<a xlink:href="../proc/sscan.html" xlink:title="sscan">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-334 53,-334 53,-308 107,-308 107,-334"/>
-<text text-anchor="middle" x="80" y="-318.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
-</a>
-</g>
-<!-- proc~read_formatted_ -->
-<g id="node9" class="node"><title>proc~read_formatted_</title>
-<a xlink:href="../proc/read_formatted_.html" xlink:title="read_formatted_">
-<polygon fill="#d9534f" stroke="#d9534f" points="126,-378 34,-378 34,-352 126,-352 126,-378"/>
-<text text-anchor="middle" x="80" y="-362.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_formatted_</text>
-</a>
-</g>
 <!-- proc~chars -->
-<g id="node10" class="node"><title>proc~chars</title>
+<g id="node4" class="node"><title>proc~chars</title>
 <a xlink:href="../proc/chars.html" xlink:title="chars">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-422 53,-422 53,-396 107,-396 107,-422"/>
-<text text-anchor="middle" x="80" y="-406.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">chars</text>
-</a>
-</g>
-<!-- proc~read_unformatted_ -->
-<g id="node11" class="node"><title>proc~read_unformatted_</title>
-<a xlink:href="../proc/read_unformatted_.html" xlink:title="read_unformatted_">
-<polygon fill="#d9534f" stroke="#d9534f" points="132,-466 28,-466 28,-440 132,-440 132,-466"/>
-<text text-anchor="middle" x="80" y="-450.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_unformatted_</text>
-</a>
-</g>
-<!-- proc~sadjustl -->
-<g id="node12" class="node"><title>proc~sadjustl</title>
-<a xlink:href="../proc/sadjustl.html" xlink:title="sadjustl">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-510 53,-510 53,-484 107,-484 107,-510"/>
-<text text-anchor="middle" x="80" y="-494.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustl</text>
-</a>
-</g>
-<!-- proc~character_concat_string -->
-<g id="node13" class="node"><title>proc~character_concat_string</title>
-<a xlink:href="../proc/character_concat_string.html" xlink:title="character_concat_string">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="143,-554 17,-554 17,-528 143,-528 143,-554"/>
-<text text-anchor="middle" x="80" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">character_concat_string</text>
-</a>
-</g>
-<!-- proc~read_formatted_internal -->
-<g id="node14" class="node"><title>proc~read_formatted_internal</title>
-<a xlink:href="../proc/read_formatted_internal.html" xlink:title="read_formatted_internal">
-<polygon fill="#d9534f" stroke="#d9534f" points="143,-598 17,-598 17,-572 143,-572 143,-598"/>
-<text text-anchor="middle" x="80" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_formatted_internal</text>
-</a>
-</g>
-<!-- proc~sadjustr -->
-<g id="node15" class="node"><title>proc~sadjustr</title>
-<a xlink:href="../proc/sadjustr.html" xlink:title="sadjustr">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-642 53,-642 53,-616 107,-616 107,-642"/>
-<text text-anchor="middle" x="80" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustr</text>
-</a>
-</g>
-<!-- proc~write_unformatted_ -->
-<g id="node16" class="node"><title>proc~write_unformatted_</title>
-<a xlink:href="../proc/write_unformatted_.html" xlink:title="write_unformatted_">
-<polygon fill="#d9534f" stroke="#d9534f" points="132,-686 28,-686 28,-660 132,-660 132,-686"/>
-<text text-anchor="middle" x="80" y="-670.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_unformatted_</text>
-</a>
-</g>
-<!-- proc~slen -->
-<g id="node17" class="node"><title>proc~slen</title>
-<a xlink:href="../proc/slen.html" xlink:title="slen">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-730 53,-730 53,-704 107,-704 107,-730"/>
-<text text-anchor="middle" x="80" y="-714.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
-</a>
-</g>
-<!-- proc~string_concat_string_string -->
-<g id="node18" class="node"><title>proc~string_concat_string_string</title>
-<a xlink:href="../proc/string_concat_string_string.html" xlink:title="string_concat_string_string">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="150,-774 10,-774 10,-748 150,-748 150,-774"/>
-<text text-anchor="middle" x="80" y="-758.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_concat_string_string</text>
-</a>
-</g>
-<!-- proc~sindex -->
-<g id="node19" class="node"><title>proc~sindex</title>
-<a xlink:href="../proc/sindex.html" xlink:title="sindex">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-818 53,-818 53,-792 107,-792 107,-818"/>
-<text text-anchor="middle" x="80" y="-802.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
-</a>
-</g>
-<!-- proc~string_assign_character -->
-<g id="node20" class="node"><title>proc~string_assign_character</title>
-<a xlink:href="../proc/string_assign_character.html" xlink:title="string_assign_character">
-<polygon fill="#d9534f" stroke="#d9534f" points="143,-862 17,-862 17,-836 143,-836 143,-862"/>
-<text text-anchor="middle" x="80" y="-846.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_assign_character</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-158 53,-158 53,-132 107,-132 107,-158"/>
+<text text-anchor="middle" x="80" y="-142.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">chars</text>
 </a>
 </g>
 <!-- proc~string_concat_character_string -->
-<g id="node21" class="node"><title>proc~string_concat_character_string</title>
+<g id="node5" class="node"><title>proc~string_concat_character_string</title>
 <a xlink:href="../proc/string_concat_character_string.html" xlink:title="string_concat_character_string">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="160,-906 7.10543e-14,-906 0,-880 160,-880 160,-906"/>
-<text text-anchor="middle" x="80" y="-890.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_concat_character_string</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="160,-202 7.10543e-14,-202 0,-176 160,-176 160,-202"/>
+<text text-anchor="middle" x="80" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_concat_character_string</text>
 </a>
 </g>
-<!-- proc~write_formatted_ -->
-<g id="node22" class="node"><title>proc~write_formatted_</title>
-<a xlink:href="../proc/write_formatted_.html" xlink:title="write_formatted_">
-<polygon fill="#d9534f" stroke="#d9534f" points="126,-950 34,-950 34,-924 126,-924 126,-950"/>
-<text text-anchor="middle" x="80" y="-934.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_formatted_</text>
+<!-- proc~string_concat_character -->
+<g id="node6" class="node"><title>proc~string_concat_character</title>
+<a xlink:href="../proc/string_concat_character.html" xlink:title="string_concat_character">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143,-246 17,-246 17,-220 143,-220 143,-246"/>
+<text text-anchor="middle" x="80" y="-230.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_concat_character</text>
+</a>
+</g>
+<!-- proc~srepeat -->
+<g id="node7" class="node"><title>proc~srepeat</title>
+<a xlink:href="../proc/srepeat.html" xlink:title="srepeat">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-290 53,-290 53,-264 107,-264 107,-290"/>
+<text text-anchor="middle" x="80" y="-274.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
+</a>
+</g>
+<!-- proc~partition -->
+<g id="node8" class="node"><title>proc~partition</title>
+<a xlink:href="../proc/partition.html" xlink:title="partition">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-334 53,-334 53,-308 107,-308 107,-334"/>
+<text text-anchor="middle" x="80" y="-318.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">partition</text>
+</a>
+</g>
+<!-- proc~strip -->
+<g id="node9" class="node"><title>proc~strip</title>
+<a xlink:href="../proc/strip.html" xlink:title="strip">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-378 53,-378 53,-352 107,-352 107,-378"/>
+<text text-anchor="middle" x="80" y="-362.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strip</text>
+</a>
+</g>
+<!-- proc~sadjustl -->
+<g id="node10" class="node"><title>proc~sadjustl</title>
+<a xlink:href="../proc/sadjustl.html" xlink:title="sadjustl">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-422 53,-422 53,-396 107,-396 107,-422"/>
+<text text-anchor="middle" x="80" y="-406.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustl</text>
+</a>
+</g>
+<!-- proc~string_assign_character -->
+<g id="node11" class="node"><title>proc~string_assign_character</title>
+<a xlink:href="../proc/string_assign_character.html" xlink:title="string_assign_character">
+<polygon fill="#d9534f" stroke="#d9534f" points="143,-466 17,-466 17,-440 143,-440 143,-466"/>
+<text text-anchor="middle" x="80" y="-450.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_assign_character</text>
+</a>
+</g>
+<!-- proc~upper -->
+<g id="node12" class="node"><title>proc~upper</title>
+<a xlink:href="../proc/upper.html" xlink:title="upper">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-510 53,-510 53,-484 107,-484 107,-510"/>
+<text text-anchor="middle" x="80" y="-494.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper</text>
+</a>
+</g>
+<!-- proc~strim -->
+<g id="node13" class="node"><title>proc~strim</title>
+<a xlink:href="../proc/strim.html" xlink:title="strim">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-554 53,-554 53,-528 107,-528 107,-554"/>
+<text text-anchor="middle" x="80" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
+</a>
+</g>
+<!-- proc~swapcase -->
+<g id="node14" class="node"><title>proc~swapcase</title>
+<a xlink:href="../proc/swapcase.html" xlink:title="swapcase">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="110,-598 50,-598 50,-572 110,-572 110,-598"/>
+<text text-anchor="middle" x="80" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swapcase</text>
 </a>
 </g>
 <!-- proc~write_formatted_internal -->
-<g id="node23" class="node"><title>proc~write_formatted_internal</title>
+<g id="node15" class="node"><title>proc~write_formatted_internal</title>
 <a xlink:href="../proc/write_formatted_internal.html" xlink:title="write_formatted_internal">
-<polygon fill="#d9534f" stroke="#d9534f" points="144,-994 16,-994 16,-968 144,-968 144,-994"/>
-<text text-anchor="middle" x="80" y="-978.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_formatted_internal</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="144,-642 16,-642 16,-616 144,-616 144,-642"/>
+<text text-anchor="middle" x="80" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_formatted_internal</text>
+</a>
+</g>
+<!-- proc~sadjustr -->
+<g id="node16" class="node"><title>proc~sadjustr</title>
+<a xlink:href="../proc/sadjustr.html" xlink:title="sadjustr">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-686 53,-686 53,-660 107,-660 107,-686"/>
+<text text-anchor="middle" x="80" y="-670.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustr</text>
+</a>
+</g>
+<!-- proc~character_concat_string_string -->
+<g id="node17" class="node"><title>proc~character_concat_string_string</title>
+<a xlink:href="../proc/character_concat_string_string.html" xlink:title="character_concat_string_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="160,-730 7.10543e-14,-730 0,-704 160,-704 160,-730"/>
+<text text-anchor="middle" x="80" y="-714.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">character_concat_string_string</text>
+</a>
+</g>
+<!-- proc~slen -->
+<g id="node18" class="node"><title>proc~slen</title>
+<a xlink:href="../proc/slen.html" xlink:title="slen">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-774 53,-774 53,-748 107,-748 107,-774"/>
+<text text-anchor="middle" x="80" y="-758.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
+</a>
+</g>
+<!-- proc~read_unformatted_ -->
+<g id="node19" class="node"><title>proc~read_unformatted_</title>
+<a xlink:href="../proc/read_unformatted_.html" xlink:title="read_unformatted_">
+<polygon fill="#d9534f" stroke="#d9534f" points="132,-818 28,-818 28,-792 132,-792 132,-818"/>
+<text text-anchor="middle" x="80" y="-802.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_unformatted_</text>
+</a>
+</g>
+<!-- proc~split -->
+<g id="node20" class="node"><title>proc~split</title>
+<a xlink:href="../proc/split.html" xlink:title="split">
+<polygon fill="#d9534f" stroke="#d9534f" points="107,-862 53,-862 53,-836 107,-836 107,-862"/>
+<text text-anchor="middle" x="80" y="-846.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
+</a>
+</g>
+<!-- proc~scount -->
+<g id="node21" class="node"><title>proc~scount</title>
+<a xlink:href="../proc/scount.html" xlink:title="scount">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-906 53,-906 53,-880 107,-880 107,-906"/>
+<text text-anchor="middle" x="80" y="-890.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">scount</text>
+</a>
+</g>
+<!-- proc~unique -->
+<g id="node22" class="node"><title>proc~unique</title>
+<a xlink:href="../proc/unique.html" xlink:title="unique">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-950 53,-950 53,-924 107,-924 107,-950"/>
+<text text-anchor="middle" x="80" y="-934.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+<!-- proc~is_upper -->
+<g id="node23" class="node"><title>proc~is_upper</title>
+<a xlink:href="../proc/is_upper.html" xlink:title="is_upper">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-994 53,-994 53,-968 107,-968 107,-994"/>
+<text text-anchor="middle" x="80" y="-978.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_upper</text>
+</a>
+</g>
+<!-- proc~is_allocated -->
+<g id="node24" class="node"><title>proc~is_allocated</title>
+<a xlink:href="../proc/is_allocated.html" xlink:title="is_allocated">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="114,-1038 46,-1038 46,-1012 114,-1012 114,-1038"/>
+<text text-anchor="middle" x="80" y="-1022.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_allocated</text>
+</a>
+</g>
+<!-- proc~sverify -->
+<g id="node25" class="node"><title>proc~sverify</title>
+<a xlink:href="../proc/sverify.html" xlink:title="sverify">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1082 53,-1082 53,-1056 107,-1056 107,-1082"/>
+<text text-anchor="middle" x="80" y="-1066.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
+</a>
+</g>
+<!-- proc~character_concat_string -->
+<g id="node26" class="node"><title>proc~character_concat_string</title>
+<a xlink:href="../proc/character_concat_string.html" xlink:title="character_concat_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="143,-1126 17,-1126 17,-1100 143,-1100 143,-1126"/>
+<text text-anchor="middle" x="80" y="-1110.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">character_concat_string</text>
+</a>
+</g>
+<!-- proc~lower -->
+<g id="node27" class="node"><title>proc~lower</title>
+<a xlink:href="../proc/lower.html" xlink:title="lower">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1170 53,-1170 53,-1144 107,-1144 107,-1170"/>
+<text text-anchor="middle" x="80" y="-1154.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lower</text>
 </a>
 </g>
 <!-- proc~string_assign_string -->
-<g id="node24" class="node"><title>proc~string_assign_string</title>
+<g id="node28" class="node"><title>proc~string_assign_string</title>
 <a xlink:href="../proc/string_assign_string.html" xlink:title="string_assign_string">
-<polygon fill="#d9534f" stroke="#d9534f" points="134,-1038 26,-1038 26,-1012 134,-1012 134,-1038"/>
-<text text-anchor="middle" x="80" y="-1022.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_assign_string</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="134,-1214 26,-1214 26,-1188 134,-1188 134,-1214"/>
+<text text-anchor="middle" x="80" y="-1198.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_assign_string</text>
+</a>
+</g>
+<!-- proc~write_formatted_ -->
+<g id="node29" class="node"><title>proc~write_formatted_</title>
+<a xlink:href="../proc/write_formatted_.html" xlink:title="write_formatted_">
+<polygon fill="#d9534f" stroke="#d9534f" points="126,-1258 34,-1258 34,-1232 126,-1232 126,-1258"/>
+<text text-anchor="middle" x="80" y="-1242.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_formatted_</text>
+</a>
+</g>
+<!-- proc~sscan -->
+<g id="node30" class="node"><title>proc~sscan</title>
+<a xlink:href="../proc/sscan.html" xlink:title="sscan">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1302 53,-1302 53,-1276 107,-1276 107,-1302"/>
+<text text-anchor="middle" x="80" y="-1286.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
+</a>
+</g>
+<!-- proc~replace -->
+<g id="node31" class="node"><title>proc~replace</title>
+<a xlink:href="../proc/replace.html" xlink:title="replace">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1346 53,-1346 53,-1320 107,-1320 107,-1346"/>
+<text text-anchor="middle" x="80" y="-1330.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace</text>
+</a>
+</g>
+<!-- proc~start_with -->
+<g id="node32" class="node"><title>proc~start_with</title>
+<a xlink:href="../proc/start_with.html" xlink:title="start_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="109,-1390 51,-1390 51,-1364 109,-1364 109,-1390"/>
+<text text-anchor="middle" x="80" y="-1374.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">start_with</text>
+</a>
+</g>
+<!-- proc~is_digit -->
+<g id="node33" class="node"><title>proc~is_digit</title>
+<a xlink:href="../proc/is_digit.html" xlink:title="is_digit">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1434 53,-1434 53,-1408 107,-1408 107,-1434"/>
+<text text-anchor="middle" x="80" y="-1418.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_digit</text>
+</a>
+</g>
+<!-- proc~capitalize -->
+<g id="node34" class="node"><title>proc~capitalize</title>
+<a xlink:href="../proc/capitalize.html" xlink:title="capitalize">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="108,-1478 52,-1478 52,-1452 108,-1452 108,-1478"/>
+<text text-anchor="middle" x="80" y="-1462.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">capitalize</text>
+</a>
+</g>
+<!-- proc~free -->
+<g id="node35" class="node"><title>proc~free</title>
+<a xlink:href="../proc/free.html" xlink:title="free">
+<polygon fill="#d9534f" stroke="#d9534f" points="107,-1522 53,-1522 53,-1496 107,-1496 107,-1522"/>
+<text text-anchor="middle" x="80" y="-1506.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">free</text>
+</a>
+</g>
+<!-- proc~replace_one_occurrence -->
+<g id="node36" class="node"><title>proc~replace_one_occurrence</title>
+<a xlink:href="../proc/replace_one_occurrence.html" xlink:title="replace_one_occurrence">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="145,-1566 15,-1566 15,-1540 145,-1540 145,-1566"/>
+<text text-anchor="middle" x="80" y="-1550.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace_one_occurrence</text>
+</a>
+</g>
+<!-- proc~string_concat_string_string -->
+<g id="node37" class="node"><title>proc~string_concat_string_string</title>
+<a xlink:href="../proc/string_concat_string_string.html" xlink:title="string_concat_string_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="150,-1610 10,-1610 10,-1584 150,-1584 150,-1610"/>
+<text text-anchor="middle" x="80" y="-1594.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_concat_string_string</text>
+</a>
+</g>
+<!-- proc~write_unformatted_ -->
+<g id="node38" class="node"><title>proc~write_unformatted_</title>
+<a xlink:href="../proc/write_unformatted_.html" xlink:title="write_unformatted_">
+<polygon fill="#d9534f" stroke="#d9534f" points="132,-1654 28,-1654 28,-1628 132,-1628 132,-1654"/>
+<text text-anchor="middle" x="80" y="-1638.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_unformatted_</text>
+</a>
+</g>
+<!-- proc~sindex -->
+<g id="node39" class="node"><title>proc~sindex</title>
+<a xlink:href="../proc/sindex.html" xlink:title="sindex">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1698 53,-1698 53,-1672 107,-1672 107,-1698"/>
+<text text-anchor="middle" x="80" y="-1682.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
+</a>
+</g>
+<!-- proc~end_with -->
+<g id="node40" class="node"><title>proc~end_with</title>
+<a xlink:href="../proc/end_with.html" xlink:title="end_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1742 53,-1742 53,-1716 107,-1716 107,-1742"/>
+<text text-anchor="middle" x="80" y="-1726.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">end_with</text>
+</a>
+</g>
+<!-- proc~is_lower -->
+<g id="node41" class="node"><title>proc~is_lower</title>
+<a xlink:href="../proc/is_lower.html" xlink:title="is_lower">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="107,-1786 53,-1786 53,-1760 107,-1760 107,-1786"/>
+<text text-anchor="middle" x="80" y="-1770.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_lower</text>
+</a>
+</g>
+<!-- proc~read_formatted_internal -->
+<g id="node42" class="node"><title>proc~read_formatted_internal</title>
+<a xlink:href="../proc/read_formatted_internal.html" xlink:title="read_formatted_internal">
+<polygon fill="#d9534f" stroke="#d9534f" points="143,-1830 17,-1830 17,-1804 143,-1804 143,-1830"/>
+<text text-anchor="middle" x="80" y="-1814.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_formatted_internal</text>
 </a>
 </g>
 </g>
