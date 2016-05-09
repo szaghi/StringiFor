@@ -131,6 +131,8 @@
     <div id="vars" class="panel-collapse collapse">
       <div class="list-group">
         
+        <a class="list-group-item" href="../proc/split.html#variable-sep_%7E2">sep_</a>
+        
         <a class="list-group-item" href="../proc/split.html#variable-no%7E2">No</a>
         
         <a class="list-group-item" href="../proc/split.html#variable-t">t</a>
@@ -269,7 +271,7 @@
     
     <div class="col-lg-9" id='text'>
     <h2>
-private pure subroutine split(self, sep, tokens)
+private pure subroutine split(self, tokens, sep)
     
     
     
@@ -312,12 +314,12 @@ private pure subroutine split(self, sep, tokens)
   
 <tr>
   
-  <td><span class="anchor" id="variable-sep%7E2"></span>character(len=*),</td>
-  <td>intent(in)</td>
+  <td><span class="anchor" id="variable-tokens"></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(out),</td>
   <td></td>
   
-  <td></td><td>::</td>
-  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  <td>allocatable</td><td>::</td>
+  <td><strong>tokens</strong>(:)</td><td><p>Tokens substring.</p></td>
   
 </tr>
 
@@ -327,12 +329,12 @@ private pure subroutine split(self, sep, tokens)
   
 <tr>
   
-  <td><span class="anchor" id="variable-tokens"></span>type(<a href='../type/string.html'>string</a>),</td>
-  <td>intent(out),</td>
-  <td></td>
+  <td><span class="anchor" id="variable-sep%7E2"></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
   
-  <td>allocatable</td><td>::</td>
-  <td><strong>tokens</strong>(:)</td><td><p>Tokens substring.</p></td>
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
   
 </tr>
 
@@ -344,6 +346,7 @@ private pure subroutine split(self, sep, tokens)
     
     <h3>Description</h3>
     <p>Return a list of substring in the string, using sep as the delimiter string.</p>
+<p></p><div class="alert alert-info" role="alert"><h4>Note</h4>Multiple subsequent separators are collapsed to one occurence.</div>
     
     
      
@@ -360,6 +363,20 @@ private pure subroutine split(self, sep, tokens)
 
 
 <tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-sep_%7E2"></span>character(kind=CK,len=:),</td>
+  
+  <td>public,</td>
+  <td>allocatable</td><td>::</td>
+  <td><strong>sep_</strong></td><td></td><td></td><td><p>Separator, default value.</p></td>
+  
+</tr>
 
   
   
@@ -440,28 +457,33 @@ private pure subroutine split(self, sep, tokens)
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>  <span class="k">pure subroutine </span><span class="n">split</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span>  <span class="k">pure subroutine </span><span class="n">split</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">sep</span><span class="p">)</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Return a list of substring in the string, using sep as the delimiter string.</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt; @note Multiple subsequent separators are collapsed to one occurence.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">self</span>           <span class="c">!&lt; The string.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">sep</span>            <span class="c">!&lt; Separator.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">tokens</span><span class="p">(:)</span>      <span class="c">!&lt; Tokens substring.</span>
-  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">No</span>             <span class="c">!&lt; Number of occurrences of sep.</span>
-  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">t</span>              <span class="c">!&lt; Character counter.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                           <span class="kd">::</span> <span class="n">temporary</span>      <span class="c">!&lt; Temporary storage.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span>              <span class="kd">::</span> <span class="n">temp_toks</span><span class="p">(:,:)</span> <span class="c">!&lt; Temporary tokens substring.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>           <span class="c">!&lt; The string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">sep</span>            <span class="c">!&lt; Separator.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">tokens</span><span class="p">(:)</span>      <span class="c">!&lt; Tokens substring.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span>          <span class="kd">::</span> <span class="n">sep_</span>           <span class="c">!&lt; Separator, default value.</span>
+  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">No</span>             <span class="c">!&lt; Number of occurrences of sep.</span>
+  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">t</span>              <span class="c">!&lt; Character counter.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                                    <span class="kd">::</span> <span class="n">temporary</span>      <span class="c">!&lt; Temporary storage.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span>                       <span class="kd">::</span> <span class="n">temp_toks</span><span class="p">(:,:)</span> <span class="c">!&lt; Temporary tokens substring.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">))</span> <span class="k">then</span>
-<span class="k">    </span><span class="n">temporary</span> <span class="o">=</span> <span class="n">self</span><span class="p">%</span><span class="n">unique</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
-    <span class="n">No</span> <span class="o">=</span> <span class="n">temporary</span><span class="p">%</span><span class="n">scount</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+<span class="k">    </span><span class="n">sep_</span> <span class="o">=</span> <span class="n">SPACE</span> <span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">sep</span><span class="p">))</span> <span class="n">sep_</span> <span class="o">=</span> <span class="n">sep</span>
+
+    <span class="n">temporary</span> <span class="o">=</span> <span class="n">self</span><span class="p">%</span><span class="n">unique</span><span class="p">(</span><span class="n">sep_</span><span class="p">)</span>
+    <span class="n">No</span> <span class="o">=</span> <span class="n">temporary</span><span class="p">%</span><span class="n">scount</span><span class="p">(</span><span class="n">sep_</span><span class="p">)</span>
     <span class="k">allocate</span><span class="p">(</span><span class="n">temp_toks</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">No</span><span class="p">))</span>
-    <span class="n">temp_toks</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">temporary</span><span class="p">%</span><span class="n">partition</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+    <span class="n">temp_toks</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">temporary</span><span class="p">%</span><span class="n">partition</span><span class="p">(</span><span class="n">sep_</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">No</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">      do </span><span class="n">t</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">No</span>
-        <span class="n">temp_toks</span><span class="p">(:,</span> <span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">temp_toks</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)%</span><span class="n">partition</span><span class="p">(</span><span class="n">sep</span><span class="p">)</span>
+        <span class="n">temp_toks</span><span class="p">(:,</span> <span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">temp_toks</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)%</span><span class="n">partition</span><span class="p">(</span><span class="n">sep_</span><span class="p">)</span>
       <span class="n">enddo</span>
     <span class="n">endif</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">temp_toks</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)%</span><span class="n">raw</span><span class="o">/=</span><span class="s1">&#39;&#39;</span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="n">temp_toks</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">No</span><span class="p">)%</span><span class="n">raw</span><span class="o">/=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">then</span>

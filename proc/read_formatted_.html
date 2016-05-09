@@ -321,7 +321,7 @@ private subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
   
 <tr>
   
-  <td><span class="anchor" id="variable-iotype"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-iotype"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -366,7 +366,7 @@ private subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
   
 <tr>
   
-  <td><span class="anchor" id="variable-iomsg"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-iomsg"></span>character(kind=CK,len=*),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -407,7 +407,7 @@ private subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
   
 <tr>
   
-  <td><span class="anchor" id="variable-temporary%7E6"></span>character(len=100),</td>
+  <td><span class="anchor" id="variable-temporary%7E6"></span>character(kind=CK,len=100),</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -444,13 +444,13 @@ private subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
   <span class="c">!&lt;</span>
   <span class="c">!&lt; @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dtv</span>       <span class="c">!&lt; The string.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">unit</span>      <span class="c">!&lt; Logical unit.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">iotype</span>    <span class="c">!&lt; Edit descriptor.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">v_list</span><span class="p">(:)</span> <span class="c">!&lt; Edit descriptor list.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">iostat</span>    <span class="c">!&lt; IO status code.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">iomsg</span>     <span class="c">!&lt; IO status message.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">temporary</span> <span class="c">!&lt; Temporary storage string.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dtv</span>       <span class="c">!&lt; The string.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">unit</span>      <span class="c">!&lt; Logical unit.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">iotype</span>    <span class="c">!&lt; Edit descriptor.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">v_list</span><span class="p">(:)</span> <span class="c">!&lt; Edit descriptor list.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">iostat</span>    <span class="c">!&lt; IO status code.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">iomsg</span>     <span class="c">!&lt; IO status message.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">temporary</span> <span class="c">!&lt; Temporary storage string.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

@@ -8,14 +8,16 @@ module stringifor
 implicit none
 private
 save
-public :: string
+public :: string, CK
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
+integer, parameter :: CK = selected_char_kind('DEFAULT') !< Default character kind.
+
 type :: string
   !< OOP designed string class.
   private
-  character(len=:), allocatable :: raw !< Raw data.
+  character(kind=CK, len=:), allocatable :: raw !< Raw data.
   contains
     ! public methods
     procedure, pass(self) :: free       !< Free dynamic memory.
@@ -23,8 +25,6 @@ type :: string
     procedure, pass(self) :: upper      !< Return a string with all uppercase characters.
     procedure, pass(self) :: lower      !< Return a string with all lowercase characters.
     procedure, pass(self) :: capitalize !< Return a string with its first character capitalized and the rest lowercased.
-    procedure, pass(self) :: end_with   !< Return true if a string ends with a specified suffix.
-    procedure, pass(self) :: start_with !< Return true if a string starts with a specified prefix.
     procedure, pass(self) :: partition  !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace    !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: split      !< Return a list of substring in the string, using sep as the delimiter string.
@@ -36,6 +36,8 @@ type :: string
     procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
     procedure, pass(self) :: is_lower     !< Return true if all characters in the string are lowercase.
     procedure, pass(self) :: is_digit     !< Return true if all characters in the string are digits.
+    procedure, pass(self) :: end_with   !< Return true if a string ends with a specified suffix.
+    procedure, pass(self) :: start_with !< Return true if a string starts with a specified prefix.
     ! operators
     generic :: assignment(=) => string_assign_string, &
                                 string_assign_character             !< Assignment operator overloading.
@@ -84,8 +86,9 @@ type :: string
     procedure, private, pass(self) :: replace_one_occurrence         !< Replace the first occurrence of substring old by new.
 endtype string
 
-character(len=26), parameter :: upper_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
-character(len=26), parameter :: lower_alphabet = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
+character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
+character(kind=CK, len=26), parameter :: LOWER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
+character(kind=CK, len=*),  parameter :: SPACE          = ' '                          !< Space character.
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
   ! public methods
@@ -106,8 +109,8 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the raw characters data.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in)     :: self !< The string.
-  character(len=:), allocatable :: raw  !< Raw characters data.
+  class(string), intent(in)              :: self !< The string.
+  character(kind=CK, len=:), allocatable :: raw  !< Raw characters data.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -134,8 +137,8 @@ contains
   if (allocated(self%raw)) then
     upper = self
     do n1=1, len(self%raw)
-      n2 = index(lower_alphabet, self%raw(n1:n1))
-      if (n2>0) upper%raw(n1:n1) = upper_alphabet(n2:n2)
+      n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
+      if (n2>0) upper%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
     enddo
   endif
   return
@@ -156,8 +159,8 @@ contains
   if (allocated(self%raw)) then
     lower = self
     do n1=1, len(self%raw)
-      n2 = index(upper_alphabet, self%raw(n1:n1))
-      if (n2>0) lower%raw(n1:n1) = lower_alphabet(n2:n2)
+      n2 = index(UPPER_ALPHABET, self%raw(n1:n1))
+      if (n2>0) lower%raw(n1:n1) = LOWER_ALPHABET(n2:n2)
     enddo
   endif
   return
@@ -176,95 +179,47 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
     capitalized = self%lower()
-    c = index(lower_alphabet, capitalized%raw(1:1))
-    if (c>0) capitalized%raw(1:1) = upper_alphabet(c:c)
+    c = index(LOWER_ALPHABET, capitalized%raw(1:1))
+    if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction capitalize
 
-  elemental function end_with(self, suffix, start, end)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if a string ends with a specified suffix.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)           :: self     !< The string.
-  character(len=*), intent(in)           :: suffix   !< Searched suffix.
-  integer,          intent(in), optional :: start    !< Start position into the string.
-  integer,          intent(in), optional :: end      !< End position into the string.
-  logical                                :: end_with !< Result of the test.
-  integer                                :: start_   !< Start position into the string, local variable.
-  integer                                :: end_     !< End position into the string, local variable.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  end_with = .false.
-  if (allocated(self%raw)) then
-    start_ = 1             ; if (present(start)) start_ = start
-    end_   = len(self%raw) ; if (present(end))   end_   = end
-    if (len(suffix)<=len(self%raw(start_:end_))) then
-      end_with = index(self%raw(start_:end_), suffix)==(len(self%raw(start_:end_)) - len(suffix) + 1)
-    endif
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction end_with
-
-  elemental function start_with(self, prefix, start, end)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return true if a string starts with a specified prefix.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)           :: self       !< The string.
-  character(len=*), intent(in)           :: prefix     !< Searched prefix.
-  integer,          intent(in), optional :: start      !< Start position into the string.
-  integer,          intent(in), optional :: end        !< End position into the string.
-  logical                                :: start_with !< Result of the test.
-  integer                                :: start_     !< Start position into the string, local variable.
-  integer                                :: end_       !< End position into the string, local variable.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  start_with = .false.
-  if (allocated(self%raw)) then
-    start_ = 1             ; if (present(start)) start_ = start
-    end_   = len(self%raw) ; if (present(end))   end_   = end
-    if (len(prefix)<=len(self%raw(start_:end_))) then
-      start_with = index(self%raw(start_:end_), prefix)==1
-    endif
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction start_with
-
   pure function partition(self, sep) result(partitions)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Split string at separator and return the 3 parts (before, the separator and after).
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)  :: self            !< The string.
-  character(len=*), intent(in)  :: sep             !< Separator.
-  type(string)                  :: partitions(1:3) !< Partions: before the separator, the separator itsels and after the separator.
-  integer                       :: c               !< Character counter.
+  class(string),             intent(in)           :: self            !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep             !< Separator.
+  type(string)                                    :: partitions(1:3) !< Partions: before the separator, the separator itsels and
+                                                                     !< after the separator.
+  character(kind=CK, len=:), allocatable          :: sep_            !< Separator, default value.
+  integer                                         :: c               !< Character counter.
 #ifdef __GFORTRAN__
-  character(len=:), allocatable :: temporary       !< Temporary storage, workaround for GNU bug.
+  character(kind=CK, len=:), allocatable          :: temporary       !< Temporary storage, workaround for GNU bug.
 #endif
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
+    sep_ = SPACE ; if (present(sep)) sep_ = sep
+
     partitions(1) = self
-    partitions(2) = sep
+    partitions(2) = sep_
     partitions(3) = ''
-    if (len(sep)>=len(self%raw)) return
-    c = index(self%raw, sep)
+    if (len(sep_)>=len(self%raw)) return
+    c = index(self%raw, sep_)
     if (c>0) then
 #ifdef __GFORTRAN__
       temporary = self%raw
       partitions(1)%raw = temporary(1:c-1)
-      partitions(2)%raw = temporary(c:c+len(sep)-1)
-      partitions(3)%raw = temporary(c+len(sep):)
+      partitions(2)%raw = temporary(c:c+len(sep_)-1)
+      partitions(3)%raw = temporary(c+len(sep_):)
 #else
       partitions(1)%raw = self%raw(1:c-1)
-      partitions(2)%raw = self%raw(c:c+len(sep)-1)
-      partitions(3)%raw = self%raw(c+len(sep):)
+      partitions(2)%raw = self%raw(c:c+len(sep_)-1)
+      partitions(3)%raw = self%raw(c+len(sep_):)
 #endif
     endif
   endif
@@ -276,12 +231,12 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all occurrences of substring old replaced by new.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)           :: self      !< The string.
-  character(len=*), intent(in)           :: old       !< Old substring.
-  character(len=*), intent(in)           :: new       !< New substring.
-  integer,          intent(in), optional :: count     !< Number of old occurences to be replaced.
-  type(string)                           :: replaced  !< The string with old replaced by new.
-  integer                                :: r         !< Counter.
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in)           :: old       !< Old substring.
+  character(kind=CK, len=*), intent(in)           :: new       !< New substring.
+  integer,                   intent(in), optional :: count     !< Number of old occurences to be replaced.
+  type(string)                                    :: replaced  !< The string with old replaced by new.
+  integer                                         :: r         !< Counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -304,28 +259,33 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction replace
 
-  pure subroutine split(self, sep, tokens)
+  pure subroutine split(self, tokens, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a list of substring in the string, using sep as the delimiter string.
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurence.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(in)  :: self           !< The string.
-  character(len=*),          intent(in)  :: sep            !< Separator.
-  type(string), allocatable, intent(out) :: tokens(:)      !< Tokens substring.
-  integer                                :: No             !< Number of occurrences of sep.
-  integer                                :: t              !< Character counter.
-  type(string)                           :: temporary      !< Temporary storage.
-  type(string), allocatable              :: temp_toks(:,:) !< Temporary tokens substring.
+  class(string),             intent(in)           :: self           !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep            !< Separator.
+  type(string), allocatable, intent(out)          :: tokens(:)      !< Tokens substring.
+  character(kind=CK, len=:), allocatable          :: sep_           !< Separator, default value.
+  integer                                         :: No             !< Number of occurrences of sep.
+  integer                                         :: t              !< Character counter.
+  type(string)                                    :: temporary      !< Temporary storage.
+  type(string), allocatable                       :: temp_toks(:,:) !< Temporary tokens substring.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
-    temporary = self%unique(sep)
-    No = temporary%scount(sep)
+    sep_ = SPACE ; if (present(sep)) sep_ = sep
+
+    temporary = self%unique(sep_)
+    No = temporary%scount(sep_)
     allocate(temp_toks(3, No))
-    temp_toks(:, 1) = temporary%partition(sep)
+    temp_toks(:, 1) = temporary%partition(sep_)
     if (No>1) then
       do t=2, No
-        temp_toks(:, t) = temp_toks(3, t-1)%partition(sep)
+        temp_toks(:, t) = temp_toks(3, t-1)%partition(sep_)
       enddo
     endif
     if (temp_toks(1, 1)%raw/=''.and.temp_toks(3, No)%raw/='') then
@@ -395,12 +355,12 @@ contains
   if (allocated(self%raw)) then
     swapcase = self
     do n1=1, len(self%raw)
-      n2 = index(upper_alphabet, self%raw(n1:n1))
+      n2 = index(UPPER_ALPHABET, self%raw(n1:n1))
       if (n2>0) then
-        swapcase%raw(n1:n1) = lower_alphabet(n2:n2)
+        swapcase%raw(n1:n1) = LOWER_ALPHABET(n2:n2)
       else
-        n2 = index(lower_alphabet, self%raw(n1:n1))
-        if (n2>0) swapcase%raw(n1:n1) = upper_alphabet(n2:n2)
+        n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
+        if (n2>0) swapcase%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
       endif
     enddo
   endif
@@ -415,17 +375,20 @@ contains
   !< For example the string ' ab-cre-cre-ab' is reduce to 'ab-cre-ab' if the substring is '-cre'.
   !< @note Eventual multiple trailing white space are not reduced to one occurrence.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)  :: self      !< The string.
-  character(len=*), intent(in)  :: substring !< Substring which multiple occurences must be reduced to one.
-  type(string)                  :: uniq      !< String parsed.
+  class(string),             intent(in)           :: self       !< The string.
+  character(kind=CK, len=*), intent(in), optional :: substring  !< Substring which multiple occurences must be reduced to one.
+  character(kind=CK, len=:), allocatable          :: substring_ !< Substring, default value.
+  type(string)                                    :: uniq       !< String parsed.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
+    substring_ = SPACE ; if (present(substring)) substring_ = substring
+
     uniq = self
     do
-      if (.not.uniq%sindex(repeat(substring, 2))>0) exit
-      uniq = uniq%replace(old=repeat(substring, 2), new=substring)
+      if (.not.uniq%sindex(repeat(substring_, 2))>0) exit
+      uniq = uniq%replace(old=repeat(substring_, 2), new=substring_)
     enddo
   endif
   return
@@ -487,7 +450,7 @@ contains
   if (allocated(self%raw)) then
     is_upper = .true.
     do c=1, len(self%raw)
-      if (index(lower_alphabet, self%raw(c:c))>0) then
+      if (index(LOWER_ALPHABET, self%raw(c:c))>0) then
         is_upper = .false.
         exit
       endif
@@ -511,7 +474,7 @@ contains
   if (allocated(self%raw)) then
     is_lower = .true.
     do c=1, len(self%raw)
-      if (index(upper_alphabet, self%raw(c:c))>0) then
+      if (index(UPPER_ALPHABET, self%raw(c:c))>0) then
         is_lower = .false.
         exit
       endif
@@ -520,6 +483,58 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction is_lower
+
+  elemental function end_with(self, suffix, start, end)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if a string ends with a specified suffix.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self     !< The string.
+  character(kind=CK, len=*), intent(in)           :: suffix   !< Searched suffix.
+  integer,                   intent(in), optional :: start    !< Start position into the string.
+  integer,                   intent(in), optional :: end      !< End position into the string.
+  logical                                         :: end_with !< Result of the test.
+  integer                                         :: start_   !< Start position into the string, local variable.
+  integer                                         :: end_     !< End position into the string, local variable.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  end_with = .false.
+  if (allocated(self%raw)) then
+    start_ = 1             ; if (present(start)) start_ = start
+    end_   = len(self%raw) ; if (present(end))   end_   = end
+    if (len(suffix)<=len(self%raw(start_:end_))) then
+      end_with = index(self%raw(start_:end_), suffix)==(len(self%raw(start_:end_)) - len(suffix) + 1)
+    endif
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction end_with
+
+  elemental function start_with(self, prefix, start, end)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return true if a string starts with a specified prefix.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self       !< The string.
+  character(kind=CK, len=*), intent(in)           :: prefix     !< Searched prefix.
+  integer,                   intent(in), optional :: start      !< Start position into the string.
+  integer,                   intent(in), optional :: end        !< End position into the string.
+  logical                                         :: start_with !< Result of the test.
+  integer                                         :: start_     !< Start position into the string, local variable.
+  integer                                         :: end_       !< End position into the string, local variable.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  start_with = .false.
+  if (allocated(self%raw)) then
+    start_ = 1             ; if (present(start)) start_ = start
+    end_   = len(self%raw) ; if (present(end))   end_   = end
+    if (len(prefix)<=len(self%raw(start_:end_))) then
+      start_with = index(self%raw(start_:end_), prefix)==1
+    endif
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction start_with
 
   ! builtins replacements
   elemental function sadjustl(self) result(adjusted)
@@ -560,15 +575,15 @@ contains
   !< occurrences happening at the start of string (thus not having a left companion) or at the end of the string (thus not having a
   !< right companion).
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in)           :: self             !< The string.
-  character(*),  intent(in)           :: substring        !< Substring.
-  logical,       intent(in), optional :: ignore_isolated  !< Ignore "isolated" occurrences.
-  integer                             :: No               !< Number of occurrences.
-  logical                             :: ignore_isolated_ !< Ignore "isolated" occurrences, local variable.
-  integer                             :: c1               !< Counter.
-  integer                             :: c2               !< Counter.
+  class(string), intent(in)              :: self             !< The string.
+  character(*),  intent(in)              :: substring        !< Substring.
+  logical,       intent(in), optional    :: ignore_isolated  !< Ignore "isolated" occurrences.
+  integer                                :: No               !< Number of occurrences.
+  logical                                :: ignore_isolated_ !< Ignore "isolated" occurrences, local variable.
+  integer                                :: c1               !< Counter.
+  integer                                :: c2               !< Counter.
 #ifdef __GFORTRAN__
-  character(len=:), allocatable       :: temporary        !< Temporary storage, workaround for GNU bug.
+  character(kind=CK, len=:), allocatable :: temporary        !< Temporary storage, workaround for GNU bug.
 #endif
   !---------------------------------------------------------------------------------------------------------------------------------
 
@@ -603,10 +618,10 @@ contains
   !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
   !< the start of the last occurrence rather than the first.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)           :: self      !< The string.
-  character(len=*), intent(in)           :: substring !< Searched substring.
-  logical,          intent(in), optional :: back      !< Start of the last occurrence rather than the first.
-  integer                                :: i         !< Result of the search.
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in)           :: substring !< Searched substring.
+  logical,                   intent(in), optional :: back      !< Start of the last occurrence rather than the first.
+  integer                                         :: i         !< Result of the search.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -659,9 +674,9 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !<
   !---------------------------------------------------------------------------------------------------------------------------------
-  character(len=*), intent(in) :: rstring  !< String to be repeated.
-  integer,          intent(in) :: ncopies  !< Number of string copies.
-  type(string)                 :: repeated !< Repeated string.
+  character(kind=CK, len=*), intent(in) :: rstring  !< String to be repeated.
+  integer,                   intent(in) :: ncopies  !< Number of string copies.
+  type(string)                          :: repeated !< Repeated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -674,10 +689,10 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is in `set`.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)           :: self  !< The string.
-  character(len=*), intent(in)           :: set   !< Searched set.
-  logical,          intent(in), optional :: back  !< Start of the last occurrence rather than the first.
-  integer                                :: i     !< Result of the search.
+  class(string),             intent(in)           :: self  !< The string.
+  character(kind=CK, len=*), intent(in)           :: set   !< Searched set.
+  logical,                   intent(in), optional :: back  !< Start of the last occurrence rather than the first.
+  integer                                         :: i     !< Result of the search.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -710,10 +725,10 @@ contains
   !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is not
   !< in `set`. If all characters of `string` are found in `set`, the result is zero.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)           :: self  !< The string.
-  character(len=*), intent(in)           :: set   !< Searched set.
-  logical,          intent(in), optional :: back  !< Start of the last occurrence rather than the first.
-  integer                                :: i     !< Result of the search.
+  class(string),             intent(in)           :: self  !< The string.
+  character(kind=CK, len=*), intent(in)           :: set   !< Searched set.
+  logical,                   intent(in), optional :: back  !< Start of the last occurrence rather than the first.
+  integer                                         :: i     !< Result of the search.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -745,8 +760,8 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Assignment operator from character input.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(inout) :: lhs !< Left hand side.
-  character(len=*), intent(in)    :: rhs !< Right hand side.
+  class(string),             intent(inout) :: lhs !< Left hand side.
+  character(kind=CK, len=*), intent(in)    :: rhs !< Right hand side.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -759,9 +774,9 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with string.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in)     :: lhs    !< Left hand side.
-  type(string),  intent(in)     :: rhs    !< Right hand side.
-  character(len=:), allocatable :: concat !< Concatenated string.
+  class(string), intent(in)              :: lhs    !< Left hand side.
+  type(string),  intent(in)              :: rhs    !< Right hand side.
+  character(kind=CK, len=:), allocatable :: concat !< Concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -776,9 +791,9 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with character.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)  :: lhs    !< Left hand side.
-  character(len=*), intent(in)  :: rhs    !< Right hand side.
-  character(len=:), allocatable :: concat !< Concatenated string.
+  class(string),             intent(in)  :: lhs    !< Left hand side.
+  character(kind=CK, len=*), intent(in)  :: rhs    !< Right hand side.
+  character(kind=CK, len=:), allocatable :: concat !< Concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -795,9 +810,9 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with character (inverted).
   !---------------------------------------------------------------------------------------------------------------------------------
-  character(len=*), intent(in)  :: lhs    !< Left hand side.
-  class(string),    intent(in)  :: rhs    !< Right hand side.
-  character(len=:), allocatable :: concat !< Concatenated string.
+  character(kind=CK, len=*), intent(in)  :: lhs    !< Left hand side.
+  class(string),             intent(in)  :: rhs    !< Right hand side.
+  character(kind=CK, len=:), allocatable :: concat !< Concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -814,10 +829,10 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with string.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in)     :: lhs       !< Left hand side.
-  type(string),  intent(in)     :: rhs       !< Right hand side.
-  type(string)                  :: concat    !< Concatenated string.
-  character(len=:), allocatable :: temporary !< Temporary concatenated string.
+  class(string), intent(in)              :: lhs       !< Left hand side.
+  type(string),  intent(in)              :: rhs       !< Right hand side.
+  type(string)                           :: concat    !< Concatenated string.
+  character(kind=CK, len=:), allocatable :: temporary !< Temporary concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -833,9 +848,9 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with character.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)  :: lhs    !< Left hand side.
-  character(len=*), intent(in)  :: rhs    !< Right hand side.
-  type(string)                  :: concat !< Concatenated string.
+  class(string),             intent(in)  :: lhs    !< Left hand side.
+  character(kind=CK, len=*), intent(in)  :: rhs    !< Right hand side.
+  type(string)                           :: concat !< Concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -852,9 +867,9 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with character (inverted).
   !---------------------------------------------------------------------------------------------------------------------------------
-  character(len=*), intent(in)  :: lhs    !< Left hand side.
-  class(string),    intent(in)  :: rhs    !< Right hand side.
-  type(string)                  :: concat !< Concatenated string.
+  character(kind=CK, len=*), intent(in)  :: lhs    !< Left hand side.
+  class(string),             intent(in)  :: rhs    !< Right hand side.
+  type(string)                           :: concat !< Concatenated string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -873,13 +888,13 @@ contains
   !<
   !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(inout) :: dtv       !< The string.
-  integer,          intent(in)    :: unit      !< Logical unit.
-  character(len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,          intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,          intent(out)   :: iostat    !< IO status code.
-  character(len=*), intent(inout) :: iomsg     !< IO status message.
-  character(len=100)              :: temporary !< Temporary storage string.
+  class(string),             intent(inout) :: dtv       !< The string.
+  integer,                   intent(in)    :: unit      !< Logical unit.
+  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
+  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -895,13 +910,13 @@ contains
   !<
   !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(inout) :: dtv       !< The string.
-  character(len=*), intent(in)    :: iunit     !< Internal unit.
-  character(len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,          intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,          intent(out)   :: iostat    !< IO status code.
-  character(len=*), intent(inout) :: iomsg     !< IO status message.
-  character(len=100)              :: temporary !< Temporary storage string.
+  class(string),             intent(inout) :: dtv       !< The string.
+  character(kind=CK, len=*), intent(in)    :: iunit     !< Internal unit.
+  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
+  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -915,12 +930,12 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted output.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)    :: dtv       !< The string.
-  integer,          intent(in)    :: unit      !< Logical unit.
-  character(len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,          intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,          intent(out)   :: iostat    !< IO status code.
-  character(len=*), intent(inout) :: iomsg     !< IO status message.
+  class(string),             intent(in)    :: dtv       !< The string.
+  integer,                   intent(in)    :: unit      !< Logical unit.
+  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
+  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -937,12 +952,12 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted output to internal.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)    :: dtv       !< The string.
-  character(len=*), intent(inout) :: iunit     !< Interanl unit.
-  character(len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,          intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,          intent(out)   :: iostat    !< IO status code.
-  character(len=*), intent(inout) :: iomsg     !< IO status message.
+  class(string),             intent(in)    :: dtv       !< The string.
+  character(kind=CK, len=*), intent(inout) :: iunit     !< Interanl unit.
+  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
+  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -961,11 +976,11 @@ contains
   !<
   !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(inout) :: dtv       !< The string.
-  integer,          intent(in)    :: unit      !< Logical unit.
-  integer,          intent(out)   :: iostat    !< IO status code.
-  character(len=*), intent(inout) :: iomsg     !< IO status message.
-  character(len=100)              :: temporary !< Temporary storage string.
+  class(string),             intent(inout) :: dtv       !< The string.
+  integer,                   intent(in)    :: unit      !< Logical unit.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -979,10 +994,10 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Unformatted output.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)    :: dtv    !< The string.
-  integer,          intent(in)    :: unit   !< Logical unit.
-  integer,          intent(out)   :: iostat !< IO status code.
-  character(len=*), intent(inout) :: iomsg  !< IO status message.
+  class(string),             intent(in)    :: dtv    !< The string.
+  integer,                   intent(in)    :: unit   !< Logical unit.
+  integer,                   intent(out)   :: iostat !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg  !< IO status message.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -999,13 +1014,13 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with the first occurrence of substring old replaced by new.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),    intent(in)  :: self      !< The string.
-  character(len=*), intent(in)  :: old       !< Old substring.
-  character(len=*), intent(in)  :: new       !< New substring.
-  type(string)                  :: replaced  !< The string with old replaced by new.
-  integer                       :: pos       !< Position from which replace old.
+  class(string),             intent(in)  :: self      !< The string.
+  character(kind=CK, len=*), intent(in)  :: old       !< Old substring.
+  character(kind=CK, len=*), intent(in)  :: new       !< New substring.
+  type(string)                           :: replaced  !< The string with old replaced by new.
+  integer                                :: pos       !< Position from which replace old.
 #ifdef __GFORTRAN__
-  character(len=:), allocatable :: temporary !< Temporary storage, workaround for GNU bug.
+  character(kind=CK, len=:), allocatable :: temporary !< Temporary storage, workaround for GNU bug.
 #endif
   !---------------------------------------------------------------------------------------------------------------------------------
 

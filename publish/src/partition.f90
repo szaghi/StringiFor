@@ -11,7 +11,7 @@ use stringifor, only : string
 implicit none
 type(string) :: astring        !< A string.
 type(string) :: strings(3)     !< A set of strings.
-logical      :: test_passed(2) !< List of passed tests.
+logical      :: test_passed(3) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -28,6 +28,14 @@ write(stdout, "(A)") 'After sep:  "'//strings(3)//'"'
 strings = astring%partition(sep='Hello')
 test_passed(2) = (strings(1)//''==''.and.strings(2)//''=='Hello'.and.strings(3)//''==' WorLD!')
 write(stdout, "(A)") 'Original: "'//astring//'" separator: "'//'Hello'//'"'
+write(stdout, "(A)") 'Before sep: "'//strings(1)//'"'
+write(stdout, "(A)") 'Sep itself: "'//strings(2)//'"'
+write(stdout, "(A)") 'After sep:  "'//strings(3)//'"'
+
+astring = 'Hello WorLD!'
+strings = astring%partition()
+test_passed(3) = (strings(1)//''=='Hello'.and.strings(2)//''==' '.and.strings(3)//''=='WorLD!')
+write(stdout, "(A)") 'Original: "'//astring//'" separator: "'//' '//'"'
 write(stdout, "(A)") 'Before sep: "'//strings(1)//'"'
 write(stdout, "(A)") 'Sep itself: "'//strings(2)//'"'
 write(stdout, "(A)") 'After sep:  "'//strings(3)//'"'

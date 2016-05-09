@@ -294,7 +294,7 @@ private elemental function sindex(self, substring, back) result(i)
   
 <tr>
   
-  <td><span class="anchor" id="variable-substring%7E3"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-substring%7E3"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -365,10 +365,10 @@ private elemental function sindex(self, substring, back) result(i)
   <span class="c">!&lt; If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is</span>
   <span class="c">!&lt; the start of the last occurrence rather than the first.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">substring</span> <span class="c">!&lt; Searched substring.</span>
-  <span class="kt">logical</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">back</span>      <span class="c">!&lt; Start of the last occurrence rather than the first.</span>
-  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">i</span>         <span class="c">!&lt; Result of the search.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">substring</span> <span class="c">!&lt; Searched substring.</span>
+  <span class="kt">logical</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">back</span>      <span class="c">!&lt; Start of the last occurrence rather than the first.</span>
+  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">i</span>         <span class="c">!&lt; Result of the search.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

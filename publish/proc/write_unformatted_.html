@@ -324,7 +324,7 @@ private subroutine write_unformatted_(dtv, unit, iostat, iomsg)
   
 <tr>
   
-  <td><span class="anchor" id="variable-iomsg%7E6"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-iomsg%7E6"></span>character(kind=CK,len=*),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -367,10 +367,10 @@ private subroutine write_unformatted_(dtv, unit, iostat, iomsg)
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Unformatted output.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">dtv</span>    <span class="c">!&lt; The string.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">unit</span>   <span class="c">!&lt; Logical unit.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">iostat</span> <span class="c">!&lt; IO status code.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">iomsg</span>  <span class="c">!&lt; IO status message.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">dtv</span>    <span class="c">!&lt; The string.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">unit</span>   <span class="c">!&lt; Logical unit.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">iostat</span> <span class="c">!&lt; IO status code.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">iomsg</span>  <span class="c">!&lt; IO status message.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

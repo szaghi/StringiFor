@@ -293,7 +293,7 @@ private elemental function swapcase(self)
   
 <tr>
   
-  <td><span class="anchor" id="variable-self%7E10"></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td><span class="anchor" id="variable-self%7E8"></span>class(<a href='../type/string.html'>string</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -401,12 +401,12 @@ private elemental function swapcase(self)
   <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">))</span> <span class="k">then</span>
 <span class="k">    </span><span class="n">swapcase</span> <span class="o">=</span> <span class="n">self</span>
     <span class="k">do </span><span class="n">n1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">)</span>
-      <span class="n">n2</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">upper_alphabet</span><span class="p">,</span> <span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">))</span>
+      <span class="n">n2</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">UPPER_ALPHABET</span><span class="p">,</span> <span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">))</span>
       <span class="k">if</span> <span class="p">(</span><span class="n">n2</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">        </span><span class="n">swapcase</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">)</span> <span class="o">=</span> <span class="n">lower_alphabet</span><span class="p">(</span><span class="n">n2</span><span class="p">:</span><span class="n">n2</span><span class="p">)</span>
+<span class="k">        </span><span class="n">swapcase</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">)</span> <span class="o">=</span> <span class="n">LOWER_ALPHABET</span><span class="p">(</span><span class="n">n2</span><span class="p">:</span><span class="n">n2</span><span class="p">)</span>
       <span class="k">else</span>
-<span class="k">        </span><span class="n">n2</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">lower_alphabet</span><span class="p">,</span> <span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">))</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">n2</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">swapcase</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">)</span> <span class="o">=</span> <span class="n">upper_alphabet</span><span class="p">(</span><span class="n">n2</span><span class="p">:</span><span class="n">n2</span><span class="p">)</span>
+<span class="k">        </span><span class="n">n2</span> <span class="o">=</span> <span class="nb">index</span><span class="p">(</span><span class="n">LOWER_ALPHABET</span><span class="p">,</span> <span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n2</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">swapcase</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">n1</span><span class="p">:</span><span class="n">n1</span><span class="p">)</span> <span class="o">=</span> <span class="n">UPPER_ALPHABET</span><span class="p">(</span><span class="n">n2</span><span class="p">:</span><span class="n">n2</span><span class="p">)</span>
       <span class="n">endif</span>
     <span class="n">enddo</span>
   <span class="n">endif</span>

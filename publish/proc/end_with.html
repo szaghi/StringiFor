@@ -293,7 +293,7 @@ private elemental function end_with(self, suffix, start, end)
   
 <tr>
   
-  <td><span class="anchor" id="variable-self%7E5"></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td><span class="anchor" id="variable-self%7E14"></span>class(<a href='../type/string.html'>string</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -308,7 +308,7 @@ private elemental function end_with(self, suffix, start, end)
   
 <tr>
   
-  <td><span class="anchor" id="variable-suffix"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-suffix"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -436,13 +436,13 @@ private elemental function end_with(self, suffix, start, end)
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Return true if a string ends with a specified suffix.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>     <span class="c">!&lt; The string.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">suffix</span>   <span class="c">!&lt; Searched suffix.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">start</span>    <span class="c">!&lt; Start position into the string.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="k">end</span>      <span class="c">!&lt; End position into the string.</span>
-  <span class="kt">logical</span>                                <span class="kd">::</span> <span class="n">end_with</span> <span class="c">!&lt; Result of the test.</span>
-  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">start_</span>   <span class="c">!&lt; Start position into the string, local variable.</span>
-  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">end_</span>     <span class="c">!&lt; End position into the string, local variable.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>     <span class="c">!&lt; The string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">suffix</span>   <span class="c">!&lt; Searched suffix.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">start</span>    <span class="c">!&lt; Start position into the string.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="k">end</span>      <span class="c">!&lt; End position into the string.</span>
+  <span class="kt">logical</span>                                         <span class="kd">::</span> <span class="n">end_with</span> <span class="c">!&lt; Result of the test.</span>
+  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">start_</span>   <span class="c">!&lt; Start position into the string, local variable.</span>
+  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">end_</span>     <span class="c">!&lt; End position into the string, local variable.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

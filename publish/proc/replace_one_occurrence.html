@@ -308,7 +308,7 @@ private elemental function replace_one_occurrence(self, old, new) result(replace
   
 <tr>
   
-  <td><span class="anchor" id="variable-old%7E2"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-old%7E2"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -323,7 +323,7 @@ private elemental function replace_one_occurrence(self, old, new) result(replace
   
 <tr>
   
-  <td><span class="anchor" id="variable-new%7E2"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-new%7E2"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -386,7 +386,7 @@ private elemental function replace_one_occurrence(self, old, new) result(replace
   
 <tr>
   
-  <td><span class="anchor" id="variable-temporary%7E4"></span>character(len=:),</td>
+  <td><span class="anchor" id="variable-temporary%7E4"></span>character(kind=CK,len=:),</td>
   
   <td>public,</td>
   <td>allocatable</td><td>::</td>
@@ -421,13 +421,13 @@ private elemental function replace_one_occurrence(self, old, new) result(replace
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Return a string with the first occurrence of substring old replaced by new.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">old</span>       <span class="c">!&lt; Old substring.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">new</span>       <span class="c">!&lt; New substring.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                  <span class="kd">::</span> <span class="n">replaced</span>  <span class="c">!&lt; The string with old replaced by new.</span>
-  <span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">pos</span>       <span class="c">!&lt; Position from which replace old.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">old</span>       <span class="c">!&lt; Old substring.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">new</span>       <span class="c">!&lt; New substring.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                           <span class="kd">::</span> <span class="n">replaced</span>  <span class="c">!&lt; The string with old replaced by new.</span>
+  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">pos</span>       <span class="c">!&lt; Position from which replace old.</span>
 <span class="cp">#ifdef __GFORTRAN__</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">temporary</span> <span class="c">!&lt; Temporary storage, workaround for GNU bug.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">temporary</span> <span class="c">!&lt; Temporary storage, workaround for GNU bug.</span>
 <span class="cp">#endif</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 

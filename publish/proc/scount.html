@@ -421,7 +421,7 @@ private elemental function scount(self, substring, ignore_isolated) result(No)
   
 <tr>
   
-  <td><span class="anchor" id="variable-temporary%7E2"></span>character(len=:),</td>
+  <td><span class="anchor" id="variable-temporary%7E2"></span>character(kind=CK,len=:),</td>
   
   <td>public,</td>
   <td>allocatable</td><td>::</td>
@@ -460,15 +460,15 @@ private elemental function scount(self, substring, ignore_isolated) result(No)
   <span class="c">!&lt; occurrences happening at the start of string (thus not having a left companion) or at the end of the string (thus not having a</span>
   <span class="c">!&lt; right companion).</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>             <span class="c">!&lt; The string.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>  <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">substring</span>        <span class="c">!&lt; Substring.</span>
-  <span class="kt">logical</span><span class="p">,</span>       <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">ignore_isolated</span>  <span class="c">!&lt; Ignore &quot;isolated&quot; occurrences.</span>
-  <span class="kt">integer</span>                             <span class="kd">::</span> <span class="n">No</span>               <span class="c">!&lt; Number of occurrences.</span>
-  <span class="kt">logical</span>                             <span class="kd">::</span> <span class="n">ignore_isolated_</span> <span class="c">!&lt; Ignore &quot;isolated&quot; occurrences, local variable.</span>
-  <span class="kt">integer</span>                             <span class="kd">::</span> <span class="n">c1</span>               <span class="c">!&lt; Counter.</span>
-  <span class="kt">integer</span>                             <span class="kd">::</span> <span class="n">c2</span>               <span class="c">!&lt; Counter.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">self</span>             <span class="c">!&lt; The string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="o">*</span><span class="p">),</span>  <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">substring</span>        <span class="c">!&lt; Substring.</span>
+  <span class="kt">logical</span><span class="p">,</span>       <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span>    <span class="kd">::</span> <span class="n">ignore_isolated</span>  <span class="c">!&lt; Ignore &quot;isolated&quot; occurrences.</span>
+  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">No</span>               <span class="c">!&lt; Number of occurrences.</span>
+  <span class="kt">logical</span>                                <span class="kd">::</span> <span class="n">ignore_isolated_</span> <span class="c">!&lt; Ignore &quot;isolated&quot; occurrences, local variable.</span>
+  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">c1</span>               <span class="c">!&lt; Counter.</span>
+  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">c2</span>               <span class="c">!&lt; Counter.</span>
 <span class="cp">#ifdef __GFORTRAN__</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span>       <span class="kd">::</span> <span class="n">temporary</span>        <span class="c">!&lt; Temporary storage, workaround for GNU bug.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">temporary</span>        <span class="c">!&lt; Temporary storage, workaround for GNU bug.</span>
 <span class="cp">#endif</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 

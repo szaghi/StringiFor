@@ -294,7 +294,7 @@ private elemental function sverify(self, set, back) result(i)
   
 <tr>
   
-  <td><span class="anchor" id="variable-set%7E2"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-set%7E2"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -363,10 +363,10 @@ private elemental function sverify(self, set, back) result(i)
   <span class="c">!&lt; Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is not</span>
   <span class="c">!&lt; in `set`. If all characters of `string` are found in `set`, the result is zero.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>  <span class="c">!&lt; The string.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">set</span>   <span class="c">!&lt; Searched set.</span>
-  <span class="kt">logical</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">back</span>  <span class="c">!&lt; Start of the last occurrence rather than the first.</span>
-  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">i</span>     <span class="c">!&lt; Result of the search.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>  <span class="c">!&lt; The string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">set</span>   <span class="c">!&lt; Searched set.</span>
+  <span class="kt">logical</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">back</span>  <span class="c">!&lt; Start of the last occurrence rather than the first.</span>
+  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">i</span>     <span class="c">!&lt; Result of the search.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

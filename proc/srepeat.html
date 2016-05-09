@@ -279,7 +279,7 @@ private elemental function srepeat(rstring, ncopies) result(repeated)
   
 <tr>
   
-  <td><span class="anchor" id="variable-rstring"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-rstring"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -343,9 +343,9 @@ private elemental function srepeat(rstring, ncopies) result(repeated)
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt;</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rstring</span>  <span class="c">!&lt; String to be repeated.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ncopies</span>  <span class="c">!&lt; Number of string copies.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">repeated</span> <span class="c">!&lt; Repeated string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rstring</span>  <span class="c">!&lt; String to be repeated.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ncopies</span>  <span class="c">!&lt; Number of string copies.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                          <span class="kd">::</span> <span class="n">repeated</span> <span class="c">!&lt; Repeated string.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

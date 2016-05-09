@@ -294,7 +294,7 @@ private elemental function string_concat_character_string(lhs, rhs) result(conca
   
 <tr>
   
-  <td><span class="anchor" id="variable-rhs%7E5"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-rhs%7E5"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -346,9 +346,9 @@ private elemental function string_concat_character_string(lhs, rhs) result(conca
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Concatenation with character.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">lhs</span>    <span class="c">!&lt; Left hand side.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">rhs</span>    <span class="c">!&lt; Right hand side.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                  <span class="kd">::</span> <span class="n">concat</span> <span class="c">!&lt; Concatenated string.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">lhs</span>    <span class="c">!&lt; Left hand side.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">rhs</span>    <span class="c">!&lt; Right hand side.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                           <span class="kd">::</span> <span class="n">concat</span> <span class="c">!&lt; Concatenated string.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

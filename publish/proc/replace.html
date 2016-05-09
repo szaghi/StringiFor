@@ -291,7 +291,7 @@ private elemental function replace(self, old, new, count) result(replaced)
   
 <tr>
   
-  <td><span class="anchor" id="variable-self%7E8"></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td><span class="anchor" id="variable-self%7E6"></span>class(<a href='../type/string.html'>string</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -306,7 +306,7 @@ private elemental function replace(self, old, new, count) result(replaced)
   
 <tr>
   
-  <td><span class="anchor" id="variable-old"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-old"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -321,7 +321,7 @@ private elemental function replace(self, old, new, count) result(replaced)
   
 <tr>
   
-  <td><span class="anchor" id="variable-new"></span>character(len=*),</td>
+  <td><span class="anchor" id="variable-new"></span>character(kind=CK,len=*),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -420,12 +420,12 @@ private elemental function replace(self, old, new, count) result(replaced)
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Return a string with all occurrences of substring old replaced by new.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>    <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">old</span>       <span class="c">!&lt; Old substring.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">new</span>       <span class="c">!&lt; New substring.</span>
-  <span class="kt">integer</span><span class="p">,</span>          <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="nb">count</span>     <span class="c">!&lt; Number of old occurences to be replaced.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                           <span class="kd">::</span> <span class="n">replaced</span>  <span class="c">!&lt; The string with old replaced by new.</span>
-  <span class="kt">integer</span>                                <span class="kd">::</span> <span class="n">r</span>         <span class="c">!&lt; Counter.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">old</span>       <span class="c">!&lt; Old substring.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">new</span>       <span class="c">!&lt; New substring.</span>
+  <span class="kt">integer</span><span class="p">,</span>                   <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="nb">count</span>     <span class="c">!&lt; Number of old occurences to be replaced.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                                    <span class="kd">::</span> <span class="n">replaced</span>  <span class="c">!&lt; The string with old replaced by new.</span>
+  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">r</span>         <span class="c">!&lt; Counter.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

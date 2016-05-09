@@ -291,7 +291,7 @@ private elemental function is_upper(self)
   
 <tr>
   
-  <td><span class="anchor" id="variable-self%7E14"></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td><span class="anchor" id="variable-self%7E12"></span>class(<a href='../type/string.html'>string</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -385,7 +385,7 @@ private elemental function is_upper(self)
   <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">))</span> <span class="k">then</span>
 <span class="k">    </span><span class="n">is_upper</span> <span class="o">=</span> <span class="p">.</span><span class="n">true</span><span class="p">.</span>
     <span class="k">do </span><span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">)</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">lower_alphabet</span><span class="p">,</span> <span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">c</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="n">LOWER_ALPHABET</span><span class="p">,</span> <span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="p">(</span><span class="n">c</span><span class="p">:</span><span class="n">c</span><span class="p">))</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
 <span class="k">        </span><span class="n">is_upper</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
         <span class="k">exit</span>
 <span class="k">      </span><span class="n">endif</span>

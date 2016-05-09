@@ -313,7 +313,7 @@ private pure function string_concat_string(lhs, rhs) result(concat)
     
     
     
-	 <h3>Return Value <small><span class="anchor" id="variable-concat"></span>character(len=:),
+	 <h3>Return Value <small><span class="anchor" id="variable-concat"></span>character(kind=CK,len=:),
   allocatable</small></h3>
     <p>Concatenated string.</p>
     
@@ -346,9 +346,9 @@ private pure function string_concat_string(lhs, rhs) result(concat)
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Concatenation with string.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>     <span class="kd">::</span> <span class="n">lhs</span>    <span class="c">!&lt; Left hand side.</span>
-  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>  <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>     <span class="kd">::</span> <span class="n">rhs</span>    <span class="c">!&lt; Right hand side.</span>
-  <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">concat</span> <span class="c">!&lt; Concatenated string.</span>
+  <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">lhs</span>    <span class="c">!&lt; Left hand side.</span>
+  <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>  <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">rhs</span>    <span class="c">!&lt; Right hand side.</span>
+  <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">concat</span> <span class="c">!&lt; Concatenated string.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
