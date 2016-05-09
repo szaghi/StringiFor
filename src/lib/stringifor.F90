@@ -3,12 +3,15 @@ module stringifor
 !-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, Strings Fortran, yet another stringify Fortran module
 !-----------------------------------------------------------------------------------------------------------------------------------
+use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, str
+!-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 private
 save
 public :: string, CK
+public :: I1P, I2P, I4P, I8P, R4P, R8P
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -44,8 +47,14 @@ type :: string
     procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
     procedure, pass(self) :: start_with   !< Return true if a string starts with a specified prefix.
     ! operators
-    generic :: assignment(=) => string_assign_string, &
-                                string_assign_character             !< Assignment operator overloading.
+    generic :: assignment(=) => string_assign_string,      &
+                                string_assign_character,   &
+                                string_assign_integer_I1P, &
+                                string_assign_integer_I2P, &
+                                string_assign_integer_I4P, &
+                                string_assign_integer_I8P, &
+                                string_assign_real_R4P,    &
+                                string_assign_real_R8P              !< Assignment operator overloading.
     generic :: operator(//) => string_concat_string,    &
                                string_concat_character, &
                                character_concat_string              !< Concatenation operator overloading.
@@ -78,6 +87,12 @@ type :: string
     ! private methods
     procedure, private, pass(lhs)  :: string_assign_string           !< Assignment operator from string input.
     procedure, private, pass(lhs)  :: string_assign_character        !< Assignment operator from character input.
+    procedure, private, pass(lhs)  :: string_assign_integer_I1P      !< Assignment operator from integer input.
+    procedure, private, pass(lhs)  :: string_assign_integer_I2P      !< Assignment operator from integer input.
+    procedure, private, pass(lhs)  :: string_assign_integer_I4P      !< Assignment operator from integer input.
+    procedure, private, pass(lhs)  :: string_assign_integer_I8P      !< Assignment operator from integer input.
+    procedure, private, pass(lhs)  :: string_assign_real_R4P         !< Assignment operator from real input.
+    procedure, private, pass(lhs)  :: string_assign_real_R8P         !< Assignment operator from real input.
     procedure, private, pass(lhs)  :: string_concat_string           !< Concatenation with string.
     procedure, private, pass(lhs)  :: string_concat_character        !< Concatenation with character.
     procedure, private, pass(rhs)  :: character_concat_string        !< Concatenation with character (inverted).
@@ -1071,6 +1086,90 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine string_assign_character
+
+  elemental subroutine string_assign_integer_I1P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  integer(I1P),  intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_integer_I1P
+
+  elemental subroutine string_assign_integer_I2P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  integer(I2P),  intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_integer_I2P
+
+  elemental subroutine string_assign_integer_I4P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  integer(I4P),  intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_integer_I4P
+
+  elemental subroutine string_assign_integer_I8P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  integer(I8P),  intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_integer_I8P
+
+  elemental subroutine string_assign_real_R4P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  real(R4P),     intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_real_R4P
+
+  elemental subroutine string_assign_real_R8P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  real(R8P),     intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_real_R8P
 
   pure function string_concat_string(lhs, rhs) result(concat)
   !---------------------------------------------------------------------------------------------------------------------------------
