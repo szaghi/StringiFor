@@ -39,6 +39,7 @@ type :: string
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
+    procedure, pass(self) :: snakecase       !< Return a string with all words lowercase separated by "_".
     procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
     procedure, pass(self) :: startcase       !< Return a string with all words capitalized, e.g. title case.
     procedure, pass(self) :: strip           !< Return a string with the leading and trailing characters removed.
@@ -475,6 +476,28 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction reverse
+
+  elemental function snakecase(self, sep)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all words lowercase separated by "_".
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurence.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: snakecase !< Snake case string.
+  type(string), allocatable                       :: tokens(:) !< String tokens.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    call self%split(tokens=tokens, sep=sep)
+    tokens = tokens%lower()
+    snakecase = snakecase%join(array=tokens, sep='_')
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction snakecase
 
   pure subroutine split(self, tokens, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
