@@ -1642,6 +1642,9 @@ contains
   pure function join_strings(self, array, sep) result(join)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string that is a join of an array of strings.
+  !<
+  !< The join-separator is set equals to self if self has a value or it is set to a null string ''. This value can be overridden
+  !< passing a custom separator.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self      !< The string.
   type(string),              intent(in)           :: array(1:) !< Array to be joined.
@@ -1652,7 +1655,12 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  sep_ = '' ; if (present(sep)) sep_ = sep
+  if (allocated(self%raw)) then
+    sep_ = self%raw
+  else
+    sep_ = ''
+  endif
+  if (present(sep)) sep_ = sep
   join = ''
   do a=2, size(array, dim=1)
     if (allocated(array(a)%raw)) join%raw = join%raw//sep_//array(a)%raw
@@ -1669,6 +1677,9 @@ contains
   pure function join_characters(self, array, sep) result(join)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string that is a join of an array of characters.
+  !<
+  !< The join-separator is set equals to self if self has a value or it is set to a null string ''. This value can be overridden
+  !< passing a custom separator.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self      !< The string.
   character(kind=CK, len=*), intent(in)           :: array(1:) !< Array to be joined.
@@ -1679,7 +1690,12 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  sep_ = '' ; if (present(sep)) sep_ = sep
+  if (allocated(self%raw)) then
+    sep_ = self%raw
+  else
+    sep_ = ''
+  endif
+  if (present(sep)) sep_ = sep
   join = ''
   do a=2, size(array, dim=1)
     if (array(a)/='') join%raw = join%raw//sep_//array(a)
