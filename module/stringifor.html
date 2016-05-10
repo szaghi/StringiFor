@@ -174,21 +174,23 @@
     <div id="funcs" class="panel-collapse collapse">
         <div class="list-group">
           
-          <a class="list-group-item" href="../module/stringifor.html#proc-chars">chars</a>
-          
           <a class="list-group-item" href="../module/stringifor.html#proc-basedir">basedir</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-basename">basename</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-camelcase">camelcase</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-capitalize">capitalize</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-chars">chars</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-escape">escape</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-extension">extension</a>
           
-          <a class="list-group-item" href="../module/stringifor.html#proc-upper">upper</a>
+          <a class="list-group-item" href="../module/stringifor.html#proc-fill">fill</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-lower">lower</a>
-          
-          <a class="list-group-item" href="../module/stringifor.html#proc-capitalize">capitalize</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-partition">partition</a>
           
@@ -196,11 +198,17 @@
           
           <a class="list-group-item" href="../module/stringifor.html#proc-reverse">reverse</a>
           
+          <a class="list-group-item" href="../module/stringifor.html#proc-snakecase">snakecase</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-startcase">startcase</a>
+          
           <a class="list-group-item" href="../module/stringifor.html#proc-strip">strip</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-swapcase">swapcase</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-unique">unique</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-upper">upper</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-end_with">end_with</a>
           
@@ -258,6 +266,20 @@
           
           <a class="list-group-item" href="../module/stringifor.html#proc-join_characters">join_characters</a>
           
+          <a class="list-group-item" href="../module/stringifor.html#proc-to_integer_i1p">to_integer_I1P</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-to_integer_i2p">to_integer_I2P</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-to_integer_i4p">to_integer_I4P</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-to_integer_i8p">to_integer_I8P</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-to_real_r4p">to_real_R4P</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-to_real_r8p">to_real_R8P</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-to_real_r16p">to_real_R16P</a>
+          
         </div>
     </div>
   </div>
@@ -289,6 +311,8 @@
           
           <a class="list-group-item" href="../module/stringifor.html#proc-string_assign_real_r8p">string_assign_real_R8P</a>
           
+          <a class="list-group-item" href="../module/stringifor.html#proc-string_assign_real_r16p">string_assign_real_R16P</a>
+          
           <a class="list-group-item" href="../module/stringifor.html#proc-read_formatted_">read_formatted_</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-read_formatted_internal">read_formatted_internal</a>
@@ -319,17 +343,17 @@
     <div id="allmods" class="panel-collapse collapse">
         <div class="list-group">
           
-          <a class="list-group-item" href="../module/penf.html">penf</a>
-          
           <a class="list-group-item" href="../module/penf%7E2.html">penf</a>
           
-          <a class="list-group-item" href="../module/penf_b_size.html">penf_b_size</a>
+          <a class="list-group-item" href="../module/penf.html">penf</a>
           
           <a class="list-group-item" href="../module/penf_b_size%7E2.html">penf_b_size</a>
           
-          <a class="list-group-item" href="../module/penf_global_parameters_variables.html">penf_global_parameters_variables</a>
+          <a class="list-group-item" href="../module/penf_b_size.html">penf_b_size</a>
           
           <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html">penf_global_parameters_variables</a>
+          
+          <a class="list-group-item" href="../module/penf_global_parameters_variables.html">penf_global_parameters_variables</a>
           
           <a class="list-group-item" href="../module/penf_stringify%7E2.html">penf_stringify</a>
           
@@ -352,7 +376,7 @@
     <ul class="list-inline">
       <li><h4>Uses:</h4></li>
       
-      <li><a href='../module/penf.html'>penf</a></li>
+      <li><a href='../module/penf%7E2.html'>penf</a></li>
       
     </ul>
   
@@ -374,40 +398,30 @@
 <polygon fill="none" stroke="black" points="594,-128 540,-128 540,-102 594,-102 594,-128"/>
 <text text-anchor="middle" x="567" y="-112.55" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor</text>
 </g>
-<!-- module~penf -->
-<g id="node2" class="node"><title>module~penf</title>
-<a xlink:href="../module/penf.html" xlink:title="penf">
+<!-- module~penf~2 -->
+<g id="node2" class="node"><title>module~penf~2</title>
+<a xlink:href="../module/penf%7E2.html" xlink:title="penf">
 <polygon fill="#337ab7" stroke="#337ab7" points="504,-128 450,-128 450,-102 504,-102 504,-128"/>
 <text text-anchor="middle" x="477" y="-112.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf</text>
 </a>
 </g>
-<!-- module~penf&#45;&gt;module~stringifor -->
-<g id="edge16" class="edge"><title>module~penf&#45;&gt;module~stringifor</title>
+<!-- module~penf~2&#45;&gt;module~stringifor -->
+<g id="edge16" class="edge"><title>module~penf~2&#45;&gt;module~stringifor</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M504.003,-115C512.028,-115 520.967,-115 529.531,-115"/>
 <polygon fill="black" stroke="black" points="529.705,-118.5 539.705,-115 529.705,-111.5 529.705,-118.5"/>
 </g>
-<!-- module~penf_global_parameters_variables -->
-<g id="node3" class="node"><title>module~penf_global_parameters_variables</title>
-<a xlink:href="../module/penf_global_parameters_variables.html" xlink:title="penf_global_parameters_variables">
-<polygon fill="#337ab7" stroke="#337ab7" points="178,-108 8.52651e-14,-108 0,-82 178,-82 178,-108"/>
-<text text-anchor="middle" x="89" y="-92.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_global_parameters_variables</text>
-</a>
-</g>
-<!-- module~penf_global_parameters_variables&#45;&gt;module~penf -->
-<g id="edge10" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M143.427,-108.01C200.911,-120.517 294.347,-137.347 376,-136"/>
-</g>
-<!-- module~penf_b_size -->
-<g id="node4" class="node"><title>module~penf_b_size</title>
-<a xlink:href="../module/penf_b_size.html" xlink:title="penf_b_size">
+<!-- module~penf_b_size~2 -->
+<g id="node3" class="node"><title>module~penf_b_size~2</title>
+<a xlink:href="../module/penf_b_size%7E2.html" xlink:title="penf_b_size">
 <polygon fill="#337ab7" stroke="#337ab7" points="293,-108 223,-108 223,-82 293,-82 293,-108"/>
 <text text-anchor="middle" x="258" y="-92.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_b_size</text>
 </a>
 </g>
-<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_b_size -->
-<g id="edge2" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_b_size</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M178.449,-95C190.206,-95 201.835,-95 212.422,-95"/>
-<polygon fill="black" stroke="black" points="212.627,-98.5001 222.627,-95 212.627,-91.5001 212.627,-98.5001"/>
+<!-- module~penf_b_size~2&#45;&gt;module~penf~2 -->
+<g id="edge10" class="edge"><title>module~penf_b_size~2&#45;&gt;module~penf~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M280.699,-108.214C303.885,-120.414 341.305,-136.572 376,-136"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M376,-136C397.555,-135.644 421.168,-130.981 440.14,-126.139"/>
+<polygon fill="black" stroke="black" points="441.123,-129.499 449.88,-123.535 439.315,-122.736 441.123,-129.499"/>
 </g>
 <!-- module~penf_stringify~2 -->
 <g id="node5" class="node"><title>module~penf_stringify~2</title>
@@ -416,24 +430,34 @@
 <text text-anchor="middle" x="376" y="-71.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_stringify</text>
 </a>
 </g>
-<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_stringify~2 -->
-<g id="edge8" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_stringify~2</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M150.709,-81.9431C170.794,-78.2835 193.256,-74.8116 214,-73 252.963,-69.5974 262.89,-72.7358 302,-73 310.312,-73.0562 319.149,-73.1478 327.715,-73.2534"/>
-<polygon fill="black" stroke="black" points="327.93,-76.7564 337.975,-73.3877 328.022,-69.757 327.93,-76.7564"/>
-</g>
-<!-- module~penf_b_size&#45;&gt;module~penf -->
-<g id="edge12" class="edge"><title>module~penf_b_size&#45;&gt;module~penf</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M280.699,-108.214C303.885,-120.414 341.305,-136.572 376,-136"/>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M376,-136C397.555,-135.644 421.168,-130.981 440.14,-126.139"/>
-<polygon fill="black" stroke="black" points="441.123,-129.499 449.88,-123.535 439.315,-122.736 441.123,-129.499"/>
-</g>
-<!-- module~penf_b_size&#45;&gt;module~penf_stringify~2 -->
-<g id="edge6" class="edge"><title>module~penf_b_size&#45;&gt;module~penf_stringify~2</title>
+<!-- module~penf_b_size~2&#45;&gt;module~penf_stringify~2 -->
+<g id="edge4" class="edge"><title>module~penf_b_size~2&#45;&gt;module~penf_stringify~2</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M293.084,-88.7562C304.014,-86.8111 316.261,-84.6316 327.919,-82.5569"/>
 <polygon fill="black" stroke="black" points="328.732,-85.9672 337.964,-80.7692 327.505,-79.0755 328.732,-85.9672"/>
 </g>
-<!-- module~penf_stringify~2&#45;&gt;module~penf -->
-<g id="edge14" class="edge"><title>module~penf_stringify~2&#45;&gt;module~penf</title>
+<!-- module~penf_global_parameters_variables~2 -->
+<g id="node4" class="node"><title>module~penf_global_parameters_variables~2</title>
+<a xlink:href="../module/penf_global_parameters_variables%7E2.html" xlink:title="penf_global_parameters_variables">
+<polygon fill="#337ab7" stroke="#337ab7" points="178,-108 8.52651e-14,-108 0,-82 178,-82 178,-108"/>
+<text text-anchor="middle" x="89" y="-92.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_global_parameters_variables</text>
+</a>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf~2 -->
+<g id="edge12" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M143.427,-108.01C200.911,-120.517 294.347,-137.347 376,-136"/>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf_b_size~2 -->
+<g id="edge2" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf_b_size~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M178.449,-95C190.206,-95 201.835,-95 212.422,-95"/>
+<polygon fill="black" stroke="black" points="212.627,-98.5001 222.627,-95 212.627,-91.5001 212.627,-98.5001"/>
+</g>
+<!-- module~penf_global_parameters_variables~2&#45;&gt;module~penf_stringify~2 -->
+<g id="edge8" class="edge"><title>module~penf_global_parameters_variables~2&#45;&gt;module~penf_stringify~2</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M150.709,-81.9431C170.794,-78.2835 193.256,-74.8116 214,-73 252.963,-69.5974 262.89,-72.7358 302,-73 310.312,-73.0562 319.149,-73.1478 327.715,-73.2534"/>
+<polygon fill="black" stroke="black" points="327.93,-76.7564 337.975,-73.3877 328.022,-69.757 327.93,-76.7564"/>
+</g>
+<!-- module~penf_stringify~2&#45;&gt;module~penf~2 -->
+<g id="edge14" class="edge"><title>module~penf_stringify~2&#45;&gt;module~penf~2</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M408.235,-87.0854C418.489,-91.2481 429.905,-95.8822 440.442,-100.16"/>
 <polygon fill="black" stroke="black" points="439.231,-103.445 449.813,-103.964 441.864,-96.9595 439.231,-103.445"/>
 </g>
@@ -445,7 +469,7 @@
 </a>
 </g>
 <!-- iso_fortran_env&#45;&gt;module~penf_stringify~2 -->
-<g id="edge4" class="edge"><title>iso_fortran_env&#45;&gt;module~penf_stringify~2</title>
+<g id="edge6" class="edge"><title>iso_fortran_env&#45;&gt;module~penf_stringify~2</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M283.314,-26.086C300.346,-34.8907 323.01,-46.607 341.663,-56.2498"/>
 <polygon fill="black" stroke="black" points="340.237,-59.4525 350.728,-60.9356 343.452,-53.2342 340.237,-59.4525"/>
 </g>
@@ -554,363 +578,423 @@ implementation in a submodule of an interface in a parent module.</p>
 <!-- Generated by graphviz version 2.26.3 (20100126.1600)
  -->
 <!-- Title: module~~stringifor~~UsedByGraph Pages: 1 -->
-<svg id="modulestringiforUsedByGraph" width="180pt" height="1266pt"
- viewBox="0.00 0.00 180.00 1266.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="module~~stringifor~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 1262)">
+<svg id="modulestringiforUsedByGraph" width="180pt" height="1486pt"
+ viewBox="0.00 0.00 180.00 1486.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~stringifor~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 1482)">
 <title>module~~stringifor~~UsedByGraph</title>
-<polygon fill="white" stroke="white" points="-4,5 -4,-1262 177,-1262 177,5 -4,5"/>
+<polygon fill="white" stroke="white" points="-4,5 -4,-1482 177,-1482 177,5 -4,5"/>
 <!-- module~stringifor -->
 <g id="node1" class="node"><title>module~stringifor</title>
-<polygon fill="none" stroke="black" points="54,-642 2.13163e-14,-642 0,-616 54,-616 54,-642"/>
-<text text-anchor="middle" x="27" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor</text>
+<polygon fill="none" stroke="black" points="54,-752 2.13163e-14,-752 0,-726 54,-726 54,-752"/>
+<text text-anchor="middle" x="27" y="-736.55" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor</text>
+</g>
+<!-- program~strip -->
+<g id="node2" class="node"><title>program~strip</title>
+<a xlink:href="../program/strip.html" xlink:title="strip">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1478 104,-1478 104,-1452 158,-1452 158,-1478"/>
+<text text-anchor="middle" x="131" y="-1462.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strip</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~strip -->
+<g id="edge2" class="edge"><title>module~stringifor&#45;&gt;program~strip</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4293,-752.083C30.5198,-843.355 50.3907,-1383.04 90,-1443 91.4804,-1445.24 93.268,-1447.27 95.2578,-1449.11"/>
+<polygon fill="black" stroke="black" points="93.5693,-1452.21 103.714,-1455.26 97.6892,-1446.55 93.5693,-1452.21"/>
+</g>
+<!-- program~is_real -->
+<g id="node3" class="node"><title>program~is_real</title>
+<a xlink:href="../program/is_real.html" xlink:title="is_real">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1434 104,-1434 104,-1408 158,-1408 158,-1434"/>
+<text text-anchor="middle" x="131" y="-1418.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_real</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_real -->
+<g id="edge4" class="edge"><title>module~stringifor&#45;&gt;program~is_real</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.5123,-752.102C31.0484,-840.082 52.7993,-1343.05 90,-1399 91.4871,-1401.24 93.2795,-1403.26 95.2729,-1405.1"/>
+<polygon fill="black" stroke="black" points="93.5893,-1408.2 103.736,-1411.25 97.7047,-1402.54 93.5893,-1408.2"/>
+</g>
+<!-- program~join -->
+<g id="node4" class="node"><title>program~join</title>
+<a xlink:href="../program/join.html" xlink:title="join">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1390 104,-1390 104,-1364 158,-1364 158,-1390"/>
+<text text-anchor="middle" x="131" y="-1374.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~join -->
+<g id="edge6" class="edge"><title>module~stringifor&#45;&gt;program~join</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6032,-752.034C31.6012,-836.369 55.1921,-1303.03 90,-1355 91.4946,-1357.23 93.2926,-1359.25 95.29,-1361.09"/>
+<polygon fill="black" stroke="black" points="93.6121,-1364.19 103.762,-1367.23 97.7224,-1358.53 93.6121,-1364.19"/>
+</g>
+<!-- program~to_number -->
+<g id="node5" class="node"><title>program~to_number</title>
+<a xlink:href="../program/to_number.html" xlink:title="to_number">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="163,-1346 99,-1346 99,-1320 163,-1320 163,-1346"/>
+<text text-anchor="middle" x="131" y="-1330.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_number</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~to_number -->
+<g id="edge8" class="edge"><title>module~stringifor&#45;&gt;program~to_number</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.7167,-752.134C32.2327,-833.147 57.6038,-1263.03 90,-1311 90.4408,-1311.65 90.9075,-1312.29 91.3975,-1312.91"/>
+<polygon fill="black" stroke="black" points="89.2013,-1315.65 98.8664,-1319.99 94.0173,-1310.57 89.2013,-1315.65"/>
+</g>
+<!-- program~partition -->
+<g id="node6" class="node"><title>program~partition</title>
+<a xlink:href="../program/partition.html" xlink:title="partition">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1302 104,-1302 104,-1276 158,-1276 158,-1302"/>
+<text text-anchor="middle" x="131" y="-1286.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">partition</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~partition -->
+<g id="edge10" class="edge"><title>module~stringifor&#45;&gt;program~partition</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.842,-752.112C32.8957,-829.34 59.9943,-1223 90,-1267 91.5133,-1269.22 93.3252,-1271.23 95.3326,-1273.06"/>
+<polygon fill="black" stroke="black" points="93.6688,-1276.17 103.825,-1279.19 97.7661,-1270.5 93.6688,-1276.17"/>
 </g>
 <!-- program~assignments -->
-<g id="node2" class="node"><title>program~assignments</title>
+<g id="node7" class="node"><title>program~assignments</title>
 <a xlink:href="../program/assignments.html" xlink:title="assignments">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="167,-1258 95,-1258 95,-1232 167,-1232 167,-1258"/>
 <text text-anchor="middle" x="131" y="-1242.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assignments</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~assignments -->
-<g id="edge2" class="edge"><title>module~stringifor&#45;&gt;program~assignments</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6585,-642.099C31.9129,-724.831 56.4006,-1173.03 90,-1223 90.4395,-1223.65 90.905,-1224.29 91.3939,-1224.91"/>
-<polygon fill="black" stroke="black" points="89.1927,-1227.64 98.8531,-1231.99 94.0144,-1222.57 89.1927,-1227.64"/>
+<g id="edge12" class="edge"><title>module~stringifor&#45;&gt;program~assignments</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.1275,-752.25C28.0285,-821.691 35.1472,-1143.48 90,-1223 90.4472,-1223.65 90.9199,-1224.28 91.4153,-1224.89"/>
+<polygon fill="black" stroke="black" points="89.243,-1227.65 98.9317,-1231.94 94.0313,-1222.55 89.243,-1227.65"/>
 </g>
-<!-- program~sadjustlr -->
-<g id="node3" class="node"><title>program~sadjustlr</title>
-<a xlink:href="../program/sadjustlr.html" xlink:title="sadjustlr">
+<!-- program~replace -->
+<g id="node8" class="node"><title>program~replace</title>
+<a xlink:href="../program/replace.html" xlink:title="replace">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1214 104,-1214 104,-1188 158,-1188 158,-1214"/>
-<text text-anchor="middle" x="131" y="-1198.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustlr</text>
+<text text-anchor="middle" x="131" y="-1198.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~sadjustlr -->
-<g id="edge4" class="edge"><title>module~stringifor&#45;&gt;program~sadjustlr</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.7779,-642.139C32.5603,-721.316 58.8017,-1133.02 90,-1179 91.5081,-1181.22 93.3161,-1183.24 95.3207,-1185.07"/>
-<polygon fill="black" stroke="black" points="93.653,-1188.18 103.808,-1191.2 97.7539,-1182.51 93.653,-1188.18"/>
+<!-- module~stringifor&#45;&gt;program~replace -->
+<g id="edge14" class="edge"><title>module~stringifor&#45;&gt;program~replace</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.3218,-752.329C29.1403,-818.058 39.9167,-1107.38 90,-1179 91.5393,-1181.2 93.3703,-1183.2 95.3915,-1185.02"/>
+<polygon fill="black" stroke="black" points="93.7472,-1188.14 103.913,-1191.13 97.8265,-1182.46 93.7472,-1188.14"/>
 </g>
 <!-- program~basename_dir -->
-<g id="node4" class="node"><title>program~basename_dir</title>
+<g id="node9" class="node"><title>program~basename_dir</title>
 <a xlink:href="../program/basename_dir.html" xlink:title="basename_dir">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="171,-1170 91,-1170 91,-1144 171,-1144 171,-1170"/>
 <text text-anchor="middle" x="131" y="-1154.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">basename_dir</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~basename_dir -->
-<g id="edge6" class="edge"><title>module~stringifor&#45;&gt;program~basename_dir</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.9267,-642.299C33.2996,-718.035 61.2127,-1093.02 90,-1135 90.4454,-1135.65 90.9164,-1136.28 91.4103,-1136.9"/>
-<polygon fill="black" stroke="black" points="89.2313,-1139.65 98.9133,-1143.95 94.0274,-1134.55 89.2313,-1139.65"/>
+<g id="edge16" class="edge"><title>module~stringifor&#45;&gt;program~basename_dir</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.5514,-752.206C30.3436,-813.641 44.6204,-1071.17 90,-1135 90.4564,-1135.64 90.9375,-1136.27 91.4407,-1136.88"/>
+<polygon fill="black" stroke="black" points="89.3027,-1139.66 99.0245,-1143.88 94.0509,-1134.52 89.3027,-1139.66"/>
 </g>
-<!-- program~sindex -->
-<g id="node5" class="node"><title>program~sindex</title>
-<a xlink:href="../program/sindex.html" xlink:title="sindex">
+<!-- program~reverse -->
+<g id="node10" class="node"><title>program~reverse</title>
+<a xlink:href="../program/reverse.html" xlink:title="reverse">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1126 104,-1126 104,-1100 158,-1100 158,-1126"/>
-<text text-anchor="middle" x="131" y="-1110.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
+<text text-anchor="middle" x="131" y="-1110.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">reverse</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~sindex -->
-<g id="edge8" class="edge"><title>module~stringifor&#45;&gt;program~sindex</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.2159,-642.091C28.5531,-709.3 37.4824,-1015.36 90,-1091 91.5319,-1093.21 93.3575,-1095.21 95.3747,-1097.03"/>
-<polygon fill="black" stroke="black" points="93.7249,-1100.15 103.888,-1103.15 97.8094,-1094.47 93.7249,-1100.15"/>
+<!-- module~stringifor&#45;&gt;program~reverse -->
+<g id="edge18" class="edge"><title>module~stringifor&#45;&gt;program~reverse</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8441,-752.246C31.7144,-809.457 49.3468,-1034.97 90,-1091 91.5359,-1093.12 93.3391,-1095.05 95.3173,-1096.81"/>
+<polygon fill="black" stroke="black" points="93.4593,-1099.79 103.62,-1102.79 97.5485,-1094.11 93.4593,-1099.79"/>
+</g>
+<!-- program~camelcase -->
+<g id="node11" class="node"><title>program~camelcase</title>
+<a xlink:href="../program/camelcase.html" xlink:title="camelcase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="163,-1082 99,-1082 99,-1056 163,-1056 163,-1082"/>
+<text text-anchor="middle" x="131" y="-1066.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">camelcase</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~camelcase -->
+<g id="edge20" class="edge"><title>module~stringifor&#45;&gt;program~camelcase</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.2252,-752.341C33.2942,-805.113 54.0627,-998.736 90,-1047 90.4704,-1047.63 90.9644,-1048.25 91.4796,-1048.85"/>
+<polygon fill="black" stroke="black" points="89.3947,-1051.68 99.1669,-1055.77 94.0802,-1046.48 89.3947,-1051.68"/>
+</g>
+<!-- program~sadjustlr -->
+<g id="node12" class="node"><title>program~sadjustlr</title>
+<a xlink:href="../program/sadjustlr.html" xlink:title="sadjustlr">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1038 104,-1038 104,-1012 158,-1012 158,-1038"/>
+<text text-anchor="middle" x="131" y="-1022.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustlr</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sadjustlr -->
+<g id="edge22" class="edge"><title>module~stringifor&#45;&gt;program~sadjustlr</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.6807,-752.034C35.0111,-799.478 58.6607,-962.308 90,-1003 91.5958,-1005.07 93.4437,-1006.97 95.4544,-1008.71"/>
+<polygon fill="black" stroke="black" points="93.6425,-1011.72 103.828,-1014.63 97.6852,-1006 93.6425,-1011.72"/>
 </g>
 <!-- program~capitalize -->
-<g id="node6" class="node"><title>program~capitalize</title>
+<g id="node13" class="node"><title>program~capitalize</title>
 <a xlink:href="../program/capitalize.html" xlink:title="capitalize">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="159,-1082 103,-1082 103,-1056 159,-1056 159,-1082"/>
-<text text-anchor="middle" x="131" y="-1066.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">capitalize</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="159,-994 103,-994 103,-968 159,-968 159,-994"/>
+<text text-anchor="middle" x="131" y="-978.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">capitalize</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~capitalize -->
-<g id="edge10" class="edge"><title>module~stringifor&#45;&gt;program~capitalize</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4244,-642.083C29.703,-705.341 42.2241,-979.215 90,-1047 91.1867,-1048.68 92.5438,-1050.25 94.0256,-1051.71"/>
-<polygon fill="black" stroke="black" points="92.2153,-1054.73 102.262,-1058.1 96.5063,-1049.2 92.2153,-1054.73"/>
-</g>
-<!-- program~slen -->
-<g id="node7" class="node"><title>program~slen</title>
-<a xlink:href="../program/slen.html" xlink:title="slen">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1038 104,-1038 104,-1012 158,-1012 158,-1038"/>
-<text text-anchor="middle" x="131" y="-1022.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~slen -->
-<g id="edge12" class="edge"><title>module~stringifor&#45;&gt;program~slen</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6912,-642.262C31.0143,-701.679 46.9948,-943.091 90,-1003 91.5251,-1005.12 93.3202,-1007.06 95.2925,-1008.83"/>
-<polygon fill="black" stroke="black" points="93.4261,-1011.8 103.583,-1014.82 97.5237,-1006.12 93.4261,-1011.8"/>
-</g>
-<!-- program~concatenation -->
-<g id="node8" class="node"><title>program~concatenation</title>
-<a xlink:href="../program/concatenation.html" xlink:title="concatenation">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="170,-994 92,-994 92,-968 170,-968 170,-994"/>
-<text text-anchor="middle" x="131" y="-978.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">concatenation</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~concatenation -->
-<g id="edge14" class="edge"><title>module~stringifor&#45;&gt;program~concatenation</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.0106,-642.155C32.4433,-696.975 51.6759,-906.819 90,-959 90.4662,-959.635 90.9564,-960.253 91.468,-960.855"/>
-<polygon fill="black" stroke="black" points="89.3673,-963.675 99.1246,-967.804 94.0716,-958.492 89.3673,-963.675"/>
-</g>
-<!-- program~split -->
-<g id="node9" class="node"><title>program~split</title>
-<a xlink:href="../program/split.html" xlink:title="split">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-950 104,-950 104,-924 158,-924 158,-950"/>
-<text text-anchor="middle" x="131" y="-934.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~split -->
-<g id="edge16" class="edge"><title>module~stringifor&#45;&gt;program~split</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.424,-642.07C34.0854,-692.05 56.3387,-870.496 90,-915 91.5776,-917.086 93.412,-918.996 95.4129,-920.741"/>
-<polygon fill="black" stroke="black" points="93.587,-923.738 103.765,-926.681 97.644,-918.033 93.587,-923.738"/>
-</g>
-<!-- program~escape -->
-<g id="node10" class="node"><title>program~escape</title>
-<a xlink:href="../program/escape.html" xlink:title="escape">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-906 104,-906 104,-880 158,-880 158,-906"/>
-<text text-anchor="middle" x="131" y="-890.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~escape -->
-<g id="edge18" class="edge"><title>module~stringifor&#45;&gt;program~escape</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.0105,-642.179C36.0909,-687.2 61.0126,-834.147 90,-871 91.6168,-873.056 93.4805,-874.943 95.5026,-876.672"/>
-<polygon fill="black" stroke="black" points="93.707,-879.688 103.901,-882.576 97.733,-873.962 93.707,-879.688"/>
-</g>
-<!-- program~srepeat -->
-<g id="node11" class="node"><title>program~srepeat</title>
-<a xlink:href="../program/srepeat.html" xlink:title="srepeat">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-862 104,-862 104,-836 158,-836 158,-862"/>
-<text text-anchor="middle" x="131" y="-846.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~srepeat -->
-<g id="edge20" class="edge"><title>module~stringifor&#45;&gt;program~srepeat</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8369,-642.167C30.6578,-676.462 42.5164,-769.839 90,-827 91.626,-828.957 93.4725,-830.766 95.4608,-832.433"/>
-<polygon fill="black" stroke="black" points="93.4654,-835.309 103.665,-838.176 97.4794,-829.574 93.4654,-835.309"/>
-</g>
-<!-- program~extension -->
-<g id="node12" class="node"><title>program~extension</title>
-<a xlink:href="../program/extension.html" xlink:title="extension">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-818 102,-818 102,-792 160,-792 160,-818"/>
-<text text-anchor="middle" x="131" y="-802.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">extension</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~extension -->
-<g id="edge22" class="edge"><title>module~stringifor&#45;&gt;program~extension</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.2565,-642.152C34.7973,-670.925 51.5234,-740.291 90,-783 91.1524,-784.279 92.397,-785.498 93.7106,-786.657"/>
-<polygon fill="black" stroke="black" points="91.7035,-789.526 101.825,-792.657 95.8653,-783.897 91.7035,-789.526"/>
-</g>
-<!-- program~sscan -->
-<g id="node13" class="node"><title>program~sscan</title>
-<a xlink:href="../program/sscan.html" xlink:title="sscan">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-774 104,-774 104,-748 158,-748 158,-774"/>
-<text text-anchor="middle" x="131" y="-758.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~sscan -->
-<g id="edge24" class="edge"><title>module~stringifor&#45;&gt;program~sscan</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.6962,-642.054C40.2681,-664.35 60.3425,-710.151 90,-739 91.6467,-740.602 93.4334,-742.119 95.3088,-743.551"/>
-<polygon fill="black" stroke="black" points="93.6718,-746.665 103.939,-749.279 97.5429,-740.833 93.6718,-746.665"/>
-</g>
-<!-- program~free -->
-<g id="node14" class="node"><title>program~free</title>
-<a xlink:href="../program/free.html" xlink:title="free">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-730 104,-730 104,-704 158,-704 158,-730"/>
-<text text-anchor="middle" x="131" y="-714.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">free</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~free -->
-<g id="edge26" class="edge"><title>module~stringifor&#45;&gt;program~free</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M37.3382,-642.089C49.0423,-656.328 69.2018,-679.171 90,-695 91.5909,-696.211 93.2575,-697.393 94.9701,-698.541"/>
-<polygon fill="black" stroke="black" points="93.4312,-701.704 103.781,-703.969 97.1025,-695.744 93.4312,-701.704"/>
-</g>
-<!-- program~start_end -->
-<g id="node15" class="node"><title>program~start_end</title>
-<a xlink:href="../program/start_end.html" xlink:title="start_end">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-686 102,-686 102,-660 160,-660 160,-686"/>
-<text text-anchor="middle" x="131" y="-670.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">start_end</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~start_end -->
-<g id="edge28" class="edge"><title>module~stringifor&#45;&gt;program~start_end</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-640.446C65.7555,-645.397 79.6668,-651.282 92.4216,-656.678"/>
-<polygon fill="black" stroke="black" points="91.3206,-660.013 101.894,-660.686 94.0482,-653.566 91.3206,-660.013"/>
-</g>
-<!-- program~io_basic -->
-<g id="node16" class="node"><title>program~io_basic</title>
-<a xlink:href="../program/io_basic.html" xlink:title="io_basic">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-642 104,-642 104,-616 158,-616 158,-642"/>
-<text text-anchor="middle" x="131" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">io_basic</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~io_basic -->
-<g id="edge30" class="edge"><title>module~stringifor&#45;&gt;program~io_basic</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-629C66.1157,-629 80.5252,-629 93.5959,-629"/>
-<polygon fill="black" stroke="black" points="93.7209,-632.5 103.721,-629 93.7208,-625.5 93.7209,-632.5"/>
-</g>
-<!-- program~strim -->
-<g id="node17" class="node"><title>program~strim</title>
-<a xlink:href="../program/strim.html" xlink:title="strim">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-598 104,-598 104,-572 158,-572 158,-598"/>
-<text text-anchor="middle" x="131" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~strim -->
-<g id="edge32" class="edge"><title>module~stringifor&#45;&gt;program~strim</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-617.554C66.3545,-612.35 81.0968,-606.113 94.3707,-600.497"/>
-<polygon fill="black" stroke="black" points="95.875,-603.661 103.721,-596.541 93.1474,-597.214 95.875,-603.661"/>
-</g>
-<!-- program~is_digit -->
-<g id="node18" class="node"><title>program~is_digit</title>
-<a xlink:href="../program/is_digit.html" xlink:title="is_digit">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-554 104,-554 104,-528 158,-528 158,-554"/>
-<text text-anchor="middle" x="131" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_digit</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~is_digit -->
-<g id="edge34" class="edge"><title>module~stringifor&#45;&gt;program~is_digit</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M37.3382,-615.911C49.0423,-601.672 69.2018,-578.829 90,-563 91.5909,-561.789 93.2575,-560.607 94.9701,-559.459"/>
-<polygon fill="black" stroke="black" points="97.1025,-562.256 103.781,-554.031 93.4312,-556.296 97.1025,-562.256"/>
-</g>
-<!-- program~strip -->
-<g id="node19" class="node"><title>program~strip</title>
-<a xlink:href="../program/strip.html" xlink:title="strip">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-510 104,-510 104,-484 158,-484 158,-510"/>
-<text text-anchor="middle" x="131" y="-494.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strip</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~strip -->
-<g id="edge36" class="edge"><title>module~stringifor&#45;&gt;program~strip</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.6962,-615.946C40.2681,-593.65 60.3425,-547.849 90,-519 91.6467,-517.398 93.4334,-515.881 95.3088,-514.449"/>
-<polygon fill="black" stroke="black" points="97.5429,-517.167 103.939,-508.721 93.6718,-511.335 97.5429,-517.167"/>
-</g>
-<!-- program~is_integer -->
-<g id="node20" class="node"><title>program~is_integer</title>
-<a xlink:href="../program/is_integer.html" xlink:title="is_integer">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-466 102,-466 102,-440 160,-440 160,-466"/>
-<text text-anchor="middle" x="131" y="-450.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_integer</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~is_integer -->
-<g id="edge38" class="edge"><title>module~stringifor&#45;&gt;program~is_integer</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.2565,-615.848C34.7973,-587.075 51.5234,-517.709 90,-475 91.0138,-473.875 92.099,-472.796 93.2398,-471.764"/>
-<polygon fill="black" stroke="black" points="95.527,-474.423 101.406,-465.608 91.3135,-468.833 95.527,-474.423"/>
+<g id="edge24" class="edge"><title>module~stringifor&#45;&gt;program~capitalize</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.3761,-752.15C37.2203,-794.407 63.3157,-925.908 90,-959 91.255,-960.556 92.6505,-962.017 94.1477,-963.387"/>
+<polygon fill="black" stroke="black" points="92.1981,-966.3 102.301,-969.491 96.3935,-960.696 92.1981,-966.3"/>
 </g>
 <!-- program~sverify -->
-<g id="node21" class="node"><title>program~sverify</title>
+<g id="node14" class="node"><title>program~sverify</title>
 <a xlink:href="../program/sverify.html" xlink:title="sverify">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-422 104,-422 104,-396 158,-396 158,-422"/>
-<text text-anchor="middle" x="131" y="-406.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-950 104,-950 104,-924 158,-924 158,-950"/>
+<text text-anchor="middle" x="131" y="-934.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~sverify -->
-<g id="edge40" class="edge"><title>module~stringifor&#45;&gt;program~sverify</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8369,-615.833C30.6578,-581.538 42.5164,-488.161 90,-431 91.626,-429.043 93.4725,-427.234 95.4608,-425.567"/>
-<polygon fill="black" stroke="black" points="97.4794,-428.426 103.665,-419.824 93.4654,-422.691 97.4794,-428.426"/>
+<g id="edge26" class="edge"><title>module~stringifor&#45;&gt;program~sverify</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.4542,-752.089C32.5829,-783.662 47.0047,-865.082 90,-915 91.6606,-916.928 93.5333,-918.715 95.5408,-920.365"/>
+<polygon fill="black" stroke="black" points="93.5729,-923.26 103.788,-926.072 97.5558,-917.504 93.5729,-923.26"/>
 </g>
-<!-- program~is_number -->
-<g id="node22" class="node"><title>program~is_number</title>
-<a xlink:href="../program/is_number.html" xlink:title="is_number">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="162,-378 100,-378 100,-352 162,-352 162,-378"/>
-<text text-anchor="middle" x="131" y="-362.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_number</text>
+<!-- program~sindex -->
+<g id="node15" class="node"><title>program~sindex</title>
+<a xlink:href="../program/sindex.html" xlink:title="sindex">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-906 104,-906 104,-880 158,-880 158,-906"/>
+<text text-anchor="middle" x="131" y="-890.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~is_number -->
-<g id="edge42" class="edge"><title>module~stringifor&#45;&gt;program~is_number</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.0105,-615.821C36.0909,-570.8 61.0126,-423.853 90,-387 90.5899,-386.25 91.2127,-385.522 91.8641,-384.817"/>
-<polygon fill="black" stroke="black" points="94.4212,-387.235 99.7405,-378.072 89.8682,-381.918 94.4212,-387.235"/>
+<!-- module~stringifor&#45;&gt;program~sindex -->
+<g id="edge28" class="edge"><title>module~stringifor&#45;&gt;program~sindex</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M30.3127,-752.205C37.3505,-777.929 55.9977,-835.354 90,-871 91.5856,-872.662 93.3248,-874.227 95.164,-875.694"/>
+<polygon fill="black" stroke="black" points="93.4671,-878.774 103.701,-881.515 97.4104,-872.99 93.4671,-878.774"/>
+</g>
+<!-- program~concatenation -->
+<g id="node16" class="node"><title>program~concatenation</title>
+<a xlink:href="../program/concatenation.html" xlink:title="concatenation">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="170,-862 92,-862 92,-836 170,-836 170,-862"/>
+<text text-anchor="middle" x="131" y="-846.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">concatenation</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~concatenation -->
+<g id="edge30" class="edge"><title>module~stringifor&#45;&gt;program~concatenation</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M33.8133,-752.069C44.0012,-770.62 64.7363,-804.798 90,-827 91.2932,-828.136 92.6553,-829.236 94.0658,-830.297"/>
+<polygon fill="black" stroke="black" points="92.2694,-833.306 102.531,-835.942 96.1529,-827.482 92.2694,-833.306"/>
+</g>
+<!-- program~slen -->
+<g id="node17" class="node"><title>program~slen</title>
+<a xlink:href="../program/slen.html" xlink:title="slen">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-818 104,-818 104,-792 158,-792 158,-818"/>
+<text text-anchor="middle" x="131" y="-802.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~slen -->
+<g id="edge32" class="edge"><title>module~stringifor&#45;&gt;program~slen</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M44.5494,-752.087C56.9856,-761.153 74.2012,-773.29 90,-783 92.1679,-784.332 94.423,-785.67 96.7112,-786.991"/>
+<polygon fill="black" stroke="black" points="95.1498,-790.128 105.585,-791.962 98.5706,-784.021 95.1498,-790.128"/>
+</g>
+<!-- program~escape -->
+<g id="node18" class="node"><title>program~escape</title>
+<a xlink:href="../program/escape.html" xlink:title="escape">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-774 104,-774 104,-748 158,-748 158,-774"/>
+<text text-anchor="middle" x="131" y="-758.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~escape -->
+<g id="edge34" class="edge"><title>module~stringifor&#45;&gt;program~escape</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-744.723C66.1157,-747.274 80.5252,-750.323 93.5959,-753.088"/>
+<polygon fill="black" stroke="black" points="93.213,-756.584 103.721,-755.229 94.6618,-749.736 93.213,-756.584"/>
+</g>
+<!-- program~unique -->
+<g id="node19" class="node"><title>program~unique</title>
+<a xlink:href="../program/unique.html" xlink:title="unique">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-730 104,-730 104,-704 158,-704 158,-730"/>
+<text text-anchor="middle" x="131" y="-714.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~unique -->
+<g id="edge36" class="edge"><title>module~stringifor&#45;&gt;program~unique</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-733.277C66.1157,-730.726 80.5252,-727.677 93.5959,-724.912"/>
+<polygon fill="black" stroke="black" points="94.6618,-728.264 103.721,-722.771 93.213,-721.416 94.6618,-728.264"/>
+</g>
+<!-- program~snakecase -->
+<g id="node20" class="node"><title>program~snakecase</title>
+<a xlink:href="../program/snakecase.html" xlink:title="snakecase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="163,-686 99,-686 99,-660 163,-660 163,-686"/>
+<text text-anchor="middle" x="131" y="-670.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">snakecase</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~snakecase -->
+<g id="edge38" class="edge"><title>module~stringifor&#45;&gt;program~snakecase</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M44.5494,-725.913C56.9856,-716.847 74.2012,-704.71 90,-695 92.1679,-693.668 94.423,-692.33 96.7112,-691.009"/>
+<polygon fill="black" stroke="black" points="98.5706,-693.979 105.585,-686.038 95.1498,-687.872 98.5706,-693.979"/>
+</g>
+<!-- program~extension -->
+<g id="node21" class="node"><title>program~extension</title>
+<a xlink:href="../program/extension.html" xlink:title="extension">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-642 102,-642 102,-616 160,-616 160,-642"/>
+<text text-anchor="middle" x="131" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">extension</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~extension -->
+<g id="edge40" class="edge"><title>module~stringifor&#45;&gt;program~extension</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M33.8133,-725.931C44.0012,-707.38 64.7363,-673.202 90,-651 91.2932,-649.864 92.6553,-648.764 94.0658,-647.703"/>
+<polygon fill="black" stroke="black" points="96.1529,-650.518 102.531,-642.058 92.2694,-644.694 96.1529,-650.518"/>
+</g>
+<!-- program~split -->
+<g id="node22" class="node"><title>program~split</title>
+<a xlink:href="../program/split.html" xlink:title="split">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-598 104,-598 104,-572 158,-572 158,-598"/>
+<text text-anchor="middle" x="131" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~split -->
+<g id="edge42" class="edge"><title>module~stringifor&#45;&gt;program~split</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M30.3127,-725.795C37.3505,-700.071 55.9977,-642.646 90,-607 91.5856,-605.338 93.3248,-603.773 95.164,-602.306"/>
+<polygon fill="black" stroke="black" points="97.4104,-605.01 103.701,-596.485 93.4671,-599.226 97.4104,-605.01"/>
+</g>
+<!-- program~fill -->
+<g id="node23" class="node"><title>program~fill</title>
+<a xlink:href="../program/fill.html" xlink:title="fill">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-554 104,-554 104,-528 158,-528 158,-554"/>
+<text text-anchor="middle" x="131" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fill</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~fill -->
+<g id="edge44" class="edge"><title>module~stringifor&#45;&gt;program~fill</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.4542,-725.911C32.5829,-694.338 47.0047,-612.918 90,-563 91.6606,-561.072 93.5333,-559.285 95.5408,-557.635"/>
+<polygon fill="black" stroke="black" points="97.5558,-560.496 103.788,-551.928 93.5729,-554.74 97.5558,-560.496"/>
+</g>
+<!-- program~srepeat -->
+<g id="node24" class="node"><title>program~srepeat</title>
+<a xlink:href="../program/srepeat.html" xlink:title="srepeat">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-510 104,-510 104,-484 158,-484 158,-510"/>
+<text text-anchor="middle" x="131" y="-494.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~srepeat -->
+<g id="edge46" class="edge"><title>module~stringifor&#45;&gt;program~srepeat</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.3761,-725.85C37.2203,-683.593 63.3157,-552.092 90,-519 91.6416,-516.964 93.5238,-515.091 95.5593,-513.373"/>
+<polygon fill="black" stroke="black" points="97.7889,-516.085 103.987,-507.492 93.7829,-510.345 97.7889,-516.085"/>
+</g>
+<!-- program~free -->
+<g id="node25" class="node"><title>program~free</title>
+<a xlink:href="../program/free.html" xlink:title="free">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-466 104,-466 104,-440 158,-440 158,-466"/>
+<text text-anchor="middle" x="131" y="-450.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">free</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~free -->
+<g id="edge48" class="edge"><title>module~stringifor&#45;&gt;program~free</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.6807,-725.966C35.0111,-678.522 58.6607,-515.692 90,-475 91.5958,-472.928 93.4437,-471.028 95.4544,-469.29"/>
+<polygon fill="black" stroke="black" points="97.6852,-471.999 103.828,-463.367 93.6425,-466.285 97.6852,-471.999"/>
+</g>
+<!-- program~sscan -->
+<g id="node26" class="node"><title>program~sscan</title>
+<a xlink:href="../program/sscan.html" xlink:title="sscan">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-422 104,-422 104,-396 158,-396 158,-422"/>
+<text text-anchor="middle" x="131" y="-406.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sscan -->
+<g id="edge50" class="edge"><title>module~stringifor&#45;&gt;program~sscan</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.2252,-725.659C33.2942,-672.887 54.0627,-479.264 90,-431 91.5619,-428.902 93.3845,-426.983 95.3768,-425.232"/>
+<polygon fill="black" stroke="black" points="97.608,-427.939 103.71,-419.278 93.5388,-422.243 97.608,-427.939"/>
+</g>
+<!-- program~io_basic -->
+<g id="node27" class="node"><title>program~io_basic</title>
+<a xlink:href="../program/io_basic.html" xlink:title="io_basic">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-378 104,-378 104,-352 158,-352 158,-378"/>
+<text text-anchor="middle" x="131" y="-362.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">io_basic</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~io_basic -->
+<g id="edge52" class="edge"><title>module~stringifor&#45;&gt;program~io_basic</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8441,-725.754C31.7144,-668.543 49.3468,-443.026 90,-387 91.5359,-384.883 93.3391,-382.95 95.3173,-381.188"/>
+<polygon fill="black" stroke="black" points="97.5485,-383.894 103.62,-375.212 93.4593,-378.213 97.5485,-383.894"/>
 </g>
 <!-- program~swapcase -->
-<g id="node23" class="node"><title>program~swapcase</title>
+<g id="node28" class="node"><title>program~swapcase</title>
 <a xlink:href="../program/swapcase.html" xlink:title="swapcase">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="161,-334 101,-334 101,-308 161,-308 161,-334"/>
 <text text-anchor="middle" x="131" y="-318.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swapcase</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~swapcase -->
-<g id="edge44" class="edge"><title>module~stringifor&#45;&gt;program~swapcase</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.424,-615.93C34.0854,-565.95 56.3387,-387.504 90,-343 90.9137,-341.792 91.9135,-340.643 92.9819,-339.551"/>
-<polygon fill="black" stroke="black" points="95.3028,-342.174 100.843,-333.143 90.88,-336.748 95.3028,-342.174"/>
+<g id="edge54" class="edge"><title>module~stringifor&#45;&gt;program~swapcase</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.5514,-725.794C30.3436,-664.359 44.6204,-406.829 90,-343 90.8776,-341.766 91.8467,-340.594 92.889,-339.483"/>
+<polygon fill="black" stroke="black" points="95.2183,-342.097 100.64,-332.994 90.725,-336.729 95.2183,-342.097"/>
 </g>
-<!-- program~is_real -->
-<g id="node24" class="node"><title>program~is_real</title>
-<a xlink:href="../program/is_real.html" xlink:title="is_real">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-290 104,-290 104,-264 158,-264 158,-290"/>
-<text text-anchor="middle" x="131" y="-274.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_real</text>
+<!-- program~start_end -->
+<g id="node29" class="node"><title>program~start_end</title>
+<a xlink:href="../program/start_end.html" xlink:title="start_end">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-290 102,-290 102,-264 160,-264 160,-290"/>
+<text text-anchor="middle" x="131" y="-274.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">start_end</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~is_real -->
-<g id="edge46" class="edge"><title>module~stringifor&#45;&gt;program~is_real</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.0106,-615.845C32.4433,-561.025 51.6759,-351.181 90,-299 91.5481,-296.892 93.3604,-294.966 95.3452,-293.208"/>
-<polygon fill="black" stroke="black" points="97.5765,-295.915 103.662,-287.243 93.4966,-290.227 97.5765,-295.915"/>
+<!-- module~stringifor&#45;&gt;program~start_end -->
+<g id="edge56" class="edge"><title>module~stringifor&#45;&gt;program~start_end</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.3218,-725.671C29.1403,-659.942 39.9167,-370.618 90,-299 91.1458,-297.362 92.4532,-295.834 93.8804,-294.412"/>
+<polygon fill="black" stroke="black" points="96.1375,-297.089 101.819,-288.147 91.8011,-291.594 96.1375,-297.089"/>
 </g>
-<!-- program~unique -->
-<g id="node25" class="node"><title>program~unique</title>
-<a xlink:href="../program/unique.html" xlink:title="unique">
+<!-- program~is_digit -->
+<g id="node30" class="node"><title>program~is_digit</title>
+<a xlink:href="../program/is_digit.html" xlink:title="is_digit">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-246 104,-246 104,-220 158,-220 158,-246"/>
-<text text-anchor="middle" x="131" y="-230.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+<text text-anchor="middle" x="131" y="-230.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_digit</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~unique -->
-<g id="edge48" class="edge"><title>module~stringifor&#45;&gt;program~unique</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6912,-615.738C31.0143,-556.321 46.9948,-314.909 90,-255 91.5251,-252.875 93.3202,-250.936 95.2925,-249.17"/>
-<polygon fill="black" stroke="black" points="97.5237,-251.876 103.583,-243.185 93.4261,-246.201 97.5237,-251.876"/>
+<!-- module~stringifor&#45;&gt;program~is_digit -->
+<g id="edge58" class="edge"><title>module~stringifor&#45;&gt;program~is_digit</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.1275,-725.75C28.0285,-656.309 35.1472,-334.515 90,-255 91.5252,-252.789 93.3458,-250.781 95.3594,-248.961"/>
+<polygon fill="black" stroke="black" points="97.7937,-251.522 103.866,-242.839 93.7045,-245.84 97.7937,-251.522"/>
 </g>
-<!-- program~join -->
-<g id="node26" class="node"><title>program~join</title>
-<a xlink:href="../program/join.html" xlink:title="join">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-202 104,-202 104,-176 158,-176 158,-202"/>
-<text text-anchor="middle" x="131" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join</text>
+<!-- program~startcase -->
+<g id="node31" class="node"><title>program~startcase</title>
+<a xlink:href="../program/startcase.html" xlink:title="startcase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="159,-202 103,-202 103,-176 159,-176 159,-202"/>
+<text text-anchor="middle" x="131" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">startcase</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~join -->
-<g id="edge50" class="edge"><title>module~stringifor&#45;&gt;program~join</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4244,-615.917C29.703,-552.659 42.2241,-278.785 90,-211 91.5474,-208.805 93.3845,-206.808 95.4099,-204.996"/>
-<polygon fill="black" stroke="black" points="97.8454,-207.558 103.941,-198.892 93.7717,-201.865 97.8454,-207.558"/>
+<!-- module~stringifor&#45;&gt;program~startcase -->
+<g id="edge60" class="edge"><title>module~stringifor&#45;&gt;program~startcase</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.842,-725.888C32.8957,-648.66 59.9943,-254.998 90,-211 91.3313,-209.048 92.8936,-207.255 94.6168,-205.61"/>
+<polygon fill="black" stroke="black" points="97.0994,-208.122 102.984,-199.311 92.8896,-202.529 97.0994,-208.122"/>
+</g>
+<!-- program~is_integer -->
+<g id="node32" class="node"><title>program~is_integer</title>
+<a xlink:href="../program/is_integer.html" xlink:title="is_integer">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-158 102,-158 102,-132 160,-132 160,-158"/>
+<text text-anchor="middle" x="131" y="-142.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_integer</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_integer -->
+<g id="edge62" class="edge"><title>module~stringifor&#45;&gt;program~is_integer</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.7167,-725.866C32.2327,-644.853 57.6038,-214.968 90,-167 90.9947,-165.527 92.1211,-164.145 93.3495,-162.849"/>
+<polygon fill="black" stroke="black" points="95.7797,-165.382 101.289,-156.333 91.3387,-159.971 95.7797,-165.382"/>
 </g>
 <!-- program~upper_lower -->
-<g id="node27" class="node"><title>program~upper_lower</title>
+<g id="node33" class="node"><title>program~upper_lower</title>
 <a xlink:href="../program/upper_lower.html" xlink:title="upper_lower">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="167,-158 95,-158 95,-132 167,-132 167,-158"/>
-<text text-anchor="middle" x="131" y="-142.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper_lower</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="167,-114 95,-114 95,-88 167,-88 167,-114"/>
+<text text-anchor="middle" x="131" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper_lower</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~upper_lower -->
-<g id="edge52" class="edge"><title>module~stringifor&#45;&gt;program~upper_lower</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.2159,-615.909C28.5531,-548.7 37.4824,-242.636 90,-167 90.4492,-166.353 90.9237,-165.723 91.4208,-165.111"/>
-<polygon fill="black" stroke="black" points="94.0356,-167.458 98.9517,-158.073 89.2559,-162.344 94.0356,-167.458"/>
+<g id="edge64" class="edge"><title>module~stringifor&#45;&gt;program~upper_lower</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6032,-725.966C31.6012,-641.631 55.1921,-174.974 90,-123 90.3512,-122.476 90.7191,-121.963 91.1024,-121.461"/>
+<polygon fill="black" stroke="black" points="93.7365,-123.781 98.4471,-114.291 88.8466,-118.772 93.7365,-123.781"/>
 </g>
-<!-- program~partition -->
-<g id="node28" class="node"><title>program~partition</title>
-<a xlink:href="../program/partition.html" xlink:title="partition">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-114 104,-114 104,-88 158,-88 158,-114"/>
-<text text-anchor="middle" x="131" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">partition</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~partition -->
-<g id="edge54" class="edge"><title>module~stringifor&#45;&gt;program~partition</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.9267,-615.701C33.2996,-539.965 61.2127,-164.98 90,-123 91.519,-120.785 93.3351,-118.774 95.3454,-116.952"/>
-<polygon fill="black" stroke="black" points="97.7794,-119.512 103.845,-110.825 93.6859,-113.833 97.7794,-119.512"/>
-</g>
-<!-- program~replace -->
-<g id="node29" class="node"><title>program~replace</title>
-<a xlink:href="../program/replace.html" xlink:title="replace">
+<!-- program~strim -->
+<g id="node34" class="node"><title>program~strim</title>
+<a xlink:href="../program/strim.html" xlink:title="strim">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-70 104,-70 104,-44 158,-44 158,-70"/>
-<text text-anchor="middle" x="131" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace</text>
+<text text-anchor="middle" x="131" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~replace -->
-<g id="edge56" class="edge"><title>module~stringifor&#45;&gt;program~replace</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.7779,-615.861C32.5603,-536.684 58.8017,-124.978 90,-79 91.5081,-76.7774 93.3161,-74.761 95.3207,-72.9348"/>
-<polygon fill="black" stroke="black" points="97.7539,-75.4946 103.808,-66.7996 93.653,-69.8217 97.7539,-75.4946"/>
+<!-- module~stringifor&#45;&gt;program~strim -->
+<g id="edge66" class="edge"><title>module~stringifor&#45;&gt;program~strim</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.5123,-725.898C31.0484,-637.918 52.7993,-134.954 90,-79 91.4871,-76.7633 93.2795,-74.7364 95.2729,-72.9027"/>
+<polygon fill="black" stroke="black" points="97.7047,-75.4621 103.736,-66.7517 93.5893,-69.7996 97.7047,-75.4621"/>
 </g>
-<!-- program~reverse -->
-<g id="node30" class="node"><title>program~reverse</title>
-<a xlink:href="../program/reverse.html" xlink:title="reverse">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-26 104,-26 104,-1.24345e-14 158,-3.55271e-15 158,-26"/>
-<text text-anchor="middle" x="131" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">reverse</text>
+<!-- program~is_number -->
+<g id="node35" class="node"><title>program~is_number</title>
+<a xlink:href="../program/is_number.html" xlink:title="is_number">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="162,-26 100,-26 100,-1.24345e-14 162,-3.55271e-15 162,-26"/>
+<text text-anchor="middle" x="131" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_number</text>
 </a>
 </g>
-<!-- module~stringifor&#45;&gt;program~reverse -->
-<g id="edge58" class="edge"><title>module~stringifor&#45;&gt;program~reverse</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6585,-615.901C31.9129,-533.169 56.4006,-84.9666 90,-35 91.4988,-32.7711 93.2999,-30.7501 95.2995,-28.9205"/>
-<polygon fill="black" stroke="black" points="97.7321,-31.4801 103.776,-22.7783 93.6248,-25.8118 97.7321,-31.4801"/>
+<!-- module~stringifor&#45;&gt;program~is_number -->
+<g id="edge68" class="edge"><title>module~stringifor&#45;&gt;program~is_number</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4293,-725.917C30.5198,-634.645 50.3907,-94.9609 90,-35 90.5259,-34.2038 91.0907,-33.4343 91.6894,-32.6906"/>
+<polygon fill="black" stroke="black" points="94.2773,-35.0627 99.1942,-25.6779 89.498,-29.9481 94.2773,-35.0627"/>
 </g>
 </g>
 </svg>
@@ -1185,6 +1269,9 @@ implementation in a submodule of an interface in a parent module.</p>
        <tr><td>procedure, public, pass(self) :: <strong>basename</strong>  </td>
        <td><p>Return the base file name of a string containing a file name.</p></td></tr>
       
+       <tr><td>procedure, public, pass(self) :: <strong>camelcase</strong>  </td>
+       <td><p>Return a string with all words capitalized without spaces.</p></td></tr>
+      
        <tr><td>procedure, public, pass(self) :: <strong>capitalize</strong>  </td>
        <td><p>Return a string with its first character capitalized and the rest lowercased.</p></td></tr>
       
@@ -1197,6 +1284,9 @@ implementation in a submodule of an interface in a parent module.</p>
        <tr><td>procedure, public, pass(self) :: <strong>extension</strong>  </td>
        <td><p>Return the extension of a string containing a file name.</p></td></tr>
       
+       <tr><td>procedure, public, pass(self) :: <strong>fill</strong>  </td>
+       <td><p>Pad string on the left (or right) with zeros (or other char) to fill width.</p></td></tr>
+      
        <tr><td>procedure, public, pass(self) :: <strong>free</strong>  </td>
        <td><p>Free dynamic memory.</p></td></tr>
       
@@ -1205,6 +1295,9 @@ implementation in a submodule of an interface in a parent module.</p>
       
        <tr><td>procedure, public, pass(self) :: <strong>lower</strong>  </td>
        <td><p>Return a string with all lowercase characters.</p></td></tr>
+      
+       <tr><td>generic, public :: <strong>to_number</strong>  => to_integer_I1P, to_integer_I2P, to_integer_I4P, to_integer_I8P, to_real_R4P, to_real_R8P </td>
+       <td><p>Cast string to number.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>partition</strong>  </td>
        <td><p>Split string at separator and return the 3 parts (before, the separator and after).</p></td></tr>
@@ -1215,8 +1308,14 @@ implementation in a submodule of an interface in a parent module.</p>
        <tr><td>procedure, public, pass(self) :: <strong>reverse</strong>  </td>
        <td><p>Return a reversed string.</p></td></tr>
       
+       <tr><td>procedure, public, pass(self) :: <strong>snakecase</strong>  </td>
+       <td><p>Return a string with all words lowercase separated by "_".</p></td></tr>
+      
        <tr><td>procedure, public, pass(self) :: <strong>split</strong>  </td>
        <td><p>Return a list of substring in the string, using sep as the delimiter string.</p></td></tr>
+      
+       <tr><td>procedure, public, pass(self) :: <strong>startcase</strong>  </td>
+       <td><p>Return a string with all words capitalized, e.g. title case.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>strip</strong>  </td>
        <td><p>Return a string with the leading and trailing characters removed.</p></td></tr>
@@ -1332,6 +1431,9 @@ implementation in a submodule of an interface in a parent module.</p>
        <tr><td>procedure, private, pass(lhs) :: <strong>string_assign_real_R8P</strong>  </td>
        <td><p>Assignment operator from real input.</p></td></tr>
       
+       <tr><td>procedure, private, pass(lhs) :: <strong>string_assign_real_R16P</strong>  </td>
+       <td><p>Assignment operator from real input.</p></td></tr>
+      
        <tr><td>procedure, private, pass(lhs) :: <strong>string_concat_string</strong>  </td>
        <td><p>Concatenation with string.</p></td></tr>
       
@@ -1371,6 +1473,27 @@ implementation in a submodule of an interface in a parent module.</p>
        <tr><td>procedure, private, pass(self) :: <strong>join_characters</strong>  </td>
        <td><p>Return join string of an array of characters.</p></td></tr>
       
+       <tr><td>procedure, private, pass(self) :: <strong>to_integer_I1P</strong>  </td>
+       <td><p>Cast string to integer.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>to_integer_I2P</strong>  </td>
+       <td><p>Cast string to integer.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>to_integer_I4P</strong>  </td>
+       <td><p>Cast string to integer.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>to_integer_I8P</strong>  </td>
+       <td><p>Cast string to integer.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>to_real_R4P</strong>  </td>
+       <td><p>Cast string to real.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>to_real_R8P</strong>  </td>
+       <td><p>Cast string to real.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>to_real_R16P</strong>  </td>
+       <td><p>Cast string to real.</p></td></tr>
+      
        </tbody>
        </table>
      
@@ -1390,74 +1513,6 @@ implementation in a submodule of an interface in a parent module.</p>
      
     <section>
     <h2>Functions</h2>
-    
-    
-  <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-chars"></span><h3>
-private pure function <a href='../proc/chars.html'>chars</a>(self) result(raw)
-    
-    
-    
-</h3></div>
-  <div class="panel-body">
-       
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>self</strong></td><td><p>The string.</p></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-      
-    
-    
-
-  
-  
-  
-  
-     <h4>Return Value <small>character(kind=CK,len=:),
-  allocatable</small></h4>
-  <p>Raw characters data.</p>
-    
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Return the raw characters data.</p>
-        
-
-  </div>
-  </div>
-
     
     
   <div class="panel panel-default">
@@ -1657,6 +1712,225 @@ private elemental function <a href='../proc/basename.html'>basename</a>(self, se
     
     
   <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-camelcase"></span><h3>
+private elemental function <a href='../proc/camelcase.html'>camelcase</a>(self, sep)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Camel case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all words capitalized without spaces.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-capitalize"></span><h3>
+private elemental function <a href='../proc/capitalize.html'>capitalize</a>(self) result(capitalized)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Upper case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with its first character capitalized and the rest lowercased.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-chars"></span><h3>
+private pure function <a href='../proc/chars.html'>chars</a>(self) result(raw)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>character(kind=CK,len=:),
+  allocatable</small></h4>
+  <p>Raw characters data.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return the raw characters data.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-escape"></span><h3>
 private elemental function <a href='../proc/escape.html'>escape</a>(self, to_escape, esc) result(escaped)
     
@@ -1823,8 +2097,8 @@ private elemental function <a href='../proc/extension.html'>extension</a>(self)
     
     
   <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-upper"></span><h3>
-private elemental function <a href='../proc/upper.html'>upper</a>(self)
+  <div class="panel-heading codesum"><span class="anchor" id="proc-fill"></span><h3>
+private elemental function <a href='../proc/fill.html'>fill</a>(self, width, right, filling_char) result(filled)
     
     
     
@@ -1860,6 +2134,51 @@ private elemental function <a href='../proc/upper.html'>upper</a>(self)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>width</strong></td><td><p>Final width of filled string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>right</strong></td><td><p>Fill on the right instead of left.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=1),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>filling_char</strong></td><td><p>Filling character (default "0").</p></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -1873,7 +2192,7 @@ private elemental function <a href='../proc/upper.html'>upper</a>(self)
   
      <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
   </small></h4>
-  <p>Upper case string.</p>
+  <p>Filled string.</p>
     
     
     <h4>Description</h4>
@@ -1882,7 +2201,7 @@ private elemental function <a href='../proc/upper.html'>upper</a>(self)
 
 
        
-       <p>Return a string with all uppercase characters.</p>
+       <p>Pad string on the left (or right) with zeros (or other char) to fill width.</p>
         
 
   </div>
@@ -1951,74 +2270,6 @@ private elemental function <a href='../proc/lower.html'>lower</a>(self)
 
        
        <p>Return a string with all lowercase characters.</p>
-        
-
-  </div>
-  </div>
-
-    
-    
-  <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-capitalize"></span><h3>
-private elemental function <a href='../proc/capitalize.html'>capitalize</a>(self) result(capitalized)
-    
-    
-    
-</h3></div>
-  <div class="panel-body">
-       
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>self</strong></td><td><p>The string.</p></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-      
-    
-    
-
-  
-  
-  
-  
-     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
-  </small></h4>
-  <p>Upper case string.</p>
-    
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Return a string with its first character capitalized and the rest lowercased.</p>
         
 
   </div>
@@ -2291,6 +2542,172 @@ private elemental function <a href='../proc/reverse.html'>reverse</a>(self) resu
     
     
   <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-snakecase"></span><h3>
+private elemental function <a href='../proc/snakecase.html'>snakecase</a>(self, sep)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Snake case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all words lowercase separated by "_".</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-startcase"></span><h3>
+private elemental function <a href='../proc/startcase.html'>startcase</a>(self, sep)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Start case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all words capitalized, e.g. title case.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="proc-strip"></span><h3>
 private elemental function <a href='../proc/strip.html'>strip</a>(self)
     
@@ -2502,6 +2919,74 @@ private elemental function <a href='../proc/unique.html'>unique</a>(self, substr
 
        
        <p>Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-upper"></span><h3>
+private elemental function <a href='../proc/upper.html'>upper</a>(self)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Upper case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all uppercase characters.</p>
         
 
   </div>
@@ -4877,6 +5362,587 @@ private pure function <a href='../proc/join_characters.html'>join_characters</a>
   </div>
 
     
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-to_integer_i1p"></span><h3>
+private elemental function <a href='../proc/to_integer_i1p.html'>to_integer_I1P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I1P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I1P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-to_integer_i2p"></span><h3>
+private elemental function <a href='../proc/to_integer_i2p.html'>to_integer_I2P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I2P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I2P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-to_integer_i4p"></span><h3>
+private elemental function <a href='../proc/to_integer_i4p.html'>to_integer_I4P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I4P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-to_integer_i8p"></span><h3>
+private elemental function <a href='../proc/to_integer_i8p.html'>to_integer_I8P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I8P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-to_real_r4p"></span><h3>
+private elemental function <a href='../proc/to_real_r4p.html'>to_real_R4P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R4P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-to_real_r8p"></span><h3>
+private elemental function <a href='../proc/to_real_r8p.html'>to_real_R8P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R8P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-to_real_r16p"></span><h3>
+private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R16P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R16P).</p>
+        
+
+  </div>
+  </div>
+
+    
     </section>
     <br>
     
@@ -5597,6 +6663,80 @@ private elemental subroutine <a href='../proc/string_assign_real_r8p.html'>strin
 <tr>
   
   <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-string_assign_real_r16p"></span><h3>
+private elemental subroutine <a href='../proc/string_assign_real_r16p.html'>string_assign_real_R16P</a>(lhs, rhs)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
   <td>intent(in)</td>
   <td></td>
   

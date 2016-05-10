@@ -168,6 +168,8 @@
           
           <a class="list-group-item" href="../sourcefile/basename_dir.f90.html">basename_dir.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/camelcase.f90.html">camelcase.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/capitalize.f90.html">capitalize.f90</a>
           
           <a class="list-group-item" href="../sourcefile/concatenation.f90.html">concatenation.f90</a>
@@ -175,6 +177,8 @@
           <a class="list-group-item" href="../sourcefile/escape.f90.html">escape.f90</a>
           
           <a class="list-group-item" href="../sourcefile/extension.f90.html">extension.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/fill.f90.html">fill.f90</a>
           
           <a class="list-group-item" href="../sourcefile/free.f90.html">free.f90</a>
           
@@ -206,6 +210,8 @@
           
           <a class="list-group-item" href="../sourcefile/slen.f90.html">slen.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/snakecase.f90.html">snakecase.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/split.f90.html">split.f90</a>
           
           <a class="list-group-item" href="../sourcefile/srepeat.f90.html">srepeat.f90</a>
@@ -213,6 +219,8 @@
           <a class="list-group-item" href="../sourcefile/sscan.f90.html">sscan.f90</a>
           
           <a class="list-group-item" href="../sourcefile/start_end.f90.html">start_end.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/startcase.f90.html">startcase.f90</a>
           
           <a class="list-group-item" href="../sourcefile/strim.f90.html">strim.f90</a>
           
@@ -225,6 +233,8 @@
           <a class="list-group-item" href="../sourcefile/swapcase.f90.html">swapcase.f90</a>
           
           <a class="list-group-item" href="../sourcefile/test_all.f90.html">test_all.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/to_number.f90.html">to_number.f90</a>
           
           <a class="list-group-item" href="../sourcefile/unique.f90.html">unique.f90</a>
           
@@ -248,7 +258,7 @@
 <a name="ln-4"></a><span class="c">!&lt; StringiFor `assignments` test.</span>
 <a name="ln-5"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 <a name="ln-6"></a><span class="k">use</span><span class="p">,</span> <span class="k">intrinsic</span> <span class="kd">::</span> <span class="n">iso_fortran_env</span><span class="p">,</span> <span class="n">only</span> <span class="p">:</span> <span class="n">stdout</span> <span class="o">=&gt;</span> <span class="n">output_unit</span>
-<a name="ln-7"></a><span class="k">use </span><span class="n">stringifor</span><span class="p">,</span> <span class="n">only</span> <span class="p">:</span> <span class="n">string</span><span class="p">,</span> <span class="n">I1P</span><span class="p">,</span> <span class="n">I2P</span><span class="p">,</span> <span class="n">I4P</span><span class="p">,</span> <span class="n">I8P</span><span class="p">,</span> <span class="n">R4P</span><span class="p">,</span> <span class="n">R8P</span>
+<a name="ln-7"></a><span class="k">use </span><span class="n">stringifor</span><span class="p">,</span> <span class="n">only</span> <span class="p">:</span> <span class="n">string</span><span class="p">,</span> <span class="n">I1P</span><span class="p">,</span> <span class="n">I2P</span><span class="p">,</span> <span class="n">I4P</span><span class="p">,</span> <span class="n">I8P</span><span class="p">,</span> <span class="n">R4P</span><span class="p">,</span> <span class="n">R8P</span><span class="p">,</span> <span class="n">R16P</span>
 <a name="ln-8"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 <a name="ln-9"></a>
 <a name="ln-10"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
@@ -260,46 +270,52 @@
 <a name="ln-16"></a><span class="kt">integer</span><span class="p">(</span><span class="n">I8P</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ainteger_I8P</span>   <span class="c">!&lt; A integer (I8P).</span>
 <a name="ln-17"></a><span class="kt">real</span><span class="p">(</span><span class="n">R4P</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">areal_R4P</span>      <span class="c">!&lt; A real (R4P).</span>
 <a name="ln-18"></a><span class="kt">real</span><span class="p">(</span><span class="n">R8P</span><span class="p">)</span>    <span class="kd">::</span> <span class="n">areal_R8P</span>      <span class="c">!&lt; A real (R8P).</span>
-<a name="ln-19"></a><span class="kt">logical</span>      <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
-<a name="ln-20"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-21"></a>
-<a name="ln-22"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-23"></a><span class="n">test_passed</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-24"></a>
-<a name="ln-25"></a><span class="n">ainteger_I1P</span> <span class="o">=</span> <span class="mi">127_I1P</span>
-<a name="ln-26"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I1P</span>
-<a name="ln-27"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+127&#39;</span>
-<a name="ln-28"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+127&#39;</span>
-<a name="ln-29"></a>
-<a name="ln-30"></a><span class="n">ainteger_I2P</span> <span class="o">=</span> <span class="mi">32767_I2P</span>
-<a name="ln-31"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I2P</span>
-<a name="ln-32"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+32767&#39;</span>
-<a name="ln-33"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+32767&#39;</span>
-<a name="ln-34"></a>
-<a name="ln-35"></a><span class="n">ainteger_I4P</span> <span class="o">=</span> <span class="mi">2147483647_I4P</span>
-<a name="ln-36"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I4P</span>
-<a name="ln-37"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+2147483647&#39;</span>
-<a name="ln-38"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+2147483647&#39;</span>
-<a name="ln-39"></a>
-<a name="ln-40"></a><span class="n">ainteger_I8P</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9223372036854775807_I8P</span>
-<a name="ln-41"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I8P</span>
-<a name="ln-42"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;-9223372036854775807&#39;</span>
-<a name="ln-43"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;-9223372036854775807&#39;</span>
-<a name="ln-44"></a>
-<a name="ln-45"></a><span class="n">areal_R4P</span> <span class="o">=</span> <span class="mf">3.021e6</span>
-<a name="ln-46"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">areal_R4P</span>
-<a name="ln-47"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+0.302100E+07&#39;</span>
-<a name="ln-48"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+0.302100E+07&#39;</span>
-<a name="ln-49"></a>
-<a name="ln-50"></a><span class="n">areal_R8P</span> <span class="o">=</span> <span class="mf">7.00907641e23</span>
-<a name="ln-51"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">areal_R8P</span>
-<a name="ln-52"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+0.700907675971439E+024&#39;</span>
-<a name="ln-53"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+0.700907675971439E+024&#39;</span>
-<a name="ln-54"></a>
-<a name="ln-55"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
-<a name="ln-56"></a><span class="k">stop</span>
-<a name="ln-57"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-58"></a><span class="n">endprogram</span> <span class="n">assignments</span>
+<a name="ln-19"></a><span class="kt">real</span><span class="p">(</span><span class="n">R16P</span><span class="p">)</span>   <span class="kd">::</span> <span class="n">areal_R16P</span>     <span class="c">!&lt; A real (R16P).</span>
+<a name="ln-20"></a><span class="kt">logical</span>      <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
+<a name="ln-21"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-22"></a>
+<a name="ln-23"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-24"></a><span class="n">test_passed</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-25"></a>
+<a name="ln-26"></a><span class="n">ainteger_I1P</span> <span class="o">=</span> <span class="mi">127_I1P</span>
+<a name="ln-27"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I1P</span>
+<a name="ln-28"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+127&#39;</span>
+<a name="ln-29"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a name="ln-30"></a>
+<a name="ln-31"></a><span class="n">ainteger_I2P</span> <span class="o">=</span> <span class="mi">32767_I2P</span>
+<a name="ln-32"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I2P</span>
+<a name="ln-33"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+32767&#39;</span>
+<a name="ln-34"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a name="ln-35"></a>
+<a name="ln-36"></a><span class="n">ainteger_I4P</span> <span class="o">=</span> <span class="mi">2147483647_I4P</span>
+<a name="ln-37"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I4P</span>
+<a name="ln-38"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+2147483647&#39;</span>
+<a name="ln-39"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<a name="ln-40"></a>
+<a name="ln-41"></a><span class="n">ainteger_I8P</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9223372036854775807_I8P</span>
+<a name="ln-42"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">ainteger_I8P</span>
+<a name="ln-43"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;-9223372036854775807&#39;</span>
+<a name="ln-44"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<a name="ln-45"></a>
+<a name="ln-46"></a><span class="n">areal_R4P</span> <span class="o">=</span> <span class="mf">3.021e6_R4P</span>
+<a name="ln-47"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">areal_R4P</span>
+<a name="ln-48"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+0.302100E+07&#39;</span>
+<a name="ln-49"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<a name="ln-50"></a>
+<a name="ln-51"></a><span class="n">areal_R8P</span> <span class="o">=</span> <span class="mf">7.00907641e23_R8P</span>
+<a name="ln-52"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">areal_R8P</span>
+<a name="ln-53"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+0.700907641000000E+024&#39;</span>
+<a name="ln-54"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<a name="ln-55"></a>
+<a name="ln-56"></a><span class="n">areal_R16P</span> <span class="o">=</span> <span class="mf">1.1e200_R16P</span>
+<a name="ln-57"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">areal_R16P</span>
+<a name="ln-58"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;+0.110000000000000000000000000000000E+0201&#39;</span>
+<a name="ln-59"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="s1">&#39;Assigned to: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot; is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<a name="ln-60"></a>
+<a name="ln-61"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
+<a name="ln-62"></a><span class="k">stop</span>
+<a name="ln-63"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-64"></a><span class="n">endprogram</span> <span class="n">assignments</span>
 </pre></div>
 
     </section>

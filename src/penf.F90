@@ -1171,8 +1171,8 @@ contains
   !<
   !< @note It is assumed that R16P is represented by means of 128 bits, but this is not ensured in all architectures.
   !---------------------------------------------------------------------------------------------------------------------------------
-  real(R8P), intent(in) :: n    !< Real to be converted.
-  character(128)        :: bstr !< Returned bit-string containing input number.
+  real(R16P), intent(in) :: n    !< Real to be converted.
+  character(128)         :: bstr !< Returned bit-string containing input number.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------

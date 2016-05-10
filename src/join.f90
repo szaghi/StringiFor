@@ -12,7 +12,7 @@ implicit none
 type(string) :: astring         !< A string.
 type(string) :: strings(3)      !< A set of strings.
 character(5) :: characters(3)   !< A set of characters.
-logical      :: test_passed(10) !< List of passed tests.
+logical      :: test_passed(11) !< List of passed tests.
 integer      :: s               !< Counter.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -112,6 +112,18 @@ enddo
 
 write(stdout, "(A)") 'join (sep="-") "'//astring%join(array=characters, sep='-')//'"'
 test_passed(10) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(3))
+
+characters(1) = 'one'
+characters(2) = 'two'
+characters(3) = 'three'
+write(stdout, "(A)") 'Originals:'
+do s=1, size(characters)
+  write(stdout, "(A)") '+ "'//characters(s)//'"'
+enddo
+
+astring = '_'
+write(stdout, "(A)") 'join (sep by astring) "'//astring%join(array=characters)//'"'
+test_passed(11) = (astring%join(array=characters)//''==characters(1)//'_'//characters(2)//'_'//characters(3))
 
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop

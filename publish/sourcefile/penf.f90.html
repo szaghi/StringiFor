@@ -130,13 +130,13 @@
     <div id="mods" class="panel-collapse collapse">
         <div class="list-group">
           
-          <a class="list-group-item" href="../module/penf_global_parameters_variables.html">penf_global_parameters_variables</a>
+          <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html">penf_global_parameters_variables</a>
           
-          <a class="list-group-item" href="../module/penf_b_size.html">penf_b_size</a>
+          <a class="list-group-item" href="../module/penf_b_size%7E2.html">penf_b_size</a>
           
           <a class="list-group-item" href="../module/penf_stringify%7E2.html">penf_stringify</a>
           
-          <a class="list-group-item" href="../module/penf.html">penf</a>
+          <a class="list-group-item" href="../module/penf%7E2.html">penf</a>
           
         </div>
     </div>
@@ -174,6 +174,8 @@
           
           <a class="list-group-item" href="../sourcefile/basename_dir.f90.html">basename_dir.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/camelcase.f90.html">camelcase.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/capitalize.f90.html">capitalize.f90</a>
           
           <a class="list-group-item" href="../sourcefile/concatenation.f90.html">concatenation.f90</a>
@@ -181,6 +183,8 @@
           <a class="list-group-item" href="../sourcefile/escape.f90.html">escape.f90</a>
           
           <a class="list-group-item" href="../sourcefile/extension.f90.html">extension.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/fill.f90.html">fill.f90</a>
           
           <a class="list-group-item" href="../sourcefile/free.f90.html">free.f90</a>
           
@@ -212,6 +216,8 @@
           
           <a class="list-group-item" href="../sourcefile/slen.f90.html">slen.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/snakecase.f90.html">snakecase.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/split.f90.html">split.f90</a>
           
           <a class="list-group-item" href="../sourcefile/srepeat.f90.html">srepeat.f90</a>
@@ -219,6 +225,8 @@
           <a class="list-group-item" href="../sourcefile/sscan.f90.html">sscan.f90</a>
           
           <a class="list-group-item" href="../sourcefile/start_end.f90.html">start_end.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/startcase.f90.html">startcase.f90</a>
           
           <a class="list-group-item" href="../sourcefile/strim.f90.html">strim.f90</a>
           
@@ -231,6 +239,8 @@
           <a class="list-group-item" href="../sourcefile/swapcase.f90.html">swapcase.f90</a>
           
           <a class="list-group-item" href="../sourcefile/test_all.f90.html">test_all.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/to_number.f90.html">to_number.f90</a>
           
           <a class="list-group-item" href="../sourcefile/unique.f90.html">unique.f90</a>
           
@@ -1421,8 +1431,8 @@
 <a name="ln-1171"></a>  <span class="c">!&lt;</span>
 <a name="ln-1172"></a>  <span class="c">!&lt; @note It is assumed that R16P is represented by means of 128 bits, but this is not ensured in all architectures.</span>
 <a name="ln-1173"></a>  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-1174"></a>  <span class="kt">real</span><span class="p">(</span><span class="n">R8P</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>    <span class="c">!&lt; Real to be converted.</span>
-<a name="ln-1175"></a>  <span class="kt">character</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>        <span class="kd">::</span> <span class="n">bstr</span> <span class="c">!&lt; Returned bit-string containing input number.</span>
+<a name="ln-1174"></a>  <span class="kt">real</span><span class="p">(</span><span class="n">R16P</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">n</span>    <span class="c">!&lt; Real to be converted.</span>
+<a name="ln-1175"></a>  <span class="kt">character</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>         <span class="kd">::</span> <span class="n">bstr</span> <span class="c">!&lt; Returned bit-string containing input number.</span>
 <a name="ln-1176"></a>  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 <a name="ln-1177"></a>
 <a name="ln-1178"></a>  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

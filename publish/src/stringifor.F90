@@ -3,7 +3,7 @@ module stringifor
 !-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, Strings Fortran, yet another stringify Fortran module
 !-----------------------------------------------------------------------------------------------------------------------------------
-use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, str
+use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ private
 save
 public :: string, CK
 ! expose PENF kinds
-public :: I1P, I2P, I4P, I8P, R4P, R8P
+public :: I1P, I2P, I4P, I8P, R4P, R8P, R16P
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -26,19 +26,35 @@ type :: string
     ! public methods
     procedure, pass(self) :: basedir         !< Return the base directory name of a string containing a file name.
     procedure, pass(self) :: basename        !< Return the base file name of a string containing a file name.
+    procedure, pass(self) :: camelcase       !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars           !< Return the raw characters data.
     procedure, pass(self) :: escape          !< Escape backslahes (or custom escape character).
     procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
+    procedure, pass(self) :: fill            !< Pad string on the left (or right) with zeros (or other char) to fill width.
     procedure, pass(self) :: free            !< Free dynamic memory.
     generic               :: join =>       &
                              join_strings, &
                              join_characters !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
+    generic               :: to_number =>   &
+                             to_integer_I1P,&
+                             to_integer_I2P,&
+                             to_integer_I4P,&
+                             to_integer_I8P,&
+                             to_real_R4P,   &
+#ifdef r16p
+                             to_real_R8P,   &
+                             to_real_R16P    !< Cast string to number.
+#else
+                             to_real_R8P     !< Cast string to number.
+#endif
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
+    procedure, pass(self) :: snakecase       !< Return a string with all words lowercase separated by "_".
     procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
+    procedure, pass(self) :: startcase       !< Return a string with all words capitalized, e.g. title case.
     procedure, pass(self) :: strip           !< Return a string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase        !< Return a string with uppercase chars converted to lowercase and vice versa.
     procedure, pass(self) :: unique          !< Reduce to one (unique) multiple occurrences of a substring into a string.
@@ -61,7 +77,12 @@ type :: string
                                 string_assign_integer_I4P, &
                                 string_assign_integer_I8P, &
                                 string_assign_real_R4P,    &
+#ifdef r16p
+                                string_assign_real_R8P,    &
+                                string_assign_real_R16P             !< Assignment operator overloading.
+#else
                                 string_assign_real_R8P              !< Assignment operator overloading.
+#endif
     generic :: operator(//) => string_concat_string,    &
                                string_concat_character, &
                                character_concat_string              !< Concatenation operator overloading.
@@ -100,6 +121,7 @@ type :: string
     procedure, private, pass(lhs)  :: string_assign_integer_I8P      !< Assignment operator from integer input.
     procedure, private, pass(lhs)  :: string_assign_real_R4P         !< Assignment operator from real input.
     procedure, private, pass(lhs)  :: string_assign_real_R8P         !< Assignment operator from real input.
+    procedure, private, pass(lhs)  :: string_assign_real_R16P        !< Assignment operator from real input.
     procedure, private, pass(lhs)  :: string_concat_string           !< Concatenation with string.
     procedure, private, pass(lhs)  :: string_concat_character        !< Concatenation with character.
     procedure, private, pass(rhs)  :: character_concat_string        !< Concatenation with character (inverted).
@@ -113,6 +135,13 @@ type :: string
     procedure, private, pass(self) :: replace_one_occurrence         !< Replace the first occurrence of substring old by new.
     procedure, private, pass(self) :: join_strings                   !< Return join string of an array of strings.
     procedure, private, pass(self) :: join_characters                !< Return join string of an array of characters.
+    procedure, private, pass(self) :: to_integer_I1P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I2P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I4P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I8P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_real_R4P                    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R8P                    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R16P                   !< Cast string to real.
 endtype string
 
 character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
@@ -124,37 +153,6 @@ character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)              
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
   ! public methods
-  elemental subroutine free(self)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Free dynamic memory.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(inout) :: self !< The string.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(self%raw)) deallocate(self%raw)
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine free
-
-  pure function chars(self) result(raw)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return the raw characters data.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in)              :: self !< The string.
-  character(kind=CK, len=:), allocatable :: raw  !< Raw characters data.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(self%raw)) then
-    raw = self%raw
-  else
-    raw = ''
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction chars
-
   elemental function basedir(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the base directory name of a string containing a file name.
@@ -239,6 +237,65 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction basename
 
+  elemental function camelcase(self, sep)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all words capitalized without spaces.
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurence.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: camelcase !< Camel case string.
+  type(string), allocatable                       :: tokens(:) !< String tokens.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    call self%split(tokens=tokens, sep=sep)
+    tokens = tokens%capitalize()
+    camelcase = camelcase%join(array=tokens)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction camelcase
+
+  elemental function capitalize(self) result(capitalized)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with its first character capitalized and the rest lowercased.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self        !< The string.
+  type(string)              :: capitalized !< Upper case string.
+  integer                   :: c           !< Character counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    capitalized = self%lower()
+    c = index(LOWER_ALPHABET, capitalized%raw(1:1))
+    if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction capitalize
+
+  pure function chars(self) result(raw)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the raw characters data.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)              :: self !< The string.
+  character(kind=CK, len=:), allocatable :: raw  !< Raw characters data.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    raw = self%raw
+  else
+    raw = ''
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction chars
+
   elemental function escape(self, to_escape, esc) result(escaped)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Escape backslahes (or custom escape character).
@@ -294,27 +351,48 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction extension
 
-  elemental function upper(self)
+  elemental function fill(self, width, right, filling_char) result(filled)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return a string with all uppercase characters.
+  !< Pad string on the left (or right) with zeros (or other char) to fill width.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self  !< The string.
-  type(string)              :: upper !< Upper case string.
-  integer                   :: n1    !< Characters counter.
-  integer                   :: n2    !< Characters counter.
+  class(string),             intent(in)           :: self          !< The string.
+  integer,                   intent(in)           :: width         !< Final width of filled string.
+  logical,                   intent(in), optional :: right         !< Fill on the right instead of left.
+  character(kind=CK, len=1), intent(in), optional :: filling_char  !< Filling character (default "0").
+  type(string)                                    :: filled        !< Filled string.
+  logical                                         :: right_        !< Fill on the right instead of left, local variable.
+  character(kind=CK, len=1)                       :: filling_char_ !< Filling character (default "0"), local variable.
+  integer                                         :: c             !< Character counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
-    upper = self
-    do n1=1, len(self%raw)
-      n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
-      if (n2>0) upper%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
-    enddo
+    if (width>len(self%raw)) then
+      right_ = .false. ; if (present(right)) right_ = right
+      filling_char_ = '0' ; if (present(filling_char)) filling_char_ = filling_char
+      if (.not.right_) then
+        filled%raw = repeat(filling_char_, width-len(self%raw))//self%raw
+      else
+        filled%raw = self%raw//repeat(filling_char_, width-len(self%raw))
+      endif
+    endif
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction upper
+  endfunction fill
+
+  elemental subroutine free(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Free dynamic memory.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: self !< The string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) deallocate(self%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine free
 
   elemental function lower(self)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -337,25 +415,6 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction lower
-
-  elemental function capitalize(self) result(capitalized)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return a string with its first character capitalized and the rest lowercased.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self        !< The string.
-  type(string)              :: capitalized !< Upper case string.
-  integer                   :: c           !< Character counter.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(self%raw)) then
-    capitalized = self%lower()
-    c = index(LOWER_ALPHABET, capitalized%raw(1:1))
-    if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction capitalize
 
   pure function partition(self, sep) result(partitions)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -452,6 +511,28 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction reverse
 
+  elemental function snakecase(self, sep)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all words lowercase separated by "_".
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurence.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: snakecase !< Snake case string.
+  type(string), allocatable                       :: tokens(:) !< String tokens.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    call self%split(tokens=tokens, sep=sep)
+    tokens = tokens%lower()
+    snakecase = snakecase%join(array=tokens, sep='_')
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction snakecase
+
   pure subroutine split(self, tokens, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a list of substring in the string, using sep as the delimiter string.
@@ -516,6 +597,30 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine split
+
+  elemental function startcase(self, sep)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all words capitalized, e.g. title case.
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurence.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: startcase !< Start case string.
+  character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+  type(string), allocatable                       :: tokens(:) !< String tokens.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    sep_ = SPACE ; if (present(sep)) sep_ = sep
+    call self%split(tokens=tokens, sep=sep_)
+    tokens = tokens%capitalize()
+    startcase = startcase%join(array=tokens, sep=sep_)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction startcase
 
   elemental function strip(self)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -587,6 +692,28 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction unique
+
+  elemental function upper(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all uppercase characters.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self  !< The string.
+  type(string)              :: upper !< Upper case string.
+  integer                   :: n1    !< Characters counter.
+  integer                   :: n2    !< Characters counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    upper = self
+    do n1=1, len(self%raw)
+      n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
+      if (n2>0) upper%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction upper
 
   ! inquire
   elemental function end_with(self, suffix, start, end)
@@ -1258,6 +1385,20 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine string_assign_real_R8P
 
+  elemental subroutine string_assign_real_R16P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  real(R16P),    intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_real_R16P
+
   pure function string_concat_string(lhs, rhs) result(concat)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with string.
@@ -1540,6 +1681,9 @@ contains
   pure function join_strings(self, array, sep) result(join)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string that is a join of an array of strings.
+  !<
+  !< The join-separator is set equals to self if self has a value or it is set to a null string ''. This value can be overridden
+  !< passing a custom separator.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self      !< The string.
   type(string),              intent(in)           :: array(1:) !< Array to be joined.
@@ -1550,7 +1694,12 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  sep_ = '' ; if (present(sep)) sep_ = sep
+  if (allocated(self%raw)) then
+    sep_ = self%raw
+  else
+    sep_ = ''
+  endif
+  if (present(sep)) sep_ = sep
   join = ''
   do a=2, size(array, dim=1)
     if (allocated(array(a)%raw)) join%raw = join%raw//sep_//array(a)%raw
@@ -1567,6 +1716,9 @@ contains
   pure function join_characters(self, array, sep) result(join)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string that is a join of an array of characters.
+  !<
+  !< The join-separator is set equals to self if self has a value or it is set to a null string ''. This value can be overridden
+  !< passing a custom separator.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self      !< The string.
   character(kind=CK, len=*), intent(in)           :: array(1:) !< Array to be joined.
@@ -1577,7 +1729,12 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  sep_ = '' ; if (present(sep)) sep_ = sep
+  if (allocated(self%raw)) then
+    sep_ = self%raw
+  else
+    sep_ = ''
+  endif
+  if (present(sep)) sep_ = sep
   join = ''
   do a=2, size(array, dim=1)
     if (array(a)/='') join%raw = join%raw//sep_//array(a)
@@ -1590,4 +1747,123 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction join_characters
+
+  elemental function to_integer_I1P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I1P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I1P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I1P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I1P
+
+  elemental function to_integer_I2P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I2P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I2P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I2P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I2P
+
+  elemental function to_integer_I4P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I4P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I4P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I4P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I4P
+
+  elemental function to_integer_I8P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I8P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I8P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I8P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I8P
+
+  elemental function to_real_R4P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to real (R4P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  real(R4P),     intent(in) :: kind      !< Mold parameter for kind detection.
+  real(R4P)                 :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_real()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_real_R4P
+
+  elemental function to_real_R8P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to real (R8P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  real(R8P),     intent(in) :: kind      !< Mold parameter for kind detection.
+  real(R8P)                 :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_real()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_real_R8P
+
+  elemental function to_real_R16P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to real (R16P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  real(R16P),    intent(in) :: kind      !< Mold parameter for kind detection.
+  real(R16P)                :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_real()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_real_R16P
 endmodule stringifor

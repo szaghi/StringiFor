@@ -162,6 +162,8 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-basename">basename</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-camelcase">camelcase</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-capitalize">capitalize</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-chars">chars</a>
@@ -170,11 +172,15 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-extension">extension</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-fill">fill</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-free">free</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-join">join</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-lower">lower</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_number">to_number</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-partition">partition</a>
           
@@ -182,7 +188,11 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-reverse">reverse</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-snakecase">snakecase</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-split">split</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-startcase">startcase</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-strip">strip</a>
           
@@ -260,6 +270,8 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_real_r8p">string_assign_real_R8P</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_real_r16p">string_assign_real_R16P</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_concat_string">string_concat_string</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_concat_character">string_concat_character</a>
@@ -285,6 +297,20 @@
           <a class="list-group-item" href="../type/string.html#boundprocedure-join_strings">join_strings</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-join_characters">join_characters</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_integer_i1p">to_integer_I1P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_integer_i2p">to_integer_I2P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_integer_i4p">to_integer_I4P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_integer_i8p">to_integer_I8P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_real_r4p">to_real_R4P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_real_r8p">to_real_R8P</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-to_real_r16p">to_real_R16P</a>
           
         </div>
     </div>
@@ -588,6 +614,107 @@ private elemental function <a href='../proc/basename.html'>basename</a>(self, se
 
        
        <p>Return the base file name of a string containing a file name.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-camelcase"></span><h3>procedure, public, pass(self) :: <strong>camelcase</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a string with all words capitalized without spaces.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/camelcase.html'>camelcase</a>(self, sep)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Camel case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all words capitalized without spaces.</p>
         
 
       
@@ -962,6 +1089,137 @@ private elemental function <a href='../proc/extension.html'>extension</a>(self)
 
        
        <p>Return the extension of a string containing a file name.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-fill"></span><h3>procedure, public, pass(self) :: <strong>fill</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Pad string on the left (or right) with zeros (or other char) to fill width.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/fill.html'>fill</a>(self, width, right, filling_char) result(filled)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>width</strong></td><td><p>Final width of filled string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>right</strong></td><td><p>Fill on the right instead of left.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=1),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>filling_char</strong></td><td><p>Filling character (default "0").</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Filled string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Pad string on the left (or right) with zeros (or other char) to fill width.</p>
         
 
       
@@ -1353,6 +1611,529 @@ private elemental function <a href='../proc/lower.html'>lower</a>(self)
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_number"></span><h3>generic, public :: <strong>to_number</strong>  => <a href='../type/string.html#boundprocedure-to_integer_i1p'>to_integer_I1P</a>, <a href='../type/string.html#boundprocedure-to_integer_i2p'>to_integer_I2P</a>, <a href='../type/string.html#boundprocedure-to_integer_i4p'>to_integer_I4P</a>, <a href='../type/string.html#boundprocedure-to_integer_i8p'>to_integer_I8P</a>, <a href='../type/string.html#boundprocedure-to_real_r4p'>to_real_R4P</a>, <a href='../type/string.html#boundprocedure-to_real_r8p'>to_real_R8P</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to number.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i1p.html'>to_integer_I1P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I1P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I1P).</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i2p.html'>to_integer_I2P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I2P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I2P).</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i4p.html'>to_integer_I4P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I4P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I4P).</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i8p.html'>to_integer_I8P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I8P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I8P).</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/to_real_r4p.html'>to_real_R4P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R4P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R4P).</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/to_real_r8p.html'>to_real_R8P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R8P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R8P).</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-partition"></span><h3>procedure, public, pass(self) :: <strong>partition</strong>  
     
   </h3></div>
@@ -1671,6 +2452,107 @@ private elemental function <a href='../proc/reverse.html'>reverse</a>(self) resu
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-snakecase"></span><h3>procedure, public, pass(self) :: <strong>snakecase</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a string with all words lowercase separated by "_".</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/snakecase.html'>snakecase</a>(self, sep)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Snake case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all words lowercase separated by "_".</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-split"></span><h3>procedure, public, pass(self) :: <strong>split</strong>  
     
   </h3></div>
@@ -1767,6 +2649,107 @@ private pure subroutine <a href='../proc/split.html'>split</a>(self, tokens, sep
 
        
        <p>Return a list of substring in the string, using sep as the delimiter string.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-startcase"></span><h3>procedure, public, pass(self) :: <strong>startcase</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return a string with all words capitalized, e.g. title case.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/startcase.html'>startcase</a>(self, sep)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Start case string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string with all words capitalized, e.g. title case.</p>
         
 
       
@@ -6561,6 +7544,98 @@ private elemental subroutine <a href='../proc/string_assign_real_r8p.html'>strin
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_assign_real_r16p"></span><h3>procedure, private, pass(lhs) :: <strong>string_assign_real_R16P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Assignment operator from real input.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental subroutine <a href='../proc/string_assign_real_r16p.html'>string_assign_real_R16P</a>(lhs, rhs)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Assignment operator from real input.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_concat_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_concat_string</strong>  
     
   </h3></div>
@@ -8061,6 +9136,713 @@ private pure function <a href='../proc/join_characters.html'>join_characters</a>
 </div>
 
     
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_integer_i1p"></span><h3>procedure, private, pass(self) :: <strong>to_integer_I1P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to integer.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i1p.html'>to_integer_I1P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I1P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I1P).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_integer_i2p"></span><h3>procedure, private, pass(self) :: <strong>to_integer_I2P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to integer.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i2p.html'>to_integer_I2P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I2P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I2P).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_integer_i4p"></span><h3>procedure, private, pass(self) :: <strong>to_integer_I4P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to integer.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i4p.html'>to_integer_I4P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I4P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I4P).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_integer_i8p"></span><h3>procedure, private, pass(self) :: <strong>to_integer_I8P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to integer.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/to_integer_i8p.html'>to_integer_I8P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer(kind=I8P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to integer (I8P).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_real_r4p"></span><h3>procedure, private, pass(self) :: <strong>to_real_R4P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to real.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/to_real_r4p.html'>to_real_R4P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R4P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R4P).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_real_r8p"></span><h3>procedure, private, pass(self) :: <strong>to_real_R8P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to real.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/to_real_r8p.html'>to_real_R8P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R8P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R8P).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-to_real_r16p"></span><h3>procedure, private, pass(self) :: <strong>to_real_R16P</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Cast string to real.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(self, kind) result(to_number)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>kind</strong></td><td><p>Mold parameter for kind detection.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>real(kind=R16P)
+  </small></h4>
+  <p>The number into the string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Cast string to real (R16P).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
     </section>
     
     
@@ -8075,19 +9857,35 @@ private pure function <a href='../proc/join_characters.html'>join_characters</a>
     <span class="c">! public methods</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">basedir</span>         <span class="c">!&lt; Return the base directory name of a string containing a file name.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">basename</span>        <span class="c">!&lt; Return the base file name of a string containing a file name.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">camelcase</span>       <span class="c">!&lt; Return a string with all words capitalized without spaces.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">capitalize</span>      <span class="c">!&lt; Return a string with its first character capitalized and the rest lowercased.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">chars</span>           <span class="c">!&lt; Return the raw characters data.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">escape</span>          <span class="c">!&lt; Escape backslahes (or custom escape character).</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">extension</span>       <span class="c">!&lt; Return the extension of a string containing a file name.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">fill</span>            <span class="c">!&lt; Pad string on the left (or right) with zeros (or other char) to fill width.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">free</span>            <span class="c">!&lt; Free dynamic memory.</span>
     <span class="k">generic</span>               <span class="kd">::</span> <span class="n">join</span> <span class="o">=&gt;</span>       <span class="p">&amp;</span>
                              <span class="n">join_strings</span><span class="p">,</span> <span class="p">&amp;</span>
                              <span class="n">join_characters</span> <span class="c">!&lt; Return a string that is a join of an array of strings or characters.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">lower</span>           <span class="c">!&lt; Return a string with all lowercase characters.</span>
+    <span class="k">generic</span>               <span class="kd">::</span> <span class="n">to_number</span> <span class="o">=&gt;</span>   <span class="p">&amp;</span>
+                             <span class="n">to_integer_I1P</span><span class="p">,&amp;</span>
+                             <span class="n">to_integer_I2P</span><span class="p">,&amp;</span>
+                             <span class="n">to_integer_I4P</span><span class="p">,&amp;</span>
+                             <span class="n">to_integer_I8P</span><span class="p">,&amp;</span>
+                             <span class="n">to_real_R4P</span><span class="p">,</span>   <span class="p">&amp;</span>
+<span class="cp">#ifdef r16p</span>
+                             <span class="n">to_real_R8P</span><span class="p">,</span>   <span class="p">&amp;</span>
+                             <span class="n">to_real_R16P</span>    <span class="c">!&lt; Cast string to number.</span>
+<span class="cp">#else</span>
+                             <span class="n">to_real_R8P</span>     <span class="c">!&lt; Cast string to number.</span>
+<span class="cp">#endif</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">partition</span>       <span class="c">!&lt; Split string at separator and return the 3 parts (before, the separator and after).</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">replace</span>         <span class="c">!&lt; Return a string with all occurrences of substring old replaced by new.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">reverse</span>         <span class="c">!&lt; Return a reversed string.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">snakecase</span>       <span class="c">!&lt; Return a string with all words lowercase separated by &quot;_&quot;.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">split</span>           <span class="c">!&lt; Return a list of substring in the string, using sep as the delimiter string.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">startcase</span>       <span class="c">!&lt; Return a string with all words capitalized, e.g. title case.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">strip</span>           <span class="c">!&lt; Return a string with the leading and trailing characters removed.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">swapcase</span>        <span class="c">!&lt; Return a string with uppercase chars converted to lowercase and vice versa.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">unique</span>          <span class="c">!&lt; Reduce to one (unique) multiple occurrences of a substring into a string.</span>
@@ -8110,7 +9908,12 @@ private pure function <a href='../proc/join_characters.html'>join_characters</a>
                                 <span class="n">string_assign_integer_I4P</span><span class="p">,</span> <span class="p">&amp;</span>
                                 <span class="n">string_assign_integer_I8P</span><span class="p">,</span> <span class="p">&amp;</span>
                                 <span class="n">string_assign_real_R4P</span><span class="p">,</span>    <span class="p">&amp;</span>
+<span class="cp">#ifdef r16p</span>
+                                <span class="n">string_assign_real_R8P</span><span class="p">,</span>    <span class="p">&amp;</span>
+                                <span class="n">string_assign_real_R16P</span>             <span class="c">!&lt; Assignment operator overloading.</span>
+<span class="cp">#else</span>
                                 <span class="n">string_assign_real_R8P</span>              <span class="c">!&lt; Assignment operator overloading.</span>
+<span class="cp">#endif</span>
     <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">//</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_concat_string</span><span class="p">,</span>    <span class="p">&amp;</span>
                                <span class="n">string_concat_character</span><span class="p">,</span> <span class="p">&amp;</span>
                                <span class="n">character_concat_string</span>              <span class="c">!&lt; Concatenation operator overloading.</span>
@@ -8149,6 +9952,7 @@ private pure function <a href='../proc/join_characters.html'>join_characters</a>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_integer_I8P</span>      <span class="c">!&lt; Assignment operator from integer input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R4P</span>         <span class="c">!&lt; Assignment operator from real input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R8P</span>         <span class="c">!&lt; Assignment operator from real input.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R16P</span>        <span class="c">!&lt; Assignment operator from real input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_string</span>           <span class="c">!&lt; Concatenation with string.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_character</span>        <span class="c">!&lt; Concatenation with character.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_concat_string</span>        <span class="c">!&lt; Concatenation with character (inverted).</span>
@@ -8162,6 +9966,13 @@ private pure function <a href='../proc/join_characters.html'>join_characters</a>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">replace_one_occurrence</span>         <span class="c">!&lt; Replace the first occurrence of substring old by new.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">join_strings</span>                   <span class="c">!&lt; Return join string of an array of strings.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">join_characters</span>                <span class="c">!&lt; Return join string of an array of characters.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_integer_I1P</span>                 <span class="c">!&lt; Cast string to integer.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_integer_I2P</span>                 <span class="c">!&lt; Cast string to integer.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_integer_I4P</span>                 <span class="c">!&lt; Cast string to integer.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_integer_I8P</span>                 <span class="c">!&lt; Cast string to integer.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_real_R4P</span>                    <span class="c">!&lt; Cast string to real.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_real_R8P</span>                    <span class="c">!&lt; Cast string to real.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_real_R16P</span>                   <span class="c">!&lt; Cast string to real.</span>
 <span class="n">endtype</span> <span class="n">string</span>
 </pre></div>
 

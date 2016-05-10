@@ -168,6 +168,8 @@
           
           <a class="list-group-item" href="../sourcefile/basename_dir.f90.html">basename_dir.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/camelcase.f90.html">camelcase.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/capitalize.f90.html">capitalize.f90</a>
           
           <a class="list-group-item" href="../sourcefile/concatenation.f90.html">concatenation.f90</a>
@@ -175,6 +177,8 @@
           <a class="list-group-item" href="../sourcefile/escape.f90.html">escape.f90</a>
           
           <a class="list-group-item" href="../sourcefile/extension.f90.html">extension.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/fill.f90.html">fill.f90</a>
           
           <a class="list-group-item" href="../sourcefile/free.f90.html">free.f90</a>
           
@@ -206,6 +210,8 @@
           
           <a class="list-group-item" href="../sourcefile/slen.f90.html">slen.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/snakecase.f90.html">snakecase.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/split.f90.html">split.f90</a>
           
           <a class="list-group-item" href="../sourcefile/srepeat.f90.html">srepeat.f90</a>
@@ -213,6 +219,8 @@
           <a class="list-group-item" href="../sourcefile/sscan.f90.html">sscan.f90</a>
           
           <a class="list-group-item" href="../sourcefile/start_end.f90.html">start_end.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/startcase.f90.html">startcase.f90</a>
           
           <a class="list-group-item" href="../sourcefile/strim.f90.html">strim.f90</a>
           
@@ -225,6 +233,8 @@
           <a class="list-group-item" href="../sourcefile/swapcase.f90.html">swapcase.f90</a>
           
           <a class="list-group-item" href="../sourcefile/test_all.f90.html">test_all.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/to_number.f90.html">to_number.f90</a>
           
           <a class="list-group-item" href="../sourcefile/unique.f90.html">unique.f90</a>
           
@@ -256,7 +266,7 @@
 <a name="ln-12"></a><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>         <span class="c">!&lt; A string.</span>
 <a name="ln-13"></a><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>      <span class="c">!&lt; A set of strings.</span>
 <a name="ln-14"></a><span class="kt">character</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="kd">::</span> <span class="n">characters</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>   <span class="c">!&lt; A set of characters.</span>
-<a name="ln-15"></a><span class="kt">logical</span>      <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
+<a name="ln-15"></a><span class="kt">logical</span>      <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
 <a name="ln-16"></a><span class="kt">integer</span>      <span class="kd">::</span> <span class="n">s</span>               <span class="c">!&lt; Counter.</span>
 <a name="ln-17"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 <a name="ln-18"></a>
@@ -357,10 +367,22 @@
 <a name="ln-113"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;join (sep=&quot;-&quot;) &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">characters</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
 <a name="ln-114"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">characters</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="n">characters</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;-&#39;</span><span class="o">//</span><span class="n">characters</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 <a name="ln-115"></a>
-<a name="ln-116"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
-<a name="ln-117"></a><span class="k">stop</span>
-<a name="ln-118"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-119"></a><span class="n">endprogram</span> <span class="n">join</span>
+<a name="ln-116"></a><span class="n">characters</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;one&#39;</span>
+<a name="ln-117"></a><span class="n">characters</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;two&#39;</span>
+<a name="ln-118"></a><span class="n">characters</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;three&#39;</span>
+<a name="ln-119"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Originals:&#39;</span>
+<a name="ln-120"></a><span class="k">do </span><span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">(</span><span class="n">characters</span><span class="p">)</span>
+<a name="ln-121"></a>  <span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;+ &quot;&#39;</span><span class="o">//</span><span class="n">characters</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
+<a name="ln-122"></a><span class="n">enddo</span>
+<a name="ln-123"></a>
+<a name="ln-124"></a><span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span>
+<a name="ln-125"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;join (sep by astring) &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">characters</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
+<a name="ln-126"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">characters</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="n">characters</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;_&#39;</span><span class="o">//</span><span class="n">characters</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;_&#39;</span><span class="o">//</span><span class="n">characters</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<a name="ln-127"></a>
+<a name="ln-128"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
+<a name="ln-129"></a><span class="k">stop</span>
+<a name="ln-130"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-131"></a><span class="n">endprogram</span> <span class="n">join</span>
 </pre></div>
 
     </section>
