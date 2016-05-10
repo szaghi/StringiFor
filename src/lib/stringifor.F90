@@ -26,6 +26,7 @@ type :: string
     ! public methods
     procedure, pass(self) :: basedir         !< Return the base directory name of a string containing a file name.
     procedure, pass(self) :: basename        !< Return the base file name of a string containing a file name.
+    procedure, pass(self) :: camelcase       !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars           !< Return the raw characters data.
     procedure, pass(self) :: escape          !< Escape backslahes (or custom escape character).
@@ -239,6 +240,28 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction basename
+
+  elemental function camelcase(self, sep)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all words capitalized without spaces.
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurence.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: camelcase !< Camel case string.
+  type(string), allocatable                       :: tokens(:) !< String tokens.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    call self%split(tokens=tokens, sep=sep)
+    tokens = tokens%capitalize()
+    camelcase = camelcase%join(array=tokens)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction camelcase
 
   elemental function escape(self, to_escape, esc) result(escaped)
   !---------------------------------------------------------------------------------------------------------------------------------
