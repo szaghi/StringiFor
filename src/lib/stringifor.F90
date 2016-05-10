@@ -31,6 +31,7 @@ type :: string
     procedure, pass(self) :: chars           !< Return the raw characters data.
     procedure, pass(self) :: escape          !< Escape backslahes (or custom escape character).
     procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
+    procedure, pass(self) :: fill            !< Pad string on the left (or right) with zeros (or other char) to fill width.
     procedure, pass(self) :: free            !< Free dynamic memory.
     generic               :: join =>       &
                              join_strings, &
@@ -127,37 +128,6 @@ character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)              
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
   ! public methods
-  elemental subroutine free(self)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Free dynamic memory.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(inout) :: self !< The string.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(self%raw)) deallocate(self%raw)
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine free
-
-  pure function chars(self) result(raw)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return the raw characters data.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in)              :: self !< The string.
-  character(kind=CK, len=:), allocatable :: raw  !< Raw characters data.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(self%raw)) then
-    raw = self%raw
-  else
-    raw = ''
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction chars
-
   elemental function basedir(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the base directory name of a string containing a file name.
@@ -264,6 +234,43 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction camelcase
 
+  elemental function capitalize(self) result(capitalized)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with its first character capitalized and the rest lowercased.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self        !< The string.
+  type(string)              :: capitalized !< Upper case string.
+  integer                   :: c           !< Character counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    capitalized = self%lower()
+    c = index(LOWER_ALPHABET, capitalized%raw(1:1))
+    if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction capitalize
+
+  pure function chars(self) result(raw)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the raw characters data.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)              :: self !< The string.
+  character(kind=CK, len=:), allocatable :: raw  !< Raw characters data.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    raw = self%raw
+  else
+    raw = ''
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction chars
+
   elemental function escape(self, to_escape, esc) result(escaped)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Escape backslahes (or custom escape character).
@@ -319,27 +326,48 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction extension
 
-  elemental function upper(self)
+  elemental function fill(self, width, right, filling_char) result(filled)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return a string with all uppercase characters.
+  !< Pad string on the left (or right) with zeros (or other char) to fill width.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self  !< The string.
-  type(string)              :: upper !< Upper case string.
-  integer                   :: n1    !< Characters counter.
-  integer                   :: n2    !< Characters counter.
+  class(string),             intent(in)           :: self          !< The string.
+  integer,                   intent(in)           :: width         !< Final width of filled string.
+  logical,                   intent(in), optional :: right         !< Fill on the right instead of left.
+  character(kind=CK, len=1), intent(in), optional :: filling_char  !< Filling character (default "0").
+  type(string)                                    :: filled        !< Filled string.
+  logical                                         :: right_        !< Fill on the right instead of left, local variable.
+  character(kind=CK, len=1)                       :: filling_char_ !< Filling character (default "0"), local variable.
+  integer                                         :: c             !< Character counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
-    upper = self
-    do n1=1, len(self%raw)
-      n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
-      if (n2>0) upper%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
-    enddo
+    if (width>len(self%raw)) then
+      right_ = .false. ; if (present(right)) right_ = right
+      filling_char_ = '0' ; if (present(filling_char)) filling_char_ = filling_char
+      if (.not.right_) then
+        filled%raw = repeat(filling_char_, width-len(self%raw))//self%raw
+      else
+        filled%raw = self%raw//repeat(filling_char_, width-len(self%raw))
+      endif
+    endif
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction upper
+  endfunction fill
+
+  elemental subroutine free(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Free dynamic memory.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: self !< The string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) deallocate(self%raw)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine free
 
   elemental function lower(self)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -362,25 +390,6 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction lower
-
-  elemental function capitalize(self) result(capitalized)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return a string with its first character capitalized and the rest lowercased.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self        !< The string.
-  type(string)              :: capitalized !< Upper case string.
-  integer                   :: c           !< Character counter.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(self%raw)) then
-    capitalized = self%lower()
-    c = index(LOWER_ALPHABET, capitalized%raw(1:1))
-    if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction capitalize
 
   pure function partition(self, sep) result(partitions)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -658,6 +667,28 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction unique
+
+  elemental function upper(self)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all uppercase characters.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self  !< The string.
+  type(string)              :: upper !< Upper case string.
+  integer                   :: n1    !< Characters counter.
+  integer                   :: n2    !< Characters counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    upper = self
+    do n1=1, len(self%raw)
+      n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
+      if (n2>0) upper%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction upper
 
   ! inquire
   elemental function end_with(self, suffix, start, end)
