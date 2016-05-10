@@ -141,6 +141,8 @@
         
         <a class="list-group-item" href="../module/stringifor.html#variable-uix_dir_sep">UIX_DIR_SEP</a>
         
+        <a class="list-group-item" href="../module/stringifor.html#variable-backslash">BACKSLASH</a>
+        
       </div>
     </div>
   </div>
@@ -178,6 +180,10 @@
           
           <a class="list-group-item" href="../module/stringifor.html#proc-basename">basename</a>
           
+          <a class="list-group-item" href="../module/stringifor.html#proc-escape">escape</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-extension">extension</a>
+          
           <a class="list-group-item" href="../module/stringifor.html#proc-upper">upper</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-lower">lower</a>
@@ -187,6 +193,8 @@
           <a class="list-group-item" href="../module/stringifor.html#proc-partition">partition</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-replace">replace</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-reverse">reverse</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-strip">strip</a>
           
@@ -245,6 +253,10 @@
           <a class="list-group-item" href="../module/stringifor.html#proc-character_concat_string_string">character_concat_string_string</a>
           
           <a class="list-group-item" href="../module/stringifor.html#proc-replace_one_occurrence">replace_one_occurrence</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-join_strings">join_strings</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html#proc-join_characters">join_characters</a>
           
         </div>
     </div>
@@ -311,17 +323,17 @@
           
           <a class="list-group-item" href="../module/penf%7E2.html">penf</a>
           
-          <a class="list-group-item" href="../module/penf_b_size%7E2.html">penf_b_size</a>
-          
           <a class="list-group-item" href="../module/penf_b_size.html">penf_b_size</a>
+          
+          <a class="list-group-item" href="../module/penf_b_size%7E2.html">penf_b_size</a>
           
           <a class="list-group-item" href="../module/penf_global_parameters_variables.html">penf_global_parameters_variables</a>
           
           <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html">penf_global_parameters_variables</a>
           
-          <a class="list-group-item" href="../module/penf_stringify.html">penf_stringify</a>
-          
           <a class="list-group-item" href="../module/penf_stringify%7E2.html">penf_stringify</a>
+          
+          <a class="list-group-item" href="../module/penf_stringify.html">penf_stringify</a>
           
           <a class="list-group-item" href="../module/stringifor.html">stringifor</a>
           
@@ -385,43 +397,43 @@
 <g id="edge10" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M143.427,-108.01C200.911,-120.517 294.347,-137.347 376,-136"/>
 </g>
-<!-- module~penf_b_size~2 -->
-<g id="node4" class="node"><title>module~penf_b_size~2</title>
-<a xlink:href="../module/penf_b_size%7E2.html" xlink:title="penf_b_size">
+<!-- module~penf_b_size -->
+<g id="node4" class="node"><title>module~penf_b_size</title>
+<a xlink:href="../module/penf_b_size.html" xlink:title="penf_b_size">
 <polygon fill="#337ab7" stroke="#337ab7" points="293,-108 223,-108 223,-82 293,-82 293,-108"/>
 <text text-anchor="middle" x="258" y="-92.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_b_size</text>
 </a>
 </g>
-<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_b_size~2 -->
-<g id="edge2" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_b_size~2</title>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_b_size -->
+<g id="edge2" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_b_size</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M178.449,-95C190.206,-95 201.835,-95 212.422,-95"/>
 <polygon fill="black" stroke="black" points="212.627,-98.5001 222.627,-95 212.627,-91.5001 212.627,-98.5001"/>
 </g>
-<!-- module~penf_stringify -->
-<g id="node5" class="node"><title>module~penf_stringify</title>
-<a xlink:href="../module/penf_stringify.html" xlink:title="penf_stringify">
+<!-- module~penf_stringify~2 -->
+<g id="node5" class="node"><title>module~penf_stringify~2</title>
+<a xlink:href="../module/penf_stringify%7E2.html" xlink:title="penf_stringify">
 <polygon fill="#337ab7" stroke="#337ab7" points="414,-87 338,-87 338,-61 414,-61 414,-87"/>
 <text text-anchor="middle" x="376" y="-71.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_stringify</text>
 </a>
 </g>
-<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_stringify -->
-<g id="edge8" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_stringify</title>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_stringify~2 -->
+<g id="edge8" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_stringify~2</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M150.709,-81.9431C170.794,-78.2835 193.256,-74.8116 214,-73 252.963,-69.5974 262.89,-72.7358 302,-73 310.312,-73.0562 319.149,-73.1478 327.715,-73.2534"/>
 <polygon fill="black" stroke="black" points="327.93,-76.7564 337.975,-73.3877 328.022,-69.757 327.93,-76.7564"/>
 </g>
-<!-- module~penf_b_size~2&#45;&gt;module~penf -->
-<g id="edge12" class="edge"><title>module~penf_b_size~2&#45;&gt;module~penf</title>
+<!-- module~penf_b_size&#45;&gt;module~penf -->
+<g id="edge12" class="edge"><title>module~penf_b_size&#45;&gt;module~penf</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M280.699,-108.214C303.885,-120.414 341.305,-136.572 376,-136"/>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M376,-136C397.555,-135.644 421.168,-130.981 440.14,-126.139"/>
 <polygon fill="black" stroke="black" points="441.123,-129.499 449.88,-123.535 439.315,-122.736 441.123,-129.499"/>
 </g>
-<!-- module~penf_b_size~2&#45;&gt;module~penf_stringify -->
-<g id="edge6" class="edge"><title>module~penf_b_size~2&#45;&gt;module~penf_stringify</title>
+<!-- module~penf_b_size&#45;&gt;module~penf_stringify~2 -->
+<g id="edge6" class="edge"><title>module~penf_b_size&#45;&gt;module~penf_stringify~2</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M293.084,-88.7562C304.014,-86.8111 316.261,-84.6316 327.919,-82.5569"/>
 <polygon fill="black" stroke="black" points="328.732,-85.9672 337.964,-80.7692 327.505,-79.0755 328.732,-85.9672"/>
 </g>
-<!-- module~penf_stringify&#45;&gt;module~penf -->
-<g id="edge14" class="edge"><title>module~penf_stringify&#45;&gt;module~penf</title>
+<!-- module~penf_stringify~2&#45;&gt;module~penf -->
+<g id="edge14" class="edge"><title>module~penf_stringify~2&#45;&gt;module~penf</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M408.235,-87.0854C418.489,-91.2481 429.905,-95.8822 440.442,-100.16"/>
 <polygon fill="black" stroke="black" points="439.231,-103.445 449.813,-103.964 441.864,-96.9595 439.231,-103.445"/>
 </g>
@@ -432,8 +444,8 @@
 <text text-anchor="middle" x="258" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
 </a>
 </g>
-<!-- iso_fortran_env&#45;&gt;module~penf_stringify -->
-<g id="edge4" class="edge"><title>iso_fortran_env&#45;&gt;module~penf_stringify</title>
+<!-- iso_fortran_env&#45;&gt;module~penf_stringify~2 -->
+<g id="edge4" class="edge"><title>iso_fortran_env&#45;&gt;module~penf_stringify~2</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M283.314,-26.086C300.346,-34.8907 323.01,-46.607 341.663,-56.2498"/>
 <polygon fill="black" stroke="black" points="340.237,-59.4525 350.728,-60.9356 343.452,-53.2342 340.237,-59.4525"/>
 </g>
@@ -542,315 +554,363 @@ implementation in a submodule of an interface in a parent module.</p>
 <!-- Generated by graphviz version 2.26.3 (20100126.1600)
  -->
 <!-- Title: module~~stringifor~~UsedByGraph Pages: 1 -->
-<svg id="modulestringiforUsedByGraph" width="180pt" height="1090pt"
- viewBox="0.00 0.00 180.00 1090.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="module~~stringifor~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 1086)">
+<svg id="modulestringiforUsedByGraph" width="180pt" height="1266pt"
+ viewBox="0.00 0.00 180.00 1266.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~stringifor~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 1262)">
 <title>module~~stringifor~~UsedByGraph</title>
-<polygon fill="white" stroke="white" points="-4,5 -4,-1086 177,-1086 177,5 -4,5"/>
+<polygon fill="white" stroke="white" points="-4,5 -4,-1262 177,-1262 177,5 -4,5"/>
 <!-- module~stringifor -->
 <g id="node1" class="node"><title>module~stringifor</title>
-<polygon fill="none" stroke="black" points="54,-554 2.13163e-14,-554 0,-528 54,-528 54,-554"/>
-<text text-anchor="middle" x="27" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor</text>
-</g>
-<!-- program~slen -->
-<g id="node2" class="node"><title>program~slen</title>
-<a xlink:href="../program/slen.html" xlink:title="slen">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1082 104,-1082 104,-1056 158,-1056 158,-1082"/>
-<text text-anchor="middle" x="131" y="-1066.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~slen -->
-<g id="edge2" class="edge"><title>module~stringifor&#45;&gt;program~slen</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.9267,-554.299C33.2996,-630.035 61.2127,-1005.02 90,-1047 91.519,-1049.22 93.3351,-1051.23 95.3454,-1053.05"/>
-<polygon fill="black" stroke="black" points="93.6859,-1056.17 103.845,-1059.18 97.7794,-1050.49 93.6859,-1056.17"/>
-</g>
-<!-- program~split -->
-<g id="node3" class="node"><title>program~split</title>
-<a xlink:href="../program/split.html" xlink:title="split">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1038 104,-1038 104,-1012 158,-1012 158,-1038"/>
-<text text-anchor="middle" x="131" y="-1022.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~split -->
-<g id="edge4" class="edge"><title>module~stringifor&#45;&gt;program~split</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.2159,-554.091C28.5531,-621.3 37.4824,-927.364 90,-1003 91.5319,-1005.21 93.3575,-1007.21 95.3747,-1009.03"/>
-<polygon fill="black" stroke="black" points="93.7249,-1012.15 103.888,-1015.15 97.8094,-1006.47 93.7249,-1012.15"/>
+<polygon fill="none" stroke="black" points="54,-642 2.13163e-14,-642 0,-616 54,-616 54,-642"/>
+<text text-anchor="middle" x="27" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor</text>
 </g>
 <!-- program~assignments -->
-<g id="node4" class="node"><title>program~assignments</title>
+<g id="node2" class="node"><title>program~assignments</title>
 <a xlink:href="../program/assignments.html" xlink:title="assignments">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="167,-994 95,-994 95,-968 167,-968 167,-994"/>
-<text text-anchor="middle" x="131" y="-978.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assignments</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="167,-1258 95,-1258 95,-1232 167,-1232 167,-1258"/>
+<text text-anchor="middle" x="131" y="-1242.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assignments</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~assignments -->
-<g id="edge6" class="edge"><title>module~stringifor&#45;&gt;program~assignments</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4244,-554.083C29.703,-617.341 42.2241,-891.215 90,-959 90.4537,-959.644 90.9324,-960.27 91.4334,-960.88"/>
-<polygon fill="black" stroke="black" points="89.2855,-963.662 98.9978,-967.895 94.0453,-958.529 89.2855,-963.662"/>
-</g>
-<!-- program~srepeat -->
-<g id="node5" class="node"><title>program~srepeat</title>
-<a xlink:href="../program/srepeat.html" xlink:title="srepeat">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-950 104,-950 104,-924 158,-924 158,-950"/>
-<text text-anchor="middle" x="131" y="-934.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~srepeat -->
-<g id="edge8" class="edge"><title>module~stringifor&#45;&gt;program~srepeat</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6912,-554.262C31.0143,-613.679 46.9948,-855.091 90,-915 91.5251,-917.125 93.3202,-919.064 95.2925,-920.83"/>
-<polygon fill="black" stroke="black" points="93.4261,-923.799 103.583,-926.815 97.5237,-918.124 93.4261,-923.799"/>
-</g>
-<!-- program~basename_dir -->
-<g id="node6" class="node"><title>program~basename_dir</title>
-<a xlink:href="../program/basename_dir.html" xlink:title="basename_dir">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="171,-906 91,-906 91,-880 171,-880 171,-906"/>
-<text text-anchor="middle" x="131" y="-890.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">basename_dir</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~basename_dir -->
-<g id="edge10" class="edge"><title>module~stringifor&#45;&gt;program~basename_dir</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.0106,-554.155C32.4433,-608.975 51.6759,-818.819 90,-871 90.4662,-871.635 90.9564,-872.253 91.468,-872.855"/>
-<polygon fill="black" stroke="black" points="89.3673,-875.675 99.1246,-879.804 94.0716,-870.492 89.3673,-875.675"/>
-</g>
-<!-- program~sscan -->
-<g id="node7" class="node"><title>program~sscan</title>
-<a xlink:href="../program/sscan.html" xlink:title="sscan">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-862 104,-862 104,-836 158,-836 158,-862"/>
-<text text-anchor="middle" x="131" y="-846.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~sscan -->
-<g id="edge12" class="edge"><title>module~stringifor&#45;&gt;program~sscan</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.424,-554.07C34.0854,-604.05 56.3387,-782.496 90,-827 91.5776,-829.086 93.412,-830.996 95.4129,-832.741"/>
-<polygon fill="black" stroke="black" points="93.587,-835.738 103.765,-838.681 97.644,-830.033 93.587,-835.738"/>
-</g>
-<!-- program~capitalize -->
-<g id="node8" class="node"><title>program~capitalize</title>
-<a xlink:href="../program/capitalize.html" xlink:title="capitalize">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="159,-818 103,-818 103,-792 159,-792 159,-818"/>
-<text text-anchor="middle" x="131" y="-802.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">capitalize</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~capitalize -->
-<g id="edge14" class="edge"><title>module~stringifor&#45;&gt;program~capitalize</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.0105,-554.179C36.0909,-599.2 61.0126,-746.147 90,-783 91.236,-784.571 92.6163,-786.045 94.1014,-787.424"/>
-<polygon fill="black" stroke="black" points="92.1291,-790.321 102.217,-793.558 96.3498,-784.736 92.1291,-790.321"/>
-</g>
-<!-- program~start_end -->
-<g id="node9" class="node"><title>program~start_end</title>
-<a xlink:href="../program/start_end.html" xlink:title="start_end">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-774 102,-774 102,-748 160,-748 160,-774"/>
-<text text-anchor="middle" x="131" y="-758.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">start_end</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~start_end -->
-<g id="edge16" class="edge"><title>module~stringifor&#45;&gt;program~start_end</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8369,-554.167C30.6578,-588.462 42.5164,-681.839 90,-739 91.1356,-740.367 92.3788,-741.662 93.7027,-742.886"/>
-<polygon fill="black" stroke="black" points="91.8943,-745.907 101.981,-749.148 96.1174,-740.324 91.8943,-745.907"/>
-</g>
-<!-- program~concatenation -->
-<g id="node10" class="node"><title>program~concatenation</title>
-<a xlink:href="../program/concatenation.html" xlink:title="concatenation">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="170,-730 92,-730 92,-704 170,-704 170,-730"/>
-<text text-anchor="middle" x="131" y="-714.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">concatenation</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~concatenation -->
-<g id="edge18" class="edge"><title>module~stringifor&#45;&gt;program~concatenation</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.2565,-554.152C34.7973,-582.925 51.5234,-652.291 90,-695 90.757,-695.84 91.5538,-696.654 92.3838,-697.443"/>
-<polygon fill="black" stroke="black" points="90.5397,-700.444 100.572,-703.852 94.8544,-694.932 90.5397,-700.444"/>
-</g>
-<!-- program~strim -->
-<g id="node11" class="node"><title>program~strim</title>
-<a xlink:href="../program/strim.html" xlink:title="strim">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-686 104,-686 104,-660 158,-660 158,-686"/>
-<text text-anchor="middle" x="131" y="-670.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~strim -->
-<g id="edge20" class="edge"><title>module~stringifor&#45;&gt;program~strim</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.6962,-554.054C40.2681,-576.35 60.3425,-622.151 90,-651 91.6467,-652.602 93.4334,-654.119 95.3088,-655.551"/>
-<polygon fill="black" stroke="black" points="93.6718,-658.665 103.939,-661.279 97.5429,-652.833 93.6718,-658.665"/>
-</g>
-<!-- program~free -->
-<g id="node12" class="node"><title>program~free</title>
-<a xlink:href="../program/free.html" xlink:title="free">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-642 104,-642 104,-616 158,-616 158,-642"/>
-<text text-anchor="middle" x="131" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">free</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~free -->
-<g id="edge22" class="edge"><title>module~stringifor&#45;&gt;program~free</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M37.3382,-554.089C49.0423,-568.328 69.2018,-591.171 90,-607 91.5909,-608.211 93.2575,-609.393 94.9701,-610.541"/>
-<polygon fill="black" stroke="black" points="93.4312,-613.704 103.781,-615.969 97.1025,-607.744 93.4312,-613.704"/>
-</g>
-<!-- program~strip -->
-<g id="node13" class="node"><title>program~strip</title>
-<a xlink:href="../program/strip.html" xlink:title="strip">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-598 104,-598 104,-572 158,-572 158,-598"/>
-<text text-anchor="middle" x="131" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strip</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~strip -->
-<g id="edge24" class="edge"><title>module~stringifor&#45;&gt;program~strip</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-552.446C66.3545,-557.65 81.0968,-563.887 94.3707,-569.503"/>
-<polygon fill="black" stroke="black" points="93.1474,-572.786 103.721,-573.459 95.875,-566.339 93.1474,-572.786"/>
-</g>
-<!-- program~io_basic -->
-<g id="node14" class="node"><title>program~io_basic</title>
-<a xlink:href="../program/io_basic.html" xlink:title="io_basic">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-554 104,-554 104,-528 158,-528 158,-554"/>
-<text text-anchor="middle" x="131" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">io_basic</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~io_basic -->
-<g id="edge26" class="edge"><title>module~stringifor&#45;&gt;program~io_basic</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-541C66.1157,-541 80.5252,-541 93.5959,-541"/>
-<polygon fill="black" stroke="black" points="93.7209,-544.5 103.721,-541 93.7208,-537.5 93.7209,-544.5"/>
-</g>
-<!-- program~sverify -->
-<g id="node15" class="node"><title>program~sverify</title>
-<a xlink:href="../program/sverify.html" xlink:title="sverify">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-510 104,-510 104,-484 158,-484 158,-510"/>
-<text text-anchor="middle" x="131" y="-494.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~sverify -->
-<g id="edge28" class="edge"><title>module~stringifor&#45;&gt;program~sverify</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-529.554C66.3545,-524.35 81.0968,-518.113 94.3707,-512.497"/>
-<polygon fill="black" stroke="black" points="95.875,-515.661 103.721,-508.541 93.1474,-509.214 95.875,-515.661"/>
-</g>
-<!-- program~is_digit -->
-<g id="node16" class="node"><title>program~is_digit</title>
-<a xlink:href="../program/is_digit.html" xlink:title="is_digit">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-466 104,-466 104,-440 158,-440 158,-466"/>
-<text text-anchor="middle" x="131" y="-450.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_digit</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~is_digit -->
-<g id="edge30" class="edge"><title>module~stringifor&#45;&gt;program~is_digit</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M37.3382,-527.911C49.0423,-513.672 69.2018,-490.829 90,-475 91.5909,-473.789 93.2575,-472.607 94.9701,-471.459"/>
-<polygon fill="black" stroke="black" points="97.1025,-474.256 103.781,-466.031 93.4312,-468.296 97.1025,-474.256"/>
-</g>
-<!-- program~swapcase -->
-<g id="node17" class="node"><title>program~swapcase</title>
-<a xlink:href="../program/swapcase.html" xlink:title="swapcase">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="161,-422 101,-422 101,-396 161,-396 161,-422"/>
-<text text-anchor="middle" x="131" y="-406.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swapcase</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~swapcase -->
-<g id="edge32" class="edge"><title>module~stringifor&#45;&gt;program~swapcase</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.6962,-527.946C40.2681,-505.65 60.3425,-459.849 90,-431 90.9446,-430.081 91.9352,-429.19 92.9623,-428.327"/>
-<polygon fill="black" stroke="black" points="95.3169,-430.945 101.387,-422.261 91.2267,-425.264 95.3169,-430.945"/>
-</g>
-<!-- program~is_integer -->
-<g id="node18" class="node"><title>program~is_integer</title>
-<a xlink:href="../program/is_integer.html" xlink:title="is_integer">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-378 102,-378 102,-352 160,-352 160,-378"/>
-<text text-anchor="middle" x="131" y="-362.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_integer</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~is_integer -->
-<g id="edge34" class="edge"><title>module~stringifor&#45;&gt;program~is_integer</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.2565,-527.848C34.7973,-499.075 51.5234,-429.709 90,-387 91.0138,-385.875 92.099,-384.796 93.2398,-383.764"/>
-<polygon fill="black" stroke="black" points="95.527,-386.423 101.406,-377.608 91.3135,-380.833 95.527,-386.423"/>
-</g>
-<!-- program~unique -->
-<g id="node19" class="node"><title>program~unique</title>
-<a xlink:href="../program/unique.html" xlink:title="unique">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-334 104,-334 104,-308 158,-308 158,-334"/>
-<text text-anchor="middle" x="131" y="-318.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~unique -->
-<g id="edge36" class="edge"><title>module~stringifor&#45;&gt;program~unique</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8369,-527.833C30.6578,-493.538 42.5164,-400.161 90,-343 91.626,-341.043 93.4725,-339.234 95.4608,-337.567"/>
-<polygon fill="black" stroke="black" points="97.4794,-340.426 103.665,-331.824 93.4654,-334.691 97.4794,-340.426"/>
-</g>
-<!-- program~is_number -->
-<g id="node20" class="node"><title>program~is_number</title>
-<a xlink:href="../program/is_number.html" xlink:title="is_number">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="162,-290 100,-290 100,-264 162,-264 162,-290"/>
-<text text-anchor="middle" x="131" y="-274.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_number</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~is_number -->
-<g id="edge38" class="edge"><title>module~stringifor&#45;&gt;program~is_number</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.0105,-527.821C36.0909,-482.8 61.0126,-335.853 90,-299 90.5899,-298.25 91.2127,-297.522 91.8641,-296.817"/>
-<polygon fill="black" stroke="black" points="94.4212,-299.235 99.7405,-290.072 89.8682,-293.918 94.4212,-299.235"/>
-</g>
-<!-- program~upper_lower -->
-<g id="node21" class="node"><title>program~upper_lower</title>
-<a xlink:href="../program/upper_lower.html" xlink:title="upper_lower">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="167,-246 95,-246 95,-220 167,-220 167,-246"/>
-<text text-anchor="middle" x="131" y="-230.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper_lower</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~upper_lower -->
-<g id="edge40" class="edge"><title>module~stringifor&#45;&gt;program~upper_lower</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.424,-527.93C34.0854,-477.95 56.3387,-299.504 90,-255 90.4751,-254.372 90.9735,-253.76 91.4927,-253.163"/>
-<polygon fill="black" stroke="black" points="94.0899,-255.536 99.215,-246.263 89.4259,-250.316 94.0899,-255.536"/>
-</g>
-<!-- program~is_real -->
-<g id="node22" class="node"><title>program~is_real</title>
-<a xlink:href="../program/is_real.html" xlink:title="is_real">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-202 104,-202 104,-176 158,-176 158,-202"/>
-<text text-anchor="middle" x="131" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_real</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~is_real -->
-<g id="edge42" class="edge"><title>module~stringifor&#45;&gt;program~is_real</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.0106,-527.845C32.4433,-473.025 51.6759,-263.181 90,-211 91.5481,-208.892 93.3604,-206.966 95.3452,-205.208"/>
-<polygon fill="black" stroke="black" points="97.5765,-207.915 103.662,-199.243 93.4966,-202.227 97.5765,-207.915"/>
-</g>
-<!-- program~partition -->
-<g id="node23" class="node"><title>program~partition</title>
-<a xlink:href="../program/partition.html" xlink:title="partition">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-158 104,-158 104,-132 158,-132 158,-158"/>
-<text text-anchor="middle" x="131" y="-142.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">partition</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~partition -->
-<g id="edge44" class="edge"><title>module~stringifor&#45;&gt;program~partition</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6912,-527.738C31.0143,-468.321 46.9948,-226.909 90,-167 91.5251,-164.875 93.3202,-162.936 95.2925,-161.17"/>
-<polygon fill="black" stroke="black" points="97.5237,-163.876 103.583,-155.185 93.4261,-158.201 97.5237,-163.876"/>
-</g>
-<!-- program~replace -->
-<g id="node24" class="node"><title>program~replace</title>
-<a xlink:href="../program/replace.html" xlink:title="replace">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-114 104,-114 104,-88 158,-88 158,-114"/>
-<text text-anchor="middle" x="131" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace</text>
-</a>
-</g>
-<!-- module~stringifor&#45;&gt;program~replace -->
-<g id="edge46" class="edge"><title>module~stringifor&#45;&gt;program~replace</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4244,-527.917C29.703,-464.659 42.2241,-190.785 90,-123 91.5474,-120.805 93.3845,-118.808 95.4099,-116.996"/>
-<polygon fill="black" stroke="black" points="97.8454,-119.558 103.941,-110.892 93.7717,-113.865 97.8454,-119.558"/>
+<g id="edge2" class="edge"><title>module~stringifor&#45;&gt;program~assignments</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6585,-642.099C31.9129,-724.831 56.4006,-1173.03 90,-1223 90.4395,-1223.65 90.905,-1224.29 91.3939,-1224.91"/>
+<polygon fill="black" stroke="black" points="89.1927,-1227.64 98.8531,-1231.99 94.0144,-1222.57 89.1927,-1227.64"/>
 </g>
 <!-- program~sadjustlr -->
-<g id="node25" class="node"><title>program~sadjustlr</title>
+<g id="node3" class="node"><title>program~sadjustlr</title>
 <a xlink:href="../program/sadjustlr.html" xlink:title="sadjustlr">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-70 104,-70 104,-44 158,-44 158,-70"/>
-<text text-anchor="middle" x="131" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustlr</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1214 104,-1214 104,-1188 158,-1188 158,-1214"/>
+<text text-anchor="middle" x="131" y="-1198.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustlr</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~sadjustlr -->
-<g id="edge48" class="edge"><title>module~stringifor&#45;&gt;program~sadjustlr</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.2159,-527.909C28.5531,-460.7 37.4824,-154.636 90,-79 91.5319,-76.7937 93.3575,-74.7895 95.3747,-72.9719"/>
-<polygon fill="black" stroke="black" points="97.8094,-75.5324 103.888,-66.855 93.7249,-69.8476 97.8094,-75.5324"/>
+<g id="edge4" class="edge"><title>module~stringifor&#45;&gt;program~sadjustlr</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.7779,-642.139C32.5603,-721.316 58.8017,-1133.02 90,-1179 91.5081,-1181.22 93.3161,-1183.24 95.3207,-1185.07"/>
+<polygon fill="black" stroke="black" points="93.653,-1188.18 103.808,-1191.2 97.7539,-1182.51 93.653,-1188.18"/>
+</g>
+<!-- program~basename_dir -->
+<g id="node4" class="node"><title>program~basename_dir</title>
+<a xlink:href="../program/basename_dir.html" xlink:title="basename_dir">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="171,-1170 91,-1170 91,-1144 171,-1144 171,-1170"/>
+<text text-anchor="middle" x="131" y="-1154.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">basename_dir</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~basename_dir -->
+<g id="edge6" class="edge"><title>module~stringifor&#45;&gt;program~basename_dir</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.9267,-642.299C33.2996,-718.035 61.2127,-1093.02 90,-1135 90.4454,-1135.65 90.9164,-1136.28 91.4103,-1136.9"/>
+<polygon fill="black" stroke="black" points="89.2313,-1139.65 98.9133,-1143.95 94.0274,-1134.55 89.2313,-1139.65"/>
 </g>
 <!-- program~sindex -->
-<g id="node26" class="node"><title>program~sindex</title>
+<g id="node5" class="node"><title>program~sindex</title>
 <a xlink:href="../program/sindex.html" xlink:title="sindex">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-26 104,-26 104,-1.24345e-14 158,-3.55271e-15 158,-26"/>
-<text text-anchor="middle" x="131" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1126 104,-1126 104,-1100 158,-1100 158,-1126"/>
+<text text-anchor="middle" x="131" y="-1110.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
 </a>
 </g>
 <!-- module~stringifor&#45;&gt;program~sindex -->
-<g id="edge50" class="edge"><title>module~stringifor&#45;&gt;program~sindex</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.9267,-527.701C33.2996,-451.965 61.2127,-76.98 90,-35 91.519,-32.7848 93.3351,-30.774 95.3454,-28.9517"/>
-<polygon fill="black" stroke="black" points="97.7794,-31.5118 103.845,-22.8248 93.6859,-25.8334 97.7794,-31.5118"/>
+<g id="edge8" class="edge"><title>module~stringifor&#45;&gt;program~sindex</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.2159,-642.091C28.5531,-709.3 37.4824,-1015.36 90,-1091 91.5319,-1093.21 93.3575,-1095.21 95.3747,-1097.03"/>
+<polygon fill="black" stroke="black" points="93.7249,-1100.15 103.888,-1103.15 97.8094,-1094.47 93.7249,-1100.15"/>
+</g>
+<!-- program~capitalize -->
+<g id="node6" class="node"><title>program~capitalize</title>
+<a xlink:href="../program/capitalize.html" xlink:title="capitalize">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="159,-1082 103,-1082 103,-1056 159,-1056 159,-1082"/>
+<text text-anchor="middle" x="131" y="-1066.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">capitalize</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~capitalize -->
+<g id="edge10" class="edge"><title>module~stringifor&#45;&gt;program~capitalize</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4244,-642.083C29.703,-705.341 42.2241,-979.215 90,-1047 91.1867,-1048.68 92.5438,-1050.25 94.0256,-1051.71"/>
+<polygon fill="black" stroke="black" points="92.2153,-1054.73 102.262,-1058.1 96.5063,-1049.2 92.2153,-1054.73"/>
+</g>
+<!-- program~slen -->
+<g id="node7" class="node"><title>program~slen</title>
+<a xlink:href="../program/slen.html" xlink:title="slen">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-1038 104,-1038 104,-1012 158,-1012 158,-1038"/>
+<text text-anchor="middle" x="131" y="-1022.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~slen -->
+<g id="edge12" class="edge"><title>module~stringifor&#45;&gt;program~slen</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6912,-642.262C31.0143,-701.679 46.9948,-943.091 90,-1003 91.5251,-1005.12 93.3202,-1007.06 95.2925,-1008.83"/>
+<polygon fill="black" stroke="black" points="93.4261,-1011.8 103.583,-1014.82 97.5237,-1006.12 93.4261,-1011.8"/>
+</g>
+<!-- program~concatenation -->
+<g id="node8" class="node"><title>program~concatenation</title>
+<a xlink:href="../program/concatenation.html" xlink:title="concatenation">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="170,-994 92,-994 92,-968 170,-968 170,-994"/>
+<text text-anchor="middle" x="131" y="-978.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">concatenation</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~concatenation -->
+<g id="edge14" class="edge"><title>module~stringifor&#45;&gt;program~concatenation</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.0106,-642.155C32.4433,-696.975 51.6759,-906.819 90,-959 90.4662,-959.635 90.9564,-960.253 91.468,-960.855"/>
+<polygon fill="black" stroke="black" points="89.3673,-963.675 99.1246,-967.804 94.0716,-958.492 89.3673,-963.675"/>
+</g>
+<!-- program~split -->
+<g id="node9" class="node"><title>program~split</title>
+<a xlink:href="../program/split.html" xlink:title="split">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-950 104,-950 104,-924 158,-924 158,-950"/>
+<text text-anchor="middle" x="131" y="-934.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~split -->
+<g id="edge16" class="edge"><title>module~stringifor&#45;&gt;program~split</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.424,-642.07C34.0854,-692.05 56.3387,-870.496 90,-915 91.5776,-917.086 93.412,-918.996 95.4129,-920.741"/>
+<polygon fill="black" stroke="black" points="93.587,-923.738 103.765,-926.681 97.644,-918.033 93.587,-923.738"/>
+</g>
+<!-- program~escape -->
+<g id="node10" class="node"><title>program~escape</title>
+<a xlink:href="../program/escape.html" xlink:title="escape">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-906 104,-906 104,-880 158,-880 158,-906"/>
+<text text-anchor="middle" x="131" y="-890.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~escape -->
+<g id="edge18" class="edge"><title>module~stringifor&#45;&gt;program~escape</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.0105,-642.179C36.0909,-687.2 61.0126,-834.147 90,-871 91.6168,-873.056 93.4805,-874.943 95.5026,-876.672"/>
+<polygon fill="black" stroke="black" points="93.707,-879.688 103.901,-882.576 97.733,-873.962 93.707,-879.688"/>
+</g>
+<!-- program~srepeat -->
+<g id="node11" class="node"><title>program~srepeat</title>
+<a xlink:href="../program/srepeat.html" xlink:title="srepeat">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-862 104,-862 104,-836 158,-836 158,-862"/>
+<text text-anchor="middle" x="131" y="-846.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~srepeat -->
+<g id="edge20" class="edge"><title>module~stringifor&#45;&gt;program~srepeat</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8369,-642.167C30.6578,-676.462 42.5164,-769.839 90,-827 91.626,-828.957 93.4725,-830.766 95.4608,-832.433"/>
+<polygon fill="black" stroke="black" points="93.4654,-835.309 103.665,-838.176 97.4794,-829.574 93.4654,-835.309"/>
+</g>
+<!-- program~extension -->
+<g id="node12" class="node"><title>program~extension</title>
+<a xlink:href="../program/extension.html" xlink:title="extension">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-818 102,-818 102,-792 160,-792 160,-818"/>
+<text text-anchor="middle" x="131" y="-802.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">extension</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~extension -->
+<g id="edge22" class="edge"><title>module~stringifor&#45;&gt;program~extension</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.2565,-642.152C34.7973,-670.925 51.5234,-740.291 90,-783 91.1524,-784.279 92.397,-785.498 93.7106,-786.657"/>
+<polygon fill="black" stroke="black" points="91.7035,-789.526 101.825,-792.657 95.8653,-783.897 91.7035,-789.526"/>
+</g>
+<!-- program~sscan -->
+<g id="node13" class="node"><title>program~sscan</title>
+<a xlink:href="../program/sscan.html" xlink:title="sscan">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-774 104,-774 104,-748 158,-748 158,-774"/>
+<text text-anchor="middle" x="131" y="-758.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sscan -->
+<g id="edge24" class="edge"><title>module~stringifor&#45;&gt;program~sscan</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.6962,-642.054C40.2681,-664.35 60.3425,-710.151 90,-739 91.6467,-740.602 93.4334,-742.119 95.3088,-743.551"/>
+<polygon fill="black" stroke="black" points="93.6718,-746.665 103.939,-749.279 97.5429,-740.833 93.6718,-746.665"/>
+</g>
+<!-- program~free -->
+<g id="node14" class="node"><title>program~free</title>
+<a xlink:href="../program/free.html" xlink:title="free">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-730 104,-730 104,-704 158,-704 158,-730"/>
+<text text-anchor="middle" x="131" y="-714.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">free</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~free -->
+<g id="edge26" class="edge"><title>module~stringifor&#45;&gt;program~free</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M37.3382,-642.089C49.0423,-656.328 69.2018,-679.171 90,-695 91.5909,-696.211 93.2575,-697.393 94.9701,-698.541"/>
+<polygon fill="black" stroke="black" points="93.4312,-701.704 103.781,-703.969 97.1025,-695.744 93.4312,-701.704"/>
+</g>
+<!-- program~start_end -->
+<g id="node15" class="node"><title>program~start_end</title>
+<a xlink:href="../program/start_end.html" xlink:title="start_end">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-686 102,-686 102,-660 160,-660 160,-686"/>
+<text text-anchor="middle" x="131" y="-670.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">start_end</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~start_end -->
+<g id="edge28" class="edge"><title>module~stringifor&#45;&gt;program~start_end</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-640.446C65.7555,-645.397 79.6668,-651.282 92.4216,-656.678"/>
+<polygon fill="black" stroke="black" points="91.3206,-660.013 101.894,-660.686 94.0482,-653.566 91.3206,-660.013"/>
+</g>
+<!-- program~io_basic -->
+<g id="node16" class="node"><title>program~io_basic</title>
+<a xlink:href="../program/io_basic.html" xlink:title="io_basic">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-642 104,-642 104,-616 158,-616 158,-642"/>
+<text text-anchor="middle" x="131" y="-626.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">io_basic</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~io_basic -->
+<g id="edge30" class="edge"><title>module~stringifor&#45;&gt;program~io_basic</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-629C66.1157,-629 80.5252,-629 93.5959,-629"/>
+<polygon fill="black" stroke="black" points="93.7209,-632.5 103.721,-629 93.7208,-625.5 93.7209,-632.5"/>
+</g>
+<!-- program~strim -->
+<g id="node17" class="node"><title>program~strim</title>
+<a xlink:href="../program/strim.html" xlink:title="strim">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-598 104,-598 104,-572 158,-572 158,-598"/>
+<text text-anchor="middle" x="131" y="-582.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~strim -->
+<g id="edge32" class="edge"><title>module~stringifor&#45;&gt;program~strim</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M54.0533,-617.554C66.3545,-612.35 81.0968,-606.113 94.3707,-600.497"/>
+<polygon fill="black" stroke="black" points="95.875,-603.661 103.721,-596.541 93.1474,-597.214 95.875,-603.661"/>
+</g>
+<!-- program~is_digit -->
+<g id="node18" class="node"><title>program~is_digit</title>
+<a xlink:href="../program/is_digit.html" xlink:title="is_digit">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-554 104,-554 104,-528 158,-528 158,-554"/>
+<text text-anchor="middle" x="131" y="-538.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_digit</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_digit -->
+<g id="edge34" class="edge"><title>module~stringifor&#45;&gt;program~is_digit</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M37.3382,-615.911C49.0423,-601.672 69.2018,-578.829 90,-563 91.5909,-561.789 93.2575,-560.607 94.9701,-559.459"/>
+<polygon fill="black" stroke="black" points="97.1025,-562.256 103.781,-554.031 93.4312,-556.296 97.1025,-562.256"/>
+</g>
+<!-- program~strip -->
+<g id="node19" class="node"><title>program~strip</title>
+<a xlink:href="../program/strip.html" xlink:title="strip">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-510 104,-510 104,-484 158,-484 158,-510"/>
+<text text-anchor="middle" x="131" y="-494.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strip</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~strip -->
+<g id="edge36" class="edge"><title>module~stringifor&#45;&gt;program~strip</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.6962,-615.946C40.2681,-593.65 60.3425,-547.849 90,-519 91.6467,-517.398 93.4334,-515.881 95.3088,-514.449"/>
+<polygon fill="black" stroke="black" points="97.5429,-517.167 103.939,-508.721 93.6718,-511.335 97.5429,-517.167"/>
+</g>
+<!-- program~is_integer -->
+<g id="node20" class="node"><title>program~is_integer</title>
+<a xlink:href="../program/is_integer.html" xlink:title="is_integer">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="160,-466 102,-466 102,-440 160,-440 160,-466"/>
+<text text-anchor="middle" x="131" y="-450.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_integer</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_integer -->
+<g id="edge38" class="edge"><title>module~stringifor&#45;&gt;program~is_integer</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.2565,-615.848C34.7973,-587.075 51.5234,-517.709 90,-475 91.0138,-473.875 92.099,-472.796 93.2398,-471.764"/>
+<polygon fill="black" stroke="black" points="95.527,-474.423 101.406,-465.608 91.3135,-468.833 95.527,-474.423"/>
+</g>
+<!-- program~sverify -->
+<g id="node21" class="node"><title>program~sverify</title>
+<a xlink:href="../program/sverify.html" xlink:title="sverify">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-422 104,-422 104,-396 158,-396 158,-422"/>
+<text text-anchor="middle" x="131" y="-406.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~sverify -->
+<g id="edge40" class="edge"><title>module~stringifor&#45;&gt;program~sverify</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.8369,-615.833C30.6578,-581.538 42.5164,-488.161 90,-431 91.626,-429.043 93.4725,-427.234 95.4608,-425.567"/>
+<polygon fill="black" stroke="black" points="97.4794,-428.426 103.665,-419.824 93.4654,-422.691 97.4794,-428.426"/>
+</g>
+<!-- program~is_number -->
+<g id="node22" class="node"><title>program~is_number</title>
+<a xlink:href="../program/is_number.html" xlink:title="is_number">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="162,-378 100,-378 100,-352 162,-352 162,-378"/>
+<text text-anchor="middle" x="131" y="-362.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_number</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_number -->
+<g id="edge42" class="edge"><title>module~stringifor&#45;&gt;program~is_number</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M29.0105,-615.821C36.0909,-570.8 61.0126,-423.853 90,-387 90.5899,-386.25 91.2127,-385.522 91.8641,-384.817"/>
+<polygon fill="black" stroke="black" points="94.4212,-387.235 99.7405,-378.072 89.8682,-381.918 94.4212,-387.235"/>
+</g>
+<!-- program~swapcase -->
+<g id="node23" class="node"><title>program~swapcase</title>
+<a xlink:href="../program/swapcase.html" xlink:title="swapcase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="161,-334 101,-334 101,-308 161,-308 161,-334"/>
+<text text-anchor="middle" x="131" y="-318.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swapcase</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~swapcase -->
+<g id="edge44" class="edge"><title>module~stringifor&#45;&gt;program~swapcase</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.424,-615.93C34.0854,-565.95 56.3387,-387.504 90,-343 90.9137,-341.792 91.9135,-340.643 92.9819,-339.551"/>
+<polygon fill="black" stroke="black" points="95.3028,-342.174 100.843,-333.143 90.88,-336.748 95.3028,-342.174"/>
+</g>
+<!-- program~is_real -->
+<g id="node24" class="node"><title>program~is_real</title>
+<a xlink:href="../program/is_real.html" xlink:title="is_real">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-290 104,-290 104,-264 158,-264 158,-290"/>
+<text text-anchor="middle" x="131" y="-274.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_real</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_real -->
+<g id="edge46" class="edge"><title>module~stringifor&#45;&gt;program~is_real</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M28.0106,-615.845C32.4433,-561.025 51.6759,-351.181 90,-299 91.5481,-296.892 93.3604,-294.966 95.3452,-293.208"/>
+<polygon fill="black" stroke="black" points="97.5765,-295.915 103.662,-287.243 93.4966,-290.227 97.5765,-295.915"/>
+</g>
+<!-- program~unique -->
+<g id="node25" class="node"><title>program~unique</title>
+<a xlink:href="../program/unique.html" xlink:title="unique">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-246 104,-246 104,-220 158,-220 158,-246"/>
+<text text-anchor="middle" x="131" y="-230.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~unique -->
+<g id="edge48" class="edge"><title>module~stringifor&#45;&gt;program~unique</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6912,-615.738C31.0143,-556.321 46.9948,-314.909 90,-255 91.5251,-252.875 93.3202,-250.936 95.2925,-249.17"/>
+<polygon fill="black" stroke="black" points="97.5237,-251.876 103.583,-243.185 93.4261,-246.201 97.5237,-251.876"/>
+</g>
+<!-- program~join -->
+<g id="node26" class="node"><title>program~join</title>
+<a xlink:href="../program/join.html" xlink:title="join">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-202 104,-202 104,-176 158,-176 158,-202"/>
+<text text-anchor="middle" x="131" y="-186.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~join -->
+<g id="edge50" class="edge"><title>module~stringifor&#45;&gt;program~join</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.4244,-615.917C29.703,-552.659 42.2241,-278.785 90,-211 91.5474,-208.805 93.3845,-206.808 95.4099,-204.996"/>
+<polygon fill="black" stroke="black" points="97.8454,-207.558 103.941,-198.892 93.7717,-201.865 97.8454,-207.558"/>
+</g>
+<!-- program~upper_lower -->
+<g id="node27" class="node"><title>program~upper_lower</title>
+<a xlink:href="../program/upper_lower.html" xlink:title="upper_lower">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="167,-158 95,-158 95,-132 167,-132 167,-158"/>
+<text text-anchor="middle" x="131" y="-142.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper_lower</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~upper_lower -->
+<g id="edge52" class="edge"><title>module~stringifor&#45;&gt;program~upper_lower</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.2159,-615.909C28.5531,-548.7 37.4824,-242.636 90,-167 90.4492,-166.353 90.9237,-165.723 91.4208,-165.111"/>
+<polygon fill="black" stroke="black" points="94.0356,-167.458 98.9517,-158.073 89.2559,-162.344 94.0356,-167.458"/>
+</g>
+<!-- program~partition -->
+<g id="node28" class="node"><title>program~partition</title>
+<a xlink:href="../program/partition.html" xlink:title="partition">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-114 104,-114 104,-88 158,-88 158,-114"/>
+<text text-anchor="middle" x="131" y="-98.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">partition</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~partition -->
+<g id="edge54" class="edge"><title>module~stringifor&#45;&gt;program~partition</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.9267,-615.701C33.2996,-539.965 61.2127,-164.98 90,-123 91.519,-120.785 93.3351,-118.774 95.3454,-116.952"/>
+<polygon fill="black" stroke="black" points="97.7794,-119.512 103.845,-110.825 93.6859,-113.833 97.7794,-119.512"/>
+</g>
+<!-- program~replace -->
+<g id="node29" class="node"><title>program~replace</title>
+<a xlink:href="../program/replace.html" xlink:title="replace">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-70 104,-70 104,-44 158,-44 158,-70"/>
+<text text-anchor="middle" x="131" y="-54.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~replace -->
+<g id="edge56" class="edge"><title>module~stringifor&#45;&gt;program~replace</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.7779,-615.861C32.5603,-536.684 58.8017,-124.978 90,-79 91.5081,-76.7774 93.3161,-74.761 95.3207,-72.9348"/>
+<polygon fill="black" stroke="black" points="97.7539,-75.4946 103.808,-66.7996 93.653,-69.8217 97.7539,-75.4946"/>
+</g>
+<!-- program~reverse -->
+<g id="node30" class="node"><title>program~reverse</title>
+<a xlink:href="../program/reverse.html" xlink:title="reverse">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="158,-26 104,-26 104,-1.24345e-14 158,-3.55271e-15 158,-26"/>
+<text text-anchor="middle" x="131" y="-10.55" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">reverse</text>
+</a>
+</g>
+<!-- module~stringifor&#45;&gt;program~reverse -->
+<g id="edge58" class="edge"><title>module~stringifor&#45;&gt;program~reverse</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.6585,-615.901C31.9129,-533.169 56.4006,-84.9666 90,-35 91.4988,-32.7711 93.2999,-30.7501 95.2995,-28.9205"/>
+<polygon fill="black" stroke="black" points="97.7321,-31.4801 103.776,-22.7783 93.6248,-25.8118 97.7321,-31.4801"/>
 </g>
 </g>
 </svg>
@@ -1041,7 +1101,21 @@ implementation in a submodule of an interface in a parent module.</p>
   
   <td>private,</td>
   <td>parameter</td><td>::</td>
-  <td><strong>UIX_DIR_SEP</strong></td><td> =</td><td>char(47)</td><td><p>Unix/Linux directories separator.</p></td>
+  <td><strong>UIX_DIR_SEP</strong></td><td> =</td><td>char(47)</td><td><p>Unix/Linux directories separator (/).</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-backslash"></span>character(kind=CK,len=1),</td>
+  
+  <td>private,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>BACKSLASH</strong></td><td> =</td><td>char(92)</td><td><p>Backslash character.</p></td>
   
 </tr>
 
@@ -1105,26 +1179,32 @@ implementation in a submodule of an interface in a parent module.</p>
       <table class="table table-striped varlist">
       <tbody>
       
-       <tr><td>procedure, public, pass(self) :: <strong>free</strong>  </td>
-       <td><p>Free dynamic memory.</p></td></tr>
-      
-       <tr><td>procedure, public, pass(self) :: <strong>chars</strong>  </td>
-       <td><p>Return the raw characters data.</p></td></tr>
-      
        <tr><td>procedure, public, pass(self) :: <strong>basedir</strong>  </td>
        <td><p>Return the base directory name of a string containing a file name.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>basename</strong>  </td>
        <td><p>Return the base file name of a string containing a file name.</p></td></tr>
       
-       <tr><td>procedure, public, pass(self) :: <strong>upper</strong>  </td>
-       <td><p>Return a string with all uppercase characters.</p></td></tr>
+       <tr><td>procedure, public, pass(self) :: <strong>capitalize</strong>  </td>
+       <td><p>Return a string with its first character capitalized and the rest lowercased.</p></td></tr>
+      
+       <tr><td>procedure, public, pass(self) :: <strong>chars</strong>  </td>
+       <td><p>Return the raw characters data.</p></td></tr>
+      
+       <tr><td>procedure, public, pass(self) :: <strong>escape</strong>  </td>
+       <td><p>Escape backslahes (or custom escape character).</p></td></tr>
+      
+       <tr><td>procedure, public, pass(self) :: <strong>extension</strong>  </td>
+       <td><p>Return the extension of a string containing a file name.</p></td></tr>
+      
+       <tr><td>procedure, public, pass(self) :: <strong>free</strong>  </td>
+       <td><p>Free dynamic memory.</p></td></tr>
+      
+       <tr><td>generic, public :: <strong>join</strong>  => join_strings, join_characters </td>
+       <td><p>Return a string that is a join of an array of strings or characters.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>lower</strong>  </td>
        <td><p>Return a string with all lowercase characters.</p></td></tr>
-      
-       <tr><td>procedure, public, pass(self) :: <strong>capitalize</strong>  </td>
-       <td><p>Return a string with its first character capitalized and the rest lowercased.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>partition</strong>  </td>
        <td><p>Split string at separator and return the 3 parts (before, the separator and after).</p></td></tr>
@@ -1132,17 +1212,23 @@ implementation in a submodule of an interface in a parent module.</p>
        <tr><td>procedure, public, pass(self) :: <strong>replace</strong>  </td>
        <td><p>Return a string with all occurrences of substring old replaced by new.</p></td></tr>
       
+       <tr><td>procedure, public, pass(self) :: <strong>reverse</strong>  </td>
+       <td><p>Return a reversed string.</p></td></tr>
+      
        <tr><td>procedure, public, pass(self) :: <strong>split</strong>  </td>
        <td><p>Return a list of substring in the string, using sep as the delimiter string.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>strip</strong>  </td>
-       <td><p>Return a copy of the string with the leading and trailing characters removed.</p></td></tr>
+       <td><p>Return a string with the leading and trailing characters removed.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>swapcase</strong>  </td>
-       <td><p>Return a copy of the string with uppercase chars converted to lowercase and vice versa.</p></td></tr>
+       <td><p>Return a string with uppercase chars converted to lowercase and vice versa.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>unique</strong>  </td>
-       <td><p>Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.</p></td></tr>
+       <td><p>Reduce to one (unique) multiple occurrences of a substring into a string.</p></td></tr>
+      
+       <tr><td>procedure, public, pass(self) :: <strong>upper</strong>  </td>
+       <td><p>Return a string with all uppercase characters.</p></td></tr>
       
        <tr><td>procedure, public, pass(self) :: <strong>end_with</strong>  </td>
        <td><p>Return true if a string ends with a specified suffix.</p></td></tr>
@@ -1278,6 +1364,12 @@ implementation in a submodule of an interface in a parent module.</p>
       
        <tr><td>procedure, private, pass(self) :: <strong>replace_one_occurrence</strong>  </td>
        <td><p>Replace the first occurrence of substring old by new.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>join_strings</strong>  </td>
+       <td><p>Return join string of an array of strings.</p></td></tr>
+      
+       <tr><td>procedure, private, pass(self) :: <strong>join_characters</strong>  </td>
+       <td><p>Return join string of an array of characters.</p></td></tr>
       
        </tbody>
        </table>
@@ -1557,6 +1649,172 @@ private elemental function <a href='../proc/basename.html'>basename</a>(self, se
 
        
        <p>Return the base file name of a string containing a file name.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-escape"></span><h3>
+private elemental function <a href='../proc/escape.html'>escape</a>(self, to_escape, esc) result(escaped)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=1),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>to_escape</strong></td><td><p>Character to be escaped.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>esc</strong></td><td><p>Character used to escape.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Escaped string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Escape backslahes (or custom escape character).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-extension"></span><h3>
+private elemental function <a href='../proc/extension.html'>extension</a>(self)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>Extension file name.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return the extension of a string containing a file name.</p>
         
 
   </div>
@@ -1957,6 +2215,74 @@ private elemental function <a href='../proc/replace.html'>replace</a>(self, old,
 
        
        <p>Return a string with all occurrences of substring old replaced by new.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-reverse"></span><h3>
+private elemental function <a href='../proc/reverse.html'>reverse</a>(self) result(reversed)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>The reversed string.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a reversed string.</p>
         
 
   </div>
@@ -4349,6 +4675,202 @@ private elemental function <a href='../proc/replace_one_occurrence.html'>replace
 
        
        <p>Return a string with the first occurrence of substring old replaced by new.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-join_strings"></span><h3>
+private pure function <a href='../proc/join_strings.html'>join_strings</a>(self, array, sep) result(join)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>array</strong>(1:)</td><td><p>Array to be joined.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>The join of array.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string that is a join of an array of strings.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-join_characters"></span><h3>
+private pure function <a href='../proc/join_characters.html'>join_characters</a>(self, array, sep) result(join)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>array</strong>(1:)</td><td><p>Array to be joined.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>sep</strong></td><td><p>Separator.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/string.html'>string</a>)
+  </small></h4>
+  <p>The join of array.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return a string that is a join of an array of characters.</p>
         
 
   </div>
