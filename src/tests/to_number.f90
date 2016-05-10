@@ -4,7 +4,7 @@ program to_number
 !< StringiFor `to_number` test.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
-use stringifor, only : string, I1P, I2P, I4P, I8P, R4P, R8P
+use stringifor, only : string, I1P, I2P, I4P, I8P, R4P, R8P, R16P
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -22,7 +22,9 @@ real(R4P)    :: real_R4P       !< A real.
 real(R4P)    :: real_R4P_      !< A real.
 real(R8P)    :: real_R8P       !< A real.
 real(R8P)    :: real_R8P_      !< A real.
-logical      :: test_passed(6) !< List of passed tests.
+real(R16P)   :: real_R16P      !< A real.
+real(R16P)   :: real_R16P_     !< A real.
+logical      :: test_passed(7) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -69,6 +71,13 @@ real_R8P_ = -13.4345345e21_R8P
 test_passed(6) = real_R8P==real_R8P_
 write(stdout, "(A)") 'Original:  "'//astring//'"'
 write(stdout, "(A,E23.15,A)") 'To number: "', real_R8P, '"'
+
+astring = '1.1e200'
+real_R16P = astring%to_number(kind=1._R16P)
+real_R16P_ = 1.1e200_R16P
+test_passed(7) = real_R16P==real_R16P_
+write(stdout, "(A)") 'Original:  "'//astring//'"'
+write(stdout, "(A,E42.33,A)") 'To number: "', real_R16P, '"'
 
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop

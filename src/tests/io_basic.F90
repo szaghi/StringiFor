@@ -22,10 +22,10 @@ test_passed = .false.
 astring = 'Hello World!'
 acharacter = 'New Hello World!'
 #ifndef __GFORTRAN__
-write(stdout, "(DT)", iostat=iostat) astring
+write(stdout, "(DT)", iostat=iostat, iomsg=iomsg) astring
 test_passed(1) = iostat==0
 
-read(acharacter, "(DT)", iostat=iostat) astring
+read(acharacter, "(DT)", iostat=iostat, iomsg=iomsg) astring
 test_passed(2) = iostat==0
 print "(DT)", astring
 #else

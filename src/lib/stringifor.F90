@@ -3,7 +3,7 @@ module stringifor
 !-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, Strings Fortran, yet another stringify Fortran module
 !-----------------------------------------------------------------------------------------------------------------------------------
-use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, str
+use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ private
 save
 public :: string, CK
 ! expose PENF kinds
-public :: I1P, I2P, I4P, I8P, R4P, R8P
+public :: I1P, I2P, I4P, I8P, R4P, R8P, R16P
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,12 @@ type :: string
                              to_integer_I4P,&
                              to_integer_I8P,&
                              to_real_R4P,   &
+#ifdef r16p
+                             to_real_R8P,   &
+                             to_real_R16P    !< Cast string to number.
+#else
                              to_real_R8P     !< Cast string to number.
+#endif
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
@@ -72,7 +77,12 @@ type :: string
                                 string_assign_integer_I4P, &
                                 string_assign_integer_I8P, &
                                 string_assign_real_R4P,    &
+#ifdef r16p
+                                string_assign_real_R8P,    &
+                                string_assign_real_R16P             !< Assignment operator overloading.
+#else
                                 string_assign_real_R8P              !< Assignment operator overloading.
+#endif
     generic :: operator(//) => string_concat_string,    &
                                string_concat_character, &
                                character_concat_string              !< Concatenation operator overloading.
@@ -111,6 +121,7 @@ type :: string
     procedure, private, pass(lhs)  :: string_assign_integer_I8P      !< Assignment operator from integer input.
     procedure, private, pass(lhs)  :: string_assign_real_R4P         !< Assignment operator from real input.
     procedure, private, pass(lhs)  :: string_assign_real_R8P         !< Assignment operator from real input.
+    procedure, private, pass(lhs)  :: string_assign_real_R16P        !< Assignment operator from real input.
     procedure, private, pass(lhs)  :: string_concat_string           !< Concatenation with string.
     procedure, private, pass(lhs)  :: string_concat_character        !< Concatenation with character.
     procedure, private, pass(rhs)  :: character_concat_string        !< Concatenation with character (inverted).
@@ -130,6 +141,7 @@ type :: string
     procedure, private, pass(self) :: to_integer_I8P                 !< Cast string to integer.
     procedure, private, pass(self) :: to_real_R4P                    !< Cast string to real.
     procedure, private, pass(self) :: to_real_R8P                    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R16P                   !< Cast string to real.
 endtype string
 
 character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
@@ -1373,6 +1385,20 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine string_assign_real_R8P
 
+  elemental subroutine string_assign_real_R16P(lhs, rhs)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Assignment operator from real input.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(inout) :: lhs !< Left hand side.
+  real(R16P),    intent(in)    :: rhs !< Right hand side.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  lhs%raw = trim(str(rhs))
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine string_assign_real_R16P
+
   pure function string_concat_string(lhs, rhs) result(concat)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Concatenation with string.
@@ -1823,4 +1849,21 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction to_real_R8P
+
+  elemental function to_real_R16P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to real (R16P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  real(R16P),    intent(in) :: kind      !< Mold parameter for kind detection.
+  real(R16P)                :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_real()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_real_R16P
 endmodule stringifor
