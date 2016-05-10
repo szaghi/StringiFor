@@ -37,6 +37,13 @@ type :: string
                              join_strings, &
                              join_characters !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
+    generic               :: to_number =>   &
+                             to_integer_I1P,&
+                             to_integer_I2P,&
+                             to_integer_I4P,&
+                             to_integer_I8P,&
+                             to_real_R4P,   &
+                             to_real_R8P     !< Cast string to number.
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
@@ -117,6 +124,12 @@ type :: string
     procedure, private, pass(self) :: replace_one_occurrence         !< Replace the first occurrence of substring old by new.
     procedure, private, pass(self) :: join_strings                   !< Return join string of an array of strings.
     procedure, private, pass(self) :: join_characters                !< Return join string of an array of characters.
+    procedure, private, pass(self) :: to_integer_I1P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I2P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I4P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I8P                 !< Cast string to integer.
+    procedure, private, pass(self) :: to_real_R4P                    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R8P                    !< Cast string to real.
 endtype string
 
 character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
@@ -1708,4 +1721,106 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction join_characters
+
+  elemental function to_integer_I1P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I1P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I1P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I1P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I1P
+
+  elemental function to_integer_I2P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I2P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I2P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I2P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I2P
+
+  elemental function to_integer_I4P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I4P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I4P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I4P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I4P
+
+  elemental function to_integer_I8P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to integer (I8P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  integer(I8P),  intent(in) :: kind      !< Mold parameter for kind detection.
+  integer(I8P)              :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_integer()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_integer_I8P
+
+  elemental function to_real_R4P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to real (R4P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  real(R4P),     intent(in) :: kind      !< Mold parameter for kind detection.
+  real(R4P)                 :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_real()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_real_R4P
+
+  elemental function to_real_R8P(self, kind) result(to_number)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Cast string to real (R8P).
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  real(R8P),     intent(in) :: kind      !< Mold parameter for kind detection.
+  real(R8P)                 :: to_number !< The number into the string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    if (self%is_real()) read(self%raw, *) to_number
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction to_real_R8P
 endmodule stringifor
