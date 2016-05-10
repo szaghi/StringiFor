@@ -39,6 +39,7 @@ type :: string
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
     procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
+    procedure, pass(self) :: startcase       !< Return a string with all words capitalized, e.g. title case.
     procedure, pass(self) :: strip           !< Return a string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase        !< Return a string with uppercase chars converted to lowercase and vice versa.
     procedure, pass(self) :: unique          !< Reduce to one (unique) multiple occurrences of a substring into a string.
@@ -516,6 +517,30 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine split
+
+  elemental function startcase(self, sep)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string with all words capitalized, e.g. title case.
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurence.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  type(string)                                    :: startcase !< Start case string.
+  character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+  type(string), allocatable                       :: tokens(:) !< String tokens.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    sep_ = SPACE ; if (present(sep)) sep_ = sep
+    call self%split(tokens=tokens, sep=sep_)
+    tokens = tokens%capitalize()
+    startcase = startcase%join(array=tokens, sep=sep_)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction startcase
 
   elemental function strip(self)
   !---------------------------------------------------------------------------------------------------------------------------------
