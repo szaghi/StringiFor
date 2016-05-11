@@ -41,6 +41,7 @@ type :: string
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
     procedure, pass(self) :: search          !< Search for *tagged* record into string.
+    procedure, pass(self) :: slice           !< Return the raw characters data sliced.
     procedure, pass(self) :: snakecase       !< Return a string with all words lowercase separated by "_".
     procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
     procedure, pass(self) :: startcase       !< Return a string with all words capitalized, e.g. title case.
@@ -528,6 +529,34 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction reverse
+
+  pure function slice(self, istart, iend) result(raw)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the raw characters data sliced.
+  !<
+  !<### Example
+  !<
+  !<```fortran
+  !< type(string) :: astring        !< A string.
+  !< astring = 'the Quick Brown fox Jumps over the Lazy Dog.'
+  !< print "(A)", astring%slice(11,25) ! print "Brown fox Jumps"
+  !<```
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)              :: self   !< The string.
+  integer,       intent(in)              :: istart !< Slice start index.
+  integer,       intent(in)              :: iend   !< Slice end   index.
+  character(kind=CK, len=:), allocatable :: raw    !< Raw characters data.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    raw = self%raw(istart:iend)
+  else
+    raw = ''
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction slice
 
   elemental function snakecase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------

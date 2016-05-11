@@ -188,6 +188,8 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-search">search</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-slice">slice</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-snakecase">snakecase</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-split">split</a>
@@ -2096,6 +2098,122 @@ private function <a href='../proc/search.html'>search</a>(self, tag_start, tag_e
 
        
        <p>Search for <em>tagged</em> record into string, return the first record found (if any) matching the tags.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-slice"></span><h3>procedure, public, pass(self) :: <strong>slice</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Return the raw characters data sliced.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private pure function <a href='../proc/slice.html'>slice</a>(self, istart, iend) result(raw)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>istart</strong></td><td><p>Slice start index.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>iend</strong></td><td><p>Slice end   index.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>character(kind=CK,len=:),
+  allocatable</small></h4>
+  <p>Raw characters data.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return the raw characters data sliced.</p>
         
 
       
@@ -10050,6 +10168,7 @@ private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">replace</span>         <span class="c">!&lt; Return a string with all occurrences of substring old replaced by new.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">reverse</span>         <span class="c">!&lt; Return a reversed string.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">search</span>          <span class="c">!&lt; Search for *tagged* record into string.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">slice</span>           <span class="c">!&lt; Return the raw characters data sliced.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">snakecase</span>       <span class="c">!&lt; Return a string with all words lowercase separated by &quot;_&quot;.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">split</span>           <span class="c">!&lt; Return a list of substring in the string, using sep as the delimiter string.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">startcase</span>       <span class="c">!&lt; Return a string with all words capitalized, e.g. title case.</span>
