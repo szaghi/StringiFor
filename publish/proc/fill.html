@@ -135,8 +135,6 @@
         
         <a class="list-group-item" href="../proc/fill.html#variable-filling_char_">filling_char_</a>
         
-        <a class="list-group-item" href="../proc/fill.html#variable-c%7E3">c</a>
-        
       </div>
     </div>
   </div>
@@ -424,6 +422,8 @@
           <a class="list-group-item" href="../proc/sadjustr.html">sadjustr</a>
           
           <a class="list-group-item" href="../proc/scount.html">scount</a>
+          
+          <a class="list-group-item" href="../proc/search.html">search</a>
           
           <a class="list-group-item" href="../proc/sindex.html">sindex</a>
           
@@ -767,20 +767,6 @@ private elemental function fill(self, width, right, filling_char) result(filled)
   
 </tr>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-c%7E3"></span>integer,</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>c</strong></td><td></td><td></td><td><p>Character counter.</p></td>
-  
-</tr>
-
 </tbody>
 </table>
 
@@ -815,7 +801,6 @@ private elemental function fill(self, width, right, filling_char) result(filled)
   <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>                                    <span class="kd">::</span> <span class="n">filled</span>        <span class="c">!&lt; Filled string.</span>
   <span class="kt">logical</span>                                         <span class="kd">::</span> <span class="n">right_</span>        <span class="c">!&lt; Fill on the right instead of left, local variable.</span>
   <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                       <span class="kd">::</span> <span class="n">filling_char_</span> <span class="c">!&lt; Filling character (default &quot;0&quot;), local variable.</span>
-  <span class="kt">integer</span>                                         <span class="kd">::</span> <span class="n">c</span>             <span class="c">!&lt; Character counter.</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
 
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>

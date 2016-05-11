@@ -37,6 +37,15 @@ type :: string
                              join_strings, &
                              join_characters !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
+    procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
+    procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
+    procedure, pass(self) :: reverse         !< Return a reversed string.
+    procedure, pass(self) :: search          !< Search for *tagged* record into string.
+    procedure, pass(self) :: snakecase       !< Return a string with all words lowercase separated by "_".
+    procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
+    procedure, pass(self) :: startcase       !< Return a string with all words capitalized, e.g. title case.
+    procedure, pass(self) :: strip           !< Return a string with the leading and trailing characters removed.
+    procedure, pass(self) :: swapcase        !< Return a string with uppercase chars converted to lowercase and vice versa.
     generic               :: to_number =>   &
                              to_integer_I1P,&
                              to_integer_I2P,&
@@ -49,14 +58,6 @@ type :: string
 #else
                              to_real_R8P     !< Cast string to number.
 #endif
-    procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
-    procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
-    procedure, pass(self) :: reverse         !< Return a reversed string.
-    procedure, pass(self) :: snakecase       !< Return a string with all words lowercase separated by "_".
-    procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
-    procedure, pass(self) :: startcase       !< Return a string with all words capitalized, e.g. title case.
-    procedure, pass(self) :: strip           !< Return a string with the leading and trailing characters removed.
-    procedure, pass(self) :: swapcase        !< Return a string with uppercase chars converted to lowercase and vice versa.
     procedure, pass(self) :: unique          !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: upper           !< Return a string with all uppercase characters.
     ! inquire
@@ -362,7 +363,6 @@ contains
   type(string)                                    :: filled        !< Filled string.
   logical                                         :: right_        !< Fill on the right instead of left, local variable.
   character(kind=CK, len=1)                       :: filling_char_ !< Filling character (default "0"), local variable.
-  integer                                         :: c             !< Character counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -532,6 +532,67 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction snakecase
+
+  function search(self, tag_start, tag_end, in_string, in_character, istart, iend) result(tag)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Search for *tagged* record into string, return the first record found (if any) matching the tags.
+  !<
+  !< Optionally, returns the indexes of tag start/end, thus this is not an `elemental` function.
+  !<
+  !< @note The tagged record is searched into self if allocated otherwise into `in_string` if passed or, eventually, into
+  !< `in_character` is passed. If tag is not found the return string is not allocated and the start/end indexes (if requested) are
+  !< zero.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)            :: self         !< The string.
+  character(kind=CK, len=*), intent(in)            :: tag_start    !< Start tag.
+  character(kind=CK, len=*), intent(in)            :: tag_end      !< End tag.
+  type(string),              intent(in),  optional :: in_string    !< Search into this string.
+  character(kind=CK, len=*), intent(in),  optional :: in_character !< Search into this character string.
+  integer,                   intent(out), optional :: istart       !< Starting index of tag inside the string.
+  integer,                   intent(out), optional :: iend         !< Ending index of tag inside the string.
+  type(string)                                     :: tag          !< First tag found.
+  character(kind=CK, len=:), allocatable           :: raw          !< Raw string into which search the tag.
+  integer                                          :: istart_      !< Starting index of tag inside the string, local variable.
+  integer                                          :: iend_        !< Ending index of tag inside the string, local variable.
+  logical                                          :: found        !< Flag for inquiring search result.
+  integer                                          :: nested_tags  !< Number of nested tags inside tag.
+  integer                                          :: t            !< Counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  raw = ''
+  if (present(in_string)) then
+    raw = in_string%raw
+  elseif (present(in_character)) then
+    raw = in_character
+  else
+    if (allocated(self%raw)) then
+      raw = self%raw
+    endif
+  endif
+  istart_ = 0
+  iend_ = 0
+  if (raw/='') then
+    found = .false.
+    istart_ = index(raw, tag_start)
+    iend_ = index(raw, tag_end)
+    if (istart_>0.and.iend_>0) then
+      iend_ = iend_ + len(tag_end) - 1
+      tag%raw = raw(istart_:iend_)
+      nested_tags = tag%scount(tag_start)
+      if (nested_tags>1) then
+        do t=2, nested_tags
+          iend_ = iend_ + len(tag_end) - 1 + index(raw(iend_+1:), tag_end)
+        enddo
+        tag%raw = raw(istart_:iend_)
+      endif
+    endif
+  endif
+  if (present(istart)) istart = istart_
+  if (present(iend)) iend = iend_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction search
 
   pure subroutine split(self, tokens, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
