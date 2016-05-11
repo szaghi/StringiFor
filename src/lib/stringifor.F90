@@ -157,6 +157,14 @@ contains
   elemental function basedir(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the base directory name of a string containing a file name.
+  !<
+  !<### Example
+  !<
+  !<```fortran
+  !< type(string) :: astring
+  !< astring = '/bar/foo.tar.bz2'
+  !< print '(A)', astring%basedir()//'' ! print "/bar"
+  !<```
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self    !< The string.
   character(kind=CK, len=*), intent(in), optional :: sep     !< Directory separator.
@@ -180,13 +188,16 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the base file name of a string containing a file name.
   !<
-  !< @note Optionally, the extension is also stripped if provided or the last one if required, e.g.
-  !< ```fortran
+  !< Optionally, the extension is also stripped if provided or the last one if required, e.g.
+  !<
+  !<### Example
+  !<
+  !<```fortran
   !< type(string) :: astring
   !< astring = 'bar/foo.tar.bz2'
-  !< print '(A)', astring%basename(extension='.tar.bz2')//''        !< print "foo"
-  !< print '(A)', astring%basename(strip_last_extension=.true.)//'' !< print "foo.tar"
-  !< ```
+  !< print '(A)', astring%basename(extension='.tar.bz2')//''        ! print "foo"
+  !< print '(A)', astring%basename(strip_last_extension=.true.)//'' ! print "foo.tar"
+  !<```
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self                 !< The string.
   character(kind=CK, len=*), intent(in), optional :: sep                  !< Directory separator.
@@ -243,6 +254,13 @@ contains
   !< Return a string with all words capitalized without spaces.
   !<
   !< @note Multiple subsequent separators are collapsed to one occurence.
+  !<
+  !<### Example
+  !<
+  !<```fortran
+  !< type(string) :: astring
+  !< astring = 'caMeL caSe var'
+  !< print '(A)', astring%camelcase()//'' ! print "CamelCaseVar"
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self      !< The string.
   character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.

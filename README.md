@@ -20,14 +20,6 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 - StringiFor is TDD designed;
 + StringiFor is a Free, Open Source Project.
 
-#### Table of Contents
-
-- [What is StringiFor?](#what-is-penf?)
-- [Main features](#main-features)
-- [Copyrights](#copyrights)
-- [Documentation](#documentation)
-	- [A Taste of StringiFor](#a-taste-of-penf)
-
 #### Issues
 
 [![GitHub issues](https://img.shields.io/github/issues/szaghi/StringiFor.svg)]()
@@ -46,6 +38,12 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 
 ##### GNU partial support
 > GNU gfortran does not support user-defined-type-IO, thus some class features are disabled if GNU is used.
+
+---
+
+[What is StringiFor?](#what-is-penf?) ♺ [Main features](#main-features) ♺ [Copyrights](#copyrights) ♺ [Download](#download) ♺ [Compilation](#compilation) ♺ [Documentation](#documentation)
+
+---
 
 ## What is StringiFor?
 
@@ -84,9 +82,28 @@ More details can be found on [wiki](https://github.com/szaghi/StringiFor/wiki/Co
 
 Go to [Top](#top)
 
+## Download
+
+To be written.
+
+Go to [Top](#top)
+
+## Compilation
+
+To be written.
+
+Go to [Top](#top)
+
 ## Documentation
 
 The StringiFor documentation is mainly contained into this file (it has its own [wiki](https://github.com/szaghi/StringiFor/wiki) with some less important documents). Detailed documentation of the API is contained into the [GitHub Pages](http://szaghi.github.io/StringiFor/index.html) that can also be created locally by means of [ford tool](https://github.com/cmacmackin/ford).
+
++ [A Taste of StringiFor](#a_taste_of_stringifor)
+  + [Basic IO](#basic_io)
+  + [String manipulation](#string_manipulation)
+  + [Numbers handling](#numbers_handling)
+  + [Complex scenario](#complex_scenario)
++ [Methods API](#methods_api)
 
 ---
 
@@ -191,8 +208,8 @@ In the following all the methods of `string` are listed with a brief description
 
 + String manipulations & Co.:
   + [`basedir   `](http://szaghi.github.io/StringiFor/proc/basedir.html) return the base directory name of a string containing a file name.
-  + [`basename  `](#basename  ) return the base file name of a string containing a file name.
-  + [`camelcase `](#camelcase ) return a string with all words capitalized without spaces.
+  + [`basename  `](#http://szaghi.github.io/StringiFor/proc/basename.html) return the base file name of a string containing a file name.
+  + [`camelcase `](#http://szaghi.github.io/StringiFor/proc/camelcase.html) return a string with all words capitalized without spaces.
   + [`capitalize`](#capitalize) return a string with its first character capitalized and the rest lowercased.
   + [`chars     `](#chars     ) return the raw characters data.
   + [`escape    `](#escape    ) escape backslashes (or custom escape character).
