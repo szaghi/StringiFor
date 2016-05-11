@@ -749,13 +749,16 @@ private elemental function extension(self)
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Return the base file name of a string containing a file name.</span>
   <span class="c">!&lt;</span>
-  <span class="c">!&lt; @note Optionally, the extension is also stripped if provided or the last one if required, e.g.</span>
-  <span class="c">!&lt; ```fortran</span>
+  <span class="c">!&lt; Optionally, the extension is also stripped if provided or the last one if required, e.g.</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;### Example</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;```fortran</span>
   <span class="c">!&lt; type(string) :: astring</span>
   <span class="c">!&lt; astring = &#39;bar/foo.tar.bz2&#39;</span>
-  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(extension=&#39;.tar.bz2&#39;)//&#39;&#39;        !&lt; print &quot;foo&quot;</span>
-  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(strip_last_extension=.true.)//&#39;&#39; !&lt; print &quot;foo.tar&quot;</span>
-  <span class="c">!&lt; ```</span>
+  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(extension=&#39;.tar.bz2&#39;)//&#39;&#39;        ! print &quot;foo&quot;</span>
+  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(strip_last_extension=.true.)//&#39;&#39; ! print &quot;foo.tar&quot;</span>
+  <span class="c">!&lt;```</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>                 <span class="c">!&lt; The string.</span>
   <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">sep</span>                  <span class="c">!&lt; Directory separator.</span>
@@ -812,6 +815,13 @@ private elemental function extension(self)
   <span class="c">!&lt; Return a string with all words capitalized without spaces.</span>
   <span class="c">!&lt;</span>
   <span class="c">!&lt; @note Multiple subsequent separators are collapsed to one occurence.</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;### Example</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;```fortran</span>
+  <span class="c">!&lt; type(string) :: astring</span>
+  <span class="c">!&lt; astring = &#39;caMeL caSe var&#39;</span>
+  <span class="c">!&lt; print &#39;(A)&#39;, astring%camelcase()//&#39;&#39; ! print &quot;CamelCaseVar&quot;</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
   <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">sep</span>       <span class="c">!&lt; Separator.</span>

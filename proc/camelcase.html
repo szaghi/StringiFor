@@ -691,6 +691,11 @@ private elemental function camelcase(self, sep)
     <h3>Description</h3>
     <p>Return a string with all words capitalized without spaces.</p>
 <p></p><div class="alert alert-info" role="alert"><h4>Note</h4>Multiple subsequent separators are collapsed to one occurence.</div>
+<h3 id="example"><a class="toclink" href="#example">Example</a></h3>
+<p>```fortran
+ type(string) :: astring
+ astring = 'caMeL caSe var'
+ print '(A)', astring%camelcase()//'' ! print "CamelCaseVar"</p>
     
     
      
@@ -750,6 +755,13 @@ private elemental function camelcase(self, sep)
   <span class="c">!&lt; Return a string with all words capitalized without spaces.</span>
   <span class="c">!&lt;</span>
   <span class="c">!&lt; @note Multiple subsequent separators are collapsed to one occurence.</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;### Example</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;```fortran</span>
+  <span class="c">!&lt; type(string) :: astring</span>
+  <span class="c">!&lt; astring = &#39;caMeL caSe var&#39;</span>
+  <span class="c">!&lt; print &#39;(A)&#39;, astring%camelcase()//&#39;&#39; ! print &quot;CamelCaseVar&quot;</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>      <span class="c">!&lt; The string.</span>
   <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">sep</span>       <span class="c">!&lt; Separator.</span>

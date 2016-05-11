@@ -724,12 +724,13 @@ private elemental function basename(self, sep, extension, strip_last_extension)
     
     <h3>Description</h3>
     <p>Return the base file name of a string containing a file name.</p>
-<p></p><div class="alert alert-info" role="alert"><h4>Note</h4>Optionally, the extension is also stripped if provided or the last one if required, e.g.
- <code>fortran
- type(string) :: astring
- astring = 'bar/foo.tar.bz2'
- print '(A)', astring%basename(extension='.tar.bz2')//''        !&lt; print "foo"
- print '(A)', astring%basename(strip_last_extension=.true.)//'' !&lt; print "foo.tar"</code></div>
+<p>Optionally, the extension is also stripped if provided or the last one if required, e.g.</p>
+<h3 id="example"><a class="toclink" href="#example">Example</a></h3>
+<div class="codehilite"><pre><span></span> <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+ <span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;bar/foo.tar.bz2&#39;</span>
+ <span class="k">print</span> <span class="s1">&#39;(A)&#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tar.bz2&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span>        <span class="c">! print &quot;foo&quot;</span>
+ <span class="k">print</span> <span class="s1">&#39;(A)&#39;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">strip_last_extension</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;foo.tar&quot;</span>
+</pre></div>
     
     
      
@@ -816,13 +817,16 @@ private elemental function basename(self, sep, extension, strip_last_extension)
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="c">!&lt; Return the base file name of a string containing a file name.</span>
   <span class="c">!&lt;</span>
-  <span class="c">!&lt; @note Optionally, the extension is also stripped if provided or the last one if required, e.g.</span>
-  <span class="c">!&lt; ```fortran</span>
+  <span class="c">!&lt; Optionally, the extension is also stripped if provided or the last one if required, e.g.</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;### Example</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt;```fortran</span>
   <span class="c">!&lt; type(string) :: astring</span>
   <span class="c">!&lt; astring = &#39;bar/foo.tar.bz2&#39;</span>
-  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(extension=&#39;.tar.bz2&#39;)//&#39;&#39;        !&lt; print &quot;foo&quot;</span>
-  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(strip_last_extension=.true.)//&#39;&#39; !&lt; print &quot;foo.tar&quot;</span>
-  <span class="c">!&lt; ```</span>
+  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(extension=&#39;.tar.bz2&#39;)//&#39;&#39;        ! print &quot;foo&quot;</span>
+  <span class="c">!&lt; print &#39;(A)&#39;, astring%basename(strip_last_extension=.true.)//&#39;&#39; ! print &quot;foo.tar&quot;</span>
+  <span class="c">!&lt;```</span>
   <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
   <span class="k">class</span><span class="p">(</span><span class="n">string</span><span class="p">),</span>             <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>           <span class="kd">::</span> <span class="n">self</span>                 <span class="c">!&lt; The string.</span>
   <span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span> <span class="nb">len</span><span class="o">=*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">sep</span>                  <span class="c">!&lt; Directory separator.</span>
