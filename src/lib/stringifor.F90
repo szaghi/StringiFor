@@ -29,7 +29,7 @@ type :: string
     procedure, pass(self) :: camelcase       !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars           !< Return the raw characters data.
-    procedure, pass(self) :: escape          !< Escape backslahes (or custom escape character).
+    procedure, pass(self) :: escape          !< Escape backslashes (or custom escape character).
     procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
     procedure, pass(self) :: fill            !< Pad string on the left (or right) with zeros (or other char) to fill width.
     procedure, pass(self) :: free            !< Free dynamic memory.
@@ -299,7 +299,7 @@ contains
 
   elemental function escape(self, to_escape, esc) result(escaped)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Escape backslahes (or custom escape character).
+  !< Escape backslashes (or custom escape character).
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self      !< The string.
   character(kind=CK, len=1), intent(in)           :: to_escape !< Character to be escaped.
