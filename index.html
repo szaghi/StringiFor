@@ -157,14 +157,11 @@
 <h2 id="main-features"><a class="toclink" href="#main-features">Main features</a></h2>
 <p>StringiFor exposes only one class (OO-designed), the <code>string</code> type, that should be used as a more powerful string variable with respect a standard Fortran <code>character</code> variable. The main features of this class are:</p>
 <ul class="checklist">
-<li><input type="checkbox" disabled checked> seamless interchangeability with standard character variables, i.e.:</li>
-<li><input type="checkbox" disabled checked> I/O operation (disabled if GNU gfortran is used);</li>
-<li><input type="checkbox" disabled checked> string/character concatenation;</li>
-<li><input type="checkbox" disabled checked> string/character assignment;</li>
-<li><input type="checkbox" disabled> handy builtin methods:</li>
-<li><input type="checkbox" disabled> UPPER/lower case transformartion;</li>
-<li><input type="checkbox" disabled> tokenization;</li>
-<li><input type="checkbox" disabled> number-to-string (and viceversa) casting;</li>
+<li><input type="checkbox" disabled checked> seamless interchangeability with standard character variables, e.g. concatenation, IO, etc&hellip;;</li>
+<li><input type="checkbox" disabled checked> handy builtin methods, e.g. split, search, basename, join, etc&hellip;;</li>
+<li><input type="checkbox" disabled checked> low memory consumption: only one deferred length allocatable character member is stored, allowing for efficient memory allocation in array of strings, the elements of which can have different lengths;</li>
+<li><input type="checkbox" disabled checked> safe: almost all methods are elemental or pure;</li>
+<li><input type="checkbox" disabled checked> robust: the library is Test Driven Developed <a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a>, a comprehensive tests suite is provided.</li>
 </ul>
 <p>Any feature request is welcome.</p>
 <p>Go to <a href="#top">Top</a></p>
@@ -182,9 +179,150 @@
 <p>More details can be found on <a href="https://github.com/szaghi/StringiFor/wiki/Copyrights">wiki</a>.</p>
 <p>Go to <a href="#top">Top</a></p>
 <h2 id="documentation"><a class="toclink" href="#documentation">Documentation</a></h2>
-<p>Besides this README file the StringiFor documentation is contained into its own <a href="https://github.com/szaghi/StringiFor/wiki">wiki</a>. Detailed documentation of the API is contained into the <a href="http://szaghi.github.io/StringiFor/index.html">GitHub Pages</a> that can also be created locally by means of <a href="https://github.com/cmacmackin/ford">ford tool</a>.</p>
+<p>The StringiFor documentation is mainly contained into this file (it has its own <a href="https://github.com/szaghi/StringiFor/wiki">wiki</a> with some less important documents). Detailed documentation of the API is contained into the <a href="http://szaghi.github.io/StringiFor/index.html">GitHub Pages</a> that can also be created locally by means of <a href="https://github.com/cmacmackin/ford">ford tool</a>.</p>
+<hr>
 <h3 id="a-taste-of-stringifor"><a class="toclink" href="#a-taste-of-stringifor">A Taste of StringiFor</a></h3>
-<p>To be written.</p>
+<p>StringiFor is very handy&hellip;</p>
+<h4 id="basic-io"><a class="toclink" href="#basic-io">Basic IO</a></h4>
+<p>The class <code>string</code>  IO is overloaded by defined write/read TBP. Moreover, dedicated methods and operators can be exploited for IO, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">chars</span><span class="p">()</span> <span class="c">! &quot;chars&quot; method returns a standard character variable</span>
+<span class="k">print</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="n">astring</span>        <span class="c">! defined IO is not enabled with GNU gfortran</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span>     <span class="c">! on-the-fly conversion to standard character by means of concatenation</span>
+</pre></div>
+
+
+<h4 id="string-manipulation"><a class="toclink" href="#string-manipulation">String manipulation</a></h4>
+<p>The class <code>string</code> has many methods for a plethora of strings manipulations, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;0123456789&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">reverse</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;9876543210&quot;</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="s1">&#39;People&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;Hello People&quot;</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
+<span class="n">strings</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">partition</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;lo Wo&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;Before sep: &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span> <span class="c">! print &quot;Hel&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;Sep itself: &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span> <span class="c">! print &quot;lo Wo&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;After sep:  &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span> <span class="c">! print &quot;rld&quot;</span>
+
+<span class="n">strings</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;one&#39;</span>
+<span class="n">strings</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;two&#39;</span>
+<span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;three&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span>          <span class="c">! print &quot;onetwothree&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;one-two-three&quot;</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39; a StraNgE caSe var&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">camelcase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot; AStrangeCaseVar&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">snakecase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot; a_strange_case_var&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">startcase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot; A Strange Case Var&quot;</span>
+</pre></div>
+
+
+<h4 id="numbers-handling"><a class="toclink" href="#numbers-handling">Numbers handling</a></h4>
+<p>StringiFor, by means of the <a href="https://github.com/szaghi/PENF">portability environment library, PENF</a> can handle numbers (reals and integers) effortless. The string/number <em>casting</em> (to/from and viceversa) is done by overloaded assignments (for all kinds of integers and reals). For convenience, StringiFor exposes the PENF number <em>portable</em> kind parameters.</p>
+<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="mi">127</span> <span class="err">_</span><span class="n">I1P</span>       <span class="c">! &quot;I1P&quot; is the PENF kind for 1-byte-like integer.</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;+127&quot;</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="mf">3.021e6_R4P</span>    <span class="c">! &quot;R4P&quot; is the PENF kind for 4-byte-like real.</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;+0.302100E+07&quot;</span>
+
+<span class="n">astring</span> <span class="o">=</span> <span class="s2">&quot;3.4e9&quot;</span> <span class="c">! assign to a string without the necessity to define a real kind</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">is_number</span><span class="p">())</span> <span class="k">then</span>
+<span class="k">  if</span> <span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">is_real</span><span class="p">())</span> <span class="k">then</span>
+<span class="k">    print</span> <span class="s2">&quot;(E13.6)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R4P</span><span class="p">)</span> <span class="c">! print &quot; 0.340000E+10&quot; using a 4-byte-like kind</span>
+  <span class="n">endif</span>
+<span class="n">endif</span>
+</pre></div>
+
+
+<h4 id="complex-scenario"><a class="toclink" href="#complex-scenario">Complex scenario</a></h4>
+<p>StingiFor is developed to improve the poor Fortran people with <em>daily</em> strings-usage, however, also complex scenario is taken into account, e.g. file parsing, OS operations, etc&hellip;</p>
+<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+
+<span class="c">! OS like manipulation</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;/bar/foo.tar.bz2&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basedir</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span>                       <span class="c">! print &quot;/bar&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span>                      <span class="c">! print &quot;foo.tar.bz2&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tar&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span>      <span class="c">! print &quot;foo&quot;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">last_extension</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;foo.tar&quot;</span>
+
+<span class="c">! XML like tag parsing</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;&lt;test&gt; &lt;first&gt; hello &lt;/first&gt; &lt;first&gt; not the first &lt;/first&gt; &lt;/test&gt;&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">search</span><span class="p">(</span><span class="n">tag_start</span><span class="o">=</span><span class="s1">&#39;&lt;first&gt;&#39;</span><span class="p">,</span> <span class="n">tag_end</span><span class="o">=</span><span class="s1">&#39;&lt;/first&gt;&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;&lt;first&gt; hello &lt;/first&gt;&quot;</span>
+</pre></div>
+
+
+<hr>
+<h3 id="methods-api"><a class="toclink" href="#methods-api">Methods API</a></h3>
+<p>In the following all the methods of <code>string</code> are listed with a brief description of their aim. The hyperlinks bring you to the full API explained into the GH pages.</p>
+<ul>
+<li>String manipulations &amp; Co.:</li>
+<li><a href="http://szaghi.github.io/StringiFor/proc/basedir.html"><code>basedir</code></a> return the base directory name of a string containing a file name.</li>
+<li><a href="#basename"><code>basename</code></a> return the base file name of a string containing a file name.</li>
+<li><a href="#camelcase"><code>camelcase</code></a> return a string with all words capitalized without spaces.</li>
+<li><a href="#capitalize"><code>capitalize</code></a> return a string with its first character capitalized and the rest lowercased.</li>
+<li><a href="#chars"><code>chars</code></a> return the raw characters data.</li>
+<li><a href="#escape"><code>escape</code></a> escape backslashes (or custom escape character).</li>
+<li><a href="#extension"><code>extension</code></a> return the extension of a string containing a file name.</li>
+<li><a href="#fill"><code>fill</code></a> pad string on the left (or right) with zeros (or other char) to fill width.</li>
+<li><a href="#free"><code>free</code></a> free dynamic memory.</li>
+<li><a href="#join"><code>join</code></a> return a string that is a join of an array of strings or characters.</li>
+<li><a href="#lower"><code>lower</code></a> return a string with all lowercase characters.</li>
+<li><a href="#partition"><code>partition</code></a> split string at separator and return the 3 parts (before, the separator and after).</li>
+<li><a href="#replace"><code>replace</code></a> return a string with all occurrences of substring old replaced by new.</li>
+<li><a href="#reverse"><code>reverse</code></a> return a reversed string.</li>
+<li><a href="#search"><code>search</code></a> search for <em>tagged</em> record into string.</li>
+<li><a href="#snakecase"><code>snakecase</code></a> return a string with all words lowercase separated by "_".</li>
+<li><a href="#split"><code>split</code></a> return a list of substring in the string, using sep as the delimiter string.</li>
+<li><a href="#startcase"><code>startcase</code></a> return a string with all words capitalized, e.g. title case.</li>
+<li><a href="#strip"><code>strip</code></a> return a string with the leading and trailing characters removed.</li>
+<li><a href="#swapcase"><code>swapcase</code></a> return a string with uppercase chars converted to lowercase and vice versa.</li>
+<li><a href="#to_number"><code>to_number</code></a> cast string to number.</li>
+<li><a href="#unique"><code>unique</code></a> reduce to one (unique) multiple occurrences of a substring into a string.</li>
+<li><a href="#upper"><code>upper</code></a> return a string with all uppercase characters.</li>
+<li>inquires:</li>
+<li><a href="#end_with"><code>end_with</code></a> return true if a string ends with a specified suffix.</li>
+<li><a href="#is_allocated"><code>is_allocated</code></a> return true if the string is allocated.</li>
+<li><a href="#is_digit"><code>is_digit</code></a> return true if all characters in the string are digits.</li>
+<li><a href="#is_integer"><code>is_integer</code></a> return true if the string contains an integer.</li>
+<li><a href="#is_lower"><code>is_lower</code></a> return true if all characters in the string are lowercase.</li>
+<li><a href="#is_number"><code>is_number</code></a> return true if the string contains a number (real or integer).</li>
+<li><a href="#is_real"><code>is_real</code></a> return true if the string contains an real.</li>
+<li><a href="#is_upper"><code>is_upper</code></a> return true if all characters in the string are uppercase.</li>
+<li><a href="#start_with"><code>start_with</code></a> return true if a string starts with a specified prefix.</li>
+<li>builtins replacements:</li>
+<li><a href="#sadjustl"><code>sadjustl</code></a> adjustl replacement.</li>
+<li><a href="#sadjustr"><code>sadjustr</code></a> adjustr replacement.</li>
+<li><a href="#scount"><code>scount</code></a> count replacement.</li>
+<li><a href="#sindex"><code>sindex</code></a> index replacement.</li>
+<li><a href="#slen"><code>slen</code></a> len replacement.</li>
+<li><a href="#slen_trim"><code>slen_trim</code></a> len_trim replacement.</li>
+<li><a href="#srepeat"><code>srepeat</code></a> repeat replacement.</li>
+<li><a href="#sscan"><code>sscan</code></a> scan replacement.</li>
+<li><a href="#strim"><code>strim</code></a> trim replacement.</li>
+<li><a href="#sverify"><code>sverify</code></a> verify replacement.</li>
+<li>IO:</li>
+<li><a href="#read_formatted"><code>read(formatted)</code></a> formatted input.</li>
+<li><a href="#write_formatted"><code>write(formatted)</code></a> formatted output.</li>
+<li><a href="#read_unformatted"><code>read(unformatted)</code></a> unformatted input.</li>
+<li><a href="#write_unformatted"><code>write(unformatted)</code></a> unformatted output.</li>
+<li>operators:</li>
+<li><a href="#assignment"><code>assignment</code></a> assignment of string from different inputs.</li>
+<li><a href="#//"><code>//</code>        </a> concatenation resulting in characters for seamless integration.
+  <!-- + <a href="#.cat.">klzzwxh:0152     </a> concatenation resulting in <code>string</code>. --></li>
+</ul>
 <p>Go to <a href="#top">Top</a></p>
         </div>
 		  
@@ -332,11 +470,11 @@
               <ul>
                 
                   
-                    <li><a href='./module/penf.html'>penf</a></li>
+                    <li><a href='./module/penf%7E2.html'>penf</a></li>
                   
                 
                   
-                    <li><a href='./module/penf%7E2.html'>penf</a></li>
+                    <li><a href='./module/penf.html'>penf</a></li>
                   
                 
                   
@@ -348,19 +486,19 @@
                   
                 
                   
-                    <li><a href='./module/penf_global_parameters_variables.html'>penf_global_parameters_variables</a></li>
-                  
-                
-                  
                     <li><a href='./module/penf_global_parameters_variables%7E2.html'>penf_global_parameters_variables</a></li>
                   
                 
                   
-                    <li><a href='./module/penf_stringify.html'>penf_stringify</a></li>
+                    <li><a href='./module/penf_global_parameters_variables.html'>penf_global_parameters_variables</a></li>
                   
                 
                   
                     <li><a href='./module/penf_stringify%7E2.html'>penf_stringify</a></li>
+                  
+                
+                  
+                    <li><a href='./module/penf_stringify.html'>penf_stringify</a></li>
                   
                 
                   
