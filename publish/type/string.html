@@ -230,13 +230,23 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-operator%28.cat.%29">operator(.cat.)</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-operator%28%3D%3D%29">operator(==)</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-operator%28SLASH%3D%29">operator(/=)</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-operator%28%3C%29">operator(<)</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-operator%28%3C%3D%29">operator(<=)</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-operator%28%3E%3D%29">operator(>=)</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-operator%28%3E%29">operator(>)</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-sadjustl">sadjustl</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-sadjustr">sadjustr</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-scount">scount</a>
-          
-          <a class="list-group-item" href="../type/string.html#boundprocedure-sindex">sindex</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-slen">slen</a>
           
@@ -250,6 +260,8 @@
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-sverify">sverify</a>
           
+          <a class="list-group-item" href="../type/string.html#boundprocedure-sindex">sindex</a>
+          
           <a class="list-group-item" href="../type/string.html#boundprocedure-read_formatted">read_formatted</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-read_formatted_internal">read_formatted_internal</a>
@@ -257,6 +269,10 @@
           <a class="list-group-item" href="../type/string.html#boundprocedure-write_formatted">write_formatted</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-write_formatted_internal">write_formatted_internal</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-index_string_string">index_string_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-index_string_character">index_string_character</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_assign_string">string_assign_string</a>
           
@@ -287,6 +303,42 @@
           <a class="list-group-item" href="../type/string.html#boundprocedure-string_concat_character_string">string_concat_character_string</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-character_concat_string_string">character_concat_string_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_eq_string">string_eq_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_eq_character">string_eq_character</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-character_eq_string">character_eq_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_ne_string">string_ne_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_ne_character">string_ne_character</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-character_ne_string">character_ne_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_lt_string">string_lt_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_lt_character">string_lt_character</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-character_lt_string">character_lt_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_le_string">string_le_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_le_character">string_le_character</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-character_le_string">character_le_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_ge_string">string_ge_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_ge_character">string_ge_character</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-character_ge_string">character_ge_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_gt_string">string_gt_string</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-string_gt_character">string_gt_character</a>
+          
+          <a class="list-group-item" href="../type/string.html#boundprocedure-character_gt_string">character_gt_string</a>
           
           <a class="list-group-item" href="../type/string.html#boundprocedure-read_formatted_">read_formatted_</a>
           
@@ -5486,6 +5538,1632 @@ private elemental function <a href='../proc/character_concat_string_string.html'
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-operator%28%3D%3D%29"></span><h3>generic, public :: <strong>operator(==)</strong>  => <a href='../type/string.html#boundprocedure-string_eq_string'>string_eq_string</a>, <a href='../type/string.html#boundprocedure-string_eq_character'>string_eq_character</a>, <a href='../type/string.html#boundprocedure-character_eq_string'>character_eq_string</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Equal operator overloading.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_eq_string.html'>string_eq_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Equal to string logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_eq_character.html'>string_eq_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Equal to character logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/character_eq_string.html'>character_eq_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Equal to character (inverted) logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-operator%28SLASH%3D%29"></span><h3>generic, public :: <strong>operator(/=)</strong>  => <a href='../type/string.html#boundprocedure-string_ne_string'>string_ne_string</a>, <a href='../type/string.html#boundprocedure-string_ne_character'>string_ne_character</a>, <a href='../type/string.html#boundprocedure-character_ne_string'>character_ne_string</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Not equal operator overloading.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_ne_string.html'>string_ne_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Not equal to string logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_ne_character.html'>string_ne_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Not equal to character logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/character_ne_string.html'>character_ne_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Not equal to character (inverted) logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-operator%28%3C%29"></span><h3>generic, public :: <strong>operator(<)</strong>  => <a href='../type/string.html#boundprocedure-string_lt_string'>string_lt_string</a>, <a href='../type/string.html#boundprocedure-string_lt_character'>string_lt_character</a>, <a href='../type/string.html#boundprocedure-character_lt_string'>character_lt_string</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower than operator overloading.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_lt_string.html'>string_lt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower than to string logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_lt_character.html'>string_lt_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower than to character logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/character_lt_string.html'>character_lt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower than to character (inverted) logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-operator%28%3C%3D%29"></span><h3>generic, public :: <strong>operator(<=)</strong>  => <a href='../type/string.html#boundprocedure-string_le_string'>string_le_string</a>, <a href='../type/string.html#boundprocedure-string_le_character'>string_le_character</a>, <a href='../type/string.html#boundprocedure-character_le_string'>character_le_string</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower equal than operator overloading.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_le_string.html'>string_le_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower equal than to string logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_le_character.html'>string_le_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower equal than to character logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/character_le_string.html'>character_le_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower equal than to character (inverted) logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-operator%28%3E%3D%29"></span><h3>generic, public :: <strong>operator(>=)</strong>  => <a href='../type/string.html#boundprocedure-string_ge_string'>string_ge_string</a>, <a href='../type/string.html#boundprocedure-string_ge_character'>string_ge_character</a>, <a href='../type/string.html#boundprocedure-character_ge_string'>character_ge_string</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater equal than operator overloading.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_ge_string.html'>string_ge_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater equal than to string logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_ge_character.html'>string_ge_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater equal than to character logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/character_ge_string.html'>character_ge_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater equal than to character (inverted) logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-operator%28%3E%29"></span><h3>generic, public :: <strong>operator(>)</strong>  => <a href='../type/string.html#boundprocedure-string_gt_string'>string_gt_string</a>, <a href='../type/string.html#boundprocedure-string_gt_character'>string_gt_character</a>, <a href='../type/string.html#boundprocedure-character_gt_string'>character_gt_string</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater than operator overloading.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_gt_string.html'>string_gt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater than to string logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/string_gt_character.html'>string_gt_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater than to character logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/character_gt_string.html'>character_gt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater than to character (inverted) logical operator.</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-sadjustl"></span><h3>procedure, public, pass(self) :: <strong>sadjustl</strong>  
     
   </h3></div>
@@ -5763,124 +7441,6 @@ private elemental function <a href='../proc/scount.html'>scount</a>(self, substr
 
        
        <p>Count the number of occurences of a substring into a string.</p>
-        
-
-      
-      </li>
-    
-  </ul>
-</div>
-
-    
-	   
-<div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-sindex"></span><h3>procedure, public, pass(self) :: <strong>sindex</strong>  
-    
-  </h3></div>
-  
-  <div class="panel-body">
-    
-
-
-    <p>Index replacement.</p>
-  </div>
-  
-  <ul class="list-group">
-    
-      <li class="list-group-item">
-      
-         
-    
-    <h3>
-private elemental function <a href='../proc/sindex.html'>sindex</a>(self, substring, back) result(i)
-    
-    
-    
-</h3>
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>self</strong></td><td><p>The string.</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>substring</strong></td><td><p>Searched substring.</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>logical,</td>
-  <td>intent(in),</td>
-  <td>optional</td>
-  
-  <td></td><td>::</td>
-  <td><strong>back</strong></td><td><p>Start of the last occurrence rather than the first.</p></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-      
-    
-    
-
-  
-  
-  
-  
-     <h4>Return Value <small>integer
-  </small></h4>
-  <p>Result of the search.</p>
-    
-    
-    <h4>Description</h4>
-       
-       
-
-
-       
-       <p>Return the position of the start of the first occurrence of string <code>substring</code> as a substring in <code>string</code>, counting from one.
- If <code>substring</code> is not present in <code>string</code>, zero is returned. If the back argument is present and true, the return value is
- the start of the last occurrence rather than the first.</p>
         
 
       
@@ -6496,6 +8056,227 @@ private elemental function <a href='../proc/sverify.html'>sverify</a>(self, set,
     
 	   
 <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-sindex"></span><h3>generic, public :: <strong>sindex</strong>  => <a href='../type/string.html#boundprocedure-index_string_string'>index_string_string</a>, <a href='../type/string.html#boundprocedure-index_string_character'>index_string_character</a> 
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Index replacement.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/index_string_string.html'>index_string_string</a>(self, substring, back) result(i)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>substring</strong></td><td><p>Searched substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>back</strong></td><td><p>Start of the last occurrence rather than the first.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer
+  </small></h4>
+  <p>Result of the search.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return the position of the start of the first occurrence of string <code>substring</code> as a substring in <code>string</code>, counting from one.
+ If <code>substring</code> is not present in <code>string</code>, zero is returned. If the back argument is present and true, the return value is
+ the start of the last occurrence rather than the first.</p>
+        
+
+         
+      
+      </li>
+    
+      <li class="list-group-item">
+      
+         
+            
+    
+    <h3>
+private elemental function <a href='../proc/index_string_character.html'>index_string_character</a>(self, substring, back) result(i)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>substring</strong></td><td><p>Searched substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>back</strong></td><td><p>Start of the last occurrence rather than the first.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer
+  </small></h4>
+  <p>Result of the search.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return the position of the start of the first occurrence of string <code>substring</code> as a substring in <code>string</code>, counting from one.
+ If <code>substring</code> is not present in <code>string</code>, zero is returned. If the back argument is present and true, the return value is
+ the start of the last occurrence rather than the first.</p>
+        
+
+         
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-read_formatted"></span><h3>procedure, public, pass(dtv) :: <strong>read_formatted</strong>  => <a href='../proc/read_formatted_.html'>read_formatted_</a> 
     
   </h3></div>
@@ -7093,6 +8874,242 @@ private subroutine <a href='../proc/write_formatted_internal.html'>write_formatt
 
        
        <p>Formatted output to internal.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-index_string_string"></span><h3>procedure, private, pass(self) :: <strong>index_string_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Index replacement.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/index_string_string.html'>index_string_string</a>(self, substring, back) result(i)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>substring</strong></td><td><p>Searched substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>back</strong></td><td><p>Start of the last occurrence rather than the first.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer
+  </small></h4>
+  <p>Result of the search.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return the position of the start of the first occurrence of string <code>substring</code> as a substring in <code>string</code>, counting from one.
+ If <code>substring</code> is not present in <code>string</code>, zero is returned. If the back argument is present and true, the return value is
+ the start of the last occurrence rather than the first.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-index_string_character"></span><h3>procedure, private, pass(self) :: <strong>index_string_character</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Index replacement.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/index_string_character.html'>index_string_character</a>(self, substring, back) result(i)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>self</strong></td><td><p>The string.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>substring</strong></td><td><p>Searched substring.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>back</strong></td><td><p>Start of the last occurrence rather than the first.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>integer
+  </small></h4>
+  <p>Result of the search.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Return the position of the start of the first occurrence of string <code>substring</code> as a substring in <code>string</code>, counting from one.
+ If <code>substring</code> is not present in <code>string</code>, zero is returned. If the back argument is present and true, the return value is
+ the start of the last occurrence rather than the first.</p>
         
 
       
@@ -8527,6 +10544,1824 @@ private elemental function <a href='../proc/character_concat_string_string.html'
 
        
        <p>Concatenation with character (inverted).</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_eq_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_eq_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Equal to string logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_eq_string.html'>string_eq_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Equal to string logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_eq_character"></span><h3>procedure, private, pass(lhs) :: <strong>string_eq_character</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Equal to character logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_eq_character.html'>string_eq_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Equal to character logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-character_eq_string"></span><h3>procedure, private, pass(rhs) :: <strong>character_eq_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Equal to character (inverted) logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/character_eq_string.html'>character_eq_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Equal to character (inverted) logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_ne_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_ne_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Not equal to string logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_ne_string.html'>string_ne_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Not equal to string logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_ne_character"></span><h3>procedure, private, pass(lhs) :: <strong>string_ne_character</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Not equal to character logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_ne_character.html'>string_ne_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Not equal to character logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-character_ne_string"></span><h3>procedure, private, pass(rhs) :: <strong>character_ne_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Not equal to character (inverted) logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/character_ne_string.html'>character_ne_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Not equal to character (inverted) logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_lt_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_lt_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower than to string logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_lt_string.html'>string_lt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower than to string logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_lt_character"></span><h3>procedure, private, pass(lhs) :: <strong>string_lt_character</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower than to character logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_lt_character.html'>string_lt_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower than to character logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-character_lt_string"></span><h3>procedure, private, pass(rhs) :: <strong>character_lt_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower than to character (inverted) logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/character_lt_string.html'>character_lt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower than to character (inverted) logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_le_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_le_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower equal than to string logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_le_string.html'>string_le_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower equal than to string logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_le_character"></span><h3>procedure, private, pass(lhs) :: <strong>string_le_character</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower equal than to character logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_le_character.html'>string_le_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower equal than to character logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-character_le_string"></span><h3>procedure, private, pass(rhs) :: <strong>character_le_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Lower equal than to character (inverted) logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/character_le_string.html'>character_le_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Lower equal than to character (inverted) logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_ge_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_ge_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater equal than to string logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_ge_string.html'>string_ge_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater equal than to string logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_ge_character"></span><h3>procedure, private, pass(lhs) :: <strong>string_ge_character</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater equal than to character logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_ge_character.html'>string_ge_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater equal than to character logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-character_ge_string"></span><h3>procedure, private, pass(rhs) :: <strong>character_ge_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater equal than to character (inverted) logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/character_ge_string.html'>character_ge_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater equal than to character (inverted) logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_gt_string"></span><h3>procedure, private, pass(lhs) :: <strong>string_gt_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater than to string logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_gt_string.html'>string_gt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater than to string logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-string_gt_character"></span><h3>procedure, private, pass(lhs) :: <strong>string_gt_character</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater than to character logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/string_gt_character.html'>string_gt_character</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater than to character logical operator.</p>
+        
+
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-character_gt_string"></span><h3>procedure, private, pass(rhs) :: <strong>character_gt_string</strong>  
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+
+
+    <p>Greater than to character (inverted) logical operator.</p>
+  </div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+         
+    
+    <h3>
+private elemental function <a href='../proc/character_gt_string.html'>character_gt_string</a>(lhs, rhs) result(is_it)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(kind=CK,len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>lhs</strong></td><td><p>Left hand side.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/string.html'>string</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>rhs</strong></td><td><p>Right hand side.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>logical
+  </small></h4>
+  <p>Opreator test result.</p>
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Greater than to character (inverted) logical operator.</p>
         
 
       
@@ -10218,17 +14053,36 @@ private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(
     <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(.</span><span class="n">cat</span><span class="p">.)</span> <span class="o">=&gt;</span> <span class="n">string_concat_string_string</span><span class="p">,</span>    <span class="p">&amp;</span>
                                   <span class="n">string_concat_character_string</span><span class="p">,</span> <span class="p">&amp;</span>
                                   <span class="n">character_concat_string_string</span>    <span class="c">!&lt; Concatenation operator (string output) overloading.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">==</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_eq_string</span><span class="p">,</span>    <span class="p">&amp;</span>
+                               <span class="n">string_eq_character</span><span class="p">,</span> <span class="p">&amp;</span>
+                               <span class="n">character_eq_string</span>                  <span class="c">!&lt; Equal operator overloading.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">/=</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_ne_string</span><span class="p">,</span>    <span class="p">&amp;</span>
+                               <span class="n">string_ne_character</span><span class="p">,</span> <span class="p">&amp;</span>
+                               <span class="n">character_ne_string</span>                  <span class="c">!&lt; Not equal operator overloading.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">&lt;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_lt_string</span><span class="p">,</span>    <span class="p">&amp;</span>
+                              <span class="n">string_lt_character</span><span class="p">,</span> <span class="p">&amp;</span>
+                              <span class="n">character_lt_string</span>                   <span class="c">!&lt; Lower than operator overloading.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">&lt;=</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_le_string</span><span class="p">,</span>    <span class="p">&amp;</span>
+                               <span class="n">string_le_character</span><span class="p">,</span> <span class="p">&amp;</span>
+                               <span class="n">character_le_string</span>                  <span class="c">!&lt; Lower equal than operator overloading.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">&gt;=</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_ge_string</span><span class="p">,</span>    <span class="p">&amp;</span>
+                               <span class="n">string_ge_character</span><span class="p">,</span> <span class="p">&amp;</span>
+                               <span class="n">character_ge_string</span>                  <span class="c">!&lt; Greater equal than operator overloading.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">operator</span><span class="p">(</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">string_gt_string</span><span class="p">,</span>    <span class="p">&amp;</span>
+                              <span class="n">string_gt_character</span><span class="p">,</span> <span class="p">&amp;</span>
+                              <span class="n">character_gt_string</span>                   <span class="c">!&lt; Greater than operator overloading.</span>
     <span class="c">! builtins replacements</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sadjustl</span>  <span class="c">!&lt; Adjustl replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sadjustr</span>  <span class="c">!&lt; Adjustr replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">scount</span>    <span class="c">!&lt; Count replacement.</span>
-    <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sindex</span>    <span class="c">!&lt; Index replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">slen</span>      <span class="c">!&lt; Len replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">slen_trim</span> <span class="c">!&lt; Len_trim replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">nopass</span>     <span class="kd">::</span> <span class="n">srepeat</span>   <span class="c">!&lt; Repeat replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sscan</span>     <span class="c">!&lt; Scan replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">strim</span>     <span class="c">!&lt; Trim replacement.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sverify</span>   <span class="c">!&lt; Verify replacement.</span>
+    <span class="k">generic</span> <span class="kd">::</span> <span class="n">sindex</span> <span class="o">=&gt;</span> <span class="n">index_string_string</span><span class="p">,</span> <span class="p">&amp;</span>
+                         <span class="n">index_string_character</span> <span class="c">!&lt; Index replacement.</span>
     <span class="c">! IO</span>
 <span class="cp">#ifndef __GFORTRAN__</span>
     <span class="k">generic</span> <span class="kd">::</span> <span class="k">read</span><span class="p">(</span><span class="n">formatted</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">read_formatted_</span>       <span class="c">!&lt; Formatted input.</span>
@@ -10242,6 +14096,9 @@ private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(
     <span class="k">procedure</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span> <span class="kd">::</span> <span class="n">write_formatted_internal</span>            <span class="c">!&lt; Formatted output to internal.</span>
 <span class="cp">#endif</span>
     <span class="c">! private methods</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">index_string_string</span>            <span class="c">!&lt; Index replacement.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">index_string_character</span>         <span class="c">!&lt; Index replacement.</span>
+    <span class="c">! assignments</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_string</span>           <span class="c">!&lt; Assignment operator from string input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_character</span>        <span class="c">!&lt; Assignment operator from character input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_integer_I1P</span>      <span class="c">!&lt; Assignment operator from integer input.</span>
@@ -10251,12 +14108,33 @@ private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R4P</span>         <span class="c">!&lt; Assignment operator from real input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R8P</span>         <span class="c">!&lt; Assignment operator from real input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_assign_real_R16P</span>        <span class="c">!&lt; Assignment operator from real input.</span>
+    <span class="c">! concatenation operators</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_string</span>           <span class="c">!&lt; Concatenation with string.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_character</span>        <span class="c">!&lt; Concatenation with character.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_concat_string</span>        <span class="c">!&lt; Concatenation with character (inverted).</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_string_string</span>    <span class="c">!&lt; Concatenation with string (string output).</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_concat_character_string</span> <span class="c">!&lt; Concatenation with character (string output).</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_concat_string_string</span> <span class="c">!&lt; Concatenation with character (inverted, string output).</span>
+    <span class="c">! logical operators</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_eq_string</span>               <span class="c">!&lt; Equal to string logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_eq_character</span>            <span class="c">!&lt; Equal to character logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_eq_string</span>            <span class="c">!&lt; Equal to character (inverted) logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_ne_string</span>               <span class="c">!&lt; Not equal to string logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_ne_character</span>            <span class="c">!&lt; Not equal to character logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_ne_string</span>            <span class="c">!&lt; Not equal to character (inverted) logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_lt_string</span>               <span class="c">!&lt; Lower than to string logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_lt_character</span>            <span class="c">!&lt; Lower than to character logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_lt_string</span>            <span class="c">!&lt; Lower than to character (inverted) logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_le_string</span>               <span class="c">!&lt; Lower equal than to string logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_le_character</span>            <span class="c">!&lt; Lower equal than to character logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_le_string</span>            <span class="c">!&lt; Lower equal than to character (inverted) logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_ge_string</span>               <span class="c">!&lt; Greater equal than to string logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_ge_character</span>            <span class="c">!&lt; Greater equal than to character logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_ge_string</span>            <span class="c">!&lt; Greater equal than to character (inverted) logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_gt_string</span>               <span class="c">!&lt; Greater than to string logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">string_gt_character</span>            <span class="c">!&lt; Greater than to character logical operator.</span>
+    <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">character_gt_string</span>            <span class="c">!&lt; Greater than to character (inverted) logical operator.</span>
+    <span class="c">! IO</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">read_formatted_</span>                <span class="c">!&lt; Formatted input.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">write_formatted_</span>               <span class="c">!&lt; Formatted output.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">dtv</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">read_unformatted_</span>              <span class="c">!&lt; Unformatted input.</span>
@@ -10264,6 +14142,7 @@ private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">replace_one_occurrence</span>         <span class="c">!&lt; Replace the first occurrence of substring old by new.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">join_strings</span>                   <span class="c">!&lt; Return join string of an array of strings.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">join_characters</span>                <span class="c">!&lt; Return join string of an array of characters.</span>
+    <span class="c">! casting to numbers</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_integer_I1P</span>                 <span class="c">!&lt; Cast string to integer.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_integer_I2P</span>                 <span class="c">!&lt; Cast string to integer.</span>
     <span class="k">procedure</span><span class="p">,</span> <span class="k">private</span><span class="p">,</span> <span class="k">pass</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="kd">::</span> <span class="n">to_integer_I4P</span>                 <span class="c">!&lt; Cast string to integer.</span>

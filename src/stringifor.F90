@@ -11,6 +11,7 @@ implicit none
 private
 save
 public :: string, CK
+public :: index, len, len_trim
 ! expose PENF kinds
 public :: I1P, I2P, I4P, I8P, R4P, R8P, R16P
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -91,17 +92,36 @@ type :: string
     generic :: operator(.cat.) => string_concat_string_string,    &
                                   string_concat_character_string, &
                                   character_concat_string_string    !< Concatenation operator (string output) overloading.
+    generic :: operator(==) => string_eq_string,    &
+                               string_eq_character, &
+                               character_eq_string                  !< Equal operator overloading.
+    generic :: operator(/=) => string_ne_string,    &
+                               string_ne_character, &
+                               character_ne_string                  !< Not equal operator overloading.
+    generic :: operator(<) => string_lt_string,    &
+                              string_lt_character, &
+                              character_lt_string                   !< Lower than operator overloading.
+    generic :: operator(<=) => string_le_string,    &
+                               string_le_character, &
+                               character_le_string                  !< Lower equal than operator overloading.
+    generic :: operator(>=) => string_ge_string,    &
+                               string_ge_character, &
+                               character_ge_string                  !< Greater equal than operator overloading.
+    generic :: operator(>) => string_gt_string,    &
+                              string_gt_character, &
+                              character_gt_string                   !< Greater than operator overloading.
     ! builtins replacements
     procedure, pass(self) :: sadjustl  !< Adjustl replacement.
     procedure, pass(self) :: sadjustr  !< Adjustr replacement.
     procedure, pass(self) :: scount    !< Count replacement.
-    procedure, pass(self) :: sindex    !< Index replacement.
     procedure, pass(self) :: slen      !< Len replacement.
     procedure, pass(self) :: slen_trim !< Len_trim replacement.
     procedure, nopass     :: srepeat   !< Repeat replacement.
     procedure, pass(self) :: sscan     !< Scan replacement.
     procedure, pass(self) :: strim     !< Trim replacement.
     procedure, pass(self) :: sverify   !< Verify replacement.
+    generic :: sindex => index_string_string, &
+                         index_string_character !< Index replacement.
     ! IO
 #ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted_       !< Formatted input.
@@ -115,6 +135,9 @@ type :: string
     procedure, pass(dtv) :: write_formatted_internal            !< Formatted output to internal.
 #endif
     ! private methods
+    procedure, private, pass(self) :: index_string_string            !< Index replacement.
+    procedure, private, pass(self) :: index_string_character         !< Index replacement.
+    ! assignments
     procedure, private, pass(lhs)  :: string_assign_string           !< Assignment operator from string input.
     procedure, private, pass(lhs)  :: string_assign_character        !< Assignment operator from character input.
     procedure, private, pass(lhs)  :: string_assign_integer_I1P      !< Assignment operator from integer input.
@@ -124,12 +147,33 @@ type :: string
     procedure, private, pass(lhs)  :: string_assign_real_R4P         !< Assignment operator from real input.
     procedure, private, pass(lhs)  :: string_assign_real_R8P         !< Assignment operator from real input.
     procedure, private, pass(lhs)  :: string_assign_real_R16P        !< Assignment operator from real input.
+    ! concatenation operators
     procedure, private, pass(lhs)  :: string_concat_string           !< Concatenation with string.
     procedure, private, pass(lhs)  :: string_concat_character        !< Concatenation with character.
     procedure, private, pass(rhs)  :: character_concat_string        !< Concatenation with character (inverted).
     procedure, private, pass(lhs)  :: string_concat_string_string    !< Concatenation with string (string output).
     procedure, private, pass(lhs)  :: string_concat_character_string !< Concatenation with character (string output).
     procedure, private, pass(rhs)  :: character_concat_string_string !< Concatenation with character (inverted, string output).
+    ! logical operators
+    procedure, private, pass(lhs)  :: string_eq_string               !< Equal to string logical operator.
+    procedure, private, pass(lhs)  :: string_eq_character            !< Equal to character logical operator.
+    procedure, private, pass(rhs)  :: character_eq_string            !< Equal to character (inverted) logical operator.
+    procedure, private, pass(lhs)  :: string_ne_string               !< Not equal to string logical operator.
+    procedure, private, pass(lhs)  :: string_ne_character            !< Not equal to character logical operator.
+    procedure, private, pass(rhs)  :: character_ne_string            !< Not equal to character (inverted) logical operator.
+    procedure, private, pass(lhs)  :: string_lt_string               !< Lower than to string logical operator.
+    procedure, private, pass(lhs)  :: string_lt_character            !< Lower than to character logical operator.
+    procedure, private, pass(rhs)  :: character_lt_string            !< Lower than to character (inverted) logical operator.
+    procedure, private, pass(lhs)  :: string_le_string               !< Lower equal than to string logical operator.
+    procedure, private, pass(lhs)  :: string_le_character            !< Lower equal than to character logical operator.
+    procedure, private, pass(rhs)  :: character_le_string            !< Lower equal than to character (inverted) logical operator.
+    procedure, private, pass(lhs)  :: string_ge_string               !< Greater equal than to string logical operator.
+    procedure, private, pass(lhs)  :: string_ge_character            !< Greater equal than to character logical operator.
+    procedure, private, pass(rhs)  :: character_ge_string            !< Greater equal than to character (inverted) logical operator.
+    procedure, private, pass(lhs)  :: string_gt_string               !< Greater than to string logical operator.
+    procedure, private, pass(lhs)  :: string_gt_character            !< Greater than to character logical operator.
+    procedure, private, pass(rhs)  :: character_gt_string            !< Greater than to character (inverted) logical operator.
+    ! IO
     procedure, private, pass(dtv)  :: read_formatted_                !< Formatted input.
     procedure, private, pass(dtv)  :: write_formatted_               !< Formatted output.
     procedure, private, pass(dtv)  :: read_unformatted_              !< Unformatted input.
@@ -137,6 +181,7 @@ type :: string
     procedure, private, pass(self) :: replace_one_occurrence         !< Replace the first occurrence of substring old by new.
     procedure, private, pass(self) :: join_strings                   !< Return join string of an array of strings.
     procedure, private, pass(self) :: join_characters                !< Return join string of an array of characters.
+    ! casting to numbers
     procedure, private, pass(self) :: to_integer_I1P                 !< Cast string to integer.
     procedure, private, pass(self) :: to_integer_I2P                 !< Cast string to integer.
     procedure, private, pass(self) :: to_integer_I4P                 !< Cast string to integer.
@@ -146,6 +191,21 @@ type :: string
     procedure, private, pass(self) :: to_real_R16P                   !< Cast string to real.
 endtype string
 
+! builtins overloading interfaces
+interface index
+  !< Builtin index overloading.
+  module procedure index_string_string, index_string_character, index_character_string
+endinterface index
+interface len
+  !< Builtin len overloading.
+  module procedure slen
+endinterface len
+interface len_trim
+  !< Builtin len_trim overloading.
+  module procedure slen_trim
+endinterface len_trim
+
+! internal parameters
 character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
 character(kind=CK, len=26), parameter :: LOWER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
 character(kind=CK, len=1),  parameter :: SPACE          = ' '                          !< Space character.
@@ -1251,28 +1311,6 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction scount
 
-  elemental function sindex(self, substring, back) result(i)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
-  !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
-  !< the start of the last occurrence rather than the first.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(in)           :: self      !< The string.
-  character(kind=CK, len=*), intent(in)           :: substring !< Searched substring.
-  logical,                   intent(in), optional :: back      !< Start of the last occurrence rather than the first.
-  integer                                         :: i         !< Result of the search.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(self%raw)) then
-    i = index(string=self%raw, substring=substring, back=back)
-  else
-    i = 0
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endfunction sindex
-
   elemental function slen(self) result(l)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return the length of a string.
@@ -1618,6 +1656,342 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction character_concat_string_string
+
+  elemental function index_string_string(self, substring, back) result(i)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
+  !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
+  !< the start of the last occurrence rather than the first.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)           :: self      !< The string.
+  type(string),  intent(in)           :: substring !< Searched substring.
+  logical,       intent(in), optional :: back      !< Start of the last occurrence rather than the first.
+  integer                             :: i         !< Result of the search.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    i = index(string=self%raw, substring=substring%raw, back=back)
+  else
+    i = 0
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction index_string_string
+
+  elemental function index_string_character(self, substring, back) result(i)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
+  !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
+  !< the start of the last occurrence rather than the first.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self      !< The string.
+  character(kind=CK, len=*), intent(in)           :: substring !< Searched substring.
+  logical,                   intent(in), optional :: back      !< Start of the last occurrence rather than the first.
+  integer                                         :: i         !< Result of the search.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    i = index(string=self%raw, substring=substring, back=back)
+  else
+    i = 0
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction index_string_character
+
+  elemental function index_character_string(string_, substring, back) result(i)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
+  !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
+  !< the start of the last occurrence rather than the first.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(kind=CK, len=*), intent(in)           :: string_   !< The string.
+  type(string),              intent(in)           :: substring !< Searched substring.
+  logical,                   intent(in), optional :: back      !< Start of the last occurrence rather than the first.
+  integer                                         :: i         !< Result of the search.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(substring%raw)) then
+    i = index(string=string_, substring=substring%raw, back=back)
+  else
+    i = 0
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction index_character_string
+
+  elemental function string_eq_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Equal to string logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: lhs   !< Left hand side.
+  type(string),  intent(in) :: rhs   !< Right hand side.
+  logical                   :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw == rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_eq_string
+
+  elemental function string_eq_character(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Equal to character logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: lhs   !< Left hand side.
+  character(kind=CK, len=*), intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw == rhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_eq_character
+
+  elemental function character_eq_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Equal to character (inverted) logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(kind=CK, len=*), intent(in) :: lhs   !< Left hand side.
+  class(string),             intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = rhs%raw == lhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction character_eq_string
+
+  elemental function string_ne_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Not equal to string logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: lhs   !< Left hand side.
+  type(string),  intent(in) :: rhs   !< Right hand side.
+  logical                   :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw /= rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_ne_string
+
+  elemental function string_ne_character(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Not equal to character logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: lhs   !< Left hand side.
+  character(kind=CK, len=*), intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw /= rhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_ne_character
+
+  elemental function character_ne_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Not equal to character (inverted) logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(kind=CK, len=*), intent(in) :: lhs   !< Left hand side.
+  class(string),             intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = rhs%raw /= lhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction character_ne_string
+
+  elemental function string_lt_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Lower than to string logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: lhs   !< Left hand side.
+  type(string),  intent(in) :: rhs   !< Right hand side.
+  logical                   :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw < rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_lt_string
+
+  elemental function string_lt_character(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Lower than to character logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: lhs   !< Left hand side.
+  character(kind=CK, len=*), intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw < rhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_lt_character
+
+  elemental function character_lt_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Lower than to character (inverted) logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(kind=CK, len=*), intent(in) :: lhs   !< Left hand side.
+  class(string),             intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs < rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction character_lt_string
+
+  elemental function string_le_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Lower equal than to string logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: lhs   !< Left hand side.
+  type(string),  intent(in) :: rhs   !< Right hand side.
+  logical                   :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw <= rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_le_string
+
+  elemental function string_le_character(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Lower equal than to character logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: lhs   !< Left hand side.
+  character(kind=CK, len=*), intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw <= rhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_le_character
+
+  elemental function character_le_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Lower equal than to character (inverted) logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(kind=CK, len=*), intent(in) :: lhs   !< Left hand side.
+  class(string),             intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs <= rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction character_le_string
+
+  elemental function string_ge_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Greater equal than to string logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: lhs   !< Left hand side.
+  type(string),  intent(in) :: rhs   !< Right hand side.
+  logical                   :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw >= rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_ge_string
+
+  elemental function string_ge_character(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Greater equal than to character logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: lhs   !< Left hand side.
+  character(kind=CK, len=*), intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw >= rhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_ge_character
+
+  elemental function character_ge_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Greater equal than to character (inverted) logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(kind=CK, len=*), intent(in) :: lhs   !< Left hand side.
+  class(string),             intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs >= rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction character_ge_string
+
+  elemental function string_gt_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Greater than to string logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: lhs   !< Left hand side.
+  type(string),  intent(in) :: rhs   !< Right hand side.
+  logical                   :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw > rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_gt_string
+
+  elemental function string_gt_character(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Greater than to character logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: lhs   !< Left hand side.
+  character(kind=CK, len=*), intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs%raw > rhs
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction string_gt_character
+
+  elemental function character_gt_string(lhs, rhs) result(is_it)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Greater than to character (inverted) logical operator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(kind=CK, len=*), intent(in) :: lhs   !< Left hand side.
+  class(string),             intent(in) :: rhs   !< Right hand side.
+  logical                               :: is_it !< Opreator test result.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_it = lhs > rhs%raw
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction character_gt_string
 
   subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
