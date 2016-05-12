@@ -34,6 +34,7 @@ build_dir = exe
 [template-static-gnu]
 compiler        = gnu
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_GNU $OPTIMIZE
 lflags          = $OPTIMIZE
 cflags_heritage = True
@@ -46,6 +47,7 @@ preproc         = -Dr16p
 [template-static-gnu-debug]
 compiler        = gnu
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_GNU $DEBUG_GNU
 lflags          = $DEBUG_GNU
 cflags_heritage = True
@@ -58,6 +60,7 @@ preproc         = -Dr16p
 [template-static-intel]
 compiler        = intel
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_INT $OPTIMIZE
 lflags          = $OPTIMIZE
 cflags_heritage = True
@@ -70,6 +73,7 @@ preproc         = -Dr16p
 [template-static-intel-debug]
 compiler        = intel
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_INT $DEBUG_INT
 lflags          = $DEBUG_INT
 cflags_heritage = True

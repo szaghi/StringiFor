@@ -124,71 +124,72 @@ type :: string
                          index_string_character !< Index replacement.
     ! IO
 #ifndef __GFORTRAN__
-    generic :: read(formatted) => read_formatted_       !< Formatted input.
-    generic :: write(formatted) => write_formatted_     !< Formatted output.
-    generic :: read(unformatted) => read_unformatted_   !< Unformatted input.
-    generic :: write(unformatted) => write_unformatted_ !< Unformatted output.
-#else
-    procedure, pass(dtv) :: read_formatted => read_formatted_   !< Formatted input.
-    procedure, pass(dtv) :: read_formatted_internal             !< Formatted input from internal.
-    procedure, pass(dtv) :: write_formatted => write_formatted_ !< Formatted output.
-    procedure, pass(dtv) :: write_formatted_internal            !< Formatted output to internal.
+    generic :: read(formatted) => read_formatted       !< Formatted input.
+    generic :: write(formatted) => write_formatted     !< Formatted output.
+    generic :: read(unformatted) => read_unformatted   !< Unformatted input.
+    generic :: write(unformatted) => write_unformatted !< Unformatted output.
 #endif
     ! private methods
-    procedure, private, pass(self) :: index_string_string            !< Index replacement.
-    procedure, private, pass(self) :: index_string_character         !< Index replacement.
+    ! builtins replacements
+    procedure, private, pass(self) :: index_string_string    !< Index replacement.
+    procedure, private, pass(self) :: index_string_character !< Index replacement.
     ! assignments
-    procedure, private, pass(lhs)  :: string_assign_string           !< Assignment operator from string input.
-    procedure, private, pass(lhs)  :: string_assign_character        !< Assignment operator from character input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I1P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I2P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I4P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I8P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_real_R4P         !< Assignment operator from real input.
-    procedure, private, pass(lhs)  :: string_assign_real_R8P         !< Assignment operator from real input.
-    procedure, private, pass(lhs)  :: string_assign_real_R16P        !< Assignment operator from real input.
+    procedure, private, pass(lhs) :: string_assign_string      !< Assignment operator from string input.
+    procedure, private, pass(lhs) :: string_assign_character   !< Assignment operator from character input.
+    procedure, private, pass(lhs) :: string_assign_integer_I1P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_integer_I2P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_integer_I4P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_integer_I8P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_real_R4P    !< Assignment operator from real input.
+    procedure, private, pass(lhs) :: string_assign_real_R8P    !< Assignment operator from real input.
+    procedure, private, pass(lhs) :: string_assign_real_R16P   !< Assignment operator from real input.
     ! concatenation operators
-    procedure, private, pass(lhs)  :: string_concat_string           !< Concatenation with string.
-    procedure, private, pass(lhs)  :: string_concat_character        !< Concatenation with character.
-    procedure, private, pass(rhs)  :: character_concat_string        !< Concatenation with character (inverted).
-    procedure, private, pass(lhs)  :: string_concat_string_string    !< Concatenation with string (string output).
-    procedure, private, pass(lhs)  :: string_concat_character_string !< Concatenation with character (string output).
-    procedure, private, pass(rhs)  :: character_concat_string_string !< Concatenation with character (inverted, string output).
+    procedure, private, pass(lhs) :: string_concat_string           !< Concatenation with string.
+    procedure, private, pass(lhs) :: string_concat_character        !< Concatenation with character.
+    procedure, private, pass(rhs) :: character_concat_string        !< Concatenation with character (inverted).
+    procedure, private, pass(lhs) :: string_concat_string_string    !< Concatenation with string (string output).
+    procedure, private, pass(lhs) :: string_concat_character_string !< Concatenation with character (string output).
+    procedure, private, pass(rhs) :: character_concat_string_string !< Concatenation with character (inverted, string output).
     ! logical operators
-    procedure, private, pass(lhs)  :: string_eq_string               !< Equal to string logical operator.
-    procedure, private, pass(lhs)  :: string_eq_character            !< Equal to character logical operator.
-    procedure, private, pass(rhs)  :: character_eq_string            !< Equal to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_ne_string               !< Not equal to string logical operator.
-    procedure, private, pass(lhs)  :: string_ne_character            !< Not equal to character logical operator.
-    procedure, private, pass(rhs)  :: character_ne_string            !< Not equal to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_lt_string               !< Lower than to string logical operator.
-    procedure, private, pass(lhs)  :: string_lt_character            !< Lower than to character logical operator.
-    procedure, private, pass(rhs)  :: character_lt_string            !< Lower than to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_le_string               !< Lower equal than to string logical operator.
-    procedure, private, pass(lhs)  :: string_le_character            !< Lower equal than to character logical operator.
-    procedure, private, pass(rhs)  :: character_le_string            !< Lower equal than to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_ge_string               !< Greater equal than to string logical operator.
-    procedure, private, pass(lhs)  :: string_ge_character            !< Greater equal than to character logical operator.
-    procedure, private, pass(rhs)  :: character_ge_string            !< Greater equal than to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_gt_string               !< Greater than to string logical operator.
-    procedure, private, pass(lhs)  :: string_gt_character            !< Greater than to character logical operator.
-    procedure, private, pass(rhs)  :: character_gt_string            !< Greater than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_eq_string    !< Equal to string logical operator.
+    procedure, private, pass(lhs) :: string_eq_character !< Equal to character logical operator.
+    procedure, private, pass(rhs) :: character_eq_string !< Equal to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_ne_string    !< Not equal to string logical operator.
+    procedure, private, pass(lhs) :: string_ne_character !< Not equal to character logical operator.
+    procedure, private, pass(rhs) :: character_ne_string !< Not equal to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_lt_string    !< Lower than to string logical operator.
+    procedure, private, pass(lhs) :: string_lt_character !< Lower than to character logical operator.
+    procedure, private, pass(rhs) :: character_lt_string !< Lower than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_le_string    !< Lower equal than to string logical operator.
+    procedure, private, pass(lhs) :: string_le_character !< Lower equal than to character logical operator.
+    procedure, private, pass(rhs) :: character_le_string !< Lower equal than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_ge_string    !< Greater equal than to string logical operator.
+    procedure, private, pass(lhs) :: string_ge_character !< Greater equal than to character logical operator.
+    procedure, private, pass(rhs) :: character_ge_string !< Greater equal than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_gt_string    !< Greater than to string logical operator.
+    procedure, private, pass(lhs) :: string_gt_character !< Greater than to character logical operator.
+    procedure, private, pass(rhs) :: character_gt_string !< Greater than to character (inverted) logical operator.
     ! IO
-    procedure, private, pass(dtv)  :: read_formatted_                !< Formatted input.
-    procedure, private, pass(dtv)  :: write_formatted_               !< Formatted output.
-    procedure, private, pass(dtv)  :: read_unformatted_              !< Unformatted input.
-    procedure, private, pass(dtv)  :: write_unformatted_             !< Unformatted output.
-    procedure, private, pass(self) :: replace_one_occurrence         !< Replace the first occurrence of substring old by new.
-    procedure, private, pass(self) :: join_strings                   !< Return join string of an array of strings.
-    procedure, private, pass(self) :: join_characters                !< Return join string of an array of characters.
+    procedure, private, pass(dtv) :: read_formatted                !< Formatted input.
+    procedure, private, pass(dtv) :: read_delimited                !< Read a delimited string.
+    procedure, private, pass(dtv) :: read_undelimited              !< Read an undelimited string.
+    procedure, private, pass(dtv) :: read_undelimited_listdirected !< Read an undelimited string.
+    procedure, private, pass(dtv) :: write_formatted               !< Formatted output.
+    procedure, private, pass(dtv) :: write_formatted_worker        !< Write a possibly delimited formatted output.
+    procedure, private, pass(dtv) :: read_unformatted              !< Unformatted input.
+    procedure, private, pass(dtv) :: write_unformatted             !< Unformatted output.
+    ! miscellanea
+    procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
+    procedure, private, pass(self) :: join_strings           !< Return join string of an array of strings.
+    procedure, private, pass(self) :: join_characters        !< Return join string of an array of characters.
     ! casting to numbers
-    procedure, private, pass(self) :: to_integer_I1P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I2P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I4P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I8P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_real_R4P                    !< Cast string to real.
-    procedure, private, pass(self) :: to_real_R8P                    !< Cast string to real.
-    procedure, private, pass(self) :: to_real_R16P                   !< Cast string to real.
+    procedure, private, pass(self) :: to_integer_I1P !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I2P !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I4P !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I8P !< Cast string to integer.
+    procedure, private, pass(self) :: to_real_R4P    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R8P    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R16P   !< Cast string to real.
 endtype string
 
 ! builtins overloading interfaces
@@ -1993,95 +1994,391 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction character_gt_string
 
-  subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
+  subroutine read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted input.
   !<
-  !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(inout) :: dtv       !< The string.
-  integer,                   intent(in)    :: unit      !< Logical unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  read(unit, "(A)", iostat=iostat, iomsg=iomsg)temporary
-  dtv%raw = trim(temporary)
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_formatted_
-
-  subroutine read_formatted_internal(dtv, iunit, iotype, v_list, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Formatted input from internal.
+  !< Defined IO procedure.
   !<
-  !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
+  !< For list directed input:
+  !<- the value may be unquoted or quoted with either apostrophes or double quotes.
+  !<- In either case blanks before the first non-blank character (before the opening quote character if the string is quoted)
+  !<  are ignored. Additional records may be read until the first non-blank character is encountered.
+  !<- Inside quoted values double the quotes without an intervening record break to represent the quote character in the value,
+  !<  otherwise all characters are considered part of the value and record breaks are not significant in any way.
+  !<- Unquoted values are terminated by the list directed value separator encountered (blank after non-blank, slash, comma or
+  !<  semicolon (depending on DECIMAL) or end of record. If a separator is encountered without encountering any other non-blank
+  !<  characters, then the input is considered a null value and the definition status of the item remains unchanged.
+  !<
+  !< For namelist input:
+  !<- The value must be quoted with either apostrophes or double quotes, and the same rules for list directed input of a quoted
+  !<  value are then followed.
+  !<
+  !< For explicit DT input with nothing provided in the optional character literal of the edit descriptor:
+  !<- The v_list values are not signficant.
+  !<- The value may be unquoted or quoted with either apostrophes or double quotes.
+  !<- Blanks before the first non-blank character (before the opening quote character if the string is quoted) or end of
+  !<  record are not signficant.
+  !<- Inside quoted values double the quotes without an intervening record break to represent the quote character in the
+  !<  value, otherwise all characters are considered part of the value and record breaks are not significant in any way.
+  !<- Unquoted values are terminated by the list directed value separator encountered (blank after non-blank, slash, comma or
+  !<  semicolon (depending on DECIMAL) or end of record.  If a separator is encountered without encountering any other
+  !<  non-blank characters, then the resulting value is a zero length string.  If end of record is encountered without
+  !<  encountering any other non-blank characters, then end of record is returned.
+  !<
+  !< The following comma or semicolon separated list of modifiers can be provided in the character literal of the DT edit
+  !< descriptor:
+  !<- SKIPBLANK: Leading blank characters before the first non-blank character are skipped before determining whether the
+  !< input is delimited or not. NOSKIPBLANK must not be provided. This modifier is assumed by default if any other modifier,
+  !< apart from FIXED or NOSKIPBLANK is present.  If the end of record is encountered before any non-blank character, then an
+  !< end-fo-record condition results.  If the NODELIMITED modifier is not provided and if the initial character is a quote or
+  !< apostrophe, the input is treated as delimited as discussed above, otherwise the input is treated as undelimited, with
+  !< the conditions and characters that terminate input determined by the other modifiers.
+  !<- NOSKIPBLANK: Leading blank characters before the first non-blank character are not skipped before determining whether
+  !< the input is a delimited or not.  If the first character read is a blank then the input is considered undelimited, in
+  !< which case the leading blanks appear in the resulting value.  SKIPBLANK must not be provided.
+  !<- EOR: If the input is undelimited, input will be terminated by the end of record.  This is assumed by default
+  !< if any other modifier, apart from FIXED, is present.
+  !<- BLANK: In the absence of quoting, input will be terminated by the next blank encountered.
+  !<- SLASH: In the absence of quoting, input will be terminated by the next `/` encountered.
+  !<- NODELIMITED: Quoting is ignored - it is always considered absent, and any quote characters are considered part of the
+  !< value.
+  !<- COMMA: In the absence of quoting, input will be terminated by the next `,` encountered.
+  !<- SEMICOLON: In the absence of quoting, input will be terminated by the next `;` encountered.
+  !<- NON_DECIMAL: In the absence of quoting, input will be terminated by whatever is the alternative character to that
+  !< specified by the current DECIMAL mode.
+  !<- DELIM(str): `str` is a character literal, in the usual form of such a literal embedded in a format specification.  In
+  !< the absence of quoting, input will be terminated by the end of record or by the appearance of any character from the set
+  !< nominated by `str`.
+  !<- FIXED(n): `n` is an unsigned integer literal without a kind specifier.  `n` characters will be read.  No other
+  !< keywords may be provided.
+  !<
+  !< Where input is terminated by a specific character, that character will be the next character read in the file.  For
+  !< modifiers other than FIXED, if input is terminated by an end-of-record condition, then an end-of-record condition
+  !< results.  For the FIXED modifier, if there are less than `n` characters remaining in the record, the varying string
+  !< object is defined with the characters in the record and an end-of-record condition results.
+  !<
+  !< Modifier keywords are not case sensitive, blanks may be used freely outside of modifier keywords, integer literals and
+  !< character literals, modifiers cannot appear more than once.
+  !<
+  !< Note that due to limitations associated with Fortran's IO model, the changeable connection modes for connections to
+  !< internal files are always treated as being at their default values, regardless of any specifiers in the READ statement
+  !< or any control edit descriptors that may dictate otherwise.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(inout) :: dtv       !< The string.
-  character(kind=CK, len=*), intent(in)    :: iunit     !< Internal unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
+  class(string),             intent(inout) :: dtv         !< The string.
+  integer,                   intent(in)    :: unit        !< Logical unit.
+  character(kind=CK, len=*), intent(in)    :: iotype      !< Edit descriptor:
+                                                          !<+ 'LISTDIRECTED'
+                                                          !<+ 'NAMELIST'
+                                                          !<+ 'DTxxx'
+  integer,                   intent(in)    :: v_list(:)   !< Edit descriptor list.
+  integer,                   intent(out)   :: iostat      !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg       !< IO status message.
+  character(kind=CK)                       :: delim       !< The delimiter character (apostrophe or quote) to use for output.
+  character(len(iomsg))                    :: local_iomsg !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  character(kind=CK, len=100)              :: temporary   !< Temporary storage string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  read(iunit, "(A)", iostat=iostat, iomsg=iomsg)temporary
-  dtv%raw = trim(temporary)
+  if (iotype == 'LISTDIRECTED') then
+    call get_next_non_blank_any_record(unit, delim, iostat, iomsg)
+    if (iostat /= 0) return
+
+    if (delim == '"' .or. delim == "'") then
+      ! We have a delimited string.
+      call dtv%read_delimited(unit, delim, iostat, local_iomsg)
+    else
+      ! Step back before the non-blank.
+      read (unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
+      if (iostat /= 0) return
+      ! Read undelimited. Note that up until this point we have not changed the definition status of @a dtv - the following call
+      ! may similarly not define dtv if no value characters are encountered
+      call dtv%read_undelimited_listdirected(unit, iostat, local_iomsg)
+    endif
+    ! We suppress IOSTAT_EOR.
+    if (is_iostat_eor(iostat)) then
+      iostat = 0
+    elseif (iostat /= 0) then
+      iomsg = local_iomsg
+    endif
+    return
+  elseif (iotype == 'NAMELIST') then
+    ! Name list string input must be delimited, but apart from that the rules are as for list directed.
+    call get_next_non_blank_any_record(unit, delim, iostat, iomsg)
+    if (iostat /= 0) return
+
+    if (delim == '"' .or. delim == "'") then
+      ! We have a delimited string.
+      call dtv%read_delimited(unit, delim, iostat, local_iomsg)
+      ! We suppress IOSTAT_EOR.
+      if (is_iostat_eor(iostat)) then
+        iostat = 0
+      elseif (iostat /= 0) then
+        iomsg = local_iomsg
+      endif
+      return
+    else
+      ! We require delimited strings for namelist input.
+      iostat = 1
+      iomsg = 'A single or double quote character was expected.'
+      return
+    endif
+  else ! DTxxxx
+    if (len(iotype) > len('DT')) then
+      ! The rules depend on the character literal. This includes what happens regarding EOR.
+      ! call read_dt_with_literal(dtv, unit, iotype(3:), v_list, iostat, iomsg)
+      return
+    else
+      ! Like list directed, but we always stay within the current record.
+      !
+      ! If we get end of record without a non-blank character, then we return end of record and an empty string.
+      call get_next_non_blank_this_record(unit, delim, iostat, iomsg)
+      if (is_iostat_eor(iostat)) then
+        dtv%raw = ''
+        return
+      endif
+      if (iostat /= 0) return
+
+      if (delim == '"' .or. delim == "'") then
+        ! We have a delimited string.  We suppress IOSTAT_EOR below.
+        call dtv%read_delimited(unit, delim, iostat, local_iomsg)
+      else
+        ! Unlike list directed, if we encounter no non-blank characters prior to the thing that terminates input, the result here
+        ! is a zero length string (for list directed the definition of the item is not changed).
+        dtv%raw = ''
+        ! Step back before the non-blank.
+        read (unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
+        if (iostat /= 0) return
+        ! Read undelimited, just like list directed input. We also suppress IOSTAT_EOR below.
+        call dtv%read_undelimited_listdirected(unit, iostat, local_iomsg)
+      endif
+      ! We suppress IOSTAT_EOR for DT input, as long as we got at least one non-blank character
+      if (is_iostat_eor(iostat)) then
+        iostat = 0
+      elseif (iostat /= 0) then
+        iomsg = local_iomsg
+      endif
+      return
+    endif
+  endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_formatted_internal
+  endsubroutine read_formatted
 
-  subroutine write_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
+  subroutine read_delimited(dtv, unit, delim, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read a delimited string from a unit connected for formatted input.
+  !<
+  !< If the closing delimiter is followed by end of record, then we return end of record.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(out)   :: dtv       !< The string.
+  integer,                   intent(in)    :: unit      !< Logical unit.
+  character(len=1, kind=CK), intent(in)    :: delim     !< Represents the value of the DELIM mode.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  character(kind=CK)                       :: ch        ! Character read from record.
+  logical                                  :: was_delim ! Indicates that the last character read was a delimiter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  was_delim = .false.
+  dtv%raw = ''
+  do
+    read (unit, "(A)", iostat=iostat, IOMSG=iomsg) ch
+    if (is_iostat_eor(iostat)) then
+      if (was_delim) then
+        ! End of delimited string followed by end of record is end of the string.  We pass back the end of record condition to the
+        ! caller.
+        return
+      else
+        ! End of record without terminating delimiter - move along.
+        cycle
+      endif
+    elseif (iostat /= 0) then
+      return
+    endif
+    if (ch == delim) then
+      if (was_delim) then
+        ! Doubled delimiter is one delimiter in the value.
+        dtv%raw = dtv%raw // ch
+        was_delim = .false.
+      else
+        ! Need to test next character to see what is happening.
+        was_delim = .TRUE.
+      endif
+    elseif (was_delim) then
+      ! The previous character was actually the delimiter for the end of the string. Put back this character.
+      read (unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
+      return
+    else
+      dtv%raw = dtv%raw // ch
+    endif
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_delimited
+
+  subroutine read_undelimited_listdirected(dtv, unit, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read an undelimited (no leading apostrophe or double quote) character value according to the rules for list directed input.
+  !<
+  !< A blank, comma/semicolon (depending on the decimal mode), slash or end of record terminates the string.
+  !<
+  !< If input is terminated by end of record, then this procedure returns an end-of-record condition.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(inout) :: dtv           !< The string.
+  integer,                   intent(in)    :: unit          !< Logical unit.
+  integer,                   intent(out)   :: iostat        !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg         !< IO status message.
+  logical                                  :: decimal_point !< True if DECIMAL=POINT in effect.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  ! Get the relevant changeable modes.
+  call get_decimal_mode(unit, decimal_point, iostat, iomsg)
+  if (iostat /= 0) return
+  call dtv%read_undelimited(unit, ' ' // '/' // merge(ck_',', ck_';', decimal_point), iostat, iomsg)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_undelimited_listdirected
+
+  subroutine read_undelimited(dtv, unit, terminators, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read an undelimited string up until end of record or a character from a set of terminators is encountered.
+  !<
+  !< If a terminator is encountered, the file position will be at that terminating character. If end of record is encountered, the
+  !< file remains at end of record.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(inout) :: dtv         !< The string.
+  integer,                   intent(in)    :: unit        !< Logical unit.
+  character(kind=CK, len=*), intent(in)    :: terminators !< Characters that are considered to terminate the string.
+  integer,                   intent(out)   :: iostat      !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg       !< IO status message.
+  character(kind=CK)                       :: ch          ! Character read from record.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  do
+    read (unit, "(A)", iostat=iostat, iomsg=iomsg) ch
+    if (is_iostat_eor(iostat)) then
+      ! End of record just means end of string.  We pass on the condition.
+      return
+    elseif (iostat /= 0) then
+      ! Something odd happened.
+      return
+    endif
+    if (scan(ch, terminators) /= 0) then
+      ! Change the file position so that the next read sees the terminator.
+      read(unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
+      if (iostat /= 0) return
+      iostat = 0
+      return
+    endif
+    ! We got a character - append it.
+    dtv%raw = dtv%raw // ch
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_undelimited
+
+  subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted output.
+  !<
+  !< Defined IO procedure.
+  !<
+  !< For list directed output to external files, the value is delimited based on the DELIM changeable connection mode.
+  !< For internal files the string is always undelimited. Blanks may be added before and after the value.
+  !<
+  !< For namelist output, the value is always delimited. For external files where the DELIM changeable connection mode is
+  !< APOSTROPHE or QUOTE, then that form of delimiter is used, in all other cases double quotes are used.
+  !<
+  !< For DT output the value is never delimited. The iotype and v_list values are currently not significant.
+  !<
+  !< In all cases, we do not handle the situation where the size of record remaining is insufficient to hold the value
+  !< representation.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)    :: dtv       !< The string.
   integer,                   intent(in)    :: unit      !< Logical unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
+  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor:
+                                                        !<+ 'LISTDIRECTED'
+                                                        !<+ 'NAMELIST'
+                                                        !<+ 'DTxxx'
   integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
   integer,                   intent(out)   :: iostat    !< IO status code.
   character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  character(kind=CK)                       :: delim     !< The delimiter character (apostrophe or quote) to use for output.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(dtv%raw)) then
-    write(unit, "(A)", iostat=iostat, iomsg=iomsg)dtv%raw
+  if (.not.allocated(dtv%raw)) stop 'error: output of an undefined string'
+
+  if (iotype=='LISTDIRECTED') then
+    call get_delimiter_mode(unit=unit, delim=delim, iostat=iostat, iomsg=iomsg)
+    ! List directed formatting typically gives lots of freedom to the processor on output.  However, there is a requirement
+    ! that each record (that is not a continuation record) starts with a leading blank.
+    write(unit, "(1X)")
+    call dtv%write_formatted_worker(unit, delim, iostat, iomsg)
+    ! There must be a separating blank prior to the next item in the record, otherwise we have no way of knowing where
+    ! the string ! ends.  We don't need a separating blank if the varying_string is the last item in the record.  Using 1X
+    ! should achieves this goal, but there's nothing to stop the processor adding its own additional blanks.
+    write(unit, "(1X)")
+  elseif (iotype == 'NAMELIST') then
+    call get_delimiter_mode(unit, delim, iostat, iomsg)
+    if (delim == '') delim = '"'
+    call dtv%write_formatted_worker(unit, delim, iostat, iomsg)
   else
-    write(unit, "(A)", iostat=iostat, iomsg=iomsg)''
+    if (len(iotype)>2) then
+      iostat = 2
+      iomsg = 'The character literal after the DT edit descriptor for a string must not be present.'
+      return
+    endif
+    if (size(v_list)/=0) then
+      iostat = 2
+      iomsg = 'The list of integers after the DT edit descriptor for a string must not be present.'
+      return
+    endif
+    ! We assume the user will apply the necessary delimiters.
+    call dtv%write_formatted_worker(unit, '', iostat, iomsg)
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_formatted_
+  endsubroutine write_formatted
 
-  subroutine write_formatted_internal(dtv, iunit, iotype, v_list, iostat, iomsg)
+  subroutine write_formatted_worker(dtv, unit, delim, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Formatted output to internal.
+  !< Write a possibly delimited formatted representation of the value of a string.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(in)    :: dtv       !< The string.
-  character(kind=CK, len=*), intent(inout) :: iunit     !< Interanl unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  class(string),             intent(in)    :: dtv     !< The string.
+  integer,                   intent(in)    :: unit    !< Logical unit.
+  character(len=*, kind=CK), intent(in)    :: delim   !> The delimiter.
+  integer,                   intent(out)   :: iostat  !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg   !< IO status message.
+  integer                                  :: i       !< Counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(dtv%raw)) then
-    write(iunit, "(A)", iostat=iostat, iomsg=iomsg)dtv%raw
-  else
-    write(iunit, "(A)", iostat=iostat, iomsg=iomsg)''
+  if (delim /= '') theN
+    write (unit, "(A)", iostat=iostat, iomsg=iomsg) delim
+    if (iostat /= 0) return
+  endif
+  do i = 1, len(dtv%raw)
+    if (delim /= '' .and. dtv%raw(i:i) == delim) then
+      write (unit, "(A,A)", iostat=iostat, iomsg=iomsg) delim, delim
+    else
+      write (unit, "(A)", iostat=iostat, iomsg=iomsg) dtv%raw(i:i)
+    endif
+    if (iostat /= 0) return
+  enddo
+  if (delim /= '') then
+    write (unit, "(A)", iostat=iostat, iomsg=iomsg) delim
+    if (iostat /= 0) return
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_formatted_internal
+  endsubroutine write_formatted_worker
 
-  subroutine read_unformatted_(dtv, unit, iostat, iomsg)
+  subroutine read_unformatted(dtv, unit, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Unformatted input.
   !<
@@ -2099,9 +2396,9 @@ contains
   dtv%raw = trim(temporary)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_unformatted_
+  endsubroutine read_unformatted
 
-  subroutine write_unformatted_(dtv, unit, iostat, iomsg)
+  subroutine write_unformatted(dtv, unit, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Unformatted output.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2119,7 +2416,7 @@ contains
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_unformatted_
+  endsubroutine write_unformatted
 
   elemental function replace_one_occurrence(self, old, new) result(replaced)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2348,4 +2645,133 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction to_real_R16P
+
+  ! non type-bound-procedures
+  subroutine get_delimiter_mode(unit, delim, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the DELIM changeable connection mode for the given unit.
+  !<
+  !< If the unit is connected to an internal file, then the default value of NONE is always returned.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  use, intrinsic :: iso_fortran_env, only : iostat_inquire_internal_unit
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,                   intent(in)    :: unit         !< The unit for the connection.
+  character(len=1, kind=CK), intent(out)   :: delim        !< Represents the value of the DELIM mode.
+  integer,                   intent(out)   :: iostat       !< IOSTAT error code, non-zero on error.
+  character(*),              intent(inout) :: iomsg        !< IOMSG explanatory message - only defined if iostat is non-zero.
+  character(10)                            :: delim_buffer !< Buffer for INQUIRE about DELIM, sized for APOSTROHPE.
+  character(len(iomsg))                    :: local_iomsg  !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  ! get the string representation of the changeable mode
+  inquire(unit, delim=delim_buffer, iostat=iostat, iomsg=local_iomsg)
+  if (iostat == iostat_inquire_internal_unit) then
+    ! no way of determining the DELIM mode for an internal file
+    iostat = 0
+    delim = ''
+    return
+  elseif (iostat /= 0) then
+    iomsg = local_iomsg
+    return
+  endif
+  ! interpret the DELIM string
+  if (delim_buffer == 'QUOTE') then
+    delim = '"'
+  elseif (delim_buffer == 'APOSTROPHE') then
+    delim = ''''
+  else
+    delim = '"'
+  endif
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_delimiter_mode
+
+  SUBROUTINE get_next_non_blank_this_record(unit, ch, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the next non-blank character in the current record.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,                   intent(in)    :: unit   !< The unit for the connection.
+  character(len=1, kind=CK), intent(out)   :: ch     !< The non-blank character read. Not valid if IOSTAT is non-zero.
+  integer,                   intent(out)   :: iostat !< IOSTAT error code, non-zero on error.
+  character(*),              intent(inout) :: iomsg  !< IOMSG explanatory message - only defined if iostat is non-zero.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  do
+    ! We spcify non-advancing, just in case we want this callable outside the context of a child input statement.
+    ! The PAD specifier simply saves the need for the READ statement to define ch if EOR is hit.
+    !read(unit, "(A)", iostat=iostat, iomsg=iomsg, advance='NO') ch
+    ! ...but that causes ifort to blow up at runtime.
+    read(unit, "(A)", iostat=iostat, iomsg=iomsg, pad='NO') ch
+    if (iostat /= 0) return
+    if (ch /= '') exit
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_next_non_blank_this_record
+
+  subroutine get_next_non_blank_any_record(unit, ch, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the next non-blank character, advancing records if necessary.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,                   intent(in)    :: unit        !< The unit for the connection.
+  character(len=1, kind=CK), intent(out)   :: ch          !< The non-blank character read. Not valid if IOSTAT is non-zero.
+  integer,                   intent(out)   :: iostat      !< IOSTAT error code, non-zero on error.
+  character(*),              intent(inout) :: iomsg       !< IOMSG explanatory message - only defined if iostat is non-zero.
+  character(len(iomsg))                    :: local_iomsg !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  do
+    call get_next_non_blank_this_record(unit, ch, iostat, local_iomsg)
+    if (is_iostat_eor(iostat)) then
+      ! Try again on the next record.
+      read (unit, "(/)", iostat=iostat, iomsg=iomsg)
+      if (iostat /= 0) return
+    elseif (iostat /= 0) then
+      ! Some sort of problem.
+      iomsg = local_iomsg
+      return
+    else
+      ! Got it!
+      exit
+    endif
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_next_non_blank_any_record
+
+  subroutine get_decimal_mode(unit, decimal_point, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the DECIMAL changeable connection mode for the given unit.
+  !<
+  !< If the unit is connected to an internal file, then the default value of DECIMAL is always returned. This may not be the
+  !< actual value in force at the time of the call to this procedure.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  use, intrinsic :: iso_fortran_env, only : iostat_inquire_internal_unit
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,      intent(in)    :: unit           !< The unit for the connection.
+  logical,      intent(out)   :: decimal_point  !> True if the decimal mode is POINT, false otherwise.
+  integer,      intent(out)   :: iostat         !< IOSTAT error code, non-zero on error.
+  character(*), intent(inout) :: iomsg          !< IOMSG explanatory message - only defined if iostat is non-zero.
+  character(5)                :: decimal_buffer !< Buffer for INQUIRE about DECIMAL, sized for POINT or COMMA.
+  character(len(iomsg))       :: local_iomsg    !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  ! Get the string representation of the changeable mode.
+  inquire(unit, decimal=decimal_buffer, iostat=iostat, iomsg=local_iomsg)
+  if (iostat == iostat_inquire_internal_unit) then
+    ! We have no way of determining the decimal mode for an internal file.
+    iostat = 0
+    decimal_point = .true.
+    return
+  else if (iostat /= 0) then
+    iomsg = local_iomsg
+    return
+  endif
+  ! Interpret the DECIMAL string.
+  decimal_point = decimal_buffer == 'POINT'
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_decimal_mode
 endmodule stringifor
