@@ -1,6 +1,8 @@
 [modes]
 modes = tests-gnu tests-gnu-debug
         tests-intel tests-intel-debug
+        stringifor-static-gnu stringifor-shared-gnu
+        stringifor-static-intel stringifor-shared-intel
 
 [common-variables]
 $CSHARED_GNU = -c -fPIC -frealloc-lhs
@@ -30,10 +32,39 @@ build_dir = exe
 template  = template-static-intel-debug
 build_dir = exe
 
+[stringifor-static-gnu]
+template  = template-static-gnu
+build_dir = lib
+target    = stringifor.F90
+output    = libstringifor.a
+mklib     = static
+
+[stringifor-shared-gnu]
+template  = template-static-gnu
+build_dir = lib
+target    = stringifor.F90
+output    = libstringifor.so
+mklib     = shared
+
+[stringifor-static-intel]
+template  = template-static-intel
+build_dir = lib
+target    = stringifor.F90
+output    = libstringifor.a
+mklib     = static
+
+[stringifor-shared-intel]
+template  = template-static-intel
+build_dir = lib
+target    = stringifor.F90
+output    = libstringifor.so
+mklib     = shared
+
 # templates
 [template-static-gnu]
 compiler        = gnu
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_GNU $OPTIMIZE
 lflags          = $OPTIMIZE
 cflags_heritage = True
@@ -46,8 +77,22 @@ preproc         = -Dr16p
 [template-static-gnu-debug]
 compiler        = gnu
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_GNU $DEBUG_GNU
 lflags          = $DEBUG_GNU
+cflags_heritage = True
+colors          = True
+quiet           = False
+log             = True
+jobs            = 10
+preproc         = -Dr16p
+
+[template-shared-gnu]
+compiler        = gnu
+exclude_dirs    = $EXDIRS
+src             = src/
+cflags          = $CSHARED_GNU $OPTIMIZE
+lflags          = $LSHARED $OPTIMIZE
 cflags_heritage = True
 colors          = True
 quiet           = False
@@ -58,6 +103,7 @@ preproc         = -Dr16p
 [template-static-intel]
 compiler        = intel
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_INT $OPTIMIZE
 lflags          = $OPTIMIZE
 cflags_heritage = True
@@ -70,8 +116,22 @@ preproc         = -Dr16p
 [template-static-intel-debug]
 compiler        = intel
 exclude_dirs    = $EXDIRS
+src             = src/
 cflags          = $CSTATIC_INT $DEBUG_INT
 lflags          = $DEBUG_INT
+cflags_heritage = True
+colors          = True
+quiet           = False
+log             = True
+jobs            = 10
+preproc         = -Dr16p
+
+[template-shared-intel]
+compiler        = intel
+exclude_dirs    = $EXDIRS
+src             = src/
+cflags          = $CSHARED_INT $OPTIMIZE
+lflags          = $LSHARED $OPTIMIZE
 cflags_heritage = True
 colors          = True
 quiet           = False

@@ -20,11 +20,11 @@ astring = 'Hello World!   '
 
 write(stdout, "(A)") 'Original: "'//astring//'"'
 
-test_passed(1) = astring%slen()==len('Hello World!   ')
-write(stdout, "(A,I2,A,L1)") 'Slen: ', astring%slen(), ' is correct? ', test_passed(1)
+test_passed(1) = astring%len()==len('Hello World!   ')
+write(stdout, "(A,I2,A,L1)") 'Slen: ', astring%len(), ' is correct? ', test_passed(1)
 
-test_passed(2) = astring%slen_trim()==len_trim('Hello World!   ')
-write(stdout, "(A,I2,A,L1)") 'Slen_trim: ', astring%slen_trim(), ' is correct? ', test_passed(2)
+test_passed(2) = astring%len_trim()==len_trim('Hello World!   ')
+write(stdout, "(A,I2,A,L1)") 'Slen_trim: ', astring%len_trim(), ' is correct? ', test_passed(2)
 
 test_passed(3) = len(astring)==len('Hello World!   ')
 write(stdout, "(A,I2,A,L1)") 'Len: ', len(astring), ' is correct? ', test_passed(3)

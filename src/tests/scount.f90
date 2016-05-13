@@ -1,45 +1,38 @@
-!< StringiFor `io_basic` test.
-program io_basic
+!< StringiFor `count_string` test.
+program count_string
 !-----------------------------------------------------------------------------------------------------------------------------------
-!< StringiFor `io_basic` test.
+!< StringiFor `count_string` test.
 !-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
-use stringifor, only : string
+use stringifor
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-#ifndef __GFORTRAN__
-type(string)                  :: astring        !< A string.
-character(len=:), allocatable :: acharacter     !< A character.
-integer                       :: iostat         !< IO status code.
-character(len=99)             :: iomsg          !< IO status message.
-#endif
-logical                       :: test_passed(2) !< List of passed tests.
+type(string) :: astring        !< A string.
+integer      :: No             !< Number of occurences.
+logical      :: test_passed(3) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 test_passed = .false.
 
-#ifndef __GFORTRAN__
-astring = 'Hello World!'
-acharacter = 'New Hello World!'
+astring = '   Hello World!'
+write(stdout, "(A)") 'Original: "'//astring//'"'
 
-write(stdout, "(DT)", iostat=iostat, iomsg=iomsg) astring
-test_passed(1) = iostat==0
-if (iostat/=0) print "(A)", iomsg
+No = astring%count(substring=' ', ignore_isolated=.true.)
+test_passed(1) = No==3
+write(stdout, "(A,I1,A,L1)") 'Count " " ignore isolated: "', No,'", is correct? ', test_passed(1)
 
-read(acharacter, "(DT)", iostat=iostat, iomsg=iomsg) astring
-test_passed(2) = iostat==0
-if (iostat/=0) print "(A)", iomsg
+No = astring%count(substring=' ')
+test_passed(2) = No==4
+write(stdout, "(A,I1,A,L1)") 'Count " ": "', No,'", is correct? ', test_passed(2)
 
-print "(DT)", astring
-#else
-! GNU gfortran does not support defined IO
-test_passed = .true.
-#endif
+No = astring%count(substring='l')
+test_passed(3) = No==3
+write(stdout, "(A,I1,A,L1)") 'Count "l": "', No,'", is correct? ', test_passed(3)
 
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop
 !-----------------------------------------------------------------------------------------------------------------------------------
-endprogram io_basic
+endprogram count_string

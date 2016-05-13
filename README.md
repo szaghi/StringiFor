@@ -41,7 +41,7 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 
 ---
 
-[What is StringiFor?](#what-is-penf?) ♺ [Main features](#main-features) ♺ [Copyrights](#copyrights) ♺ [Download](#download) ♺ [Compilation](#compilation) ♺ [Documentation](#documentation)
+[What is StringiFor?](#what-is-penf?) | [Main features](#main-features) | [Copyrights](#copyrights) | [Download](#download) | [Compilation](#compilation) | [Documentation](#documentation) | [Comparison to other Approaches](#comparison-to-other-approaches)
 
 ---
 
@@ -84,15 +84,150 @@ Go to [Top](#top)
 
 ## Download
 
-To be written.
+StringiFor home is at [https://github.com/szaghi/StringiFor](https://github.com/szaghi/StringiFor). It uses `git submodule` to handle the third party dependency. To download all the source files you can:
+
++ clone recursively this repository: `git clone --recursive https://github.com/szaghi/StringiFor`
++ download the latest master-branch archive at [https://github.com/szaghi/StringiFor/archive/master.zip](https://github.com/szaghi/StringiFor/archive/master.zip)
++ download a release archive at [https://github.com/szaghi/StringiFor/releases](https://github.com/szaghi/StringiFor/releases)
 
 Go to [Top](#top)
 
 ## Compilation
 
-To be written.
+StringiFor is a modern Fortran project thus a modern Fortran compiler is need to compile the project. In the following table the support for some widely-used Fortran compilers is summarized.
+
+| Compiler Vendor Support                                                  | Notes                       |
+|--------------------------------------------------------------------------|-----------------------------|
+|[![Compiler](https://img.shields.io/badge/GNU-v5.2.0+-orange.svg)]()      | does not support defined IO |
+|[![Compiler](https://img.shields.io/badge/Intel-v15.x+-brightgreen.svg)]()| full support                |
+|[![Compiler](https://img.shields.io/badge/IBM%20XL-vx.y-yellow.svg)]()    | not tested                  |
+|[![Compiler](https://img.shields.io/badge/g95-vx.y-yellow.svg)]()         | not tested                  |
+|[![Compiler](https://img.shields.io/badge/NAG-vx.y-yellow.svg)]()         | not tested                  |
+|[![Compiler](https://img.shields.io/badge/PGI-vx.y-yellow.svg)]()         | not tested                  |
+
+The library is modular, namely it exploits Fortran modules. As a consequence, there is compilation-cascade hierarchy to build the library. To correctly build the library the following approaches are supported.
+
+### Build by means of FoBiS
+
+A `fobos` file is provided to build the library by means of the Fortran Building System [FoBiS](https://github.com/szaghi/FoBiS).
+
+#### Build all tests
+
+Type
+
+```shell
+FoBiS.py build
+```
+
+After (a successuful) building a directory `exe` is created containing all the compiled tests that constitute the StringiFor *regression-tests-suite*, e.g.
+
+```bash
+→ FoBiS.py build
+Builder options
+  Directories
+    Building directory: "exe"
+    Compiled-objects .o   directory: "exe/obj"
+    Compiled-objects .mod directory: "exe/mod"
+  Compiler options
+    Vendor: "gnu"
+    Compiler command: "gfortran"
+    Module directory switch: "-J"
+    Compiling flags: "-c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p"
+    Linking flags: "-O2"
+    Preprocessing flags: "-Dr16p"
+    Coverage: False
+    Profile: False
+  PreForM.py used: False
+  PreForM.py output directory: None
+  PreForM.py extensions processed: []
+
+Building src/tests/is_real.f90
+Compiling src/lib/penf.F90 serially
+Compiling src/lib/string_t.F90 serially
+Compiling src/lib/stringifor.F90 serially
+Compiling src/tests/is_real.f90 serially
+Linking exe/is_real
+Target src/tests/is_real.f90 has been successfully built
+Builder options
+  Directories
+    Building directory: "exe"
+    Compiled-objects .o   directory: "exe/obj"
+    Compiled-objects .mod directory: "exe/mod"
+  Compiler options
+    Vendor: "gnu"
+    Compiler command: "gfortran"
+    Module directory switch: "-J"
+    Compiling flags: "-c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p"
+    Linking flags: "-O2"
+    Preprocessing flags: "-Dr16p"
+    Coverage: False
+    Profile: False
+  PreForM.py used: False
+  PreForM.py output directory: None
+  PreForM.py extensions processed: []
+
+Building src/tests/slen.f90
+Compiling src/tests/slen.f90 serially
+...
+
+→ tree -L 1 exe/
+exe/
+├── assignments
+├── basename_dir
+├── camelcase
+├── capitalize
+├── concatenation
+├── equal
+├── escape
+├── extension
+├── fill
+...
+├── swapcase
+├── to_number
+├── unique
+└── upper_lower
+```
+
+#### Build the library
+
+Type
+
+```bash
+# static-linked library by means of GNU gfortran
+FoBiS.py build -mode stringifor-static-gnu
+
+# shared-linked library by means of GNU gfortran
+FoBiS.py build -mode stringifor-shared-gnu
+
+# static-linked library by means of Intel Fortran
+FoBiS.py build -mode stringifor-static-intel
+
+# shared-linked library by means of Intel Fortran
+FoBiS.py build -mode stringifor-shared-intel
+```
+
+### List other fobos modes
+
+To list all *fobos-provided* modes type
+
+```bash
+→ FoBiS.py build -lmodes
+The fobos file defines the following modes:
+  - "tests-gnu"
+  - "tests-gnu-debug"
+  - "tests-intel"
+  - "tests-intel-debug"
+  - "stringifor-static-gnu"
+  - "stringifor-shared-gnu"
+  - "stringifor-static-intel"
+  - "stringifor-shared-intel"
+```
+
+The first is the one automatically called by `FoBiS.py build`.
 
 Go to [Top](#top)
+
+---
 
 ## Documentation
 
@@ -259,6 +394,12 @@ In the following all the methods of `string` are listed with a brief description
 + operators:
   + [`assignment`](#assignment) assignment of string from different inputs.
   + [`//`        ](#//        ) concatenation resulting in characters for seamless integration.
-  <!-- + [`.cat.`     ](#.cat.     ) concatenation resulting in `string`. -->
+  + [`.cat.`     ](#.cat.     ) concatenation resulting in `string`.
+
+Go to [Top](#top)
+
+## Comparison to other Approaches
+
+To be written.
 
 Go to [Top](#top)
