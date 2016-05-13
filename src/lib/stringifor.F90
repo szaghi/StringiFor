@@ -124,71 +124,68 @@ type :: string
                          index_string_character !< Index replacement.
     ! IO
 #ifndef __GFORTRAN__
-    generic :: read(formatted) => read_formatted_       !< Formatted input.
-    generic :: write(formatted) => write_formatted_     !< Formatted output.
-    generic :: read(unformatted) => read_unformatted_   !< Unformatted input.
-    generic :: write(unformatted) => write_unformatted_ !< Unformatted output.
-#else
-    procedure, pass(dtv) :: read_formatted => read_formatted_   !< Formatted input.
-    procedure, pass(dtv) :: read_formatted_internal             !< Formatted input from internal.
-    procedure, pass(dtv) :: write_formatted => write_formatted_ !< Formatted output.
-    procedure, pass(dtv) :: write_formatted_internal            !< Formatted output to internal.
+    generic :: read(formatted) => read_formatted       !< Formatted input.
+    generic :: write(formatted) => write_formatted     !< Formatted output.
+    generic :: read(unformatted) => read_unformatted   !< Unformatted input.
+    generic :: write(unformatted) => write_unformatted !< Unformatted output.
 #endif
     ! private methods
-    procedure, private, pass(self) :: index_string_string            !< Index replacement.
-    procedure, private, pass(self) :: index_string_character         !< Index replacement.
+    ! builtins replacements
+    procedure, private, pass(self) :: index_string_string    !< Index replacement.
+    procedure, private, pass(self) :: index_string_character !< Index replacement.
     ! assignments
-    procedure, private, pass(lhs)  :: string_assign_string           !< Assignment operator from string input.
-    procedure, private, pass(lhs)  :: string_assign_character        !< Assignment operator from character input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I1P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I2P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I4P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_integer_I8P      !< Assignment operator from integer input.
-    procedure, private, pass(lhs)  :: string_assign_real_R4P         !< Assignment operator from real input.
-    procedure, private, pass(lhs)  :: string_assign_real_R8P         !< Assignment operator from real input.
-    procedure, private, pass(lhs)  :: string_assign_real_R16P        !< Assignment operator from real input.
+    procedure, private, pass(lhs) :: string_assign_string      !< Assignment operator from string input.
+    procedure, private, pass(lhs) :: string_assign_character   !< Assignment operator from character input.
+    procedure, private, pass(lhs) :: string_assign_integer_I1P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_integer_I2P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_integer_I4P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_integer_I8P !< Assignment operator from integer input.
+    procedure, private, pass(lhs) :: string_assign_real_R4P    !< Assignment operator from real input.
+    procedure, private, pass(lhs) :: string_assign_real_R8P    !< Assignment operator from real input.
+    procedure, private, pass(lhs) :: string_assign_real_R16P   !< Assignment operator from real input.
     ! concatenation operators
-    procedure, private, pass(lhs)  :: string_concat_string           !< Concatenation with string.
-    procedure, private, pass(lhs)  :: string_concat_character        !< Concatenation with character.
-    procedure, private, pass(rhs)  :: character_concat_string        !< Concatenation with character (inverted).
-    procedure, private, pass(lhs)  :: string_concat_string_string    !< Concatenation with string (string output).
-    procedure, private, pass(lhs)  :: string_concat_character_string !< Concatenation with character (string output).
-    procedure, private, pass(rhs)  :: character_concat_string_string !< Concatenation with character (inverted, string output).
+    procedure, private, pass(lhs) :: string_concat_string           !< Concatenation with string.
+    procedure, private, pass(lhs) :: string_concat_character        !< Concatenation with character.
+    procedure, private, pass(rhs) :: character_concat_string        !< Concatenation with character (inverted).
+    procedure, private, pass(lhs) :: string_concat_string_string    !< Concatenation with string (string output).
+    procedure, private, pass(lhs) :: string_concat_character_string !< Concatenation with character (string output).
+    procedure, private, pass(rhs) :: character_concat_string_string !< Concatenation with character (inverted, string output).
     ! logical operators
-    procedure, private, pass(lhs)  :: string_eq_string               !< Equal to string logical operator.
-    procedure, private, pass(lhs)  :: string_eq_character            !< Equal to character logical operator.
-    procedure, private, pass(rhs)  :: character_eq_string            !< Equal to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_ne_string               !< Not equal to string logical operator.
-    procedure, private, pass(lhs)  :: string_ne_character            !< Not equal to character logical operator.
-    procedure, private, pass(rhs)  :: character_ne_string            !< Not equal to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_lt_string               !< Lower than to string logical operator.
-    procedure, private, pass(lhs)  :: string_lt_character            !< Lower than to character logical operator.
-    procedure, private, pass(rhs)  :: character_lt_string            !< Lower than to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_le_string               !< Lower equal than to string logical operator.
-    procedure, private, pass(lhs)  :: string_le_character            !< Lower equal than to character logical operator.
-    procedure, private, pass(rhs)  :: character_le_string            !< Lower equal than to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_ge_string               !< Greater equal than to string logical operator.
-    procedure, private, pass(lhs)  :: string_ge_character            !< Greater equal than to character logical operator.
-    procedure, private, pass(rhs)  :: character_ge_string            !< Greater equal than to character (inverted) logical operator.
-    procedure, private, pass(lhs)  :: string_gt_string               !< Greater than to string logical operator.
-    procedure, private, pass(lhs)  :: string_gt_character            !< Greater than to character logical operator.
-    procedure, private, pass(rhs)  :: character_gt_string            !< Greater than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_eq_string    !< Equal to string logical operator.
+    procedure, private, pass(lhs) :: string_eq_character !< Equal to character logical operator.
+    procedure, private, pass(rhs) :: character_eq_string !< Equal to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_ne_string    !< Not equal to string logical operator.
+    procedure, private, pass(lhs) :: string_ne_character !< Not equal to character logical operator.
+    procedure, private, pass(rhs) :: character_ne_string !< Not equal to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_lt_string    !< Lower than to string logical operator.
+    procedure, private, pass(lhs) :: string_lt_character !< Lower than to character logical operator.
+    procedure, private, pass(rhs) :: character_lt_string !< Lower than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_le_string    !< Lower equal than to string logical operator.
+    procedure, private, pass(lhs) :: string_le_character !< Lower equal than to character logical operator.
+    procedure, private, pass(rhs) :: character_le_string !< Lower equal than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_ge_string    !< Greater equal than to string logical operator.
+    procedure, private, pass(lhs) :: string_ge_character !< Greater equal than to character logical operator.
+    procedure, private, pass(rhs) :: character_ge_string !< Greater equal than to character (inverted) logical operator.
+    procedure, private, pass(lhs) :: string_gt_string    !< Greater than to string logical operator.
+    procedure, private, pass(lhs) :: string_gt_character !< Greater than to character logical operator.
+    procedure, private, pass(rhs) :: character_gt_string !< Greater than to character (inverted) logical operator.
     ! IO
-    procedure, private, pass(dtv)  :: read_formatted_                !< Formatted input.
-    procedure, private, pass(dtv)  :: write_formatted_               !< Formatted output.
-    procedure, private, pass(dtv)  :: read_unformatted_              !< Unformatted input.
-    procedure, private, pass(dtv)  :: write_unformatted_             !< Unformatted output.
-    procedure, private, pass(self) :: replace_one_occurrence         !< Replace the first occurrence of substring old by new.
-    procedure, private, pass(self) :: join_strings                   !< Return join string of an array of strings.
-    procedure, private, pass(self) :: join_characters                !< Return join string of an array of characters.
+    procedure, private, pass(dtv) :: read_formatted    !< Formatted input.
+    procedure, private, pass(dtv) :: write_formatted   !< Formatted output.
+    procedure, private, pass(dtv) :: read_unformatted  !< Unformatted input.
+    procedure, private, pass(dtv) :: write_unformatted !< Unformatted output.
+    ! miscellanea
+    procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
+    procedure, private, pass(self) :: join_strings           !< Return join string of an array of strings.
+    procedure, private, pass(self) :: join_characters        !< Return join string of an array of characters.
     ! casting to numbers
-    procedure, private, pass(self) :: to_integer_I1P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I2P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I4P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I8P                 !< Cast string to integer.
-    procedure, private, pass(self) :: to_real_R4P                    !< Cast string to real.
-    procedure, private, pass(self) :: to_real_R8P                    !< Cast string to real.
-    procedure, private, pass(self) :: to_real_R16P                   !< Cast string to real.
+    procedure, private, pass(self) :: to_integer_I1P !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I2P !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I4P !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I8P !< Cast string to integer.
+    procedure, private, pass(self) :: to_real_R4P    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R8P    !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R16P   !< Cast string to real.
 endtype string
 
 ! builtins overloading interfaces
@@ -1993,7 +1990,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction character_gt_string
 
-  subroutine read_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
+  subroutine read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted input.
   !<
@@ -2013,31 +2010,9 @@ contains
   dtv%raw = trim(temporary)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_formatted_
+  endsubroutine read_formatted
 
-  subroutine read_formatted_internal(dtv, iunit, iotype, v_list, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Formatted input from internal.
-  !<
-  !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(inout) :: dtv       !< The string.
-  character(kind=CK, len=*), intent(in)    :: iunit     !< Internal unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  read(iunit, "(A)", iostat=iostat, iomsg=iomsg)temporary
-  dtv%raw = trim(temporary)
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_formatted_internal
-
-  subroutine write_formatted_(dtv, unit, iotype, v_list, iostat, iomsg)
+  subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted output.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2057,31 +2032,9 @@ contains
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_formatted_
+  endsubroutine write_formatted
 
-  subroutine write_formatted_internal(dtv, iunit, iotype, v_list, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Formatted output to internal.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(in)    :: dtv       !< The string.
-  character(kind=CK, len=*), intent(inout) :: iunit     !< Interanl unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (allocated(dtv%raw)) then
-    write(iunit, "(A)", iostat=iostat, iomsg=iomsg)dtv%raw
-  else
-    write(iunit, "(A)", iostat=iostat, iomsg=iomsg)''
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_formatted_internal
-
-  subroutine read_unformatted_(dtv, unit, iostat, iomsg)
+  subroutine read_unformatted(dtv, unit, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Unformatted input.
   !<
@@ -2099,9 +2052,9 @@ contains
   dtv%raw = trim(temporary)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_unformatted_
+  endsubroutine read_unformatted
 
-  subroutine write_unformatted_(dtv, unit, iostat, iomsg)
+  subroutine write_unformatted(dtv, unit, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Unformatted output.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2119,7 +2072,7 @@ contains
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_unformatted_
+  endsubroutine write_unformatted
 
   elemental function replace_one_occurrence(self, old, new) result(replaced)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2348,4 +2301,133 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction to_real_R16P
+
+  ! non type-bound-procedures
+  subroutine get_delimiter_mode(unit, delim, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the DELIM changeable connection mode for the given unit.
+  !<
+  !< If the unit is connected to an internal file, then the default value of NONE is always returned.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  use, intrinsic :: iso_fortran_env, only : iostat_inquire_internal_unit
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,                   intent(in)    :: unit         !< The unit for the connection.
+  character(len=1, kind=CK), intent(out)   :: delim        !< Represents the value of the DELIM mode.
+  integer,                   intent(out)   :: iostat       !< IOSTAT error code, non-zero on error.
+  character(*),              intent(inout) :: iomsg        !< IOMSG explanatory message - only defined if iostat is non-zero.
+  character(10)                            :: delim_buffer !< Buffer for INQUIRE about DELIM, sized for APOSTROHPE.
+  character(len(iomsg))                    :: local_iomsg  !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  ! get the string representation of the changeable mode
+  inquire(unit, delim=delim_buffer, iostat=iostat, iomsg=local_iomsg)
+  if (iostat == iostat_inquire_internal_unit) then
+    ! no way of determining the DELIM mode for an internal file
+    iostat = 0
+    delim = ''
+    return
+  elseif (iostat /= 0) then
+    iomsg = local_iomsg
+    return
+  endif
+  ! interpret the DELIM string
+  if (delim_buffer == 'QUOTE') then
+    delim = '"'
+  elseif (delim_buffer == 'APOSTROPHE') then
+    delim = ''''
+  else
+    delim = '"'
+  endif
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_delimiter_mode
+
+  SUBROUTINE get_next_non_blank_this_record(unit, ch, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the next non-blank character in the current record.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,                   intent(in)    :: unit   !< The unit for the connection.
+  character(len=1, kind=CK), intent(out)   :: ch     !< The non-blank character read. Not valid if IOSTAT is non-zero.
+  integer,                   intent(out)   :: iostat !< IOSTAT error code, non-zero on error.
+  character(*),              intent(inout) :: iomsg  !< IOMSG explanatory message - only defined if iostat is non-zero.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  do
+    ! We spcify non-advancing, just in case we want this callable outside the context of a child input statement.
+    ! The PAD specifier simply saves the need for the READ statement to define ch if EOR is hit.
+    !read(unit, "(A)", iostat=iostat, iomsg=iomsg, advance='NO') ch
+    ! ...but that causes ifort to blow up at runtime.
+    read(unit, "(A)", iostat=iostat, iomsg=iomsg, pad='NO') ch
+    if (iostat /= 0) return
+    if (ch /= '') exit
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_next_non_blank_this_record
+
+  subroutine get_next_non_blank_any_record(unit, ch, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the next non-blank character, advancing records if necessary.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,                   intent(in)    :: unit        !< The unit for the connection.
+  character(len=1, kind=CK), intent(out)   :: ch          !< The non-blank character read. Not valid if IOSTAT is non-zero.
+  integer,                   intent(out)   :: iostat      !< IOSTAT error code, non-zero on error.
+  character(*),              intent(inout) :: iomsg       !< IOMSG explanatory message - only defined if iostat is non-zero.
+  character(len(iomsg))                    :: local_iomsg !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  do
+    call get_next_non_blank_this_record(unit, ch, iostat, local_iomsg)
+    if (is_iostat_eor(iostat)) then
+      ! Try again on the next record.
+      read (unit, "(/)", iostat=iostat, iomsg=iomsg)
+      if (iostat /= 0) return
+    elseif (iostat /= 0) then
+      ! Some sort of problem.
+      iomsg = local_iomsg
+      return
+    else
+      ! Got it!
+      exit
+    endif
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_next_non_blank_any_record
+
+  subroutine get_decimal_mode(unit, decimal_point, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Get the DECIMAL changeable connection mode for the given unit.
+  !<
+  !< If the unit is connected to an internal file, then the default value of DECIMAL is always returned. This may not be the
+  !< actual value in force at the time of the call to this procedure.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  use, intrinsic :: iso_fortran_env, only : iostat_inquire_internal_unit
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,      intent(in)    :: unit           !< The unit for the connection.
+  logical,      intent(out)   :: decimal_point  !> True if the decimal mode is POINT, false otherwise.
+  integer,      intent(out)   :: iostat         !< IOSTAT error code, non-zero on error.
+  character(*), intent(inout) :: iomsg          !< IOMSG explanatory message - only defined if iostat is non-zero.
+  character(5)                :: decimal_buffer !< Buffer for INQUIRE about DECIMAL, sized for POINT or COMMA.
+  character(len(iomsg))       :: local_iomsg    !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  ! Get the string representation of the changeable mode.
+  inquire(unit, decimal=decimal_buffer, iostat=iostat, iomsg=local_iomsg)
+  if (iostat == iostat_inquire_internal_unit) then
+    ! We have no way of determining the decimal mode for an internal file.
+    iostat = 0
+    decimal_point = .true.
+    return
+  else if (iostat /= 0) then
+    iomsg = local_iomsg
+    return
+  endif
+  ! Interpret the DECIMAL string.
+  decimal_point = decimal_buffer == 'POINT'
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine get_decimal_mode
 endmodule stringifor
