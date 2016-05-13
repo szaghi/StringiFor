@@ -170,14 +170,10 @@ type :: string
     procedure, private, pass(lhs) :: string_gt_character !< Greater than to character logical operator.
     procedure, private, pass(rhs) :: character_gt_string !< Greater than to character (inverted) logical operator.
     ! IO
-    procedure, private, pass(dtv) :: read_formatted                !< Formatted input.
-    procedure, private, pass(dtv) :: read_delimited                !< Read a delimited string.
-    procedure, private, pass(dtv) :: read_undelimited              !< Read an undelimited string.
-    procedure, private, pass(dtv) :: read_undelimited_listdirected !< Read an undelimited string.
-    procedure, private, pass(dtv) :: write_formatted               !< Formatted output.
-    procedure, private, pass(dtv) :: write_formatted_worker        !< Write a possibly delimited formatted output.
-    procedure, private, pass(dtv) :: read_unformatted              !< Unformatted input.
-    procedure, private, pass(dtv) :: write_unformatted             !< Unformatted output.
+    procedure, private, pass(dtv) :: read_formatted    !< Formatted input.
+    procedure, private, pass(dtv) :: write_formatted   !< Formatted output.
+    procedure, private, pass(dtv) :: read_unformatted  !< Unformatted input.
+    procedure, private, pass(dtv) :: write_unformatted !< Unformatted output.
     ! miscellanea
     procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
     procedure, private, pass(self) :: join_strings           !< Return join string of an array of strings.
@@ -1998,385 +1994,45 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted input.
   !<
-  !< Defined IO procedure.
-  !<
-  !< For list directed input:
-  !<- the value may be unquoted or quoted with either apostrophes or double quotes.
-  !<- In either case blanks before the first non-blank character (before the opening quote character if the string is quoted)
-  !<  are ignored. Additional records may be read until the first non-blank character is encountered.
-  !<- Inside quoted values double the quotes without an intervening record break to represent the quote character in the value,
-  !<  otherwise all characters are considered part of the value and record breaks are not significant in any way.
-  !<- Unquoted values are terminated by the list directed value separator encountered (blank after non-blank, slash, comma or
-  !<  semicolon (depending on DECIMAL) or end of record. If a separator is encountered without encountering any other non-blank
-  !<  characters, then the input is considered a null value and the definition status of the item remains unchanged.
-  !<
-  !< For namelist input:
-  !<- The value must be quoted with either apostrophes or double quotes, and the same rules for list directed input of a quoted
-  !<  value are then followed.
-  !<
-  !< For explicit DT input with nothing provided in the optional character literal of the edit descriptor:
-  !<- The v_list values are not signficant.
-  !<- The value may be unquoted or quoted with either apostrophes or double quotes.
-  !<- Blanks before the first non-blank character (before the opening quote character if the string is quoted) or end of
-  !<  record are not signficant.
-  !<- Inside quoted values double the quotes without an intervening record break to represent the quote character in the
-  !<  value, otherwise all characters are considered part of the value and record breaks are not significant in any way.
-  !<- Unquoted values are terminated by the list directed value separator encountered (blank after non-blank, slash, comma or
-  !<  semicolon (depending on DECIMAL) or end of record.  If a separator is encountered without encountering any other
-  !<  non-blank characters, then the resulting value is a zero length string.  If end of record is encountered without
-  !<  encountering any other non-blank characters, then end of record is returned.
-  !<
-  !< The following comma or semicolon separated list of modifiers can be provided in the character literal of the DT edit
-  !< descriptor:
-  !<- SKIPBLANK: Leading blank characters before the first non-blank character are skipped before determining whether the
-  !< input is delimited or not. NOSKIPBLANK must not be provided. This modifier is assumed by default if any other modifier,
-  !< apart from FIXED or NOSKIPBLANK is present.  If the end of record is encountered before any non-blank character, then an
-  !< end-fo-record condition results.  If the NODELIMITED modifier is not provided and if the initial character is a quote or
-  !< apostrophe, the input is treated as delimited as discussed above, otherwise the input is treated as undelimited, with
-  !< the conditions and characters that terminate input determined by the other modifiers.
-  !<- NOSKIPBLANK: Leading blank characters before the first non-blank character are not skipped before determining whether
-  !< the input is a delimited or not.  If the first character read is a blank then the input is considered undelimited, in
-  !< which case the leading blanks appear in the resulting value.  SKIPBLANK must not be provided.
-  !<- EOR: If the input is undelimited, input will be terminated by the end of record.  This is assumed by default
-  !< if any other modifier, apart from FIXED, is present.
-  !<- BLANK: In the absence of quoting, input will be terminated by the next blank encountered.
-  !<- SLASH: In the absence of quoting, input will be terminated by the next `/` encountered.
-  !<- NODELIMITED: Quoting is ignored - it is always considered absent, and any quote characters are considered part of the
-  !< value.
-  !<- COMMA: In the absence of quoting, input will be terminated by the next `,` encountered.
-  !<- SEMICOLON: In the absence of quoting, input will be terminated by the next `;` encountered.
-  !<- NON_DECIMAL: In the absence of quoting, input will be terminated by whatever is the alternative character to that
-  !< specified by the current DECIMAL mode.
-  !<- DELIM(str): `str` is a character literal, in the usual form of such a literal embedded in a format specification.  In
-  !< the absence of quoting, input will be terminated by the end of record or by the appearance of any character from the set
-  !< nominated by `str`.
-  !<- FIXED(n): `n` is an unsigned integer literal without a kind specifier.  `n` characters will be read.  No other
-  !< keywords may be provided.
-  !<
-  !< Where input is terminated by a specific character, that character will be the next character read in the file.  For
-  !< modifiers other than FIXED, if input is terminated by an end-of-record condition, then an end-of-record condition
-  !< results.  For the FIXED modifier, if there are less than `n` characters remaining in the record, the varying string
-  !< object is defined with the characters in the record and an end-of-record condition results.
-  !<
-  !< Modifier keywords are not case sensitive, blanks may be used freely outside of modifier keywords, integer literals and
-  !< character literals, modifiers cannot appear more than once.
-  !<
-  !< Note that due to limitations associated with Fortran's IO model, the changeable connection modes for connections to
-  !< internal files are always treated as being at their default values, regardless of any specifiers in the READ statement
-  !< or any control edit descriptors that may dictate otherwise.
+  !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(inout) :: dtv         !< The string.
-  integer,                   intent(in)    :: unit        !< Logical unit.
-  character(kind=CK, len=*), intent(in)    :: iotype      !< Edit descriptor:
-                                                          !<+ 'LISTDIRECTED'
-                                                          !<+ 'NAMELIST'
-                                                          !<+ 'DTxxx'
-  integer,                   intent(in)    :: v_list(:)   !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat      !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg       !< IO status message.
-  character(kind=CK)                       :: delim       !< The delimiter character (apostrophe or quote) to use for output.
-  character(len(iomsg))                    :: local_iomsg !< Local variant of iomsg, so it doesn't get inappropriately redefined.
-  character(kind=CK, len=100)              :: temporary   !< Temporary storage string.
+  class(string),             intent(inout) :: dtv       !< The string.
+  integer,                   intent(in)    :: unit      !< Logical unit.
+  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
+  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  if (iotype == 'LISTDIRECTED') then
-    call get_next_non_blank_any_record(unit, delim, iostat, iomsg)
-    if (iostat /= 0) return
-
-    if (delim == '"' .or. delim == "'") then
-      ! We have a delimited string.
-      call dtv%read_delimited(unit, delim, iostat, local_iomsg)
-    else
-      ! Step back before the non-blank.
-      read (unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
-      if (iostat /= 0) return
-      ! Read undelimited. Note that up until this point we have not changed the definition status of @a dtv - the following call
-      ! may similarly not define dtv if no value characters are encountered
-      call dtv%read_undelimited_listdirected(unit, iostat, local_iomsg)
-    endif
-    ! We suppress IOSTAT_EOR.
-    if (is_iostat_eor(iostat)) then
-      iostat = 0
-    elseif (iostat /= 0) then
-      iomsg = local_iomsg
-    endif
-    return
-  elseif (iotype == 'NAMELIST') then
-    ! Name list string input must be delimited, but apart from that the rules are as for list directed.
-    call get_next_non_blank_any_record(unit, delim, iostat, iomsg)
-    if (iostat /= 0) return
-
-    if (delim == '"' .or. delim == "'") then
-      ! We have a delimited string.
-      call dtv%read_delimited(unit, delim, iostat, local_iomsg)
-      ! We suppress IOSTAT_EOR.
-      if (is_iostat_eor(iostat)) then
-        iostat = 0
-      elseif (iostat /= 0) then
-        iomsg = local_iomsg
-      endif
-      return
-    else
-      ! We require delimited strings for namelist input.
-      iostat = 1
-      iomsg = 'A single or double quote character was expected.'
-      return
-    endif
-  else ! DTxxxx
-    if (len(iotype) > len('DT')) then
-      ! The rules depend on the character literal. This includes what happens regarding EOR.
-      ! call read_dt_with_literal(dtv, unit, iotype(3:), v_list, iostat, iomsg)
-      return
-    else
-      ! Like list directed, but we always stay within the current record.
-      !
-      ! If we get end of record without a non-blank character, then we return end of record and an empty string.
-      call get_next_non_blank_this_record(unit, delim, iostat, iomsg)
-      if (is_iostat_eor(iostat)) then
-        dtv%raw = ''
-        return
-      endif
-      if (iostat /= 0) return
-
-      if (delim == '"' .or. delim == "'") then
-        ! We have a delimited string.  We suppress IOSTAT_EOR below.
-        call dtv%read_delimited(unit, delim, iostat, local_iomsg)
-      else
-        ! Unlike list directed, if we encounter no non-blank characters prior to the thing that terminates input, the result here
-        ! is a zero length string (for list directed the definition of the item is not changed).
-        dtv%raw = ''
-        ! Step back before the non-blank.
-        read (unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
-        if (iostat /= 0) return
-        ! Read undelimited, just like list directed input. We also suppress IOSTAT_EOR below.
-        call dtv%read_undelimited_listdirected(unit, iostat, local_iomsg)
-      endif
-      ! We suppress IOSTAT_EOR for DT input, as long as we got at least one non-blank character
-      if (is_iostat_eor(iostat)) then
-        iostat = 0
-      elseif (iostat /= 0) then
-        iomsg = local_iomsg
-      endif
-      return
-    endif
-  endif
+  read(unit, "(A)", iostat=iostat, iomsg=iomsg)temporary
+  dtv%raw = trim(temporary)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_formatted
 
-  subroutine read_delimited(dtv, unit, delim, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Read a delimited string from a unit connected for formatted input.
-  !<
-  !< If the closing delimiter is followed by end of record, then we return end of record.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(out)   :: dtv       !< The string.
-  integer,                   intent(in)    :: unit      !< Logical unit.
-  character(len=1, kind=CK), intent(in)    :: delim     !< Represents the value of the DELIM mode.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK)                       :: ch        ! Character read from record.
-  logical                                  :: was_delim ! Indicates that the last character read was a delimiter.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  was_delim = .false.
-  dtv%raw = ''
-  do
-    read (unit, "(A)", iostat=iostat, IOMSG=iomsg) ch
-    if (is_iostat_eor(iostat)) then
-      if (was_delim) then
-        ! End of delimited string followed by end of record is end of the string.  We pass back the end of record condition to the
-        ! caller.
-        return
-      else
-        ! End of record without terminating delimiter - move along.
-        cycle
-      endif
-    elseif (iostat /= 0) then
-      return
-    endif
-    if (ch == delim) then
-      if (was_delim) then
-        ! Doubled delimiter is one delimiter in the value.
-        dtv%raw = dtv%raw // ch
-        was_delim = .false.
-      else
-        ! Need to test next character to see what is happening.
-        was_delim = .TRUE.
-      endif
-    elseif (was_delim) then
-      ! The previous character was actually the delimiter for the end of the string. Put back this character.
-      read (unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
-      return
-    else
-      dtv%raw = dtv%raw // ch
-    endif
-  enddo
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_delimited
-
-  subroutine read_undelimited_listdirected(dtv, unit, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Read an undelimited (no leading apostrophe or double quote) character value according to the rules for list directed input.
-  !<
-  !< A blank, comma/semicolon (depending on the decimal mode), slash or end of record terminates the string.
-  !<
-  !< If input is terminated by end of record, then this procedure returns an end-of-record condition.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(inout) :: dtv           !< The string.
-  integer,                   intent(in)    :: unit          !< Logical unit.
-  integer,                   intent(out)   :: iostat        !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg         !< IO status message.
-  logical                                  :: decimal_point !< True if DECIMAL=POINT in effect.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  ! Get the relevant changeable modes.
-  call get_decimal_mode(unit, decimal_point, iostat, iomsg)
-  if (iostat /= 0) return
-  call dtv%read_undelimited(unit, ' ' // '/' // merge(ck_',', ck_';', decimal_point), iostat, iomsg)
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_undelimited_listdirected
-
-  subroutine read_undelimited(dtv, unit, terminators, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Read an undelimited string up until end of record or a character from a set of terminators is encountered.
-  !<
-  !< If a terminator is encountered, the file position will be at that terminating character. If end of record is encountered, the
-  !< file remains at end of record.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(inout) :: dtv         !< The string.
-  integer,                   intent(in)    :: unit        !< Logical unit.
-  character(kind=CK, len=*), intent(in)    :: terminators !< Characters that are considered to terminate the string.
-  integer,                   intent(out)   :: iostat      !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg       !< IO status message.
-  character(kind=CK)                       :: ch          ! Character read from record.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  do
-    read (unit, "(A)", iostat=iostat, iomsg=iomsg) ch
-    if (is_iostat_eor(iostat)) then
-      ! End of record just means end of string.  We pass on the condition.
-      return
-    elseif (iostat /= 0) then
-      ! Something odd happened.
-      return
-    endif
-    if (scan(ch, terminators) /= 0) then
-      ! Change the file position so that the next read sees the terminator.
-      read(unit, "(TL1)", iostat=iostat, IOMSG=iomsg)
-      if (iostat /= 0) return
-      iostat = 0
-      return
-    endif
-    ! We got a character - append it.
-    dtv%raw = dtv%raw // ch
-  enddo
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine read_undelimited
-
   subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Formatted output.
-  !<
-  !< Defined IO procedure.
-  !<
-  !< For list directed output to external files, the value is delimited based on the DELIM changeable connection mode.
-  !< For internal files the string is always undelimited. Blanks may be added before and after the value.
-  !<
-  !< For namelist output, the value is always delimited. For external files where the DELIM changeable connection mode is
-  !< APOSTROPHE or QUOTE, then that form of delimiter is used, in all other cases double quotes are used.
-  !<
-  !< For DT output the value is never delimited. The iotype and v_list values are currently not significant.
-  !<
-  !< In all cases, we do not handle the situation where the size of record remaining is insufficient to hold the value
-  !< representation.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)    :: dtv       !< The string.
   integer,                   intent(in)    :: unit      !< Logical unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor:
-                                                        !<+ 'LISTDIRECTED'
-                                                        !<+ 'NAMELIST'
-                                                        !<+ 'DTxxx'
+  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
   integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
   integer,                   intent(out)   :: iostat    !< IO status code.
   character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK)                       :: delim     !< The delimiter character (apostrophe or quote) to use for output.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  if (.not.allocated(dtv%raw)) stop 'error: output of an undefined string'
-
-  if (iotype=='LISTDIRECTED') then
-    call get_delimiter_mode(unit=unit, delim=delim, iostat=iostat, iomsg=iomsg)
-    ! List directed formatting typically gives lots of freedom to the processor on output.  However, there is a requirement
-    ! that each record (that is not a continuation record) starts with a leading blank.
-    write(unit, "(1X)")
-    call dtv%write_formatted_worker(unit, delim, iostat, iomsg)
-    ! There must be a separating blank prior to the next item in the record, otherwise we have no way of knowing where
-    ! the string ! ends.  We don't need a separating blank if the varying_string is the last item in the record.  Using 1X
-    ! should achieves this goal, but there's nothing to stop the processor adding its own additional blanks.
-    write(unit, "(1X)")
-  elseif (iotype == 'NAMELIST') then
-    call get_delimiter_mode(unit, delim, iostat, iomsg)
-    if (delim == '') delim = '"'
-    call dtv%write_formatted_worker(unit, delim, iostat, iomsg)
+  if (allocated(dtv%raw)) then
+    write(unit, "(A)", iostat=iostat, iomsg=iomsg)dtv%raw
   else
-    if (len(iotype)>2) then
-      iostat = 2
-      iomsg = 'The character literal after the DT edit descriptor for a string must not be present.'
-      return
-    endif
-    if (size(v_list)/=0) then
-      iostat = 2
-      iomsg = 'The list of integers after the DT edit descriptor for a string must not be present.'
-      return
-    endif
-    ! We assume the user will apply the necessary delimiters.
-    call dtv%write_formatted_worker(unit, '', iostat, iomsg)
+    write(unit, "(A)", iostat=iostat, iomsg=iomsg)''
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine write_formatted
-
-  subroutine write_formatted_worker(dtv, unit, delim, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
-  !< Write a possibly delimited formatted representation of the value of a string.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(in)    :: dtv     !< The string.
-  integer,                   intent(in)    :: unit    !< Logical unit.
-  character(len=*, kind=CK), intent(in)    :: delim   !> The delimiter.
-  integer,                   intent(out)   :: iostat  !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg   !< IO status message.
-  integer                                  :: i       !< Counter.
-  !---------------------------------------------------------------------------------------------------------------------------------
-
-  !---------------------------------------------------------------------------------------------------------------------------------
-  if (delim /= '') theN
-    write (unit, "(A)", iostat=iostat, iomsg=iomsg) delim
-    if (iostat /= 0) return
-  endif
-  do i = 1, len(dtv%raw)
-    if (delim /= '' .and. dtv%raw(i:i) == delim) then
-      write (unit, "(A,A)", iostat=iostat, iomsg=iomsg) delim, delim
-    else
-      write (unit, "(A)", iostat=iostat, iomsg=iomsg) dtv%raw(i:i)
-    endif
-    if (iostat /= 0) return
-  enddo
-  if (delim /= '') then
-    write (unit, "(A)", iostat=iostat, iomsg=iomsg) delim
-    if (iostat /= 0) return
-  endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine write_formatted_worker
 
   subroutine read_unformatted(dtv, unit, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
