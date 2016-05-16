@@ -3,6 +3,7 @@ module string_t
 !-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, definition of `string` type.
 !-----------------------------------------------------------------------------------------------------------------------------------
+use befor64, only : b64_decode, b64_encode
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 !-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -49,6 +50,8 @@ type :: string
     procedure, pass(self) :: camelcase       !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars           !< Return the raw characters data.
+    procedure, pass(self) :: decode          !< Decode string.
+    procedure, pass(self) :: encode          !< Encode string.
     procedure, pass(self) :: escape          !< Escape backslashes (or custom escape character).
     procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
     procedure, pass(self) :: fill            !< Pad string on the left (or right) with zeros (or other char) to fill width.
@@ -181,10 +184,13 @@ type :: string
     procedure, private, pass(lhs) :: string_gt_character !< Greater than to character logical operator.
     procedure, private, pass(rhs) :: character_gt_string !< Greater than to character (inverted) logical operator.
     ! IO
-    procedure, private, pass(dtv) :: read_formatted    !< Formatted input.
-    procedure, private, pass(dtv) :: write_formatted   !< Formatted output.
-    procedure, private, pass(dtv) :: read_unformatted  !< Unformatted input.
-    procedure, private, pass(dtv) :: write_unformatted !< Unformatted output.
+    procedure, private, pass(dtv) :: read_formatted                !< Formatted input.
+    procedure, private, pass(dtv) :: read_delimited                !< Read a delimited input.
+    procedure, private, pass(dtv) :: read_undelimited              !< Read an undelimited input.
+    procedure, private, pass(dtv) :: read_undelimited_listdirected !< Read an undelimited list directed input.
+    procedure, private, pass(dtv) :: write_formatted               !< Formatted output.
+    procedure, private, pass(dtv) :: read_unformatted              !< Unformatted input.
+    procedure, private, pass(dtv) :: write_unformatted             !< Unformatted output.
     ! miscellanea
     procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
     procedure, private, pass(self) :: join_strings           !< Return join string of an array of strings.
@@ -704,6 +710,69 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction chars
+
+  elemental function decode(self, codec) result(decoded)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string decoded accordingly the codec.
+  !<
+  !< @note Only BASE64 codec is currently available.
+  !<
+  !<### Example
+  !<
+  !<```fortran
+  !< type(string) :: astring
+  !< astring = 'SG93IGFyZSB5b3U/'
+  !< print '(A)', astring%decode(codec='base64')//'' ! print "How are you?"
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: self    !< The string.
+  character(kind=CK, len=*), intent(in) :: codec   !< Encoding codec.
+  type(string)                          :: decoded !< Decoded string.
+  type(string)                          :: codec_u !< Encoding codec in upper case string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    decoded = self
+    codec_u = codec
+    select case(codec_u%upper()//'')
+    case('BASE64')
+      call b64_decode(code=self%raw, s=decoded%raw)
+    endselect
+    decoded%raw = trim(decoded%raw)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction decode
+
+  elemental function encode(self, codec) result(encoded)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string encoded accordingly the codec.
+  !<
+  !< @note Only BASE64 codec is currently available.
+  !<
+  !<### Example
+  !<
+  !<```fortran
+  !< type(string) :: astring
+  !< astring = 'How are you?'
+  !< print '(A)', astring%encode(codec='base64')//'' ! print "SG93IGFyZSB5b3U/"
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: self    !< The string.
+  character(kind=CK, len=*), intent(in) :: codec   !< Encoding codec.
+  type(string)                          :: encoded !< Encoded string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    encoded = codec
+    select case(encoded%upper()//'')
+    case('BASE64')
+      call b64_encode(s=self%raw, code=encoded%raw)
+    endselect
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction encode
 
   elemental function escape(self, to_escape, esc) result(escaped)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2273,21 +2342,160 @@ contains
   !<
   !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(inout) :: dtv       !< The string.
-  integer,                   intent(in)    :: unit      !< Logical unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
+  class(string),             intent(inout) :: dtv         !< The string.
+  integer,                   intent(in)    :: unit        !< Logical unit.
+  character(len=*),          intent(in)    :: iotype      !< Edit descriptor.
+  integer,                   intent(in)    :: v_list(:)   !< Edit descriptor list.
+  integer,                   intent(out)   :: iostat      !< IO status code.
+  character(len=*),          intent(inout) :: iomsg       !< IO status message.
+  character(len=len(iomsg))                :: local_iomsg !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  character(kind=CK, len=1)                :: delim       !< String delimiter, if any.
+  character(kind=CK, len=100)              :: temporary   !< Temporary storage string.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  read(unit, "(A)", iostat=iostat, iomsg=iomsg)temporary
-  dtv%raw = trim(temporary)
+  if (iotype == 'LISTDIRECTED') then
+    call get_next_non_blank_character_any_record(unit=unit, ch=delim, iostat=iostat, iomsg=iomsg)
+    if (iostat/=0) return
+    if (delim=='"'.OR.delim=="'") then
+      call dtv%read_delimited(unit=unit, delim=delim, iostat=iostat, iomsg=local_iomsg)
+    else
+      ! step back before the non-blank
+      read(unit, "(TL1)", iostat=iostat, iomsg=iomsg)
+      if (iostat /= 0) return
+      call dtv%read_undelimited_listdirected(unit=unit, iostat=iostat, iomsg=local_iomsg)
+    endif
+    if (is_iostat_eor(iostat)) then
+      ! suppress IOSTAT_EOR
+      iostat = 0
+    elseif (iostat /= 0) then
+      iomsg = local_iomsg
+    endif
+    return
+  else
+    read(unit, "(A)", iostat=iostat, iomsg=iomsg)temporary
+    dtv%raw = trim(temporary)
+  endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_formatted
+
+  subroutine read_delimited(dtv, unit, delim, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read a delimited string from a unit connected for formatted input.
+  !<
+  !< If the closing delimiter is followed by end of record, then we return end of record.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(out)   :: dtv       !< The string.
+  integer,                   intent(in)    :: unit      !< Logical unit.
+  character(kind=CK, len=1), intent(in)    :: delim     !< String delimiter.
+  integer,                   intent(out)   :: iostat    !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+  character(kind=CK, len=1)                :: ch        !< A character read.
+  logical                                  :: was_delim !< Indicates that the last character read was a delimiter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  was_delim = .false.
+  dtv%raw = ''
+  do
+    read(unit, "(A)", iostat=iostat, iomsg=iomsg) ch
+    if (is_iostat_eor(iostat)) then
+      if (was_delim) then
+        ! end of delimited string followed by end of record is end of the string. Pass back the end of record condition to the
+        ! caller
+        return
+      else
+        ! end of record without terminating delimiter - move along
+        cycle
+      endif
+    elseif (iostat /= 0) THEN
+      return
+    endif
+    if (ch == delim) then
+      if (was_delim) then
+        ! doubled delimiter is one delimiter in the value
+        dtv%raw = dtv%raw // ch
+        was_delim = .false.
+      else
+        ! need to test next character to see what is happening
+        was_delim = .true.
+      endif
+    elseif (was_delim) then
+      ! the previous character was actually the delimiter for the end of the string. Put back this character
+      read(unit, "(TL1)", iostat=iostat, iomsg=iomsg)
+      return
+    else
+      dtv%raw = dtv%raw // ch
+    endif
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_delimited
+
+  subroutine read_undelimited_listdirected(dtv, unit, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read an undelimited (no leading apostrophe or double quote) character value according to the rules for list directed input.
+  !<
+  !< A blank, comma/semicolon (depending on the decimal mode), slash or end of record terminates the string.
+  !<
+  !< If input is terminated by end of record, then this procedure returns an end-of-record condition.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(inout) :: dtv           !< The string.
+  integer,          intent(in)    :: unit          !< Logical unit.
+  integer,          intent(out)   :: iostat        !< IO status code.
+  character(len=*), intent(inout) :: iomsg         !< IO status message.
+  logical                         :: decimal_point !<True if DECIMAL=POINT in effect.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  call get_decimal_mode(unit=unit, decimal_point=decimal_point, iostat=iostat, iomsg=iomsg)
+  if (iostat /= 0) return
+  call dtv%read_undelimited(unit=unit, terminators=' '//'/'//merge(CK_',', CK_';', decimal_point), iostat=iostat, iomsg=iomsg)
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_undelimited_listdirected
+
+  subroutine read_undelimited(dtv, unit, terminators, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read an undelimited string up until end of record or a character from a set of terminators is encountered.
+  !<
+  !< If a terminator is encountered, the file position will be at that terminating character. If end of record is encountered, the
+  !< file remains at end of record.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(inout) :: dtv         !< The string.
+  integer,                   intent(in)    :: unit        !< Logical unit.
+  character(kind=CK, len=*), intent(in)    :: terminators !< Characters that are considered to terminate the string.
+                                                          !< Blanks in this string are meaningful.
+  integer,                   intent(out)   :: iostat      !< IO status code.
+  character(len=*),          intent(inout) :: iomsg       !< IO status message.
+  character(kind=CK, len=1)                :: ch          !< A character read.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  dtv%raw = ''
+  do
+    read(unit, "(A)", iostat=iostat, iomsg=iomsg) ch
+    if (is_iostat_eor(iostat)) then
+      ! end of record just means end of string. We pass on the condition
+      return
+    elseif (iostat /= 0) then
+      ! something odd happened
+      return
+    endif
+    if (scan(ch, terminators) /= 0) then
+      ! change the file position so that the next read sees the terminator
+      read(unit, "(TL1)", iostat=iostat, iomsg=iomsg)
+      if (iostat /= 0) return
+      iostat = 0
+      return
+    endif
+    ! we got a character - append it
+    dtv%raw = dtv%raw // ch
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_undelimited
 
   subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2431,60 +2639,60 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine get_delimiter_mode
 
-  SUBROUTINE get_next_non_blank_this_record(unit, ch, iostat, iomsg)
+  subroutine get_next_non_blank_character_this_record(unit, ch, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Get the next non-blank character in the current record.
   !---------------------------------------------------------------------------------------------------------------------------------
-  integer,                   intent(in)    :: unit   !< The unit for the connection.
-  character(len=1, kind=CK), intent(out)   :: ch     !< The non-blank character read. Not valid if IOSTAT is non-zero.
-  integer,                   intent(out)   :: iostat !< IOSTAT error code, non-zero on error.
-  character(*),              intent(inout) :: iomsg  !< IOMSG explanatory message - only defined if iostat is non-zero.
+  integer,                   intent(in)    :: unit   !< Logical unit.
+  character(kind=CK, len=1), intent(out)   :: ch     !< The non-blank character read. Not valid if IOSTAT is non-zero.
+  integer,                   intent(out)   :: iostat !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg  !< IO status message.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   do
-    ! We spcify non-advancing, just in case we want this callable outside the context of a child input statement.
-    ! The PAD specifier simply saves the need for the READ statement to define ch if EOR is hit.
-    !read(unit, "(A)", iostat=iostat, iomsg=iomsg, advance='NO') ch
-    ! ...but that causes ifort to blow up at runtime.
+    ! we spcify non-advancing, just in case we want this callable outside the context of a child input statement
+    ! the PAD specifier simply saves the need for the READ statement to define ch if EOR is hit
+    ! read(unit, "(A)", iostat=iostat, iomsg=iomsg, advance='NO') ch
+    ! ...but that causes ifort to blow up at runtime
     read(unit, "(A)", iostat=iostat, iomsg=iomsg, pad='NO') ch
     if (iostat /= 0) return
     if (ch /= '') exit
   enddo
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine get_next_non_blank_this_record
+  endsubroutine get_next_non_blank_character_this_record
 
-  subroutine get_next_non_blank_any_record(unit, ch, iostat, iomsg)
+  subroutine get_next_non_blank_character_any_record(unit, ch, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Get the next non-blank character, advancing records if necessary.
   !---------------------------------------------------------------------------------------------------------------------------------
-  integer,                   intent(in)    :: unit        !< The unit for the connection.
-  character(len=1, kind=CK), intent(out)   :: ch          !< The non-blank character read. Not valid if IOSTAT is non-zero.
-  integer,                   intent(out)   :: iostat      !< IOSTAT error code, non-zero on error.
-  character(*),              intent(inout) :: iomsg       !< IOMSG explanatory message - only defined if iostat is non-zero.
+  integer,                   intent(in)    :: unit        !< Logical unit.
+  character(kind=CK, len=1), intent(out)   :: ch          !< The non-blank character read. Not valid if IOSTAT is non-zero.
+  integer,                   intent(out)   :: iostat      !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg       !< IO status message.
   character(len(iomsg))                    :: local_iomsg !< Local variant of iomsg, so it doesn't get inappropriately redefined.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   do
-    call get_next_non_blank_this_record(unit, ch, iostat, local_iomsg)
+    call get_next_non_blank_character_this_record(unit=unit, ch=ch, iostat=iostat, iomsg=local_iomsg)
     if (is_iostat_eor(iostat)) then
-      ! Try again on the next record.
+      ! try again on the next record
       read (unit, "(/)", iostat=iostat, iomsg=iomsg)
       if (iostat /= 0) return
     elseif (iostat /= 0) then
-      ! Some sort of problem.
+      ! some sort of problem
       iomsg = local_iomsg
       return
     else
-      ! Got it!
+      ! got it
       exit
     endif
   enddo
   return
   !---------------------------------------------------------------------------------------------------------------------------------
-  endsubroutine get_next_non_blank_any_record
+  endsubroutine get_next_non_blank_character_any_record
 
   subroutine get_decimal_mode(unit, decimal_point, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -2495,19 +2703,18 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   use, intrinsic :: iso_fortran_env, only : iostat_inquire_internal_unit
   !---------------------------------------------------------------------------------------------------------------------------------
-  integer,      intent(in)    :: unit           !< The unit for the connection.
-  logical,      intent(out)   :: decimal_point  !> True if the decimal mode is POINT, false otherwise.
-  integer,      intent(out)   :: iostat         !< IOSTAT error code, non-zero on error.
-  character(*), intent(inout) :: iomsg          !< IOMSG explanatory message - only defined if iostat is non-zero.
-  character(5)                :: decimal_buffer !< Buffer for INQUIRE about DECIMAL, sized for POINT or COMMA.
-  character(len(iomsg))       :: local_iomsg    !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+  integer,                   intent(in)    :: unit           !< Logical unit.
+  logical,                   intent(out)   :: decimal_point  !> True if the decimal mode is POINT, false otherwise.
+  integer,                   intent(out)   :: iostat         !< IO status code.
+  character(kind=CK, len=*), intent(inout) :: iomsg          !< IO status message.
+  character(5)                             :: decimal_buffer !< Buffer for INQUIRE about DECIMAL, sized for POINT or COMMA.
+  character(len(iomsg))                    :: local_iomsg    !< Local variant of iomsg, so it doesn't get inappropriately redefined.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  ! Get the string representation of the changeable mode.
   inquire(unit, decimal=decimal_buffer, iostat=iostat, iomsg=local_iomsg)
   if (iostat == iostat_inquire_internal_unit) then
-    ! We have no way of determining the decimal mode for an internal file.
+    ! no way of determining the decimal mode for an internal file
     iostat = 0
     decimal_point = .true.
     return
@@ -2515,7 +2722,6 @@ contains
     iomsg = local_iomsg
     return
   endif
-  ! Interpret the DECIMAL string.
   decimal_point = decimal_buffer == 'POINT'
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine get_decimal_mode
