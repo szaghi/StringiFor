@@ -738,7 +738,7 @@ contains
     case('BASE64')
       call b64_decode(code=self%raw, s=decoded%raw)
     endselect
-    decoded%raw = trim(decoded%raw)
+    decoded = decoded%strip(remove_nulls=.true.)
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -1258,18 +1258,26 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction startcase
 
-  elemental function strip(self)
+  elemental function strip(self, remove_nulls)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a copy of the string with the leading and trailing characters removed.
   !---------------------------------------------------------------------------------------------------------------------------------
-  class(string), intent(in) :: self  !< The string.
-  type(string)              :: strip !< The stripped string.
+  class(string), intent(in)           :: self         !< The string.
+  logical,       intent(in), optional :: remove_nulls !< Remove null characters at the end.
+  type(string)                        :: strip        !< The stripped string.
+  integer                             :: c            !< Counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
     strip = self%adjustl()
     strip = strip%trim()
+    if (present(remove_nulls)) then
+      if (remove_nulls) then
+        c = index(self%raw, char(0))
+        if (c>0) strip%raw = strip%raw(1:c-1)
+      endif
+    endif
   endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
