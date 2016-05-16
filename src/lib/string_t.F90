@@ -3,6 +3,7 @@ module string_t
 !-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, definition of `string` type.
 !-----------------------------------------------------------------------------------------------------------------------------------
+use befor64, only : b64_encode
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 !-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -49,6 +50,7 @@ type :: string
     procedure, pass(self) :: camelcase       !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars           !< Return the raw characters data.
+    procedure, pass(self) :: encode          !< Encode string.
     procedure, pass(self) :: escape          !< Escape backslashes (or custom escape character).
     procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
     procedure, pass(self) :: fill            !< Pad string on the left (or right) with zeros (or other char) to fill width.
@@ -707,6 +709,36 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction chars
+
+  elemental function encode(self, codec) result(encoded)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string encoded accordingly the codec.
+  !<
+  !< @note Only BASE64 codec is currently available.
+  !<
+  !<### Example
+  !<
+  !<```fortran
+  !< type(string) :: astring
+  !< astring = 'How are you?'
+  !< print '(A)', astring%encode(codec='base64')//'' ! print "CamelCaseVar"
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: self    !< The string.
+  character(kind=CK, len=*), intent(in) :: codec   !< Encoding codec.
+  type(string)                          :: encoded !< Encoded string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    encoded = codec
+    select case(encoded%upper()//'')
+    case('BASE64')
+      call b64_encode(s=self%raw, code=encoded%raw)
+    endselect
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction encode
 
   elemental function escape(self, to_escape, esc) result(escaped)
   !---------------------------------------------------------------------------------------------------------------------------------
