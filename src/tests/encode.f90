@@ -19,7 +19,7 @@ test_passed = .false.
 astring = 'How are you?'
 test_passed(1) = astring%encode(codec='base64')//''=='SG93IGFyZSB5b3U/'
 write(stdout, "(A)") 'Original:  "'//astring//'"'
-write(stdout, "(A)") 'BASE64: "'//astring%encode(codec='base64')//'"'
+write(stdout, "(A,L1)") 'BASE64: "'//astring%encode(codec='base64')//'", is correct? ', test_passed(1)
 
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop

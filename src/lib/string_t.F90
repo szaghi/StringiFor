@@ -3,7 +3,7 @@ module string_t
 !-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, definition of `string` type.
 !-----------------------------------------------------------------------------------------------------------------------------------
-use befor64, only : b64_encode
+use befor64, only : b64_decode, b64_encode
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 !-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -50,6 +50,7 @@ type :: string
     procedure, pass(self) :: camelcase       !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars           !< Return the raw characters data.
+    procedure, pass(self) :: decode          !< Decode string.
     procedure, pass(self) :: encode          !< Encode string.
     procedure, pass(self) :: escape          !< Escape backslashes (or custom escape character).
     procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
@@ -710,6 +711,39 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction chars
 
+  elemental function decode(self, codec) result(decoded)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a string decoded accordingly the codec.
+  !<
+  !< @note Only BASE64 codec is currently available.
+  !<
+  !<### Example
+  !<
+  !<```fortran
+  !< type(string) :: astring
+  !< astring = 'SG93IGFyZSB5b3U/'
+  !< print '(A)', astring%decode(codec='base64')//'' ! print "How are you?"
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in) :: self    !< The string.
+  character(kind=CK, len=*), intent(in) :: codec   !< Encoding codec.
+  type(string)                          :: decoded !< Decoded string.
+  type(string)                          :: codec_u !< Encoding codec in upper case string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    decoded = self
+    codec_u = codec
+    select case(codec_u%upper()//'')
+    case('BASE64')
+      call b64_decode(code=self%raw, s=decoded%raw)
+    endselect
+    decoded%raw = trim(decoded%raw)
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction decode
+
   elemental function encode(self, codec) result(encoded)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string encoded accordingly the codec.
@@ -721,7 +755,7 @@ contains
   !<```fortran
   !< type(string) :: astring
   !< astring = 'How are you?'
-  !< print '(A)', astring%encode(codec='base64')//'' ! print "CamelCaseVar"
+  !< print '(A)', astring%encode(codec='base64')//'' ! print "SG93IGFyZSB5b3U/"
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in) :: self    !< The string.
   character(kind=CK, len=*), intent(in) :: codec   !< Encoding codec.
