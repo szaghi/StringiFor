@@ -125,12 +125,13 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_lines
 
-  subroutine write_lines(unit, lines, iostat, iomsg)
+  subroutine write_lines(unit, lines, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Write lines (records) to a connected-formatted unit.
   !---------------------------------------------------------------------------------------------------------------------------------
   integer,          intent(in)              :: unit      !< Logical unit.
   type(string),     intent(in)              :: lines(1:) !< The lines.
+  character(len=*), intent(in),    optional :: form      !< Format of unit.
   integer,          intent(out),   optional :: iostat    !< IO status code.
   character(len=*), intent(inout), optional :: iomsg     !< IO status message.
   integer                                   :: l         !< Counter.
@@ -138,7 +139,7 @@ contains
 
   !---------------------------------------------------------------------------------------------------------------------------------
   do l=1, size(lines, dim=1)
-    call lines(l)%write_line(unit=unit, iostat=iostat, iomsg=iomsg)
+    call lines(l)%write_line(unit=unit, form=form, iostat=iostat, iomsg=iomsg)
   enddo
   return
   !---------------------------------------------------------------------------------------------------------------------------------

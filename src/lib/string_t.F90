@@ -1022,11 +1022,11 @@ contains
   character(len=*), intent(in),    optional :: form    !< Format of unit.
   integer,          intent(out),   optional :: iostat  !< IO status code.
   character(len=*), intent(inout), optional :: iomsg   !< IO status message.
+  type(string)                              :: form_   !< Format of unit, local variable.
   integer                                   :: iostat_ !< IO status code, local variable.
   character(len=:),          allocatable    :: iomsg_  !< IO status message, local variable.
   character(kind=CK, len=:), allocatable    :: line    !< Line storage.
   character(kind=CK, len=1)                 :: ch      !< Character storage.
-  type(string)                              :: form_   !< Format of unit, local variable.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -1102,14 +1102,18 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_lines
 
-  subroutine write_line(self, unit, iostat, iomsg)
+  subroutine write_line(self, unit, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Write line (record) to a connected-formatted unit.
+  !<
+  !< @note If the connected unit is unformatted a `new_line()` character is added at the end (if necessary) to mark the end of line.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),    intent(in)              :: self    !< The string.
   integer,          intent(in)              :: unit    !< Logical unit.
+  character(len=*), intent(in),    optional :: form    !< Format of unit.
   integer,          intent(out),   optional :: iostat  !< IO status code.
   character(len=*), intent(inout), optional :: iomsg   !< IO status message.
+  type(string)                              :: form_   !< Format of unit, local variable.
   integer                                   :: iostat_ !< IO status code, local variable.
   character(len=:), allocatable             :: iomsg_  !< IO status message, local variable.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -1117,7 +1121,19 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   iostat_ = 0
   iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
-  if (allocated(self%raw)) write(unit, "(A)", iostat=iostat_, iomsg=iomsg_) self%raw
+  if (allocated(self%raw)) then
+    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
+    select case(form_%chars())
+    case('FORMATTED')
+      write(unit, "(A)", iostat=iostat_, iomsg=iomsg_) self%raw
+    case('UNFORMATTED')
+      if (self%end_with(new_line('a'))) then
+        write(unit, iostat=iostat_, iomsg=iomsg_) self%raw
+      else
+        write(unit, iostat=iostat_, iomsg=iomsg_) self%raw//new_line('a')
+      endif
+    endselect
+  endif
   if (present(iostat)) iostat = iostat_
   if (present(iomsg)) iomsg = iomsg_
   return

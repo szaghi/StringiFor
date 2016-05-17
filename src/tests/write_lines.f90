@@ -16,7 +16,7 @@ integer                   :: iostat         !< IO status code.
 character(len=99)         :: iomsg          !< IO status message.
 integer                   :: scratch        !< Scratch file unit.
 integer                   :: l              !< Counter.
-logical                   :: test_passed(4) !< List of passed tests.
+logical                   :: test_passed(8) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -26,6 +26,7 @@ line(1) = ' Hello World!   '
 line(2) = 'How are you?  '
 line(3) = '   All say: "Fine thanks"'
 
+write(stdout, "(A)") "Standalone write_lines"
 open(newunit=scratch, status='SCRATCH')
 call write_lines_standalone(unit=scratch, lines=line, iostat=iostat, iomsg=iomsg)
 
@@ -35,6 +36,20 @@ test_passed(1) = (size(strings, dim=1)==size(line, dim=1))
 do l=1, size(strings, dim=1)
   test_passed(l+1) = (strings(l)==line(l))
   write(stdout, "(A,L1)") 'line: "'//strings(l)//'", is correct? ', test_passed(l+1)
+enddo
+
+close(scratch)
+
+write(stdout, "(A)") "Standalone write_lines unformatted"
+open(newunit=scratch, status='SCRATCH', form='UNFORMATTED', access='STREAM')
+call write_lines_standalone(unit=scratch, lines=line, form='unformatted', iostat=iostat, iomsg=iomsg)
+
+call astring%read_lines(unit=scratch, form='UNFORMATTED', iostat=iostat, iomsg=iomsg)
+call astring%split(tokens=strings, sep=new_line('a'))
+test_passed(5) = (size(strings, dim=1)==size(line, dim=1))
+do l=1, size(strings, dim=1)
+  test_passed(l+5) = (strings(l)==line(l))
+  write(stdout, "(A,L1)") 'line: "'//strings(l)//'", is correct? ', test_passed(l+5)
 enddo
 
 close(scratch)
