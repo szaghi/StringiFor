@@ -61,6 +61,8 @@ type :: string
                              join_characters !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
+    procedure, pass(self) :: read_line       !< Read line (record) from a connected-formatted unit.
+    procedure, pass(self) :: read_lines      !< Read (all) lines (records) from a connected-formatted unit as a single stream.
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
     procedure, pass(self) :: search          !< Search for *tagged* record into string.
@@ -1003,6 +1005,80 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction partition
+
+  subroutine read_line(self, unit, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read line (record) from a connected-formatted unit.
+  !<
+  !< The line is read as an ascii stream read until the eor is reached.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(inout)           :: self    !< The string.
+  integer,          intent(in)              :: unit    !< Logical unit.
+  integer,          intent(out),   optional :: iostat  !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg   !< IO status message.
+  integer                                   :: iostat_ !< IO status code, local variable.
+  character(len=:),          allocatable    :: iomsg_  !< IO status message, local variable.
+  character(kind=CK, len=:), allocatable    :: line    !< Line storage.
+  character(kind=CK, len=1)                 :: ch      !< Character storage.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  line = ''
+  do
+    read(unit, "(A)", advance='no', iostat=iostat_, iomsg=iomsg_, err=10, end=10) ch
+    if (is_iostat_eor(iostat_).or.iostat_/=0) exit
+    line = line//ch
+  enddo
+  10 if (line/='') self%raw = line
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_line
+
+  subroutine read_lines(self, unit, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read (all) lines (records) from a connected-formatted unit as a single ascii stream.
+  !<
+  !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
+  !< character.
+  !<
+  !< @note The connected unit is rewinded. At a successful exit current record is at eof, at the beginning otherwise.
+  !<
+  !< The lines are returned as an array of strings that are read until the eof is reached.
+  !< The line is read as an ascii stream read until the eor is reached.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(inout)           :: self    !< The string.
+  integer,          intent(in)              :: unit    !< Logical unit.
+  integer,          intent(out),   optional :: iostat  !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg   !< IO status message.
+  integer                                   :: iostat_ !< IO status code, local variable.
+  character(len=:),          allocatable    :: iomsg_  !< IO status message, local variable.
+  type(string)                              :: lines   !< Lines storage.
+  type(string)                              :: line    !< Line storage.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  rewind(unit)
+  iostat_ = 0
+  lines%raw = ''
+  do
+    line%raw = ''
+    call line%read_line(unit=unit, iostat=iostat_, iomsg=iomsg_)
+    if (iostat_/=0.and..not.is_iostat_eor(iostat_)) then
+      exit
+    elseif (line/='') then
+      lines%raw = lines%raw//line%raw//new_line('a')
+    endif
+  enddo
+  if (lines%raw/='') self%raw = lines%raw
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_lines
 
   elemental function replace(self, old, new, count) result(replaced)
   !---------------------------------------------------------------------------------------------------------------------------------
