@@ -86,6 +86,7 @@ type :: string
 #endif
     procedure, pass(self) :: unique          !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: upper           !< Return a string with all uppercase characters.
+    procedure, pass(self) :: write_line      !< Write line (record) to a connected-formatted unit.
     ! inquire methods
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
@@ -1054,7 +1055,7 @@ contains
   integer,          intent(out),   optional :: iostat  !< IO status code.
   character(len=*), intent(inout), optional :: iomsg   !< IO status message.
   integer                                   :: iostat_ !< IO status code, local variable.
-  character(len=:),          allocatable    :: iomsg_  !< IO status message, local variable.
+  character(len=:), allocatable             :: iomsg_  !< IO status message, local variable.
   type(string)                              :: lines   !< Lines storage.
   type(string)                              :: line    !< Line storage.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -1079,6 +1080,28 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_lines
+
+  subroutine write_line(self, unit, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Write line (record) to a connected-formatted unit.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in)              :: self    !< The string.
+  integer,          intent(in)              :: unit    !< Logical unit.
+  integer,          intent(out),   optional :: iostat  !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg   !< IO status message.
+  integer                                   :: iostat_ !< IO status code, local variable.
+  character(len=:), allocatable             :: iomsg_  !< IO status message, local variable.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iostat_ = 0
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  if (allocated(self%raw)) write(unit, "(A)", iostat=iostat_, iomsg=iomsg_) self%raw
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine write_line
 
   elemental function replace(self, old, new, count) result(replaced)
   !---------------------------------------------------------------------------------------------------------------------------------

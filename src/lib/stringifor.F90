@@ -24,7 +24,7 @@ public :: string
 ! expose StingiFor overloaded builtins
 public :: adjustl, adjustr, index, len, len_trim, repeat, scan, trim
 ! expose StingiFor new procedures
-public :: read_lines
+public :: read_lines, write_lines
 ! expose PENF kinds
 public :: I1P, I2P, I4P, I8P, R4P, R8P, R16P
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -109,4 +109,23 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_lines
+
+  subroutine write_lines(unit, lines, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Write lines (records) to a connected-formatted unit.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  integer,          intent(in)              :: unit      !< Logical unit.
+  type(string),     intent(in)              :: lines(1:) !< The lines.
+  integer,          intent(out),   optional :: iostat    !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg     !< IO status message.
+  integer                                   :: l         !< Counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  do l=1, size(lines, dim=1)
+    call lines(l)%write_line(unit=unit, iostat=iostat, iomsg=iomsg)
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine write_lines
 endmodule stringifor
