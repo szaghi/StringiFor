@@ -61,8 +61,8 @@ type :: string
                              join_characters !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
-    procedure, pass(self) :: read_line       !< Read line (record) from a connected-formatted unit.
-    procedure, pass(self) :: read_lines      !< Read (all) lines (records) from a connected-formatted unit as a single stream.
+    procedure, pass(self) :: read_line       !< Read line (record) from a connected unit.
+    procedure, pass(self) :: read_lines      !< Read (all) lines (records) from a connected unit as a single ascii stream.
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse         !< Return a reversed string.
     procedure, pass(self) :: search          !< Search for *tagged* record into string.
@@ -1007,30 +1007,48 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction partition
 
-  subroutine read_line(self, unit, iostat, iomsg)
+  subroutine read_line(self, unit, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Read line (record) from a connected-formatted unit.
+  !< Read line (record) from a connected unit.
   !<
   !< The line is read as an ascii stream read until the eor is reached.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  use, intrinsic :: iso_fortran_env, only : iostat_eor
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),    intent(inout)           :: self    !< The string.
   integer,          intent(in)              :: unit    !< Logical unit.
+  character(len=*), intent(in),    optional :: form    !< Format of unit.
   integer,          intent(out),   optional :: iostat  !< IO status code.
   character(len=*), intent(inout), optional :: iomsg   !< IO status message.
   integer                                   :: iostat_ !< IO status code, local variable.
   character(len=:),          allocatable    :: iomsg_  !< IO status message, local variable.
   character(kind=CK, len=:), allocatable    :: line    !< Line storage.
   character(kind=CK, len=1)                 :: ch      !< Character storage.
+  type(string)                              :: form_   !< Format of unit, local variable.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
+  form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
   iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
   line = ''
-  do
-    read(unit, "(A)", advance='no', iostat=iostat_, iomsg=iomsg_, err=10, end=10) ch
-    if (is_iostat_eor(iostat_).or.iostat_/=0) exit
-    line = line//ch
-  enddo
+  select case(form_%chars())
+  case('FORMATTED')
+    do
+      read(unit, "(A)", advance='no', iostat=iostat_, iomsg=iomsg_, err=10, end=10, eor=10) ch
+      line = line//ch
+    enddo
+  case('UNFORMATTED')
+    do
+      read(unit, iostat=iostat_, iomsg=iomsg_, err=10, end=10) ch
+      if (ch==new_line('a')) then
+        iostat_ = iostat_eor
+        exit
+      endif
+      line = line//ch
+    enddo
+  endselect
   10 if (line/='') self%raw = line
   if (present(iostat)) iostat = iostat_
   if (present(iomsg)) iomsg = iomsg_
@@ -1038,7 +1056,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_line
 
-  subroutine read_lines(self, unit, iostat, iomsg)
+  subroutine read_lines(self, unit, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Read (all) lines (records) from a connected-formatted unit as a single ascii stream.
   !<
@@ -1049,9 +1067,12 @@ contains
   !<
   !< The lines are returned as an array of strings that are read until the eof is reached.
   !< The line is read as an ascii stream read until the eor is reached.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
   !---------------------------------------------------------------------------------------------------------------------------------
   class(string),    intent(inout)           :: self    !< The string.
   integer,          intent(in)              :: unit    !< Logical unit.
+  character(len=*), intent(in),    optional :: form    !< Format of unit.
   integer,          intent(out),   optional :: iostat  !< IO status code.
   character(len=*), intent(inout), optional :: iomsg   !< IO status message.
   integer                                   :: iostat_ !< IO status code, local variable.
@@ -1067,7 +1088,7 @@ contains
   lines%raw = ''
   do
     line%raw = ''
-    call line%read_line(unit=unit, iostat=iostat_, iomsg=iomsg_)
+    call line%read_line(unit=unit, form=form, iostat=iostat_, iomsg=iomsg_)
     if (iostat_/=0.and..not.is_iostat_eor(iostat_)) then
       exit
     elseif (line/='') then

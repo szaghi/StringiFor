@@ -65,7 +65,7 @@ interface trim
 endinterface trim
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
-  subroutine read_lines(unit, lines, iostat, iomsg)
+  subroutine read_lines(unit, lines, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Read lines (records) from a connected-formatted unit.
   !<
@@ -73,24 +73,39 @@ contains
   !<
   !< The lines are returned as an array of strings that are read until the eof is reached.
   !< The line is read as an ascii stream read until the eor is reached.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
   !---------------------------------------------------------------------------------------------------------------------------------
   integer,          intent(in)               :: unit     !< Logical unit.
   type(string),     intent(out), allocatable :: lines(:) !< The lines.
+  character(len=*), intent(in),    optional  :: form     !< Format of unit.
   integer,          intent(out),   optional  :: iostat   !< IO status code.
   character(len=*), intent(inout), optional  :: iomsg    !< IO status message.
+  type(string)                               :: form_    !< Format of unit, local variable.
   integer                                    :: iostat_  !< IO status code, local variable.
-  character(len=:),          allocatable     :: iomsg_   !< IO status message, local variable.
+  character(len=:), allocatable              :: iomsg_   !< IO status message, local variable.
+  character(kind=CK, len=1)                  :: ch       !< Character storage.
   integer                                    :: l        !< Counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
+  form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
   iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
   rewind(unit)
-  l = 0
-  do
-    read(unit, *, err=10, end=10)
-    l = l + 1
-  enddo
+  select case(form_%chars())
+  case('FORMATTED')
+    l = 0
+    do
+      read(unit, *, err=10, end=10)
+      l = l + 1
+    enddo
+  case('UNFORMATTED')
+    l = 0
+    do
+      read(unit, err=10, end=10) ch
+      if (ch==new_line('a')) l = l + 1
+    enddo
+  endselect
   10 rewind(unit)
   if (l>0) then
     allocate(lines(1:l))
@@ -98,7 +113,7 @@ contains
     iostat_ = 0
     do
       l = l + 1
-      call lines(l)%read_line(unit=unit, iostat=iostat_, iomsg=iomsg_)
+      call lines(l)%read_line(unit=unit, form=form, iostat=iostat_, iomsg=iomsg_)
       if (iostat_/=0.and..not.is_iostat_eor(iostat_)) then
         exit
       endif

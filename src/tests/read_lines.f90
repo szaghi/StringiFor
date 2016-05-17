@@ -9,14 +9,14 @@ use stringifor, only : read_lines_standalone => read_lines, string
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
-type(string)              :: astring        !< A string.
-type(string), allocatable :: strings(:)     !< A set of strings.
-type(string)              :: line(3)        !< Another set of string.
-integer                   :: iostat         !< IO status code.
-character(len=99)         :: iomsg          !< IO status message.
-integer                   :: scratch        !< Scratch file unit.
-integer                   :: l              !< Counter.
-logical                   :: test_passed(8) !< List of passed tests.
+type(string)              :: astring         !< A string.
+type(string), allocatable :: strings(:)      !< A set of strings.
+type(string)              :: line(3)         !< Another set of string.
+integer                   :: iostat          !< IO status code.
+character(len=99)         :: iomsg           !< IO status message.
+integer                   :: scratch         !< Scratch file unit.
+integer                   :: l               !< Counter.
+logical                   :: test_passed(16) !< List of passed tests.
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -47,6 +47,31 @@ test_passed(5) = (size(strings, dim=1)==size(line, dim=1))
 do l=1, size(strings, dim=1)
   test_passed(l+5) = (strings(l)==line(l))
   write(stdout, "(A,L1)") 'line: "'//strings(l)//'", is correct? ', test_passed(l+5)
+enddo
+
+close(scratch)
+
+open(newunit=scratch, status='SCRATCH', form='UNFORMATTED', access='STREAM')
+write(scratch) line(1)%chars()//new_line('a')
+write(scratch) line(2)%chars()//new_line('a')
+write(scratch) line(3)%chars()//new_line('a')
+
+write(stdout, "(A)") "TBP read_lines unformatted"
+call astring%read_lines(unit=scratch, form='unformatted', iostat=iostat, iomsg=iomsg)
+call astring%split(tokens=strings, sep=new_line('a'))
+test_passed(9) = (size(strings, dim=1)==size(line, dim=1))
+do l=1, size(strings, dim=1)
+  test_passed(l+9) = (strings(l)==line(l))
+  write(stdout, "(A,L1)") 'line: "'//strings(l)//'", is correct? ', test_passed(l+9)
+enddo
+
+write(stdout, "(A)") "Standalone read_lines unformatted"
+call read_lines_standalone(unit=scratch, lines=strings, form='unformatted', iostat=iostat, iomsg=iomsg)
+if (iostat/=0.and..not.is_iostat_eor(iostat).and.iostat/=iostat_end) write(stdout, "(A)")iomsg
+test_passed(13) = (size(strings, dim=1)==size(line, dim=1))
+do l=1, size(strings, dim=1)
+  test_passed(l+13) = (strings(l)==line(l))
+  write(stdout, "(A,L1)") 'line: "'//strings(l)//'", is correct? ', test_passed(l+13)
 enddo
 
 close(scratch)
