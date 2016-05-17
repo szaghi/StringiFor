@@ -17,7 +17,7 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gfortran-6
+      - gcc-6
       - binutils
       - python-pip
       - graphviz      
