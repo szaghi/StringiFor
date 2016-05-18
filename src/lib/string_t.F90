@@ -61,6 +61,7 @@ type :: string
                              join_characters !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
+    procedure, pass(self) :: read_file       !< Read a file a single string stream.
     procedure, pass(self) :: read_line       !< Read line (record) from a connected unit.
     procedure, pass(self) :: read_lines      !< Read (all) lines (records) from a connected unit as a single ascii stream.
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
@@ -86,7 +87,9 @@ type :: string
 #endif
     procedure, pass(self) :: unique          !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: upper           !< Return a string with all uppercase characters.
-    procedure, pass(self) :: write_line      !< Write line (record) to a connected-formatted unit.
+    procedure, pass(self) :: write_file      !< Write a single string stream into file.
+    procedure, pass(self) :: write_line      !< Write line (record) to a connected unit.
+    procedure, pass(self) :: write_lines     !< Write lines (records) to a connected unit.
     ! inquire methods
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
@@ -1007,6 +1010,48 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction partition
 
+  subroutine read_file(self, file, form, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read a file as a single string stream.
+  !<
+  !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
+  !< character.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(inout)           :: self       !< The string.
+  character(len=*), intent(in)              :: file       !< File name.
+  character(len=*), intent(in),    optional :: form       !< Format of unit.
+  integer,          intent(out),   optional :: iostat     !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg      !< IO status message.
+  type(string)                              :: form_      !< Format of unit, local variable.
+  integer                                   :: iostat_    !< IO status code, local variable.
+  character(len=:), allocatable             :: iomsg_     !< IO status message, local variable.
+  integer                                   :: unit       !< Logical unit.
+  logical                                   :: does_exist !< Check if file exist.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  inquire(file=file, iomsg=iomsg_, iostat=iostat_, exist=does_exist)
+  if (does_exist) then
+    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
+    select case(form_%chars())
+    case('FORMATTED')
+      open(newunit=unit, file=file, status='OLD', action='READ', iomsg=iomsg_, iostat=iostat_, err=10)
+    case('UNFORMATTED')
+      open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
+           iomsg=iomsg_, iostat=iostat_, err=10)
+    endselect
+    call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
+    10 close(unit)
+  endif
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_file
+
   subroutine read_line(self, unit, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Read line (record) from a connected unit.
@@ -1058,15 +1103,12 @@ contains
 
   subroutine read_lines(self, unit, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Read (all) lines (records) from a connected-formatted unit as a single ascii stream.
+  !< Read (all) lines (records) from a connected unit as a single ascii stream.
   !<
   !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
-  !< character.
+  !< character. The line is read as an ascii stream read until the eor is reached.
   !<
   !< @note The connected unit is rewinded. At a successful exit current record is at eof, at the beginning otherwise.
-  !<
-  !< The lines are returned as an array of strings that are read until the eof is reached.
-  !< The line is read as an ascii stream read until the eor is reached.
   !<
   !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -1102,9 +1144,43 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_lines
 
+  subroutine write_file(self, file, form, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Write a single string stream into file.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in)              :: self    !< The string.
+  character(len=*), intent(in)              :: file    !< File name.
+  character(len=*), intent(in),    optional :: form    !< Format of unit.
+  integer,          intent(out),   optional :: iostat  !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg   !< IO status message.
+  type(string)                              :: form_   !< Format of unit, local variable.
+  integer                                   :: iostat_ !< IO status code, local variable.
+  character(len=:), allocatable             :: iomsg_  !< IO status message, local variable.
+  integer                                   :: unit    !< Logical unit.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
+  select case(form_%chars())
+  case('FORMATTED')
+    open(newunit=unit, file=file, action='WRITE', iomsg=iomsg_, iostat=iostat_, err=10)
+  case('UNFORMATTED')
+    open(newunit=unit, file=file, action='WRITE', form='UNFORMATTED', access='STREAM', iomsg=iomsg_, iostat=iostat_, err=10)
+  endselect
+  call self%write_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
+  10 close(unit)
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine write_file
+
   subroutine write_line(self, unit, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
-  !< Write line (record) to a connected-formatted unit.
+  !< Write line (record) to a connected unit.
   !<
   !< @note If the connected unit is unformatted a `new_line()` character is added at the end (if necessary) to mark the end of line.
   !---------------------------------------------------------------------------------------------------------------------------------
@@ -1139,6 +1215,34 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine write_line
+
+  subroutine write_lines(self, unit, form, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Write lines (records) to a connected unit.
+  !<
+  !< This method checks if self contains more than one line (records) and writes them as lines (records).
+  !<
+  !< @note If the connected unit is unformatted a `new_line()` character is added at the end (if necessary) to mark the end of line.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in)              :: self     !< The string.
+  integer,          intent(in)              :: unit     !< Logical unit.
+  character(len=*), intent(in),    optional :: form     !< Format of unit.
+  integer,          intent(out),   optional :: iostat   !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg    !< IO status message.
+  type(string), allocatable                 :: lines(:) !< Lines.
+  integer                                   :: l        !< Counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    call self%split(tokens=lines, sep=new_line('a'))
+    do l=1, size(lines, dim=1)
+       call lines(l)%write_line(unit=unit, form=form, iostat=iostat, iomsg=iomsg)
+    enddo
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine write_lines
 
   elemental function replace(self, old, new, count) result(replaced)
   !---------------------------------------------------------------------------------------------------------------------------------
