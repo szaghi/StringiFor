@@ -20,10 +20,10 @@ astring = '^\\s \\d+\\s*'
 write(stdout, "(A)") 'Original:  "'//astring//'"'
 
 test_passed(1) = (astring%unescape(to_unescape='\')//''=='^\s \d+\s*')
-write(stdout, "(A)") 'Escaped: "'//astring%unescape(to_unescape='\')//'"'
+write(stdout, "(A,L1)") 'Escaped: "'//astring%unescape(to_unescape='\')//'", is correct? ', test_passed(1)
 
 test_passed(2) = (astring%unescape(to_unescape='s')//''=='^\s \\d+\s*')
-write(stdout, "(A)") 'Escaped: "'//astring%unescape(to_unescape='s')//'"'
+write(stdout, "(A,L1)") 'Escaped: "'//astring%unescape(to_unescape='s')//'", is correct? ', test_passed(2)
 
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
 stop

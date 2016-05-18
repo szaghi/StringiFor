@@ -45,34 +45,37 @@ type :: string
     procedure, pass(self) :: trim     => strim                    !< Trim replacement.
     procedure, pass(self) :: verify   => sverify                  !< Verify replacement.
     ! auxiliary methods
-    procedure, pass(self) :: basedir         !< Return the base directory name of a string containing a file name.
-    procedure, pass(self) :: basename        !< Return the base file name of a string containing a file name.
-    procedure, pass(self) :: camelcase       !< Return a string with all words capitalized without spaces.
-    procedure, pass(self) :: capitalize      !< Return a string with its first character capitalized and the rest lowercased.
-    procedure, pass(self) :: chars           !< Return the raw characters data.
-    procedure, pass(self) :: decode          !< Decode string.
-    procedure, pass(self) :: encode          !< Encode string.
-    procedure, pass(self) :: escape          !< Escape backslashes (or custom escape character).
-    procedure, pass(self) :: extension       !< Return the extension of a string containing a file name.
-    procedure, pass(self) :: fill            !< Pad string on the left (or right) with zeros (or other char) to fill width.
-    procedure, pass(self) :: free            !< Free dynamic memory.
+    procedure, pass(self) :: basedir          !< Return the base directory name of a string containing a file name.
+    procedure, pass(self) :: basename         !< Return the base file name of a string containing a file name.
+    procedure, pass(self) :: camelcase        !< Return a string with all words capitalized without spaces.
+    procedure, pass(self) :: capitalize       !< Return a string with its first character capitalized and the rest lowercased.
+    procedure, pass(self) :: chars            !< Return the raw characters data.
+    procedure, pass(self) :: decode           !< Decode string.
+    procedure, pass(self) :: encode           !< Encode string.
+    procedure, pass(self) :: escape           !< Escape backslashes (or custom escape character).
+    procedure, pass(self) :: extension        !< Return the extension of a string containing a file name.
+    procedure, pass(self) :: fill             !< Pad string on the left (or right) with zeros (or other char) to fill width.
+    procedure, pass(self) :: free             !< Free dynamic memory.
+    generic               :: insert =>      &
+                             insert_string, &
+                             insert_character !< Insert substring into string at a specified position.
     generic               :: join =>       &
                              join_strings, &
-                             join_characters !< Return a string that is a join of an array of strings or characters.
-    procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
-    procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
-    procedure, pass(self) :: read_file       !< Read a file a single string stream.
-    procedure, pass(self) :: read_line       !< Read line (record) from a connected unit.
-    procedure, pass(self) :: read_lines      !< Read (all) lines (records) from a connected unit as a single ascii stream.
-    procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
-    procedure, pass(self) :: reverse         !< Return a reversed string.
-    procedure, pass(self) :: search          !< Search for *tagged* record into string.
-    procedure, pass(self) :: slice           !< Return the raw characters data sliced.
-    procedure, pass(self) :: snakecase       !< Return a string with all words lowercase separated by "_".
-    procedure, pass(self) :: split           !< Return a list of substring in the string, using sep as the delimiter string.
-    procedure, pass(self) :: startcase       !< Return a string with all words capitalized, e.g. title case.
-    procedure, pass(self) :: strip           !< Return a string with the leading and trailing characters removed.
-    procedure, pass(self) :: swapcase        !< Return a string with uppercase chars converted to lowercase and vice versa.
+                             join_characters  !< Return a string that is a join of an array of strings or characters.
+    procedure, pass(self) :: lower            !< Return a string with all lowercase characters.
+    procedure, pass(self) :: partition        !< Split string at separator and return the 3 parts (before, the separator and after).
+    procedure, pass(self) :: read_file        !< Read a file a single string stream.
+    procedure, pass(self) :: read_line        !< Read line (record) from a connected unit.
+    procedure, pass(self) :: read_lines       !< Read (all) lines (records) from a connected unit as a single ascii stream.
+    procedure, pass(self) :: replace          !< Return a string with all occurrences of substring old replaced by new.
+    procedure, pass(self) :: reverse          !< Return a reversed string.
+    procedure, pass(self) :: search           !< Search for *tagged* record into string.
+    procedure, pass(self) :: slice            !< Return the raw characters data sliced.
+    procedure, pass(self) :: snakecase        !< Return a string with all words lowercase separated by "_".
+    procedure, pass(self) :: split            !< Return a list of substring in the string, using sep as the delimiter string.
+    procedure, pass(self) :: startcase        !< Return a string with all words capitalized, e.g. title case.
+    procedure, pass(self) :: strip            !< Return a string with the leading and trailing characters removed.
+    procedure, pass(self) :: swapcase         !< Return a string with uppercase chars converted to lowercase and vice versa.
     generic               :: to_number =>   &
                              to_integer_I1P,&
                              to_integer_I2P,&
@@ -81,16 +84,16 @@ type :: string
                              to_real_R4P,   &
 #ifdef r16p
                              to_real_R8P,   &
-                             to_real_R16P    !< Cast string to number.
+                             to_real_R16P     !< Cast string to number.
 #else
-                             to_real_R8P     !< Cast string to number.
+                             to_real_R8P      !< Cast string to number.
 #endif
-    procedure, pass(self) :: unescape        !< Unescape double backslashes (or custom escaped character).
-    procedure, pass(self) :: unique          !< Reduce to one (unique) multiple occurrences of a substring into a string.
-    procedure, pass(self) :: upper           !< Return a string with all uppercase characters.
-    procedure, pass(self) :: write_file      !< Write a single string stream into file.
-    procedure, pass(self) :: write_line      !< Write line (record) to a connected unit.
-    procedure, pass(self) :: write_lines     !< Write lines (records) to a connected unit.
+    procedure, pass(self) :: unescape         !< Unescape double backslashes (or custom escaped character).
+    procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
+    procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
+    procedure, pass(self) :: write_file       !< Write a single string stream into file.
+    procedure, pass(self) :: write_line       !< Write line (record) to a connected unit.
+    procedure, pass(self) :: write_lines      !< Write lines (records) to a connected unit.
     ! inquire methods
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
@@ -154,6 +157,18 @@ type :: string
     procedure, private, pass(self) :: srepeat_character_string !< Repeat replacement.
     procedure, private, pass(self) :: sscan_string_string      !< Scan replacement.
     procedure, private, pass(self) :: sscan_string_character   !< Scan replacement.
+    ! auxiliary methods
+    procedure, private, pass(self) :: insert_string    !< Insert substring into string at a specified position.
+    procedure, private, pass(self) :: insert_character !< Insert substring into string at a specified position.
+    procedure, private, pass(self) :: join_strings     !< Return join string of an array of strings.
+    procedure, private, pass(self) :: join_characters  !< Return join string of an array of characters.
+    procedure, private, pass(self) :: to_integer_I1P   !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I2P   !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I4P   !< Cast string to integer.
+    procedure, private, pass(self) :: to_integer_I8P   !< Cast string to integer.
+    procedure, private, pass(self) :: to_real_R4P      !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R8P      !< Cast string to real.
+    procedure, private, pass(self) :: to_real_R16P     !< Cast string to real.
     ! assignments
     procedure, private, pass(lhs) :: string_assign_string      !< Assignment operator from string input.
     procedure, private, pass(lhs) :: string_assign_character   !< Assignment operator from character input.
@@ -200,16 +215,6 @@ type :: string
     procedure, private, pass(dtv) :: write_unformatted             !< Unformatted output.
     ! miscellanea
     procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
-    procedure, private, pass(self) :: join_strings           !< Return join string of an array of strings.
-    procedure, private, pass(self) :: join_characters        !< Return join string of an array of characters.
-    ! casting to numbers
-    procedure, private, pass(self) :: to_integer_I1P !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I2P !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I4P !< Cast string to integer.
-    procedure, private, pass(self) :: to_integer_I8P !< Cast string to integer.
-    procedure, private, pass(self) :: to_real_R4P    !< Cast string to real.
-    procedure, private, pass(self) :: to_real_R8P    !< Cast string to real.
-    procedure, private, pass(self) :: to_real_R16P   !< Cast string to real.
 endtype string
 
 ! internal parameters
@@ -877,6 +882,66 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine free
+
+  elemental function insert_character(self, substring, pos) result(inserted)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Insert substring into string at a specified position.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(in) :: self      !< The string.
+  character(len=*), intent(in) :: substring !< Substring.
+  integer,          intent(in) :: pos       !< Position from which insert substring.
+  type(string)                 :: inserted  !< Inserted string.
+  integer                      :: safepos   !< Safe position from which insert substring.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    inserted = self
+    safepos = min(max(1, pos), len(self%raw))
+    if (safepos==1) then
+      inserted%raw = substring//self%raw
+    elseif (safepos==len(self%raw)) then
+      inserted%raw = self%raw//substring
+    else
+      inserted%raw = self%raw(1:safepos-1)//substring//self%raw(safepos:)
+    endif
+  else
+    inserted%raw = substring
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction insert_character
+
+  elemental function insert_string(self, substring, pos) result(inserted)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Insert substring into string at a specified position.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in) :: self      !< The string.
+  type(string),  intent(in) :: substring !< Substring.
+  integer,       intent(in) :: pos       !< Position from which insert substring.
+  type(string)              :: inserted  !< Inserted string.
+  integer                   :: safepos   !< Safe position from which insert substring.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  if (allocated(self%raw)) then
+    inserted = self
+    if (allocated(substring%raw)) then
+      safepos = min(max(1, pos), len(self%raw))
+      if (safepos==1) then
+        inserted%raw = substring%raw//self%raw
+      elseif (safepos==len(self%raw)) then
+        inserted%raw = self%raw//substring%raw
+      else
+        inserted%raw = self%raw(1:safepos-1)//substring%raw//self%raw(safepos:)
+      endif
+    endif
+  else
+    if (allocated(substring%raw)) inserted%raw = substring%raw
+  endif
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction insert_string
 
   pure function join_strings(self, array, sep) result(join)
   !---------------------------------------------------------------------------------------------------------------------------------
