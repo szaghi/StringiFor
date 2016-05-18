@@ -61,6 +61,7 @@ type :: string
                              join_characters !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower           !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition       !< Split string at separator and return the 3 parts (before, the separator and after).
+    procedure, pass(self) :: read_file       !< Read a file a single string stream.
     procedure, pass(self) :: read_line       !< Read line (record) from a connected unit.
     procedure, pass(self) :: read_lines      !< Read (all) lines (records) from a connected unit as a single ascii stream.
     procedure, pass(self) :: replace         !< Return a string with all occurrences of substring old replaced by new.
@@ -832,6 +833,48 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction extension
 
+  subroutine read_file(self, file, form, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read a file as a single string stream.
+  !<
+  !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
+  !< character.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),    intent(inout)           :: self       !< The string.
+  character(len=*), intent(in)              :: file       !< File name.
+  character(len=*), intent(in),    optional :: form       !< Format of unit.
+  integer,          intent(out),   optional :: iostat     !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg      !< IO status message.
+  type(string)                              :: form_      !< Format of unit, local variable.
+  integer                                   :: iostat_    !< IO status code, local variable.
+  character(len=:), allocatable             :: iomsg_     !< IO status message, local variable.
+  integer                                   :: unit       !< Logical unit.
+  logical                                   :: does_exist !< Check if file exist.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  inquire(file=file, iomsg=iomsg_, iostat=iostat_, exist=does_exist)
+  if (does_exist) then
+    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
+    select case(form_%chars())
+    case('FORMATTED')
+      open(newunit=unit, file=file, status='OLD', action='READ', iomsg=iomsg_, iostat=iostat_, err=10)
+    case('UNFORMATTED')
+      open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
+           iomsg=iomsg_, iostat=iostat_, err=10)
+    endselect
+    call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
+    10 close(unit)
+  endif
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_file
+
   elemental function fill(self, width, right, filling_char) result(filled)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Pad string on the left (or right) with zeros (or other char) to fill width.
@@ -1061,12 +1104,9 @@ contains
   !< Read (all) lines (records) from a connected-formatted unit as a single ascii stream.
   !<
   !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
-  !< character.
+  !< character. The line is read as an ascii stream read until the eor is reached.
   !<
   !< @note The connected unit is rewinded. At a successful exit current record is at eof, at the beginning otherwise.
-  !<
-  !< The lines are returned as an array of strings that are read until the eof is reached.
-  !< The line is read as an ascii stream read until the eor is reached.
   !<
   !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
   !---------------------------------------------------------------------------------------------------------------------------------

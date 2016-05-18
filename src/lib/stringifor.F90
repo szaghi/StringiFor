@@ -24,7 +24,7 @@ public :: string
 ! expose StingiFor overloaded builtins
 public :: adjustl, adjustr, index, len, len_trim, repeat, scan, trim
 ! expose StingiFor new procedures
-public :: read_lines, write_lines
+public :: read_file, read_lines, write_lines
 ! expose PENF kinds
 public :: I1P, I2P, I4P, I8P, R4P, R8P, R16P
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -65,6 +65,48 @@ interface trim
 endinterface trim
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
+  subroutine read_file(file, lines, form, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Read a file as a single string stream.
+  !<
+  !< The lines are returned as an array of strings that are read until the eof is reached.
+  !< The line is read as an ascii stream read until the eor is reached.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(len=*), intent(in)               :: file       !< File name.
+  type(string),     intent(out), allocatable :: lines(:)   !< The lines.
+  character(len=*), intent(in),    optional  :: form       !< Format of unit.
+  integer,          intent(out),   optional  :: iostat     !< IO status code.
+  character(len=*), intent(inout), optional  :: iomsg      !< IO status message.
+  type(string)                               :: form_      !< Format of unit, local variable.
+  integer                                    :: iostat_    !< IO status code, local variable.
+  character(len=:), allocatable              :: iomsg_     !< IO status message, local variable.
+  integer                                    :: unit       !< Logical unit.
+  logical                                    :: does_exist !< Check if file exist.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  inquire(file=file, iomsg=iomsg_, iostat=iostat_, exist=does_exist)
+  if (does_exist) then
+    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
+    select case(form_%chars())
+    case('FORMATTED')
+      open(newunit=unit, file=file, status='OLD', action='READ', iomsg=iomsg_, iostat=iostat_, err=10)
+    case('UNFORMATTED')
+      open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
+           iomsg=iomsg_, iostat=iostat_, err=10)
+    endselect
+    call read_lines(unit=unit, lines=lines, form=form, iomsg=iomsg_, iostat=iostat_)
+    10 close(unit)
+  endif
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine read_file
+
   subroutine read_lines(unit, lines, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Read lines (records) from a connected-formatted unit.
