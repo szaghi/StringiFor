@@ -24,7 +24,7 @@ public :: string
 ! expose StingiFor overloaded builtins
 public :: adjustl, adjustr, index, len, len_trim, repeat, scan, trim
 ! expose StingiFor new procedures
-public :: read_file, read_lines, write_lines
+public :: read_file, read_lines, write_file, write_lines
 ! expose PENF kinds
 public :: I1P, I2P, I4P, I8P, R4P, R8P, R16P
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -186,4 +186,39 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine write_lines
+
+  subroutine write_file(file, lines, form, iostat, iomsg)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Write a single string stream into file.
+  !<
+  !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(len=*), intent(in)              :: file      !< File name.
+  type(string),     intent(in)              :: lines(1:) !< The lines.
+  character(len=*), intent(in),    optional :: form      !< Format of unit.
+  integer,          intent(out),   optional :: iostat    !< IO status code.
+  character(len=*), intent(inout), optional :: iomsg     !< IO status message.
+  type(string)                              :: form_     !< Format of unit, local variable.
+  integer                                   :: iostat_   !< IO status code, local variable.
+  character(len=:), allocatable             :: iomsg_    !< IO status message, local variable.
+  integer                                   :: unit      !< Logical unit.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
+  form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
+  select case(form_%chars())
+  case('FORMATTED')
+    open(newunit=unit, file=file, action='WRITE', iomsg=iomsg_, iostat=iostat_, err=10)
+  case('UNFORMATTED')
+    open(newunit=unit, file=file, action='WRITE', form='UNFORMATTED', access='STREAM', iomsg=iomsg_, iostat=iostat_, err=10)
+  endselect
+  call write_lines(unit=unit, lines=lines, form=form, iomsg=iomsg_, iostat=iostat_)
+  10 close(unit)
+  if (present(iostat)) iostat = iostat_
+  if (present(iomsg)) iomsg = iomsg_
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine write_file
+
 endmodule stringifor
