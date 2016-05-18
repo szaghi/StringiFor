@@ -398,8 +398,168 @@ In the following all the methods of `string` are listed with a brief description
 
 Go to [Top](#top)
 
+---
+
 ## Comparison to other Approaches
 
-To be written.
+The lack of Fortran support for strings manipulation has promoted different solutions in the past years. Following the classification of Clive Page [[1]](#clive-page-talk) we can consider:
+
++ standard character type;
++ deferred-length allocatable character type (standard 2003+);
++ `VARYING_STRING` type (standard 90/95+) as defined in ISO/IEC 1539-2:2000 (Varying length character strings).
+
+Let us compare StringiFor to the previous three approaches. In particular, let us consider Ian Harvey extension of `VARYING_STRING`, i.e. the `aniso_varying_string` [[2]](#aniso_vstring).
+
+Clive Page had pointed out the following issues, among the others:
+
++ fixed (at compile time) string length
+```fortran
+character(len=3) :: astring ! further lengths different from 3 are not allowed
+```
++ silent truncation on assignment
+```fortran
+character(len=3) :: astring
+astring = 'abcdefgh' ! silent trunctation at 'abcdef'
+```
++ trim-cluttered code
+```fortran
+character(len=99) :: astring
+character(len=99) :: anotherstring
+astring = 'abcdefgh'
+anotherstring = trim(astring)//'ilmnopqrst' ! trim-cluttering is a necessity
+```
++ handle significant trailing spaces
+```fortran
+character(len=99) :: astring
+character(len=99) :: anotherstring
+astring = 'Hello ' ! for some reasons you want to keep these trailing white spaces
+anotherstring = trim(astring)//'World' ! you need trim because
+                                       ! len(astring)==len(anotherstring), but lost the significant
+                                       ! trailing spaces...
+```
++ different character definition
+```fortran
+character         :: astring*10    ! old way
+character(len=10) :: anotherstring ! new way
+```
++ allocation of array of strings
+```fortran
+character(len=10), allocatable :: astring(:)
+allocate(astring(100)) ! all 100 elements of the array have 10 characters,
+                       ! different lengths cannot be declared
+```
++ initialization of array of strings
+```fortran
+! the following is illegal
+character(len=9), parameter :: day(7) = ['Monday',    &
+                                         'Tuesday',   &
+                                         'Wednesday', &
+                                         'Thursday',  &
+                                         'Friday',    &
+                                         'Saturday',  &
+                                         'Sunday']
+! the following is legal, but cluttered by non significant trailing spaces
+character(len=9), parameter :: day(7) = ['Monday   ', &
+                                         'Tuesday  ', &
+                                         'Wednesday', &
+                                         'Thursday ', &
+                                         'Friday   ', &
+                                         'Saturday ', &
+                                         'Sunday']
+```
++ IO limitations for non standard character variables
+```fortran
+character(len=99)             :: astring
+character(len=:), allocatable :: anotherstring
+type(varying_string)          :: yetanotherstring
+! fully-simple support for standard character variables
+astring = 'abcdefgh'
+print*, astring
+print "(A)", astring
+read(10, *) astring
+! partial-simple support for standard deferred length-length allocatable character variables
+! care must be placed in input operation...
+print*, astring
+print "(A)", astring
+read(10, *) astring
+! support depends on the implementation of the varying string type
+print*, astring
+print "(DT)", astring
+read(10, *) astring
+```
++ substring notation (slice)  for non standard character variables
+```fortran
+character(len=99)             :: astring
+character(len=:), allocatable :: anotherstring
+type(varying_string)          :: yetanotherstring
+astring = 'abcdefgh'
+yetanotherstring = astring
+anotherstring = astring(2:6)          ! allowed
+anotherstring = yetanotherstring(2:6) ! not allowed
+```
++ passing string to procedures expecting standard character argument is *complicated*
+
+Analyzing the above issues we can agree that deferred-length allocatable character and aniso_varyng_string approaches address many of them, at the cost of introducing some oddies.
+
+#### deferred-length allocatable character
+
+This approaches addresses all the issues related to the fixed length limitation, e.g.
+```fortran
+character(len=:), allocatable :: astring
+character(len=:), allocatable :: anotherstring
+astring = 'Hello '
+anotherstring = astring//'World' ! trailing with spaces of astring correctly handled
+                                 ! no need of trim
+```
+
+However, it has some limitations too. Aside the input operation, the most important (IMHO) are related to arrays of strings handling, e.g.
+```fortran
+character(len=:), allocatable :: asetofstring(:)
+allocate(character(len=99) :: asetofstring(10)) ! all 10 elements must have len=99
+```
+
+#### aniso_varying_string
+
+Aniso_varying_string is an implemention of ISO/IEC 1539-2:2000 (Varying length character strings) developed by Ian Harvey that is internally based on a deferred-lenght allocatable character variable: it is essentially a derived type wrapping a deferred-lenght allocatable character. As a consequence, it has all the advantages of the deferred-length allocatable character approach. The wrapping approach addresses the arrays related issues, e.g.
+```fortran
+type(varying_string), allocatable :: asetofstring(:)
+allocate(asetofstring(10)) ! all 10 elements can have diffent lengths
+```
+Its major issues are related to IO operations: however, this is addressed by new Fortran support for defined IO for derived type that make more effortless the IO of such an object. The other main issue is impossibility to use the standard slice notation to access to substring: aniso_varying_string addresses (partially) this issue by public-exposing the wrapped allocatable character of its implementations thus allowing the slicing of it, e.g.
+```fortran
+type(varying_string) :: astring
+astring = 'abcdefg'
+print "(A)", astring%chars(2:3) ! print 'bc'
+```
+
+#### Comparison results
+
+| issue                       | standard character | deferred-length allocatable character | aniso_varying_string | StringiFor         |
+|-----------------------------|--------------------|---------------------------------------|----------------------|--------------------|
+| fixed length                | :cloud:            | :sunny:                               | :sunny:              | :sunny:            |
+| silent trunction            | :cloud:            | :sunny:                               | :sunny:              | :sunny:            |
+| trim-clutter                | :cloud:            | :sunny:                               | :sunny:              | :sunny:            |
+| significant trailing spaces | :cloud:            | :sunny:                               | :sunny:              | :sunny:            |
+| different string definition | :cloud:            | :cloud:                               | :sunny:              | :sunny:            |
+| array allocatation          | :cloud:            | :cloud:                               | :sunny:              | :sunny:            |
+| array initialization        | :cloud:            | :cloud:                               | :sunny:              | :sunny:            |
+| IO                          | :sunny:            | :sunny:                               | :partly_sunny:       | :partly_sunny:     |
+| substring (slice) notation  | :sunny:            | :sunny:                               | :partly_sunny:       | :partly_sunny:     |
+| Fortran builtins            | :sunny:            | :sunny:                               | :partly_sunny:       | :partly_sunny:     |
+
+##### legend
+|  symbol        | meaning           |
+|----------------|-------------------|
+| :cloud:        | bad or no support |
+| :partly_sunny: | partial support   |
+| :sunny:        | good support      |
+
+#### References
+
+[1]<a name="clive-page-talk"></a> [*Improved String-handling in Fortran*](http://www.fortran.bcs.org/2015/suggestion_string_handling.pdf), Clive Page, October 2015.
+
+[2]<a name="aniso_vstring"></a> [*aniso_varying_string*](http://www.megms.com.au/aniso_varying_string.htm), Ian Harvey, 2016.
+
+Here I would like to *compare* my class with the points Clive figured out, such a creation of a road-map to improve my class.
 
 Go to [Top](#top)
