@@ -335,66 +335,168 @@ astring = '<test> <first> hello </first> <first> not the first </first> </test>'
 print "(A)", astring%search(tag_start='<first>', tag_end='</first>')//'' ! print "<first> hello </first>"
 ```
 
+##### A naive CSV parser
+
+This is just a provocation, but with StringiFor it is easy to develop a naive CSV parser. Let us assume we want to parse a cars-price database as the following one
+
+```csv
+Year, Make, Model, Description, Price
+1997, Ford, E350   , ac abs moon, 3000.00
+1999, Chevy, Venture "Extended Edition"  , , 4900.00
+1999, Chevy, Venture "Extended Edition Very Large", , 5000.00
+```
+
+Well, parsing it and handling its cells values is very easy by means of StringiFor
+
+```fortran
+use stringifor
+
+implicit none
+type(string)              :: csv            !< The CSV file as a single stream.
+type(string), allocatable :: rows(:)        !< The CSV table rows.
+type(string), allocatable :: columns(:)     !< The CSV table columns.
+type(string), allocatable :: cells(:,:)     !< The CSV table cells.
+type(string)              :: most_expensive !< The most expensive car.
+real(R8P)                 :: highest_cost   !< The highest cost.
+integer                   :: rows_number    !< The CSV file rows number.
+integer                   :: columns_number !< The CSV file columns number.
+integer                   :: r              !< Counter.
+
+! parsing the just created CSV file: all done 9 statements!
+call csv%read_file(file='cars.csv')              ! read the CSV file as a single stream
+call csv%split(tokens=rows, sep=new_line('a'))   ! get the CSV file rows
+rows_number = size(rows, dim=1)                  ! get the CSV file rows number
+columns_number = rows(1)%count(',') + 1          ! get the CSV file columns number
+allocate(cells(1:columns_number, 1:rows_number)) ! allocate the CSV file cells
+do r=1, rows_number                              ! parse all cells
+  call rows(r)%split(tokens=columns, sep=',')    ! get current columns
+  cells(1:columns_number, r) = columns           ! save current columns into cells
+enddo
+
+! now you can do whatever with your parsed data
+! print the table in markdown syntax
+print "(A)", 'A markdown-formatted table'
+print "(A)", ''
+print "(A)", '|'//csv%join(array=cells(:, 1), sep='|')//'|'
+columns = '----' ! re-use columns for printing separators
+print "(A)", '|'//csv%join(array=columns, sep='|')//'|'
+do r=2, rows_number
+  print "(A)", '|'//csv%join(array=cells(:, r), sep='|')//'|'
+enddo
+print "(A)", ''
+! find the most expensive car
+print "(A)", 'Searching for the most expensive car'
+most_expensive = 'unknown'
+highest_cost = -1._R8P
+do r=2, rows_number
+  if (cells(5, r)%to_number(kind=1._R8P)>=highest_cost) then
+    highest_cost = cells(5, r)%to_number(kind=1._R8P)
+    most_expensive = csv%join(array=[cells(2, r), cells(3, r)], sep=' ')
+  endif
+enddo
+print "(A)", 'The most expensive car is : '//most_expensive
+```
+
+See the test program [csv_naive_parser](https://github.com/szaghi/StringiFor/blob/master/src/tests/csv_naive_parser.f90) for a working example.
+
+Obviously, this is a naive parser without any robustness, but it proves the usefulness of the StringiFor approach.
+
 ---
 
 ### Methods API
 
 In the following all the methods of `string` are listed with a brief description of their aim. The hyperlinks bring you to the full API explained into the GH pages.
 
-+ String manipulations & Co.:
-  + [`basedir   `](http://szaghi.github.io/StringiFor/proc/basedir.html) return the base directory name of a string containing a file name.
-  + [`basename  `](#http://szaghi.github.io/StringiFor/proc/basename.html) return the base file name of a string containing a file name.
-  + [`camelcase `](#http://szaghi.github.io/StringiFor/proc/camelcase.html) return a string with all words capitalized without spaces.
-  + [`capitalize`](#capitalize) return a string with its first character capitalized and the rest lowercased.
-  + [`chars     `](#chars     ) return the raw characters data.
-  + [`escape    `](#escape    ) escape backslashes (or custom escape character).
-  + [`extension `](#extension ) return the extension of a string containing a file name.
-  + [`fill      `](#fill      ) pad string on the left (or right) with zeros (or other char) to fill width.
-  + [`free      `](#free      ) free dynamic memory.
-  + [`join      `](#join      ) return a string that is a join of an array of strings or characters.
-  + [`lower     `](#lower     ) return a string with all lowercase characters.
-  + [`partition `](#partition ) split string at separator and return the 3 parts (before, the separator and after).
-  + [`replace   `](#replace   ) return a string with all occurrences of substring old replaced by new.
-  + [`reverse   `](#reverse   ) return a reversed string.
-  + [`search    `](#search    ) search for *tagged* record into string.
-  + [`snakecase `](#snakecase ) return a string with all words lowercase separated by "\_".
-  + [`split     `](#split     ) return a list of substring in the string, using sep as the delimiter string.
-  + [`startcase `](#startcase ) return a string with all words capitalized, e.g. title case.
-  + [`strip     `](#strip     ) return a string with the leading and trailing characters removed.
-  + [`swapcase  `](#swapcase  ) return a string with uppercase chars converted to lowercase and vice versa.
-  + [`to_number `](#to_number ) cast string to number.
-  + [`unique    `](#unique    ) reduce to one (unique) multiple occurrences of a substring into a string.
-  + [`upper     `](#upper     ) return a string with all uppercase characters.
-+ inquires:
-  + [`end_with    `](#end_with    ) return true if a string ends with a specified suffix.
-  + [`is_allocated`](#is_allocated) return true if the string is allocated.
-  + [`is_digit    `](#is_digit    ) return true if all characters in the string are digits.
-  + [`is_integer  `](#is_integer  ) return true if the string contains an integer.
-  + [`is_lower    `](#is_lower    ) return true if all characters in the string are lowercase.
-  + [`is_number   `](#is_number   ) return true if the string contains a number (real or integer).
-  + [`is_real     `](#is_real     ) return true if the string contains an real.
-  + [`is_upper    `](#is_upper    ) return true if all characters in the string are uppercase.
-  + [`start_with  `](#start_with  ) return true if a string starts with a specified prefix.
-+ builtins replacements:
-  + [`sadjustl `](#sadjustl ) adjustl replacement.
-  + [`sadjustr `](#sadjustr ) adjustr replacement.
-  + [`scount   `](#scount   ) count replacement.
-  + [`sindex   `](#sindex   ) index replacement.
-  + [`slen     `](#slen     ) len replacement.
-  + [`slen_trim`](#slen_trim) len_trim replacement.
-  + [`srepeat  `](#srepeat  ) repeat replacement.
-  + [`sscan    `](#sscan    ) scan replacement.
-  + [`strim    `](#strim    ) trim replacement.
-  + [`sverify  `](#sverify  ) verify replacement.
-+ IO:
-  + [`read(formatted)   `](#read_formatted   ) formatted input.
-  + [`write(formatted)  `](#write_formatted  ) formatted output.
-  + [`read(unformatted) `](#read_unformatted ) unformatted input.
-  + [`write(unformatted)`](#write_unformatted) unformatted output.
-+ operators:
-  + [`assignment`](#assignment) assignment of string from different inputs.
-  + [`//`        ](#//        ) concatenation resulting in characters for seamless integration.
-  + [`.cat.`     ](#.cat.     ) concatenation resulting in `string`.
+##### builtins replacements
+
+| name                 | meaning             |
+|----------------------|---------------------|
+|[adjustl ](#adjustl ) | adjustl replacement |
+|[adjustr ](#adjustr ) | adjustr replacement |
+|[count   ](#count   ) | count replacement   |
+|[index   ](#index   ) | index replacement   |
+|[len     ](#len     ) | len replacement     |
+|[len_trim](#len_trim) | len_trim replacement|
+|[repeat  ](#repeat  ) | repeat replacement  |
+|[scan    ](#scan    ) | scan replacement    |
+|[trim    ](#trim    ) | trim replacement    |
+|[verify  ](#verify  ) | verify replacement  |
+
+##### auxiliary methods
+
+| name                                                                 | meaning                                                                          |
+|----------------------------------------------------------------------|----------------------------------------------------------------------------------|
+|[basedir    ](http://szaghi.github.io/StringiFor/proc/basedir.html  ) | return the base directory name of a string containing a file name                |
+|[basename   ](http://szaghi.github.io/StringiFor/proc/basename.html ) | return the base file name of a string containing a file name                     |
+|[camelcase  ](http://szaghi.github.io/StringiFor/proc/camelcase.html) | return a string with all words capitalized without spaces                        |
+|[capitalize ](#capitalize                                           ) | return a string with its first character capitalized and the rest lowercased     |
+|[chars      ](#chars                                                ) | return the raw characters data                                                   |
+|[decode     ](#decode                                               ) | decode string                                                                    |
+|[encode     ](#encode                                               ) | encode string                                                                    |
+|[escape     ](#escape                                               ) | escape backslashes (or custom escape character)                                  |
+|[extension  ](#extension                                            ) | return the extension of a string containing a file name                          |
+|[fill       ](#fill                                                 ) | pad string on the left (or right) with zeros (or other char) to fill width       |
+|[free       ](#free                                                 ) | free dynamic memory                                                              |
+|[insert     ](#insert                                               ) | insert substring into string at a specified position                             |
+|[join       ](#join                                                 ) | return a string that is a join of an array of strings or characters              |
+|[lower      ](#lower                                                ) | return a string with all lowercase characters                                    |
+|[partition  ](#partition                                            ) | split string at separator and return the 3 parts (before the separator and after)|
+|[read_file  ](#read_file                                            ) | read a file a single string stream                                               |
+|[read_line  ](#read_line                                            ) | read line (record) from a connected unit                                         |
+|[read_lines ](#read_lines                                           ) | read (all) lines (records) from a connected unit as a single ascii stream        |
+|[replace    ](#replace                                              ) | return a string with all occurrences of substring old replaced by new            |
+|[reverse    ](#reverse                                              ) | return a reversed string                                                         |
+|[search     ](#search                                               ) | search for *tagged* record into string                                           |
+|[slice      ](#slice                                                ) | return the raw characters data sliced                                            |
+|[snakecase  ](#snakecase                                            ) | return a string with all words lowercase separated by *_*                        |
+|[split      ](#split                                                ) | return a list of substring in the string using sep as the delimiter string       |
+|[startcase  ](#startcase                                            ) | return a string with all words capitalized, e.g. title case                      |
+|[strip      ](#strip                                                ) | return a string with the leading and trailing characters removed                 |
+|[swapcase   ](#swapcase                                             ) | return a string with uppercase chars converted to lowercase and vice versa       |
+|[to_number  ](#to_number                                            ) | cast string to number                                                            |
+|[unescape   ](#unescape                                             ) | unescape double backslashes (or custom escaped character)                        |
+|[unique     ](#unique                                               ) | reduce to one (unique) multiple occurrences of a substring into a string         |
+|[upper      ](#upper                                                ) | return a string with all uppercase characters                                    |
+|[write_file ](#write_file                                           ) | write a single string stream into file                                           |
+|[write_line ](#write_line                                           ) | write line (record) to a connected unit                                          |
+|[write_lines](#write_lines                                          ) | write lines (records) to a connected unit                                        |
+
+##### inquire methods
+
+| name                         | meaning                                                      |
+|------------------------------|--------------------------------------------------------------|
+|[end_with    ](#end_with    ) | return true if a string ends with a specified suffix         |
+|[is_allocated](#is_allocated) | return true if the string is allocated                       |
+|[is_digit    ](#is_digit    ) | return true if all characters in the string are digits       |
+|[is_integer  ](#is_integer  ) | return true if the string contains an integer                |
+|[is_lower    ](#is_lower    ) | return true if all characters in the string are lowercase    |
+|[is_number   ](#is_number   ) | return true if the string contains a number (real or integer)|
+|[is_real     ](#is_real     ) | return true if the string contains an real                   |
+|[is_upper    ](#is_upper    ) | return true if all characters in the string are uppercase    |
+|[start_with  ](#start_with  ) | return true if a string starts with a specified prefix       |
+
+##### operators
+
+| name                     | meaning                                                       |
+|--------------------------|---------------------------------------------------------------|
+|[assignment](#assignment) | assignment of string from different inputs                    |
+|[//        ](#//        ) | concatenation resulting in characters for seamless integration|
+|[.cat.     ](#.cat.     ) | concatenation resulting in `string`                           |
+|[==        ](#==        ) | equal operator                                                |
+|[/=        ](#/=        ) | not equal operator                                            |
+|[<         ](#<         ) | lower than operator                                           |
+|[<=        ](#<=        ) | lower equal than operator                                     |
+|[>=        ](#>=        ) | greater equal than operator                                   |
+|[>         ](#>         ) | greater than operator                                         |
+
+##### IO
+
+| name                                    | meaning           |
+|-----------------------------------------|-------------------|
+|[read(formatted)   ](#read_formatted   ) | formatted input   |
+|[write(formatted)  ](#write_formatted  ) | formatted output  |
+|[read(unformatted) ](#read_unformatted ) | unformatted input |
+|[write(unformatted)](#write_unformatted) | unformatted output|
 
 Go to [Top](#top)
 
@@ -419,7 +521,7 @@ character(len=3) :: astring ! further lengths different from 3 are not allowed
 + silent truncation on assignment
 ```fortran
 character(len=3) :: astring
-astring = 'abcdefgh' ! silent trunctation at 'abcdef'
+astring = 'abcdefgh' ! silent trunctation at 'abc'
 ```
 + trim-cluttered code
 ```fortran
@@ -479,13 +581,13 @@ print "(A)", astring
 read(10, *) astring
 ! partial-simple support for standard deferred length-length allocatable character variables
 ! care must be placed in input operation...
-print*, astring
-print "(A)", astring
-read(10, *) astring
+print*, anotherstring
+print "(A)", anotherstring
+read(10, *) anotherstring
 ! support depends on the implementation of the varying string type
-print*, astring
-print "(DT)", astring
-read(10, *) astring
+print*, yetanotherstring
+print "(DT)", yetanotherstring
+read(10, *) yetanotherstring
 ```
 + substring notation (slice)  for non standard character variables
 ```fortran
@@ -525,14 +627,20 @@ Aniso_varying_string is an implemention of ISO/IEC 1539-2:2000 (Varying length c
 type(varying_string), allocatable :: asetofstring(:)
 allocate(asetofstring(10)) ! all 10 elements can have diffent lengths
 ```
-Its major issues are related to IO operations: however, this is addressed by new Fortran support for defined IO for derived type that make more effortless the IO of such an object. The other main issue is impossibility to use the standard slice notation to access to substring: aniso_varying_string addresses (partially) this issue by public-exposing the wrapped allocatable character of its implementations thus allowing the slicing of it, e.g.
+Its major issues are related to IO operations: however, this is addressed by new Fortran support for defined IO for derived type that make more effortless the IO of such an object. The other main issue is the impossibility to use the standard slice notation to access to substring: aniso_varying_string addresses (partially) this issue by public-exposing the wrapped allocatable character of its implementations thus allowing the slicing of it, e.g.
 ```fortran
 type(varying_string) :: astring
 astring = 'abcdefg'
 print "(A)", astring%chars(2:3) ! print 'bc'
 ```
 
+#### StringiFor
+
+StringiFor shares the same philosophy of aniso_varying_string, thut it has the same pros and cons. However, StringiFor is an Object Oriented Designed class, thus it has some peculiariaties distinguishing it from aniso_varying_string, see [StringiFor Peculiarities](#stringifor-peculiarities).
+
 #### Comparison results
+
+The following table summarizes the comparison analysis.
 
 | issue                       | standard character | deferred-length allocatable character | aniso_varying_string | StringiFor         |
 |-----------------------------|--------------------|---------------------------------------|----------------------|--------------------|
@@ -554,12 +662,14 @@ print "(A)", astring%chars(2:3) ! print 'bc'
 | :partly_sunny: | partial support   |
 | :sunny:        | good support      |
 
+### StringiFor Peculiarities
+
+StringiFor publics an OOD class, the `string` object. This class is aimed to address all the issues of the standard character type, as ISO Varying String approaches do, but it is also designed to provide a features-rich string object as you can find on other languages like Python. As a matter of facts, the *auxiliary methods* added to the `string` object consitute a long list of new (for Fortraners) string-facilities, allowing you to handle strings effortless (cases-conversion, files-handling, encode/decode, numbers-casting, etc...), see the complete [API](#methods_api). It is worth to note that StringiFor is a tentative to adopt an fully OOD thus all methods and operators are TBP defined: to use StringiFor you can import only the `string` type, allowing a sane and robust names space handling. Only in the case you want the Fortran builtins to accept a `string` instead of a standard character type, e.g. to use `index(astring, 'c')` seamless with both a `type(string) :: astring` and a `character(99) :: astring`, you must use all the StringiFor public objects, including the overloaded interfaces of the Fortran builtins.
+
 #### References
 
 [1]<a name="clive-page-talk"></a> [*Improved String-handling in Fortran*](http://www.fortran.bcs.org/2015/suggestion_string_handling.pdf), Clive Page, October 2015.
 
 [2]<a name="aniso_vstring"></a> [*aniso_varying_string*](http://www.megms.com.au/aniso_varying_string.htm), Ian Harvey, 2016.
-
-Here I would like to *compare* my class with the points Clive figured out, such a creation of a road-map to improve my class.
 
 Go to [Top](#top)
