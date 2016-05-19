@@ -18,7 +18,6 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - gfortran-5
-      - gfortran-6
       - binutils
       - python-pip
       - graphviz      
@@ -35,11 +34,17 @@ install:
     if [[ ! -d "$HOME/.local/bin" ]]; then
       mkdir "$HOME/.local/bin"
     fi
-  - export PATH="$HOME/.local/bin:$PATH"
-  - export FC=/usr/bin/gfortran-6
-  - ln -fs /usr/bin/gfortran-6 "$HOME/.local/bin/gfortran" && gfortran --version
-  - ls -l /usr/bin/gfortran-6
-  - ln -fs /usr/bin/gcov-5 "$HOME/.local/bin/gcov" && gcov --version
+  # - export PATH="$HOME/.local/bin:$PATH"
+  # - export FC=/usr/bin/gfortran-5
+  # - ln -fs /usr/bin/gfortran-5 "$HOME/.local/bin/gfortran" && gfortran --version
+  # - ls -l /usr/bin/gfortran-5
+  # - ln -fs /usr/bin/gcov-5 "$HOME/.local/bin/gcov" && gcov --version
+  - wget http://gfortran.meteodat.ch/download/x86_64/releases/gcc-6.1.0.tar.xz
+  - tar xvf gcc-6.1.0.tar.xz
+  - mv gcc-6.1.0 "$HOME/.local/bin"
+  - export PATH="$HOME/.local/bin/gcc-6.1.0/bin:$PATH"
+  - gfortran --version
+  - gcov --version
   - pip install --upgrade pygooglechart
   - pip install --upgrade graphviz
   - pip install --upgrade FoBiS.py
