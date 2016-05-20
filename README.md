@@ -29,8 +29,8 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 
 #### Compiler Support
 
-[![Compiler](https://img.shields.io/badge/GNU-v5.2.0+-orange.svg)]()
-[![Compiler](https://img.shields.io/badge/Intel-v15.x+-brightgreen.svg)]()
+[![Compiler](https://img.shields.io/badge/GNU-v6.1.0+-orange.svg)]()
+[![Compiler](https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg)]()
 [![Compiler](https://img.shields.io/badge/IBM%20XL-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/g95-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/NAG-not%20tested-yellow.svg)]()
@@ -98,14 +98,20 @@ StringiFor is a modern Fortran project thus a modern Fortran compiler is need to
 
 | Compiler Vendor Support                                                  | Notes                       |
 |--------------------------------------------------------------------------|-----------------------------|
-|[![Compiler](https://img.shields.io/badge/GNU-v5.2.0+-orange.svg)]()      | does not support defined IO |
-|[![Compiler](https://img.shields.io/badge/Intel-v15.x+-brightgreen.svg)]()| full support                |
+|[![Compiler](https://img.shields.io/badge/GNU-v6.1.0+-orange.svg)]()      | does not support defined IO |
+|[![Compiler](https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg)]()| full support                |
 |[![Compiler](https://img.shields.io/badge/IBM%20XL-vx.y-yellow.svg)]()    | not tested                  |
 |[![Compiler](https://img.shields.io/badge/g95-vx.y-yellow.svg)]()         | not tested                  |
 |[![Compiler](https://img.shields.io/badge/NAG-vx.y-yellow.svg)]()         | not tested                  |
 |[![Compiler](https://img.shields.io/badge/PGI-vx.y-yellow.svg)]()         | not tested                  |
 
-The library is modular, namely it exploits Fortran modules. As a consequence, there is compilation-cascade hierarchy to build the library. To correctly build the library the following approaches are supported.
+The library is modular, namely it exploits Fortran modules. As a consequence, there is compilation-cascade hierarchy to build the library. To correctly build the library the following approaches are supported
+
++ [Build by means of FoBiS](#build-by-means-of-fobis): full support;
++ [Build by means of GNU Make](#build-by-means-of-fobis): support only Intel Fortran;
++ [Build by means of CMake](#build-by-means-of-fobis): to be implemented.
+
+The FoBiS building support is the most complete, as it is the one used for the developing StringiFor.
 
 ### Build by means of FoBiS
 
@@ -119,27 +125,27 @@ Type
 FoBiS.py build
 ```
 
-After (a successuful) building a directory `exe` is created containing all the compiled tests that constitute the StringiFor *regression-tests-suite*, e.g.
+After (a successuful) building a directory `./exe` is created containing all the compiled tests that constitute the StringiFor *regression-tests-suite*, e.g.
 
 ```bash
 → FoBiS.py build
 Builder options
-  Directories
-    Building directory: "exe"
-    Compiled-objects .o   directory: "exe/obj"
-    Compiled-objects .mod directory: "exe/mod"
-  Compiler options
-    Vendor: "gnu"
-    Compiler command: "gfortran"
-    Module directory switch: "-J"
-    Compiling flags: "-c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p"
-    Linking flags: "-O2"
-    Preprocessing flags: "-Dr16p"
-    Coverage: False
-    Profile: False
-  PreForM.py used: False
-  PreForM.py output directory: None
-  PreForM.py extensions processed: []
+Directories
+  Building directory: "exe"
+  Compiled-objects .o   directory: "exe/obj"
+  Compiled-objects .mod directory: "exe/mod"
+Compiler options
+  Vendor: "gnu"
+  Compiler command: "gfortran"
+  Module directory switch: "-J"
+  Compiling flags: "-c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p"
+  Linking flags: "-O2"
+  Preprocessing flags: "-Dr16p"
+  Coverage: False
+  Profile: False
+PreForM.py used: False
+PreForM.py output directory: None
+PreForM.py extensions processed: []
 
 Building src/tests/is_real.f90
 Compiling src/lib/penf.F90 serially
@@ -206,6 +212,8 @@ FoBiS.py build -mode stringifor-static-intel
 FoBiS.py build -mode stringifor-shared-intel
 ```
 
+The library will be built into the directory `./lib`.
+
 ### List other fobos modes
 
 To list all *fobos-provided* modes type
@@ -223,7 +231,34 @@ The fobos file defines the following modes:
   - "stringifor-shared-intel"
 ```
 
-The first is the one automatically called by `FoBiS.py build`.
+It is worth to note that the first mode is the one automatically called by `FoBiS.py build`.
+
+### Build by means of GNU Make
+
+The provided makefile support only Intel Fortran Compiler and it has two main building rules:
+
++ build the (static linked) library;
++ build the tests suite.
+
+To build the library type
+
+```bash
+make
+```
+
+The library will be built into the directory `./lib`.
+
+To build the tests suite type
+
+```bash
+make TESTS=yes
+```
+
+The tests will be built into the directory `./exe`.
+
+### Build by means of CMake
+
+To be done.
 
 Go to [Top](#top)
 
@@ -238,7 +273,7 @@ The StringiFor documentation is mainly contained into this file (it has its own 
   + [String manipulation](#string_manipulation)
   + [Numbers handling](#numbers_handling)
   + [Complex scenario](#complex_scenario)
-+ [Methods API](#methods_api)
++ [Methods API](#methods-api)
 
 ---
 
@@ -664,7 +699,7 @@ The following table summarizes the comparison analysis.
 
 ### StringiFor Peculiarities
 
-StringiFor publics an OOD class, the `string` object. This class is aimed to address all the issues of the standard character type, as ISO Varying String approaches do, but it is also designed to provide a features-rich string object as you can find on other languages like Python. As a matter of facts, the *auxiliary methods* added to the `string` object consitute a long list of new (for Fortraners) string-facilities, allowing you to handle strings effortless (cases-conversion, files-handling, encode/decode, numbers-casting, etc...), see the complete [API](#methods_api). It is worth to note that StringiFor is a tentative to adopt an fully OOD thus all methods and operators are TBP defined: to use StringiFor you can import only the `string` type, allowing a sane and robust names space handling. Only in the case you want the Fortran builtins to accept a `string` instead of a standard character type, e.g. to use `index(astring, 'c')` seamless with both a `type(string) :: astring` and a `character(99) :: astring`, you must use all the StringiFor public objects, including the overloaded interfaces of the Fortran builtins.
+StringiFor publics an OOD class, the `string` object. This class is aimed to address all the issues of the standard character type, as ISO Varying String approaches do, but it is also designed to provide a features-rich string object as you can find on other languages like Python. As a matter of facts, the *auxiliary methods* added to the `string` object consitute a long list of new (for Fortraners) string-facilities, allowing you to handle strings effortless (cases-conversion, files-handling, encode/decode, numbers-casting, etc...), see the complete [API](#methods-api). It is worth to note that StringiFor is a tentative to adopt an fully OOD thus all methods and operators are TBP defined: to use StringiFor you can import only the `string` type, allowing a sane and robust names space handling. Only in the case you want the Fortran builtins to accept a `string` instead of a standard character type, e.g. to use `index(astring, 'c')` seamless with both a `type(string) :: astring` and a `character(99) :: astring`, you must use all the StringiFor public objects, including the overloaded interfaces of the Fortran builtins.
 
 #### References
 
