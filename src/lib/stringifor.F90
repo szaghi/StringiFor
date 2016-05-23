@@ -4,14 +4,14 @@ module stringifor
 !< StringiFor, Strings Fortran, yet another stringify Fortran module
 !-----------------------------------------------------------------------------------------------------------------------------------
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P
-use string_t, only : CK,                                                                     &
-                     sadjustl_character, sadjustr_character,                                 &
-                     sindex_string_string, sindex_string_character, sindex_character_string, &
-                     slen, slen_trim,                                                        &
-                     srepeat_string_string,                                                  &
-                     sscan_string_string, sscan_string_character, sscan_character_string,    &
-                     strim,                                                                  &
-                     string
+use stringifor_string_t, only : CK,                                                                     &
+                                sadjustl_character, sadjustr_character,                                 &
+                                sindex_string_string, sindex_string_character, sindex_character_string, &
+                                slen, slen_trim,                                                        &
+                                srepeat_string_string,                                                  &
+                                sscan_string_string, sscan_string_character, sscan_character_string,    &
+                                strim,                                                                  &
+                                string
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ save
 public :: CK
 public :: string
 ! expose StingiFor overloaded builtins
-public :: adjustl, adjustr, index, len, len_trim, repeat, scan, trim
+public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim
 ! expose StingiFor new procedures
 public :: read_file, read_lines, write_file, write_lines
 ! expose PENF kinds
@@ -39,6 +39,10 @@ interface adjustr
   !< Builtin adjustr overloading.
   module procedure sadjustr_character
 endinterface adjustr
+interface count
+  !< Builtin count overloading.
+  module procedure count_substring
+endinterface
 interface index
   !< Builtin index overloading.
   module procedure sindex_string_string, sindex_string_character, sindex_character_string
@@ -65,6 +69,31 @@ interface trim
 endinterface trim
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
+  elemental function count_substring(string_, substring) result(No)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Count the number of occurences of a substring into a string.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(*), intent(in) :: string_   !< String.
+  character(*), intent(in) :: substring !< Substring.
+  integer(I4P)             :: No        !< Number of occurrences.
+  integer(I4P)             :: c1        !< Counters.
+  integer(I4P)             :: c2        !< Counters.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  No = 0
+  if (len(substring)>len(string_)) return
+  c1 = 1
+  do
+    c2 = index(string=string_(c1:), substring=substring)
+    if (c2==0) return
+    No = No + 1
+    c1 = c1 + c2 + len(substring)
+  enddo
+  return
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction count_substring
+
   subroutine read_file(file, lines, form, iostat, iomsg)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Read a file as a single string stream.
@@ -220,5 +249,4 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine write_file
-
 endmodule stringifor

@@ -1,5 +1,5 @@
 !< StringiFor, definition of `string` type.
-module string_t
+module stringifor_string_t
 !-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, definition of `string` type.
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3072,4 +3072,4 @@ contains
   decimal_point = decimal_buffer == 'POINT'
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine get_decimal_mode
-endmodule string_t
+endmodule stringifor_string_t
