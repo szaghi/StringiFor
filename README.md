@@ -29,7 +29,7 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 
 #### Compiler Support
 
-[![Compiler](https://img.shields.io/badge/GNU-v6.1.0+-orange.svg)]()
+[![Compiler](https://img.shields.io/badge/GNU-v5.3.0+-orange.svg)]()
 [![Compiler](https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg)]()
 [![Compiler](https://img.shields.io/badge/IBM%20XL-not%20tested-yellow.svg)]()
 [![Compiler](https://img.shields.io/badge/g95-not%20tested-yellow.svg)]()
@@ -98,7 +98,7 @@ StringiFor is a modern Fortran project thus a modern Fortran compiler is need to
 
 | Compiler Vendor Support                                                  | Notes                       |
 |--------------------------------------------------------------------------|-----------------------------|
-|[![Compiler](https://img.shields.io/badge/GNU-v6.1.0+-orange.svg)]()      | does not support defined IO |
+|[![Compiler](https://img.shields.io/badge/GNU-v5.3.0+-orange.svg)]()      | does not support defined IO |
 |[![Compiler](https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg)]()| full support                |
 |[![Compiler](https://img.shields.io/badge/IBM%20XL-vx.y-yellow.svg)]()    | not tested                  |
 |[![Compiler](https://img.shields.io/badge/g95-vx.y-yellow.svg)]()         | not tested                  |
