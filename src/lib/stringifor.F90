@@ -180,14 +180,14 @@ contains
   10 rewind(unit)
   if (l>0) then
     allocate(lines(1:l))
-    l = 0
+    l = 1
     iostat_ = 0
     do
-      l = l + 1
       call lines(l)%read_line(unit=unit, form=form, iostat=iostat_, iomsg=iomsg_)
-      if (iostat_/=0.and..not.is_iostat_eor(iostat_)) then
+      if ((iostat_/=0.and..not.is_iostat_eor(iostat_)).or.(l>=size(lines, dim=1))) then
         exit
       endif
+      l = l + 1
     enddo
   endif
   if (present(iostat)) iostat = iostat_

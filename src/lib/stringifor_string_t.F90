@@ -1654,13 +1654,17 @@ contains
     c = 1
     do
       if (c>len(self%raw)) exit
-    ! do c=1, len(self%raw)
-      if (self%raw(c:c+1)==BACKSLASH//to_unescape) then
-        unescaped%raw = unescaped%raw//to_unescape
-        c = c + 2
-      else
+      if (c==len(self%raw)) then
         unescaped%raw = unescaped%raw//self%raw(c:c)
-        c = c + 1
+        exit
+      else
+        if (self%raw(c:c+1)==BACKSLASH//to_unescape) then
+          unescaped%raw = unescaped%raw//to_unescape
+          c = c + 2
+        else
+          unescaped%raw = unescaped%raw//self%raw(c:c)
+          c = c + 1
+        endif
       endif
     enddo
   endif

@@ -24,8 +24,7 @@ addons:
 
 env:
   global:
-    # - SCRIPT="FoBiS.py rule -ex makecoverage"
-    - echo "travis ci auto-testing temporary suppressed due to lack of gcc 6 support"
+    - SCRIPT="FoBiS.py rule -ex makecoverage"
 
 before_install:
   - git submodule update --init --recursive
@@ -51,5 +50,5 @@ script:
 
 after_success:
   - cd $TRAVIS_BUILD_DIR
-  # - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
   - ./makedoc.sh szaghi/StringiFor
