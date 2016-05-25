@@ -3055,7 +3055,7 @@ contains
   use, intrinsic :: iso_fortran_env, only : iostat_inquire_internal_unit
   !---------------------------------------------------------------------------------------------------------------------------------
   integer,                   intent(in)    :: unit           !< Logical unit.
-  logical,                   intent(out)   :: decimal_point  !> True if the decimal mode is POINT, false otherwise.
+  logical,                   intent(out)   :: decimal_point  !< True if the decimal mode is POINT, false otherwise.
   integer,                   intent(out)   :: iostat         !< IO status code.
   character(kind=CK, len=*), intent(inout) :: iomsg          !< IO status message.
   character(5)                             :: decimal_buffer !< Buffer for INQUIRE about DECIMAL, sized for POINT or COMMA.
