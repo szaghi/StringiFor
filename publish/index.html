@@ -131,8 +131,8 @@
 <a href="https://waffle.io/szaghi/StringiFor"><img alt="In Progress" src="https://badge.waffle.io/szaghi/StringiFor.png?label=in%20progress&amp;title=In%20Progress"></a>
 <a href="https://waffle.io/szaghi/StringiFor"><img alt="Open bugs" src="https://badge.waffle.io/szaghi/StringiFor.png?label=bug&amp;title=Open%20Bugs"></a></p>
 <h4 id="compiler-support"><a class="toclink" href="#compiler-support">Compiler Support</a></h4>
-<p><a href=""><img alt="Compiler" src="https://img.shields.io/badge/GNU-v5.2.0+-orange.svg"></a>
-<a href=""><img alt="Compiler" src="https://img.shields.io/badge/Intel-v15.x+-brightgreen.svg"></a>
+<p><a href=""><img alt="Compiler" src="https://img.shields.io/badge/GNU-v5.3.0+-orange.svg"></a>
+<a href=""><img alt="Compiler" src="https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg"></a>
 <a href=""><img alt="Compiler" src="https://img.shields.io/badge/IBM%20XL-not%20tested-yellow.svg"></a>
 <a href=""><img alt="Compiler" src="https://img.shields.io/badge/g95-not%20tested-yellow.svg"></a>
 <a href=""><img alt="Compiler" src="https://img.shields.io/badge/NAG-not%20tested-yellow.svg"></a>
@@ -142,7 +142,7 @@
 <p>GNU gfortran does not support user-defined-type-IO, thus some class features are disabled if GNU is used.</p>
 </blockquote>
 <hr>
-<p><a href="#what-is-penf?">What is StringiFor?</a> ♺ <a href="#main-features">Main features</a> ♺ <a href="#copyrights">Copyrights</a> ♺ <a href="#download">Download</a> ♺ <a href="#compilation">Compilation</a> ♺ <a href="#documentation">Documentation</a></p>
+<p><a href="#what-is-penf?">What is StringiFor?</a> | <a href="#main-features">Main features</a> | <a href="#copyrights">Copyrights</a> | <a href="#download">Download</a> | <a href="#compilation">Compilation</a> | <a href="#documentation">Documentation</a> | <a href="#comparison-to-other-approaches">Comparison to other Approaches</a></p>
 <hr>
 <h2 id="what-is-stringifor"><a class="toclink" href="#what-is-stringifor">What is StringiFor?</a></h2>
 <p>Modern Fortran standards (2003+) have introduced a better support for characters variables, but Fortraners still do not have the power on dealing with strings of other more-rich-programmers, e.g. Pythoners. Allocatable deferred length character variables are now quantum-leap with respect the old inflexible Fortran characters, but it is still not enough for many Fortraners. Moreover, Fortran does not provide builtin methods for widely used strings manipulations offered by other languages, e.g. UPPER/lowercase transformation, tokenization, etc&hellip; StringiFor attempts to fill this lack.</p>
@@ -172,11 +172,187 @@
 <p>More details can be found on <a href="https://github.com/szaghi/StringiFor/wiki/Copyrights">wiki</a>.</p>
 <p>Go to <a href="#top">Top</a></p>
 <h2 id="download"><a class="toclink" href="#download">Download</a></h2>
-<p>To be written.</p>
+<p>StringiFor home is at <a href="https://github.com/szaghi/StringiFor">https://github.com/szaghi/StringiFor</a>. It uses <code>git submodule</code> to handle the third party dependency. To download all the source files you can:</p>
+<ul>
+<li>clone recursively this repository: <code>git clone --recursive https://github.com/szaghi/StringiFor</code></li>
+<li>download the latest master-branch archive at <a href="https://github.com/szaghi/StringiFor/archive/master.zip">https://github.com/szaghi/StringiFor/archive/master.zip</a></li>
+<li>download a release archive at <a href="https://github.com/szaghi/StringiFor/releases">https://github.com/szaghi/StringiFor/releases</a></li>
+</ul>
 <p>Go to <a href="#top">Top</a></p>
 <h2 id="compilation"><a class="toclink" href="#compilation">Compilation</a></h2>
-<p>To be written.</p>
+<p>StringiFor is a modern Fortran project thus a modern Fortran compiler is need to compile the project. In the following table the support for some widely-used Fortran compilers is summarized.</p>
+<table>
+<thead>
+<tr>
+<th>Compiler Vendor Support</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/GNU-v5.3.0+-orange.svg"></a></td>
+<td>does not support defined IO</td>
+</tr>
+<tr>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg"></a></td>
+<td>full support</td>
+</tr>
+<tr>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/IBM%20XL-vx.y-yellow.svg"></a></td>
+<td>not tested</td>
+</tr>
+<tr>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/g95-vx.y-yellow.svg"></a></td>
+<td>not tested</td>
+</tr>
+<tr>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/NAG-vx.y-yellow.svg"></a></td>
+<td>not tested</td>
+</tr>
+<tr>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/PGI-vx.y-yellow.svg"></a></td>
+<td>not tested</td>
+</tr>
+</tbody>
+</table>
+<p>The library is modular, namely it exploits Fortran modules. As a consequence, there is compilation-cascade hierarchy to build the library. To correctly build the library the following approaches are supported</p>
+<ul>
+<li><a href="#build-by-means-of-fobis">Build by means of FoBiS</a>: full support;</li>
+<li><a href="#build-by-means-of-fobis">Build by means of GNU Make</a>: support only Intel Fortran;</li>
+<li><a href="#build-by-means-of-fobis">Build by means of CMake</a>: to be implemented.</li>
+</ul>
+<p>The FoBiS building support is the most complete, as it is the one used for the developing StringiFor.</p>
+<h3 id="build-by-means-of-fobis"><a class="toclink" href="#build-by-means-of-fobis">Build by means of FoBiS</a></h3>
+<p>A <code>fobos</code> file is provided to build the library by means of the Fortran Building System <a href="https://github.com/szaghi/FoBiS">FoBiS</a>.</p>
+<h4 id="build-all-tests"><a class="toclink" href="#build-all-tests">Build all tests</a></h4>
+<p>Type</p>
+<div class="codehilite"><pre><span></span>FoBiS.py build
+</pre></div>
+
+
+<p>After (a successuful) building a directory <code>./exe</code> is created containing all the compiled tests that constitute the StringiFor <em>regression-tests-suite</em>, e.g.</p>
+<div class="codehilite"><pre><span></span>→ FoBiS.py build
+Builder options
+Directories
+  Building directory: <span class="s2">&quot;exe&quot;</span>
+  Compiled-objects .o   directory: <span class="s2">&quot;exe/obj&quot;</span>
+  Compiled-objects .mod directory: <span class="s2">&quot;exe/mod&quot;</span>
+Compiler options
+  Vendor: <span class="s2">&quot;gnu&quot;</span>
+  Compiler command: <span class="s2">&quot;gfortran&quot;</span>
+  Module directory switch: <span class="s2">&quot;-J&quot;</span>
+  Compiling flags: <span class="s2">&quot;-c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p&quot;</span>
+  Linking flags: <span class="s2">&quot;-O2&quot;</span>
+  Preprocessing flags: <span class="s2">&quot;-Dr16p&quot;</span>
+  Coverage: False
+  Profile: False
+PreForM.py used: False
+PreForM.py output directory: None
+PreForM.py extensions processed: <span class="o">[]</span>
+
+Building src/tests/is_real.f90
+Compiling src/lib/penf.F90 serially
+Compiling src/lib/string_t.F90 serially
+Compiling src/lib/stringifor.F90 serially
+Compiling src/tests/is_real.f90 serially
+Linking exe/is_real
+Target src/tests/is_real.f90 has been successfully built
+Builder options
+  Directories
+    Building directory: <span class="s2">&quot;exe&quot;</span>
+    Compiled-objects .o   directory: <span class="s2">&quot;exe/obj&quot;</span>
+    Compiled-objects .mod directory: <span class="s2">&quot;exe/mod&quot;</span>
+  Compiler options
+    Vendor: <span class="s2">&quot;gnu&quot;</span>
+    Compiler command: <span class="s2">&quot;gfortran&quot;</span>
+    Module directory switch: <span class="s2">&quot;-J&quot;</span>
+    Compiling flags: <span class="s2">&quot;-c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p&quot;</span>
+    Linking flags: <span class="s2">&quot;-O2&quot;</span>
+    Preprocessing flags: <span class="s2">&quot;-Dr16p&quot;</span>
+    Coverage: False
+    Profile: False
+  PreForM.py used: False
+  PreForM.py output directory: None
+  PreForM.py extensions processed: <span class="o">[]</span>
+
+Building src/tests/slen.f90
+Compiling src/tests/slen.f90 serially
+...
+
+→ tree -L <span class="m">1</span> exe/
+exe/
+├── assignments
+├── basename_dir
+├── camelcase
+├── capitalize
+├── concatenation
+├── equal
+├── escape
+├── extension
+├── fill
+...
+├── swapcase
+├── to_number
+├── unique
+└── upper_lower
+</pre></div>
+
+
+<h4 id="build-the-library"><a class="toclink" href="#build-the-library">Build the library</a></h4>
+<p>Type</p>
+<div class="codehilite"><pre><span></span><span class="c1"># static-linked library by means of GNU gfortran</span>
+FoBiS.py build -mode stringifor-static-gnu
+
+<span class="c1"># shared-linked library by means of GNU gfortran</span>
+FoBiS.py build -mode stringifor-shared-gnu
+
+<span class="c1"># static-linked library by means of Intel Fortran</span>
+FoBiS.py build -mode stringifor-static-intel
+
+<span class="c1"># shared-linked library by means of Intel Fortran</span>
+FoBiS.py build -mode stringifor-shared-intel
+</pre></div>
+
+
+<p>The library will be built into the directory <code>./lib</code>.</p>
+<h3 id="list-other-fobos-modes"><a class="toclink" href="#list-other-fobos-modes">List other fobos modes</a></h3>
+<p>To list all <em>fobos-provided</em> modes type</p>
+<div class="codehilite"><pre><span></span>→ FoBiS.py build -lmodes
+The fobos file defines the following modes:
+  - <span class="s2">&quot;tests-gnu&quot;</span>
+  - <span class="s2">&quot;tests-gnu-debug&quot;</span>
+  - <span class="s2">&quot;tests-intel&quot;</span>
+  - <span class="s2">&quot;tests-intel-debug&quot;</span>
+  - <span class="s2">&quot;stringifor-static-gnu&quot;</span>
+  - <span class="s2">&quot;stringifor-shared-gnu&quot;</span>
+  - <span class="s2">&quot;stringifor-static-intel&quot;</span>
+  - <span class="s2">&quot;stringifor-shared-intel&quot;</span>
+</pre></div>
+
+
+<p>It is worth to note that the first mode is the one automatically called by <code>FoBiS.py build</code>.</p>
+<h3 id="build-by-means-of-gnu-make"><a class="toclink" href="#build-by-means-of-gnu-make">Build by means of GNU Make</a></h3>
+<p>The provided makefile support only Intel Fortran Compiler and it has two main building rules:</p>
+<ul>
+<li>build the (static linked) library;</li>
+<li>build the tests suite.</li>
+</ul>
+<p>To build the library type</p>
+<div class="codehilite"><pre><span></span>make
+</pre></div>
+
+
+<p>The library will be built into the directory <code>./lib</code>.</p>
+<p>To build the tests suite type</p>
+<div class="codehilite"><pre><span></span>make <span class="nv">TESTS</span><span class="o">=</span>yes
+</pre></div>
+
+
+<p>The tests will be built into the directory <code>./exe</code>.</p>
+<h3 id="build-by-means-of-cmake"><a class="toclink" href="#build-by-means-of-cmake">Build by means of CMake</a></h3>
+<p>To be done.</p>
 <p>Go to <a href="#top">Top</a></p>
+<hr>
 <h2 id="documentation"><a class="toclink" href="#documentation">Documentation</a></h2>
 <p>The StringiFor documentation is mainly contained into this file (it has its own <a href="https://github.com/szaghi/StringiFor/wiki">wiki</a> with some less important documents). Detailed documentation of the API is contained into the <a href="http://szaghi.github.io/StringiFor/index.html">GitHub Pages</a> that can also be created locally by means of <a href="https://github.com/cmacmackin/ford">ford tool</a>.</p>
 <ul>
@@ -185,7 +361,7 @@
 <li><a href="#string_manipulation">String manipulation</a></li>
 <li><a href="#numbers_handling">Numbers handling</a></li>
 <li><a href="#complex_scenario">Complex scenario</a></li>
-<li><a href="#methods_api">Methods API</a></li>
+<li><a href="#methods-api">Methods API</a></li>
 </ul>
 <hr>
 <h3 id="a-taste-of-stringifor"><a class="toclink" href="#a-taste-of-stringifor">A Taste of StringiFor</a></h3>
@@ -271,65 +447,661 @@
 </pre></div>
 
 
+<h5 id="a-naive-csv-parser"><a class="toclink" href="#a-naive-csv-parser">A naive CSV parser</a></h5>
+<p>This is just a provocation, but with StringiFor it is easy to develop a naive CSV parser. Let us assume we want to parse a cars-price database as the following one</p>
+<div class="codehilite"><pre><span></span>Year, Make, Model, Description, Price
+1997, Ford, E350   , ac abs moon, 3000.00
+1999, Chevy, Venture &quot;Extended Edition&quot;  , , 4900.00
+1999, Chevy, Venture &quot;Extended Edition Very Large&quot;, , 5000.00
+</pre></div>
+
+
+<p>Well, parsing it and handling its cells values is very easy by means of StringiFor</p>
+<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
+
+<span class="k">implicit none</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">csv</span>            <span class="c">!&lt; The CSV file as a single stream.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">rows</span><span class="p">(:)</span>        <span class="c">!&lt; The CSV table rows.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">columns</span><span class="p">(:)</span>     <span class="c">!&lt; The CSV table columns.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">cells</span><span class="p">(:,:)</span>     <span class="c">!&lt; The CSV table cells.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">most_expensive</span> <span class="c">!&lt; The most expensive car.</span>
+<span class="kt">real</span><span class="p">(</span><span class="n">R8P</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">highest_cost</span>   <span class="c">!&lt; The highest cost.</span>
+<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">rows_number</span>    <span class="c">!&lt; The CSV file rows number.</span>
+<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">columns_number</span> <span class="c">!&lt; The CSV file columns number.</span>
+<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">r</span>              <span class="c">!&lt; Counter.</span>
+
+<span class="c">! parsing the just created CSV file: all done 9 statements!</span>
+<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">read_file</span><span class="p">(</span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">)</span>              <span class="c">! read the CSV file as a single stream</span>
+<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>   <span class="c">! get the CSV file rows</span>
+<span class="n">rows_number</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                  <span class="c">! get the CSV file rows number</span>
+<span class="n">columns_number</span> <span class="o">=</span> <span class="n">rows</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="nb">count</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>          <span class="c">! get the CSV file columns number</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">rows_number</span><span class="p">))</span> <span class="c">! allocate the CSV file cells</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rows_number</span>                              <span class="c">! parse all cells</span>
+  <span class="k">call </span><span class="n">rows</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>    <span class="c">! get current columns</span>
+  <span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">columns</span>           <span class="c">! save current columns into cells</span>
+<span class="n">enddo</span>
+
+<span class="c">! now you can do whatever with your parsed data</span>
+<span class="c">! print the table in markdown syntax</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;A markdown-formatted table&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;----&#39;</span> <span class="c">! re-use columns for printing separators</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rows_number</span>
+  <span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span> <span class="n">r</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="n">enddo</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+<span class="c">! find the most expensive car</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;Searching for the most expensive car&#39;</span>
+<span class="n">most_expensive</span> <span class="o">=</span> <span class="s1">&#39;unknown&#39;</span>
+<span class="n">highest_cost</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1._R8P</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rows_number</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">highest_cost</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">    </span><span class="n">highest_cost</span> <span class="o">=</span> <span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span>
+    <span class="n">most_expensive</span> <span class="o">=</span> <span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="p">[</span><span class="n">cells</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="n">cells</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">r</span><span class="p">)],</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+  <span class="n">endif</span>
+<span class="n">enddo</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;The most expensive car is : &#39;</span><span class="o">//</span><span class="n">most_expensive</span>
+</pre></div>
+
+
+<p>See the test program <a href="https://github.com/szaghi/StringiFor/blob/master/src/tests/csv_naive_parser.f90">csv_naive_parser</a> for a working example.</p>
+<p>Obviously, this is a naive parser without any robustness, but it proves the usefulness of the StringiFor approach.</p>
 <hr>
 <h3 id="methods-api"><a class="toclink" href="#methods-api">Methods API</a></h3>
 <p>In the following all the methods of <code>string</code> are listed with a brief description of their aim. The hyperlinks bring you to the full API explained into the GH pages.</p>
+<h5 id="builtins-replacements"><a class="toclink" href="#builtins-replacements">builtins replacements</a></h5>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#adjustl">adjustl </a></td>
+<td>adjustl replacement</td>
+</tr>
+<tr>
+<td><a href="#adjustr">adjustr </a></td>
+<td>adjustr replacement</td>
+</tr>
+<tr>
+<td><a href="#count">count   </a></td>
+<td>count replacement</td>
+</tr>
+<tr>
+<td><a href="#index">index   </a></td>
+<td>index replacement</td>
+</tr>
+<tr>
+<td><a href="#len">len     </a></td>
+<td>len replacement</td>
+</tr>
+<tr>
+<td><a href="#len_trim">len_trim</a></td>
+<td>len_trim replacement</td>
+</tr>
+<tr>
+<td><a href="#repeat">repeat  </a></td>
+<td>repeat replacement</td>
+</tr>
+<tr>
+<td><a href="#scan">scan    </a></td>
+<td>scan replacement</td>
+</tr>
+<tr>
+<td><a href="#trim">trim    </a></td>
+<td>trim replacement</td>
+</tr>
+<tr>
+<td><a href="#verify">verify  </a></td>
+<td>verify replacement</td>
+</tr>
+</tbody>
+</table>
+<h5 id="auxiliary-methods"><a class="toclink" href="#auxiliary-methods">auxiliary methods</a></h5>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://szaghi.github.io/StringiFor/proc/basedir.html">basedir    </a></td>
+<td>return the base directory name of a string containing a file name</td>
+</tr>
+<tr>
+<td><a href="http://szaghi.github.io/StringiFor/proc/basename.html">basename   </a></td>
+<td>return the base file name of a string containing a file name</td>
+</tr>
+<tr>
+<td><a href="http://szaghi.github.io/StringiFor/proc/camelcase.html">camelcase  </a></td>
+<td>return a string with all words capitalized without spaces</td>
+</tr>
+<tr>
+<td><a href="#capitalize">capitalize </a></td>
+<td>return a string with its first character capitalized and the rest lowercased</td>
+</tr>
+<tr>
+<td><a href="#chars">chars      </a></td>
+<td>return the raw characters data</td>
+</tr>
+<tr>
+<td><a href="#decode">decode     </a></td>
+<td>decode string</td>
+</tr>
+<tr>
+<td><a href="#encode">encode     </a></td>
+<td>encode string</td>
+</tr>
+<tr>
+<td><a href="#escape">escape     </a></td>
+<td>escape backslashes (or custom escape character)</td>
+</tr>
+<tr>
+<td><a href="#extension">extension  </a></td>
+<td>return the extension of a string containing a file name</td>
+</tr>
+<tr>
+<td><a href="#fill">fill       </a></td>
+<td>pad string on the left (or right) with zeros (or other char) to fill width</td>
+</tr>
+<tr>
+<td><a href="#free">free       </a></td>
+<td>free dynamic memory</td>
+</tr>
+<tr>
+<td><a href="#insert">insert     </a></td>
+<td>insert substring into string at a specified position</td>
+</tr>
+<tr>
+<td><a href="#join">join       </a></td>
+<td>return a string that is a join of an array of strings or characters</td>
+</tr>
+<tr>
+<td><a href="#lower">lower      </a></td>
+<td>return a string with all lowercase characters</td>
+</tr>
+<tr>
+<td><a href="#partition">partition  </a></td>
+<td>split string at separator and return the 3 parts (before the separator and after)</td>
+</tr>
+<tr>
+<td><a href="#read_file">read_file  </a></td>
+<td>read a file a single string stream</td>
+</tr>
+<tr>
+<td><a href="#read_line">read_line  </a></td>
+<td>read line (record) from a connected unit</td>
+</tr>
+<tr>
+<td><a href="#read_lines">read_lines </a></td>
+<td>read (all) lines (records) from a connected unit as a single ascii stream</td>
+</tr>
+<tr>
+<td><a href="#replace">replace    </a></td>
+<td>return a string with all occurrences of substring old replaced by new</td>
+</tr>
+<tr>
+<td><a href="#reverse">reverse    </a></td>
+<td>return a reversed string</td>
+</tr>
+<tr>
+<td><a href="#search">search     </a></td>
+<td>search for <em>tagged</em> record into string</td>
+</tr>
+<tr>
+<td><a href="#slice">slice      </a></td>
+<td>return the raw characters data sliced</td>
+</tr>
+<tr>
+<td><a href="#snakecase">snakecase  </a></td>
+<td>return a string with all words lowercase separated by <em>_</em></td>
+</tr>
+<tr>
+<td><a href="#split">split      </a></td>
+<td>return a list of substring in the string using sep as the delimiter string</td>
+</tr>
+<tr>
+<td><a href="#startcase">startcase  </a></td>
+<td>return a string with all words capitalized, e.g. title case</td>
+</tr>
+<tr>
+<td><a href="#strip">strip      </a></td>
+<td>return a string with the leading and trailing characters removed</td>
+</tr>
+<tr>
+<td><a href="#swapcase">swapcase   </a></td>
+<td>return a string with uppercase chars converted to lowercase and vice versa</td>
+</tr>
+<tr>
+<td><a href="#to_number">to_number  </a></td>
+<td>cast string to number</td>
+</tr>
+<tr>
+<td><a href="#unescape">unescape   </a></td>
+<td>unescape double backslashes (or custom escaped character)</td>
+</tr>
+<tr>
+<td><a href="#unique">unique     </a></td>
+<td>reduce to one (unique) multiple occurrences of a substring into a string</td>
+</tr>
+<tr>
+<td><a href="#upper">upper      </a></td>
+<td>return a string with all uppercase characters</td>
+</tr>
+<tr>
+<td><a href="#write_file">write_file </a></td>
+<td>write a single string stream into file</td>
+</tr>
+<tr>
+<td><a href="#write_line">write_line </a></td>
+<td>write line (record) to a connected unit</td>
+</tr>
+<tr>
+<td><a href="#write_lines">write_lines</a></td>
+<td>write lines (records) to a connected unit</td>
+</tr>
+</tbody>
+</table>
+<h5 id="inquire-methods"><a class="toclink" href="#inquire-methods">inquire methods</a></h5>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#end_with">end_with    </a></td>
+<td>return true if a string ends with a specified suffix</td>
+</tr>
+<tr>
+<td><a href="#is_allocated">is_allocated</a></td>
+<td>return true if the string is allocated</td>
+</tr>
+<tr>
+<td><a href="#is_digit">is_digit    </a></td>
+<td>return true if all characters in the string are digits</td>
+</tr>
+<tr>
+<td><a href="#is_integer">is_integer  </a></td>
+<td>return true if the string contains an integer</td>
+</tr>
+<tr>
+<td><a href="#is_lower">is_lower    </a></td>
+<td>return true if all characters in the string are lowercase</td>
+</tr>
+<tr>
+<td><a href="#is_number">is_number   </a></td>
+<td>return true if the string contains a number (real or integer)</td>
+</tr>
+<tr>
+<td><a href="#is_real">is_real     </a></td>
+<td>return true if the string contains an real</td>
+</tr>
+<tr>
+<td><a href="#is_upper">is_upper    </a></td>
+<td>return true if all characters in the string are uppercase</td>
+</tr>
+<tr>
+<td><a href="#start_with">start_with  </a></td>
+<td>return true if a string starts with a specified prefix</td>
+</tr>
+</tbody>
+</table>
+<h5 id="operators"><a class="toclink" href="#operators">operators</a></h5>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#assignment">assignment</a></td>
+<td>assignment of string from different inputs</td>
+</tr>
+<tr>
+<td><a href="#//">//        </a></td>
+<td>concatenation resulting in characters for seamless integration</td>
+</tr>
+<tr>
+<td><a href="#.cat.">.cat.     </a></td>
+<td>concatenation resulting in <code>string</code></td>
+</tr>
+<tr>
+<td><a href="#==">==        </a></td>
+<td>equal operator</td>
+</tr>
+<tr>
+<td><a href="#/=">/=        </a></td>
+<td>not equal operator</td>
+</tr>
+<tr>
+<td><a href="#&lt;">&lt;         </a></td>
+<td>lower than operator</td>
+</tr>
+<tr>
+<td><a href="#&lt;=">&lt;=        </a></td>
+<td>lower equal than operator</td>
+</tr>
+<tr>
+<td><a href="#&gt;=">&gt;=        </a></td>
+<td>greater equal than operator</td>
+</tr>
+<tr>
+<td><a href="#&gt;">&gt;         </a></td>
+<td>greater than operator</td>
+</tr>
+</tbody>
+</table>
+<h5 id="io"><a class="toclink" href="#io">IO</a></h5>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#read_formatted">read(formatted)   </a></td>
+<td>formatted input</td>
+</tr>
+<tr>
+<td><a href="#write_formatted">write(formatted)  </a></td>
+<td>formatted output</td>
+</tr>
+<tr>
+<td><a href="#read_unformatted">read(unformatted) </a></td>
+<td>unformatted input</td>
+</tr>
+<tr>
+<td><a href="#write_unformatted">write(unformatted)</a></td>
+<td>unformatted output</td>
+</tr>
+</tbody>
+</table>
+<p>Go to <a href="#top">Top</a></p>
+<hr>
+<h2 id="comparison-to-other-approaches"><a class="toclink" href="#comparison-to-other-approaches">Comparison to other Approaches</a></h2>
+<p>The lack of Fortran support for strings manipulation has promoted different solutions in the past years. Following the classification of Clive Page <a href="#clive-page-talk">[1]</a> we can consider:</p>
 <ul>
-<li>String manipulations &amp; Co.:</li>
-<li><a href="http://szaghi.github.io/StringiFor/proc/basedir.html"><code>basedir</code></a> return the base directory name of a string containing a file name.</li>
-<li><a href="#http://szaghi.github.io/StringiFor/proc/basename.html"><code>basename</code></a> return the base file name of a string containing a file name.</li>
-<li><a href="#http://szaghi.github.io/StringiFor/proc/camelcase.html"><code>camelcase</code></a> return a string with all words capitalized without spaces.</li>
-<li><a href="#capitalize"><code>capitalize</code></a> return a string with its first character capitalized and the rest lowercased.</li>
-<li><a href="#chars"><code>chars</code></a> return the raw characters data.</li>
-<li><a href="#escape"><code>escape</code></a> escape backslashes (or custom escape character).</li>
-<li><a href="#extension"><code>extension</code></a> return the extension of a string containing a file name.</li>
-<li><a href="#fill"><code>fill</code></a> pad string on the left (or right) with zeros (or other char) to fill width.</li>
-<li><a href="#free"><code>free</code></a> free dynamic memory.</li>
-<li><a href="#join"><code>join</code></a> return a string that is a join of an array of strings or characters.</li>
-<li><a href="#lower"><code>lower</code></a> return a string with all lowercase characters.</li>
-<li><a href="#partition"><code>partition</code></a> split string at separator and return the 3 parts (before, the separator and after).</li>
-<li><a href="#replace"><code>replace</code></a> return a string with all occurrences of substring old replaced by new.</li>
-<li><a href="#reverse"><code>reverse</code></a> return a reversed string.</li>
-<li><a href="#search"><code>search</code></a> search for <em>tagged</em> record into string.</li>
-<li><a href="#snakecase"><code>snakecase</code></a> return a string with all words lowercase separated by "_".</li>
-<li><a href="#split"><code>split</code></a> return a list of substring in the string, using sep as the delimiter string.</li>
-<li><a href="#startcase"><code>startcase</code></a> return a string with all words capitalized, e.g. title case.</li>
-<li><a href="#strip"><code>strip</code></a> return a string with the leading and trailing characters removed.</li>
-<li><a href="#swapcase"><code>swapcase</code></a> return a string with uppercase chars converted to lowercase and vice versa.</li>
-<li><a href="#to_number"><code>to_number</code></a> cast string to number.</li>
-<li><a href="#unique"><code>unique</code></a> reduce to one (unique) multiple occurrences of a substring into a string.</li>
-<li><a href="#upper"><code>upper</code></a> return a string with all uppercase characters.</li>
-<li>inquires:</li>
-<li><a href="#end_with"><code>end_with</code></a> return true if a string ends with a specified suffix.</li>
-<li><a href="#is_allocated"><code>is_allocated</code></a> return true if the string is allocated.</li>
-<li><a href="#is_digit"><code>is_digit</code></a> return true if all characters in the string are digits.</li>
-<li><a href="#is_integer"><code>is_integer</code></a> return true if the string contains an integer.</li>
-<li><a href="#is_lower"><code>is_lower</code></a> return true if all characters in the string are lowercase.</li>
-<li><a href="#is_number"><code>is_number</code></a> return true if the string contains a number (real or integer).</li>
-<li><a href="#is_real"><code>is_real</code></a> return true if the string contains an real.</li>
-<li><a href="#is_upper"><code>is_upper</code></a> return true if all characters in the string are uppercase.</li>
-<li><a href="#start_with"><code>start_with</code></a> return true if a string starts with a specified prefix.</li>
-<li>builtins replacements:</li>
-<li><a href="#sadjustl"><code>sadjustl</code></a> adjustl replacement.</li>
-<li><a href="#sadjustr"><code>sadjustr</code></a> adjustr replacement.</li>
-<li><a href="#scount"><code>scount</code></a> count replacement.</li>
-<li><a href="#sindex"><code>sindex</code></a> index replacement.</li>
-<li><a href="#slen"><code>slen</code></a> len replacement.</li>
-<li><a href="#slen_trim"><code>slen_trim</code></a> len_trim replacement.</li>
-<li><a href="#srepeat"><code>srepeat</code></a> repeat replacement.</li>
-<li><a href="#sscan"><code>sscan</code></a> scan replacement.</li>
-<li><a href="#strim"><code>strim</code></a> trim replacement.</li>
-<li><a href="#sverify"><code>sverify</code></a> verify replacement.</li>
-<li>IO:</li>
-<li><a href="#read_formatted"><code>read(formatted)</code></a> formatted input.</li>
-<li><a href="#write_formatted"><code>write(formatted)</code></a> formatted output.</li>
-<li><a href="#read_unformatted"><code>read(unformatted)</code></a> unformatted input.</li>
-<li><a href="#write_unformatted"><code>write(unformatted)</code></a> unformatted output.</li>
-<li>operators:</li>
-<li><a href="#assignment"><code>assignment</code></a> assignment of string from different inputs.</li>
-<li><a href="#//"><code>//</code>        </a> concatenation resulting in characters for seamless integration.
-  <!-- + <a href="#.cat.">klzzwxh:0160     </a> concatenation resulting in <code>string</code>. --></li>
+<li>standard character type;</li>
+<li>deferred-length allocatable character type (standard 2003+);</li>
+<li><code>VARYING_STRING</code> type (standard 90/95+) as defined in ISO/IEC 1539-2:2000 (Varying length character strings).</li>
 </ul>
+<p>Let us compare StringiFor to the previous three approaches. In particular, let us consider Ian Harvey extension of <code>VARYING_STRING</code>, i.e. the <code>aniso_varying_string</code> <a href="#aniso_vstring">[2]</a>.</p>
+<p>Clive Page had pointed out the following issues, among the others:</p>
+<ul>
+<li>fixed (at compile time) string length</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span> <span class="c">! further lengths different from 3 are not allowed</span>
+</pre></div>
+
+
+<ul>
+<li>silent truncation on assignment</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span> <span class="c">! silent trunctation at &#39;abc&#39;</span>
+</pre></div>
+
+
+<ul>
+<li>trim-cluttered code</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">anotherstring</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span>
+<span class="n">anotherstring</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;ilmnopqrst&#39;</span> <span class="c">! trim-cluttering is a necessity</span>
+</pre></div>
+
+
+<ul>
+<li>handle significant trailing spaces</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">anotherstring</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span> <span class="c">! for some reasons you want to keep these trailing white spaces</span>
+<span class="n">anotherstring</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;World&#39;</span> <span class="c">! you need trim because</span>
+                                       <span class="c">! len(astring)==len(anotherstring), but lost the significant</span>
+                                       <span class="c">! trailing spaces...</span>
+</pre></div>
+
+
+<ul>
+<li>different character definition</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span>         <span class="kd">::</span> <span class="n">astring</span><span class="o">*</span><span class="mi">10</span>    <span class="c">! old way</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="kd">::</span> <span class="n">anotherstring</span> <span class="c">! new way</span>
+</pre></div>
+
+
+<ul>
+<li>allocation of array of strings</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">astring</span><span class="p">(:)</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">astring</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="c">! all 100 elements of the array have 10 characters,</span>
+                       <span class="c">! different lengths cannot be declared</span>
+</pre></div>
+
+
+<ul>
+<li>initialization of array of strings</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="c">! the following is illegal</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span> <span class="k">parameter</span> <span class="kd">::</span> <span class="n">day</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Monday&#39;</span><span class="p">,</span>    <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Tuesday&#39;</span><span class="p">,</span>   <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Thursday&#39;</span><span class="p">,</span>  <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Friday&#39;</span><span class="p">,</span>    <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Saturday&#39;</span><span class="p">,</span>  <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Sunday&#39;</span><span class="p">]</span>
+<span class="c">! the following is legal, but cluttered by non significant trailing spaces</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span> <span class="k">parameter</span> <span class="kd">::</span> <span class="n">day</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Monday   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Tuesday  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Thursday &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Friday   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Saturday &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                                         <span class="s1">&#39;Sunday&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<ul>
+<li>IO limitations for non standard character variables</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">astring</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">anotherstring</span>
+<span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">yetanotherstring</span>
+<span class="c">! fully-simple support for standard character variables</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span>
+<span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="n">astring</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span>
+<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="n">astring</span>
+<span class="c">! partial-simple support for standard deferred length-length allocatable character variables</span>
+<span class="c">! care must be placed in input operation...</span>
+<span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="n">anotherstring</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">anotherstring</span>
+<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="n">anotherstring</span>
+<span class="c">! support depends on the implementation of the varying string type</span>
+<span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="n">yetanotherstring</span>
+<span class="k">print</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="n">yetanotherstring</span>
+<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="n">yetanotherstring</span>
+</pre></div>
+
+
+<ul>
+<li>substring notation (slice)  for non standard character variables</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">astring</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">anotherstring</span>
+<span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">yetanotherstring</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span>
+<span class="n">yetanotherstring</span> <span class="o">=</span> <span class="n">astring</span>
+<span class="n">anotherstring</span> <span class="o">=</span> <span class="n">astring</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">)</span>          <span class="c">! allowed</span>
+<span class="n">anotherstring</span> <span class="o">=</span> <span class="n">yetanotherstring</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">)</span> <span class="c">! not allowed</span>
+</pre></div>
+
+
+<ul>
+<li>passing string to procedures expecting standard character argument is <em>complicated</em></li>
+</ul>
+<p>Analyzing the above issues we can agree that deferred-length allocatable character and aniso_varyng_string approaches address many of them, at the cost of introducing some oddies.</p>
+<h4 id="deferred-length-allocatable-character"><a class="toclink" href="#deferred-length-allocatable-character">deferred-length allocatable character</a></h4>
+<p>This approaches addresses all the issues related to the fixed length limitation, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">astring</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">anotherstring</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span>
+<span class="n">anotherstring</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;World&#39;</span> <span class="c">! trailing with spaces of astring correctly handled</span>
+                                 <span class="c">! no need of trim</span>
+</pre></div>
+
+
+<p>However, it has some limitations too. Aside the input operation, the most important (IMHO) are related to arrays of strings handling, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">asetofstring</span><span class="p">(:)</span>
+<span class="k">allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">asetofstring</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c">! all 10 elements must have len=99</span>
+</pre></div>
+
+
+<h4 id="aniso_varying_string"><a class="toclink" href="#aniso_varying_string">aniso_varying_string</a></h4>
+<p>Aniso_varying_string is an implemention of ISO/IEC 1539-2:2000 (Varying length character strings) developed by Ian Harvey that is internally based on a deferred-lenght allocatable character variable: it is essentially a derived type wrapping a deferred-lenght allocatable character. As a consequence, it has all the advantages of the deferred-length allocatable character approach. The wrapping approach addresses the arrays related issues, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">asetofstring</span><span class="p">(:)</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">asetofstring</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c">! all 10 elements can have diffent lengths</span>
+</pre></div>
+
+
+<p>Its major issues are related to IO operations: however, this is addressed by new Fortran support for defined IO for derived type that make more effortless the IO of such an object. The other main issue is the impossibility to use the standard slice notation to access to substring: aniso_varying_string addresses (partially) this issue by public-exposing the wrapped allocatable character of its implementations thus allowing the slicing of it, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
+<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefg&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">chars</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span> <span class="c">! print &#39;bc&#39;</span>
+</pre></div>
+
+
+<h4 id="stringifor_1"><a class="toclink" href="#stringifor_1">StringiFor</a></h4>
+<p>StringiFor shares the same philosophy of aniso_varying_string, thut it has the same pros and cons. However, StringiFor is an Object Oriented Designed class, thus it has some peculiariaties distinguishing it from aniso_varying_string, see <a href="#stringifor-peculiarities">StringiFor Peculiarities</a>.</p>
+<h4 id="comparison-results"><a class="toclink" href="#comparison-results">Comparison results</a></h4>
+<p>The following table summarizes the comparison analysis.</p>
+<table>
+<thead>
+<tr>
+<th>issue</th>
+<th>standard character</th>
+<th>deferred-length allocatable character</th>
+<th>aniso_varying_string</th>
+<th>StringiFor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fixed length</td>
+<td>:cloud:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+</tr>
+<tr>
+<td>silent trunction</td>
+<td>:cloud:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+</tr>
+<tr>
+<td>trim-clutter</td>
+<td>:cloud:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+</tr>
+<tr>
+<td>significant trailing spaces</td>
+<td>:cloud:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+</tr>
+<tr>
+<td>different string definition</td>
+<td>:cloud:</td>
+<td>:cloud:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+</tr>
+<tr>
+<td>array allocatation</td>
+<td>:cloud:</td>
+<td>:cloud:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+</tr>
+<tr>
+<td>array initialization</td>
+<td>:cloud:</td>
+<td>:cloud:</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+</tr>
+<tr>
+<td>IO</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+<td>:partly_sunny:</td>
+<td>:partly_sunny:</td>
+</tr>
+<tr>
+<td>substring (slice) notation</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+<td>:partly_sunny:</td>
+<td>:partly_sunny:</td>
+</tr>
+<tr>
+<td>Fortran builtins</td>
+<td>:sunny:</td>
+<td>:sunny:</td>
+<td>:partly_sunny:</td>
+<td>:partly_sunny:</td>
+</tr>
+</tbody>
+</table>
+<h5 id="legend"><a class="toclink" href="#legend">legend</a></h5>
+<table>
+<thead>
+<tr>
+<th>symbol</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:cloud:</td>
+<td>bad or no support</td>
+</tr>
+<tr>
+<td>:partly_sunny:</td>
+<td>partial support</td>
+</tr>
+<tr>
+<td>:sunny:</td>
+<td>good support</td>
+</tr>
+</tbody>
+</table>
+<h3 id="stringifor-peculiarities"><a class="toclink" href="#stringifor-peculiarities">StringiFor Peculiarities</a></h3>
+<p>StringiFor publics an OOD class, the <code>string</code> object. This class is aimed to address all the issues of the standard character type, as ISO Varying String approaches do, but it is also designed to provide a features-rich string object as you can find on other languages like Python. As a matter of facts, the <em>auxiliary methods</em> added to the <code>string</code> object consitute a long list of new (for Fortraners) string-facilities, allowing you to handle strings effortless (cases-conversion, files-handling, encode/decode, numbers-casting, etc&hellip;), see the complete <a href="#methods-api">API</a>. It is worth to note that StringiFor is a tentative to adopt an fully OOD thus all methods and operators are TBP defined: to use StringiFor you can import only the <code>string</code> type, allowing a sane and robust names space handling. Only in the case you want the Fortran builtins to accept a <code>string</code> instead of a standard character type, e.g. to use <code>index(astring, 'c')</code> seamless with both a <code>type(string) :: astring</code> and a <code>character(99) :: astring</code>, you must use all the StringiFor public objects, including the overloaded interfaces of the Fortran builtins.</p>
+<h4 id="references"><a class="toclink" href="#references">References</a></h4>
+<p>[1]<a name="clive-page-talk"></a> <a href="http://www.fortran.bcs.org/2015/suggestion_string_handling.pdf"><em>Improved String-handling in Fortran</em></a>, Clive Page, October 2015.</p>
+<p>[2]<a name="aniso_vstring"></a> <a href="http://www.megms.com.au/aniso_varying_string.htm"><em>aniso_varying_string</em></a>, Ian Harvey, 2016.</p>
 <p>Go to <a href="#top">Top</a></p>
         </div>
 		  
@@ -378,6 +1150,22 @@
                   
                 
                   
+                    <li><a href='./sourcefile/befor64.f90.html'>befor64.F90</a></li>
+                  
+                
+                  
+                    <li><a href='./sourcefile/befor64.f90%7E2.html'>befor64.F90</a></li>
+                  
+                
+                  
+                    <li><a href='./sourcefile/befor64_pack_data_m.f90.html'>befor64_pack_data_m.F90</a></li>
+                  
+                
+                  
+                    <li><a href='./sourcefile/befor64_pack_data_m.f90%7E2.html'>befor64_pack_data_m.F90</a></li>
+                  
+                
+                  
                     <li><a href='./sourcefile/camelcase.f90.html'>camelcase.f90</a></li>
                   
                 
@@ -390,27 +1178,51 @@
                   
                 
                   
-                    <li><a href='./sourcefile/equal.f90.html'>equal.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/escape.f90.html'>escape.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/extension.f90.html'>extension.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/fill.f90.html'>fill.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/free.f90.html'>free.f90</a></li>
+                    <li><a href='./sourcefile/csv_naive_parser.f90.html'>csv_naive_parser.f90</a></li>
                   
                 
                   
                     <li><a href="./lists/files.html"><em>All source files&hellip;</em></a></li>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
                   
                 
                   
@@ -491,11 +1303,35 @@
               <ul>
                 
                   
+                    <li><a href='./module/befor64%7E2.html'>befor64</a></li>
+                  
+                
+                  
+                    <li><a href='./module/befor64.html'>befor64</a></li>
+                  
+                
+                  
+                    <li><a href='./module/befor64_pack_data_m.html'>befor64_pack_data_m</a></li>
+                  
+                
+                  
+                    <li><a href='./module/befor64_pack_data_m%7E2.html'>befor64_pack_data_m</a></li>
+                  
+                
+                  
                     <li><a href='./module/penf.html'>penf</a></li>
                   
                 
                   
+                    <li><a href='./module/penf%7E3.html'>penf</a></li>
+                  
+                
+                  
                     <li><a href='./module/penf%7E2.html'>penf</a></li>
+                  
+                
+                  
+                    <li><a href='./module/penf_b_size%7E3.html'>penf_b_size</a></li>
                   
                 
                   
@@ -507,23 +1343,21 @@
                   
                 
                   
-                    <li><a href='./module/penf_global_parameters_variables.html'>penf_global_parameters_variables</a></li>
+                    <li><a href="./lists/modules.html"><em>All modules&hellip;</em></a></li>
                   
                 
                   
-                    <li><a href='./module/penf_global_parameters_variables%7E2.html'>penf_global_parameters_variables</a></li>
+                
                   
                 
                   
-                    <li><a href='./module/penf_stringify%7E2.html'>penf_stringify</a></li>
+                
                   
                 
                   
-                    <li><a href='./module/penf_stringify.html'>penf_stringify</a></li>
-                  
                 
                   
-                    <li><a href='./module/stringifor.html'>stringifor</a></li>
+                
                   
                 
               </ul>
@@ -535,47 +1369,555 @@
               <ul>
                 
                   
-                    <li><a href='./proc/basedir.html'>basedir</a></li>
+                    <li><a href='./interface/adjustl.html'>adjustl</a></li>
                   
                 
                   
-                    <li><a href='./proc/basename.html'>basename</a></li>
+                    <li><a href='./interface/adjustr.html'>adjustr</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i1p.html'>bctoi_I1P</a></li>
+                    <li><a href='./proc/autotest.html'>autotest</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i1p%7E2.html'>bctoi_I1P</a></li>
+                    <li><a href='./proc/autotest%7E2.html'>autotest</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i2p.html'>bctoi_I2P</a></li>
+                    <li><a href='./interface/b64_decode.html'>b64_decode</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i2p%7E2.html'>bctoi_I2P</a></li>
+                    <li><a href='./interface/b64_decode%7E2.html'>b64_decode</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i4p.html'>bctoi_I4P</a></li>
+                    <li><a href='./proc/b64_decode_i1.html'>b64_decode_I1</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i4p%7E2.html'>bctoi_I4P</a></li>
+                    <li><a href='./proc/b64_decode_i1%7E2.html'>b64_decode_I1</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i8p.html'>bctoi_I8P</a></li>
+                    <li><a href='./proc/b64_decode_i1_a.html'>b64_decode_I1_a</a></li>
                   
                 
                   
-                    <li><a href='./proc/bctoi_i8p%7E2.html'>bctoi_I8P</a></li>
+                    <li><a href='./proc/b64_decode_i1_a%7E2.html'>b64_decode_I1_a</a></li>
                   
                 
                   
                     <li><a href="./lists/procedures.html"><em>All procedures&hellip;</em></a></li>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
                   
                 
                   
@@ -1065,12 +2407,18 @@
 
     <hr>
     <footer>
-        <div class="row">
+      <div class="row">
         <div class="col-md-4">&copy; 2016 </div>
-	<div class="col-md-4"><span class="text-center"> StringiFor was developed by Stefano Zaghi</span></div>
-        <div class="col-md-4"><span class="pull-right">Documentation generated by <a href="https://github.com/cmacmackin/ford">FORD</a></span></div>
+        <div class="col-md-4"><span class="text-center"> StringiFor was developed by Stefano Zaghi</span></div>
+        <div class="col-md-4">
+          <span class="pull-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </span>
         </div>
-        <br>
+      </div>
+      <br>
     </footer>
     </div> <!-- /container -->
 
@@ -1098,6 +2446,6 @@
         }
       });
     </script>
-    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </body>
 </html>

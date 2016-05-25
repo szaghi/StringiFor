@@ -23,18 +23,18 @@ test_passed = .false.
 acharacter = 'Hello World Hello!'
 anothercharacter = 'llo'
 astring = acharacter
-i = astring%sverify(set=anothercharacter)
+i = astring%verify(set=anothercharacter)
 ic = verify(string=acharacter, set=anothercharacter)
 test_passed(1) = i==ic
 write(stdout, "(A,I2,A,L1)") 'Basic call result: ', i, ' is correct? ', test_passed(1)
 
-i = astring%sverify(set=anothercharacter, back=.true.)
+i = astring%verify(set=anothercharacter, back=.true.)
 ic = verify(string=acharacter, set=anothercharacter, back=.true.)
 test_passed(2) = i==ic
 write(stdout, "(A,I2,A,L1)") 'Back call result: ', i, ' is correct? ', test_passed(2)
 
 anothercharacter = acharacter
-i = astring%sverify(set=anothercharacter, back=.true.)
+i = astring%verify(set=anothercharacter, back=.true.)
 ic = verify(string=acharacter, set=anothercharacter, back=.true.)
 test_passed(3) = i==ic
 write(stdout, "(A,I2,A,L1)") 'Identical strings call result: ', i, ' is correct? ', test_passed(3)

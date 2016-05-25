@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	 
+	 <meta name="description" content="Strings Fortran Manipulator, yet another strings Fortran module">
+    
+    <meta name="author" content="Chris MacMackin" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>csv_naive_parser &ndash; StringiFor</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">StringiFor </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+				
+                
+            <li><a href="../lists/files.html">Source Files</a></li>
+				
+				
+            <li><a href="../lists/modules.html">Modules</a></li>
+				
+				
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+				
+								
+            <li><a href="../lists/types.html">Derived Types</a></li>
+				
+				
+            <li><a href="../lists/programs.html">Programs</a></li>
+				
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>csv_naive_parser 
+    <small>Program</small>
+    
+    </h1>
+	 
+<div class="row">
+<div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+    <li><i class="fa fa-code"></i><a href="../src/csv_naive_parser.f90"> Source File</a></li>
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+     <li><a href='../sourcefile/csv_naive_parser.f90.html'>csv_naive_parser.f90</a></li>
+  
+     <li class="active">csv_naive_parser</li>
+  </ol>
+</div>
+</div>
+</div>
+    
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-3">
+    
+<div id="sidebar">
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars">Variables</a></h3></div>
+    <div id="vars" class="panel-collapse collapse">
+      <div class="list-group">
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-csv">csv</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-rows">rows</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-columns">columns</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-cells">cells</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-lines%7E7">lines</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-most_expensive">most_expensive</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-highest_cost">highest_cost</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-rows_number">rows_number</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-columns_number">columns_number</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-r%7E2">r</a>
+        
+        <a class="list-group-item" href="../program/csv_naive_parser.html#variable-test_passed%7E49">test_passed</a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+    <div class="list-group">
+      <a class="list-group-item" href="../program/csv_naive_parser.html#src">csv_naive_parser</a>
+    </div>
+  </div>
+  
+  <hr>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allprogs">All Programs</a></h3></div>
+    <div id="allprogs" class="panel-collapse collapse">
+        <div class="list-group">
+          
+          <a class="list-group-item" href="../program/assignments.html">assignments</a>
+          
+          <a class="list-group-item" href="../program/basename_dir.html">basename_dir</a>
+          
+          <a class="list-group-item" href="../program/camelcase.html">camelcase</a>
+          
+          <a class="list-group-item" href="../program/capitalize.html">capitalize</a>
+          
+          <a class="list-group-item" href="../program/concatenation.html">concatenation</a>
+          
+          <a class="list-group-item" href="../program/count_string.html">count_string</a>
+          
+          <a class="list-group-item" href="../program/csv_naive_parser.html">csv_naive_parser</a>
+          
+          <a class="list-group-item" href="../program/decode.html">decode</a>
+          
+          <a class="list-group-item" href="../program/encode.html">encode</a>
+          
+          <a class="list-group-item" href="../program/equal.html">equal</a>
+          
+          <a class="list-group-item" href="../program/escape.html">escape</a>
+          
+          <a class="list-group-item" href="../program/extension.html">extension</a>
+          
+          <a class="list-group-item" href="../program/fill.html">fill</a>
+          
+          <a class="list-group-item" href="../program/free.html">free</a>
+          
+          <a class="list-group-item" href="../program/greater_equal_than.html">greater_equal_than</a>
+          
+          <a class="list-group-item" href="../program/greater_than.html">greater_than</a>
+          
+          <a class="list-group-item" href="../program/insert.html">insert</a>
+          
+          <a class="list-group-item" href="../program/io_basic.html">io_basic</a>
+          
+          <a class="list-group-item" href="../program/io_formatted.html">io_formatted</a>
+          
+          <a class="list-group-item" href="../program/is_digit.html">is_digit</a>
+          
+          <a class="list-group-item" href="../program/is_integer.html">is_integer</a>
+          
+          <a class="list-group-item" href="../program/is_number.html">is_number</a>
+          
+          <a class="list-group-item" href="../program/is_real.html">is_real</a>
+          
+          <a class="list-group-item" href="../program/join.html">join</a>
+          
+          <a class="list-group-item" href="../program/lower_equal_than.html">lower_equal_than</a>
+          
+          <a class="list-group-item" href="../program/lower_than.html">lower_than</a>
+          
+          <a class="list-group-item" href="../program/not_equal.html">not_equal</a>
+          
+          <a class="list-group-item" href="../program/partition.html">partition</a>
+          
+          <a class="list-group-item" href="../program/read_file.html">read_file</a>
+          
+          <a class="list-group-item" href="../program/read_line.html">read_line</a>
+          
+          <a class="list-group-item" href="../program/read_lines.html">read_lines</a>
+          
+          <a class="list-group-item" href="../program/replace.html">replace</a>
+          
+          <a class="list-group-item" href="../program/reverse.html">reverse</a>
+          
+          <a class="list-group-item" href="../program/sadjustlr.html">sadjustlr</a>
+          
+          <a class="list-group-item" href="../program/search.html">search</a>
+          
+          <a class="list-group-item" href="../program/sindex.html">sindex</a>
+          
+          <a class="list-group-item" href="../program/slen.html">slen</a>
+          
+          <a class="list-group-item" href="../program/slice.html">slice</a>
+          
+          <a class="list-group-item" href="../program/snakecase.html">snakecase</a>
+          
+          <a class="list-group-item" href="../program/split.html">split</a>
+          
+          <a class="list-group-item" href="../program/srepeat.html">srepeat</a>
+          
+          <a class="list-group-item" href="../program/sscan.html">sscan</a>
+          
+          <a class="list-group-item" href="../program/start_end.html">start_end</a>
+          
+          <a class="list-group-item" href="../program/startcase.html">startcase</a>
+          
+          <a class="list-group-item" href="../program/strim.html">strim</a>
+          
+          <a class="list-group-item" href="../program/strip.html">strip</a>
+          
+          <a class="list-group-item" href="../program/sverify.html">sverify</a>
+          
+          <a class="list-group-item" href="../program/swapcase.html">swapcase</a>
+          
+          <a class="list-group-item" href="../program/test_all.html">test_all</a>
+          
+          <a class="list-group-item" href="../program/test_all%7E2.html">test_all</a>
+          
+          <a class="list-group-item" href="../program/test_driver.html">Test_Driver</a>
+          
+          <a class="list-group-item" href="../program/to_number.html">to_number</a>
+          
+          <a class="list-group-item" href="../program/unescape.html">unescape</a>
+          
+          <a class="list-group-item" href="../program/unique.html">unique</a>
+          
+          <a class="list-group-item" href="../program/upper_lower.html">upper_lower</a>
+          
+          <a class="list-group-item" href="../program/write_file.html">write_file</a>
+          
+          <a class="list-group-item" href="../program/write_lines.html">write_lines</a>
+          
+        </div>
+    </div>
+  </div>
+  
+</div>
+
+    </div>
+    
+    <div class="col-lg-9" id='text'>
+    
+  
+    <ul class="list-inline">
+      <li><h4>Uses:</h4></li>
+      
+      <li><a href='../module/stringifor.html'>stringifor</a></li>
+      
+    </ul>
+  
+
+    
+                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: program~~csv_naive_parser~~UsesGraph Pages: 1 -->
+<svg id="programcsv_naive_parserUsesGraph" width="641pt" height="82pt"
+ viewBox="0.00 0.00 641.00 81.93" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="program~~csv_naive_parser~~UsesGraph" class="graph" transform="scale(0.575404 0.575404) rotate(0) translate(4 138.394)">
+<title>program~~csv_naive_parser~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-138.394 1110,-138.394 1110,4 -4,4"/>
+<!-- program~csv_naive_parser -->
+<g id="program~~csv_naive_parser~~UsesGraph_node1" class="node"><title>program~csv_naive_parser</title>
+<polygon fill="none" stroke="black" points="1105.5,-124 1008.5,-124 1008.5,-100 1105.5,-100 1105.5,-124"/>
+<text text-anchor="middle" x="1057" y="-109.6" font-family="Helvetica,sans-Serif" font-size="10.50">csv_naive_parser</text>
+</g>
+<!-- module~stringifor -->
+<g id="program~~csv_naive_parser~~UsesGraph_node2" class="node"><title>module~stringifor</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node2"><a xlink:href="../module/stringifor.html" xlink:title="stringifor">
+<polygon fill="#337ab7" stroke="#337ab7" points="972,-124 918,-124 918,-100 972,-100 972,-124"/>
+<text text-anchor="middle" x="945" y="-109.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~csv_naive_parser -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge15" class="edge"><title>module~stringifor&#45;&gt;program~csv_naive_parser</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M972.068,-112C979.916,-112 988.861,-112 997.919,-112"/>
+<polygon fill="#000000" stroke="#000000" points="998.14,-115.5 1008.14,-112 998.14,-108.5 998.14,-115.5"/>
+</g>
+<!-- module~stringifor_string_t -->
+<g id="program~~csv_naive_parser~~UsesGraph_node3" class="node"><title>module~stringifor_string_t</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node3"><a xlink:href="../module/stringifor_string_t.html" xlink:title="stringifor_string_t">
+<polygon fill="#337ab7" stroke="#337ab7" points="881.5,-104 786.5,-104 786.5,-80 881.5,-80 881.5,-104"/>
+<text text-anchor="middle" x="834" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor_string_t&#45;&gt;module~stringifor -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge13" class="edge"><title>module~stringifor_string_t&#45;&gt;module~stringifor</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M881.542,-100.54C890.345,-102.155 899.432,-103.822 907.856,-105.368"/>
+<polygon fill="#000000" stroke="#000000" points="907.271,-108.819 917.739,-107.181 908.535,-101.934 907.271,-108.819"/>
+</g>
+<!-- module~penf -->
+<g id="program~~csv_naive_parser~~UsesGraph_node4" class="node"><title>module~penf</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node4"><a xlink:href="../module/penf.html" xlink:title="penf">
+<polygon fill="#337ab7" stroke="#337ab7" points="504,-124 450,-124 450,-100 504,-100 504,-124"/>
+<text text-anchor="middle" x="477" y="-109.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf</text>
+</a>
+</g>
+</g>
+<!-- module~penf&#45;&gt;module~stringifor -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge14" class="edge"><title>module~penf&#45;&gt;module~stringifor</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M724,-132C788.757,-126.213 864.221,-119.32 907.816,-115.324"/>
+<polygon fill="#000000" stroke="#000000" points="908.287,-118.795 917.926,-114.396 907.648,-111.824 908.287,-118.795"/>
+</g>
+<!-- module~penf&#45;&gt;module~stringifor_string_t -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge5" class="edge"><title>module~penf&#45;&gt;module~stringifor_string_t</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M601,-132C654.778,-132 668.436,-136.787 722,-132"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M724,-132C751.335,-129.557 780.425,-118.399 801.671,-108.486"/>
+<polygon fill="#000000" stroke="#000000" points="803.364,-111.556 810.847,-104.056 800.32,-105.252 803.364,-111.556"/>
+</g>
+<!-- module~befor64~2 -->
+<g id="program~~csv_naive_parser~~UsesGraph_node5" class="node"><title>module~befor64~2</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node5"><a xlink:href="../module/befor64%7E2.html" xlink:title="befor64">
+<polygon fill="#337ab7" stroke="#337ab7" points="750,-104 696,-104 696,-80 750,-80 750,-104"/>
+<text text-anchor="middle" x="723" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">befor64</text>
+</a>
+</g>
+</g>
+<!-- module~penf&#45;&gt;module~befor64~2 -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge3" class="edge"><title>module~penf&#45;&gt;module~befor64~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M504.23,-118.883C528.601,-124.668 565.997,-132 599,-132"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M601,-132C632.697,-132 666.811,-119.473 690.711,-108.44"/>
+<polygon fill="#000000" stroke="#000000" points="692.469,-111.479 699.974,-104.001 689.444,-105.166 692.469,-111.479"/>
+</g>
+<!-- module~befor64_pack_data_m -->
+<g id="program~~csv_naive_parser~~UsesGraph_node6" class="node"><title>module~befor64_pack_data_m</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node6"><a xlink:href="../module/befor64_pack_data_m.html" xlink:title="befor64_pack_data_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="660,-104 540,-104 540,-80 660,-80 660,-104"/>
+<text text-anchor="middle" x="600" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">befor64_pack_data_m</text>
+</a>
+</g>
+</g>
+<!-- module~penf&#45;&gt;module~befor64_pack_data_m -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge1" class="edge"><title>module~penf&#45;&gt;module~befor64_pack_data_m</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M504.255,-107.66C511.83,-106.408 520.473,-104.98 529.386,-103.506"/>
+<polygon fill="#000000" stroke="#000000" points="530.227,-106.915 539.522,-101.831 529.085,-100.009 530.227,-106.915"/>
+</g>
+<!-- module~befor64~2&#45;&gt;module~stringifor_string_t -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge4" class="edge"><title>module~befor64~2&#45;&gt;module~stringifor_string_t</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M750.108,-92C757.979,-92 766.946,-92 776.005,-92"/>
+<polygon fill="#000000" stroke="#000000" points="776.218,-95.5001 786.218,-92 776.218,-88.5001 776.218,-95.5001"/>
+</g>
+<!-- module~befor64_pack_data_m&#45;&gt;module~befor64~2 -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge2" class="edge"><title>module~befor64_pack_data_m&#45;&gt;module~befor64~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M660.082,-92C668.842,-92 677.641,-92 685.745,-92"/>
+<polygon fill="#000000" stroke="#000000" points="685.936,-95.5001 695.936,-92 685.936,-88.5001 685.936,-95.5001"/>
+</g>
+<!-- module~penf_global_parameters_variables -->
+<g id="program~~csv_naive_parser~~UsesGraph_node7" class="node"><title>module~penf_global_parameters_variables</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node7"><a xlink:href="../module/penf_global_parameters_variables.html" xlink:title="penf_global_parameters_variables">
+<polygon fill="#337ab7" stroke="#337ab7" points="178,-104 1.42109e-14,-104 1.42109e-14,-80 178,-80 178,-104"/>
+<text text-anchor="middle" x="89" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_global_parameters_variables</text>
+</a>
+</g>
+</g>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge10" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M141.186,-104.001C198,-116.192 292.567,-133.137 375,-132"/>
+</g>
+<!-- module~penf_b_size~3 -->
+<g id="program~~csv_naive_parser~~UsesGraph_node8" class="node"><title>module~penf_b_size~3</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node8"><a xlink:href="../module/penf_b_size%7E3.html" xlink:title="penf_b_size">
+<polygon fill="#337ab7" stroke="#337ab7" points="293,-104 223,-104 223,-80 293,-80 293,-104"/>
+<text text-anchor="middle" x="258" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_b_size</text>
+</a>
+</g>
+</g>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_b_size~3 -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge6" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_b_size~3</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M178.39,-92C190.243,-92 201.964,-92 212.594,-92"/>
+<polygon fill="#000000" stroke="#000000" points="212.824,-95.5001 222.824,-92 212.824,-88.5001 212.824,-95.5001"/>
+</g>
+<!-- module~penf_stringify -->
+<g id="program~~csv_naive_parser~~UsesGraph_node9" class="node"><title>module~penf_stringify</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node9"><a xlink:href="../module/penf_stringify.html" xlink:title="penf_stringify">
+<polygon fill="#337ab7" stroke="#337ab7" points="414,-84 338,-84 338,-60 414,-60 414,-84"/>
+<text text-anchor="middle" x="376" y="-69.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_stringify</text>
+</a>
+</g>
+</g>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_stringify -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge7" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M148.718,-79.9805C169.272,-76.3261 192.569,-72.8019 214,-71 252.974,-67.7231 262.89,-70.7321 302,-71 310.29,-71.0568 319.109,-71.1498 327.646,-71.2569"/>
+<polygon fill="#000000" stroke="#000000" points="327.818,-74.7594 337.864,-71.393 327.912,-67.76 327.818,-74.7594"/>
+</g>
+<!-- module~penf_b_size~3&#45;&gt;module~penf -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge11" class="edge"><title>module~penf_b_size~3&#45;&gt;module~penf</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M280.058,-104.191C302.746,-116.132 340.28,-132.479 375,-132"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M377,-132C398.155,-131.708 421.36,-127.249 439.984,-122.615"/>
+<polygon fill="#000000" stroke="#000000" points="441.025,-125.96 449.817,-120.048 439.257,-119.187 441.025,-125.96"/>
+</g>
+<!-- module~penf_b_size~3&#45;&gt;module~penf_stringify -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge9" class="edge"><title>module~penf_b_size~3&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M293.176,-86.1075C304.031,-84.236 316.233,-82.1322 327.836,-80.1318"/>
+<polygon fill="#000000" stroke="#000000" points="328.568,-83.5572 337.828,-78.4089 327.379,-76.659 328.568,-83.5572"/>
+</g>
+<!-- module~penf_stringify&#45;&gt;module~penf -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge12" class="edge"><title>module~penf_stringify&#45;&gt;module~penf</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M406.703,-84.0013C417.276,-88.273 429.29,-93.1274 440.312,-97.5807"/>
+<polygon fill="#000000" stroke="#000000" points="439.098,-100.865 449.681,-101.366 441.72,-94.3747 439.098,-100.865"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="program~~csv_naive_parser~~UsesGraph_node10" class="node"><title>iso_fortran_env</title>
+<g id="a_program~~csv_naive_parser~~UsesGraph_node10"><a xlink:href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="301.5,-24 214.5,-24 214.5,-0 301.5,-0 301.5,-24"/>
+<text text-anchor="middle" x="258" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- iso_fortran_env&#45;&gt;module~penf_stringify -->
+<g id="program~~csv_naive_parser~~UsesGraph_edge8" class="edge"><title>iso_fortran_env&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M282.474,-24.1419C299.77,-33.0878 323.505,-45.3646 342.605,-55.244"/>
+<polygon fill="#000000" stroke="#000000" points="341.07,-58.3906 351.561,-59.8762 344.286,-52.1731 341.07,-58.3906"/>
+</g>
+</g>
+</svg>
+</div>
+                <script>var panprogramcsv_naive_parserUsesGraph = svgPanZoom('#programcsv_naive_parserUsesGraph', {
+                    zoomEnabled: true,
+                    controlIconsEnabled: true,
+                    fit: true,
+                    center: true,});
+                    </script>
+                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                      </div>
+                      <div class="modal-body">
+                        
+Nodes of different colours represent the following:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="26pt"
+ viewBox="0.00 0.00 641.00 26.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.812421 0.812421) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28 785,-28 785,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node"><title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,-0 54,-0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node"><title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.25,-24 72.75,-24 72.75,-0 139.25,-0 139.25,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Type -->
+<g id="node3" class="node"><title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="212,-24 158,-24 158,-0 212,-0 212,-24"/>
+<text text-anchor="middle" x="185" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- Subroutine -->
+<g id="node4" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="294,-24 230,-24 230,-0 294,-0 294,-24"/>
+<text text-anchor="middle" x="262" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node5" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="366,-24 312,-24 312,-0 366,-0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node6" class="node"><title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="439.25,-24 384.75,-24 384.75,-0 439.25,-0 439.25,-24"/>
+<text text-anchor="middle" x="412" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node7" class="node"><title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="594,-24 458,-24 458,-0 594,-0 594,-24"/>
+<text text-anchor="middle" x="526" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node8" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="666,-24 612,-24 612,-0 666,-0 666,-24"/>
+<text text-anchor="middle" x="639" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node9" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="781.25,-24 684.75,-24 684.75,-0 781.25,-0 781.25,-24"/>
+<text text-anchor="middle" x="733" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+Where possible, edges connecting nodes are given different colours to make them
+easier to distinguish in large graphs.
+<h5>Module Graph</h5>
+<p>Solid arrows point from a parent (sub)module to the submodule which is
+descended from it. Dashed arrows point from a module being used to the
+module using it.</p>
+<h5>Type Graph</h5>
+<p>Solid arrows point from one derived type to another which extends
+(inherits from) it. Dashed arrows point from a derived type to another
+type containing it as a components, with a label listing the name(s) of
+said component(s).</p>
+<h5>Call Graph</h5>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+    <br><br>
+    <p>StringiFor <code>csv_naive_parser</code> test.</p>
+<p>This is an example of th usefulness of StringiFor.</p>
+    
+     <h3>Calls</h3>
+     
+                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: program~~csv_naive_parser~~CallsGraph Pages: 1 -->
+<svg id="programcsv_naive_parserCallsGraph" width="298pt" height="32pt"
+ viewBox="0.00 0.00 298.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="program~~csv_naive_parser~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>program~~csv_naive_parser~~CallsGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28 294,-28 294,4 -4,4"/>
+<!-- program~csv_naive_parser -->
+<g id="program~~csv_naive_parser~~CallsGraph_node1" class="node"><title>program~csv_naive_parser</title>
+<polygon fill="none" stroke="black" points="97.5,-24 0.5,-24 0.5,-0 97.5,-0 97.5,-24"/>
+<text text-anchor="middle" x="49" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">csv_naive_parser</text>
+</g>
+<!-- proc~write_file -->
+<g id="program~~csv_naive_parser~~CallsGraph_node2" class="node"><title>proc~write_file</title>
+<g id="a_program~~csv_naive_parser~~CallsGraph_node2"><a xlink:href="../proc/write_file.html" xlink:title="write_file">
+<polygon fill="#d9534f" stroke="#d9534f" points="189.5,-24 134.5,-24 134.5,-0 189.5,-0 189.5,-24"/>
+<text text-anchor="middle" x="162" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_file</text>
+</a>
+</g>
+</g>
+<!-- program~csv_naive_parser&#45;&gt;proc~write_file -->
+<g id="program~~csv_naive_parser~~CallsGraph_edge2" class="edge"><title>program~csv_naive_parser&#45;&gt;proc~write_file</title>
+<path fill="none" stroke="#000000" d="M97.7182,-12C106.658,-12 115.872,-12 124.409,-12"/>
+<polygon fill="#000000" stroke="#000000" points="124.422,-15.5001 134.422,-12 124.422,-8.5001 124.422,-15.5001"/>
+</g>
+<!-- proc~write_lines -->
+<g id="program~~csv_naive_parser~~CallsGraph_node3" class="node"><title>proc~write_lines</title>
+<g id="a_program~~csv_naive_parser~~CallsGraph_node3"><a xlink:href="../proc/write_lines.html" xlink:title="write_lines">
+<polygon fill="#d9534f" stroke="#d9534f" points="289.5,-24 226.5,-24 226.5,-0 289.5,-0 289.5,-24"/>
+<text text-anchor="middle" x="258" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_lines</text>
+</a>
+</g>
+</g>
+<!-- proc~write_file&#45;&gt;proc~write_lines -->
+<g id="program~~csv_naive_parser~~CallsGraph_edge1" class="edge"><title>proc~write_file&#45;&gt;proc~write_lines</title>
+<path fill="none" stroke="#000000" d="M189.685,-12C197.878,-12 207.09,-12 216.009,-12"/>
+<polygon fill="#000000" stroke="#000000" points="216.266,-15.5001 226.266,-12 216.266,-8.5001 216.266,-15.5001"/>
+</g>
+</g>
+</svg>
+</div>
+                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                      </div>
+                      <div class="modal-body">
+                        
+Nodes of different colours represent the following:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="26pt"
+ viewBox="0.00 0.00 641.00 26.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.812421 0.812421) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28 785,-28 785,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node"><title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,-0 54,-0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node"><title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.25,-24 72.75,-24 72.75,-0 139.25,-0 139.25,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Type -->
+<g id="node3" class="node"><title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="212,-24 158,-24 158,-0 212,-0 212,-24"/>
+<text text-anchor="middle" x="185" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- Subroutine -->
+<g id="node4" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="294,-24 230,-24 230,-0 294,-0 294,-24"/>
+<text text-anchor="middle" x="262" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node5" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="366,-24 312,-24 312,-0 366,-0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node6" class="node"><title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="439.25,-24 384.75,-24 384.75,-0 439.25,-0 439.25,-24"/>
+<text text-anchor="middle" x="412" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node7" class="node"><title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="594,-24 458,-24 458,-0 594,-0 594,-24"/>
+<text text-anchor="middle" x="526" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node8" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="666,-24 612,-24 612,-0 666,-0 666,-24"/>
+<text text-anchor="middle" x="639" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node9" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="781.25,-24 684.75,-24 684.75,-0 781.25,-0 781.25,-24"/>
+<text text-anchor="middle" x="733" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+Where possible, edges connecting nodes are given different colours to make them
+easier to distinguish in large graphs.
+<h5>Module Graph</h5>
+<p>Solid arrows point from a parent (sub)module to the submodule which is
+descended from it. Dashed arrows point from a module being used to the
+module using it.</p>
+<h5>Type Graph</h5>
+<p>Solid arrows point from one derived type to another which extends
+(inherits from) it. Dashed arrows point from a derived type to another
+type containing it as a components, with a label listing the name(s) of
+said component(s).</p>
+<h5>Call Graph</h5>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+     
+    <br>
+
+    
+    <section>
+    <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-csv"></span>type(<a href='../type/string.html'>string</a>)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>csv</strong></td><td></td><td></td><td><p>The CSV file as a single stream.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-rows"></span>type(<a href='../type/string.html'>string</a>),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>rows</strong>(:)</td><td></td><td></td><td><p>The CSV table rows.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-columns"></span>type(<a href='../type/string.html'>string</a>),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>columns</strong>(:)</td><td></td><td></td><td><p>The CSV table columns.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-cells"></span>type(<a href='../type/string.html'>string</a>),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>cells</strong>(:,:)</td><td></td><td></td><td><p>The CSV table cells.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-lines%7E7"></span>type(<a href='../type/string.html'>string</a>)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>lines</strong>(4)</td><td></td><td></td><td><p>The CSV file lines.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-most_expensive"></span>type(<a href='../type/string.html'>string</a>)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>most_expensive</strong></td><td></td><td></td><td><p>The most expensive car.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-highest_cost"></span>real(kind=R8P)</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>highest_cost</strong></td><td></td><td></td><td><p>The highest cost.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-rows_number"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>rows_number</strong></td><td></td><td></td><td><p>The CSV file rows number.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-columns_number"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>columns_number</strong></td><td></td><td></td><td><p>The CSV file columns number.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-r%7E2"></span>integer</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>r</strong></td><td></td><td></td><td><p>Counter.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-test_passed%7E49"></span>logical</td>
+  
+  
+  <td></td><td>::</td>
+  <td><strong>test_passed</strong>(1)</td><td></td><td></td><td><p>List of passed tests.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2 id="src">Source Code</h2>
+    <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">csv_naive_parser</span>
+<span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="c">!&lt; StringiFor `csv_naive_parser` test.</span>
+<span class="c">!&lt;</span>
+<span class="c">!&lt; This is an example of th usefulness of StringiFor.</span>
+<span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="k">use </span><span class="n">stringifor</span>
+<span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="k">implicit none</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">csv</span>            <span class="c">!&lt; The CSV file as a single stream.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">rows</span><span class="p">(:)</span>        <span class="c">!&lt; The CSV table rows.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">columns</span><span class="p">(:)</span>     <span class="c">!&lt; The CSV table columns.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">cells</span><span class="p">(:,:)</span>     <span class="c">!&lt; The CSV table cells.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">lines</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>       <span class="c">!&lt; The CSV file lines.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">most_expensive</span> <span class="c">!&lt; The most expensive car.</span>
+<span class="kt">real</span><span class="p">(</span><span class="n">R8P</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">highest_cost</span>   <span class="c">!&lt; The highest cost.</span>
+<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">rows_number</span>    <span class="c">!&lt; The CSV file rows number.</span>
+<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">columns_number</span> <span class="c">!&lt; The CSV file columns number.</span>
+<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">r</span>              <span class="c">!&lt; Counter.</span>
+<span class="kt">logical</span>                   <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
+<span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="n">test_passed</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+
+<span class="c">! a cars database</span>
+<span class="n">lines</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;Year,Make,Model,Description,Price&#39;</span>
+<span class="n">lines</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;1997,Ford,E350,ac abs moon,3000.00&#39;</span>
+<span class="n">lines</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;1999,Chevy,Venture &quot;Extended Edition&quot;, ,4900.00&#39;</span>
+<span class="n">lines</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;1999,Chevy,Venture &quot;Extended Edition Very Large&quot;, ,5000.00&#39;</span>
+
+<span class="c">! preparing a CSV file test</span>
+<span class="k">call </span><span class="n">write_file</span><span class="p">(</span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;file_test_temp.csv&#39;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="n">lines</span><span class="p">)</span>
+
+<span class="c">! parsing the just created CSV file</span>
+<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">read_file</span><span class="p">(</span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;file_test_temp.csv&#39;</span><span class="p">)</span>    <span class="c">! read the CSV file as a single stream</span>
+<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>   <span class="c">! get the CSV file rows</span>
+<span class="n">rows_number</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                  <span class="c">! get the CSV file rows number</span>
+<span class="n">columns_number</span> <span class="o">=</span> <span class="n">rows</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="nb">count</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>          <span class="c">! get the CSV file columns number</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">rows_number</span><span class="p">))</span> <span class="c">! allocate the CSV file cells</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rows_number</span>                              <span class="c">! parse all cells</span>
+  <span class="k">call </span><span class="n">rows</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>    <span class="c">! get current columns</span>
+  <span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">columns</span>           <span class="c">! save current columns into cells</span>
+<span class="n">enddo</span>
+
+<span class="c">! eliminating the file</span>
+<span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="s1">&#39;file_test_temp.csv&#39;</span><span class="p">)</span> <span class="p">;</span> <span class="k">close</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">)</span>
+
+<span class="c">! now you can do whatever with your parsed data</span>
+<span class="c">! print the table in markdown syntax</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;A markdown-formatted table&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;----&#39;</span> <span class="c">! re-use columns for printing separators</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rows_number</span>
+  <span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span> <span class="n">r</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="n">enddo</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+<span class="c">! find the most expensive car</span>
+<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;Searching for the most expensive car&#39;</span>
+<span class="n">most_expensive</span> <span class="o">=</span> <span class="s1">&#39;unknown&#39;</span>
+<span class="n">highest_cost</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1._R8P</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rows_number</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">highest_cost</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">    </span><span class="n">highest_cost</span> <span class="o">=</span> <span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span>
+    <span class="n">most_expensive</span> <span class="o">=</span> <span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="p">[</span><span class="n">cells</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="n">cells</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">r</span><span class="p">)],</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+  <span class="n">endif</span>
+<span class="n">enddo</span>
+<span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">most_expensive</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="o">==</span> <span class="s1">&#39;Chevy Venture &quot;Extended Edition Very Large&quot;&#39;</span>
+<span class="k">print</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">,</span> <span class="s1">&#39;The most expensive car is : &#39;</span><span class="o">//</span><span class="n">most_expensive</span><span class="o">//</span><span class="s1">&#39;, is correct? &#39;</span><span class="p">,</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">,</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
+<span class="k">stop</span>
+<span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<span class="n">endprogram</span> <span class="n">csv_naive_parser</span>
+</pre></div>
+
+    </section>
+    
+    
+    </div>
+  </div>
+
+    <hr>
+    <footer>
+      <div class="row">
+        <div class="col-md-4">&copy; 2016 </div>
+        <div class="col-md-4"><span class="text-center"> StringiFor was developed by Stefano Zaghi</span></div>
+        <div class="col-md-4">
+          <span class="pull-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </span>
+        </div>
+      </div>
+      <br>
+    </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
+        'HTML-CSS': { 
+           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
+        }
+      });
+    </script>
+    <script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  </body>
+</html>

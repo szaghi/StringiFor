@@ -1,0 +1,6677 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	 
+	 <meta name="description" content="Strings Fortran Manipulator, yet another strings Fortran module">
+    
+    <meta name="author" content="Chris MacMackin" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>befor64 &ndash; StringiFor</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">StringiFor </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+				
+                
+            <li><a href="../lists/files.html">Source Files</a></li>
+				
+				
+            <li><a href="../lists/modules.html">Modules</a></li>
+				
+				
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+				
+								
+            <li><a href="../lists/types.html">Derived Types</a></li>
+				
+				
+            <li><a href="../lists/programs.html">Programs</a></li>
+				
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>befor64 
+    <small>Module</small>
+    
+    </h1>
+	 
+<div class="row">
+<div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+    <li><i class="fa fa-code"></i><a href="../src/befor64.F90"> Source File</a></li>
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+     <li><a href='../sourcefile/befor64.f90.html'>befor64.F90</a></li>
+  
+     <li class="active">befor64</li>
+  </ol>
+</div>
+</div>
+</div>
+    
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-3">
+    
+<div id="sidebar">
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars">Variables</a></h3></div>
+    <div id="vars" class="panel-collapse collapse">
+      <div class="list-group">
+        
+        <a class="list-group-item" href="../module/befor64%7E2.html#variable-is_b64_initialized">is_b64_initialized</a>
+        
+        <a class="list-group-item" href="../module/befor64%7E2.html#variable-base64">base64</a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#inters">Interfaces</a></h3></div>
+    <div id="inters" class="panel-collapse collapse">
+        <div class="list-group">
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#interface-b64_encode">b64_encode</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#interface-b64_encode_up">b64_encode_up</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#interface-b64_decode">b64_decode</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#interface-b64_decode_up">b64_decode_up</a>
+          
+        </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs">Subroutines</a></h3></div>
+    <div class="list-group">
+        <div id="subs" class="panel-collapse collapse">
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_init">b64_init</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-encode_bits">encode_bits</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-decode_bits">decode_bits</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_up">b64_encode_up</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_up_a">b64_encode_up_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_up">b64_decode_up</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_up_a">b64_decode_up_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_r16">b64_encode_R16</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_r8">b64_encode_R8</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_r4">b64_encode_R4</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i8">b64_encode_I8</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i4">b64_encode_I4</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i2">b64_encode_I2</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i1">b64_encode_I1</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_string">b64_encode_string</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_r16_a">b64_encode_R16_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_r8_a">b64_encode_R8_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_r4_a">b64_encode_R4_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i8_a">b64_encode_I8_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i4_a">b64_encode_I4_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i2_a">b64_encode_I2_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_i1_a">b64_encode_I1_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_encode_string_a">b64_encode_string_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_r16">b64_decode_R16</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_r8">b64_decode_R8</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_r4">b64_decode_R4</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i8">b64_decode_I8</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i4">b64_decode_I4</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i2">b64_decode_I2</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i1">b64_decode_I1</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_string">b64_decode_string</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_r16_a">b64_decode_R16_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_r8_a">b64_decode_R8_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_r4_a">b64_decode_R4_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i8_a">b64_decode_I8_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i4_a">b64_decode_I4_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i2_a">b64_decode_I2_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_i1_a">b64_decode_I1_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-b64_decode_string_a">b64_decode_string_a</a>
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html#proc-autotest">autotest</a>
+          
+        </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <hr>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods">All Modules</a></h3></div>
+    <div id="allmods" class="panel-collapse collapse">
+        <div class="list-group">
+          
+          <a class="list-group-item" href="../module/befor64%7E2.html">befor64</a>
+          
+          <a class="list-group-item" href="../module/befor64.html">befor64</a>
+          
+          <a class="list-group-item" href="../module/befor64_pack_data_m.html">befor64_pack_data_m</a>
+          
+          <a class="list-group-item" href="../module/befor64_pack_data_m%7E2.html">befor64_pack_data_m</a>
+          
+          <a class="list-group-item" href="../module/penf.html">penf</a>
+          
+          <a class="list-group-item" href="../module/penf%7E3.html">penf</a>
+          
+          <a class="list-group-item" href="../module/penf%7E2.html">penf</a>
+          
+          <a class="list-group-item" href="../module/penf_b_size%7E3.html">penf_b_size</a>
+          
+          <a class="list-group-item" href="../module/penf_b_size.html">penf_b_size</a>
+          
+          <a class="list-group-item" href="../module/penf_b_size%7E2.html">penf_b_size</a>
+          
+          <a class="list-group-item" href="../module/penf_global_parameters_variables.html">penf_global_parameters_variables</a>
+          
+          <a class="list-group-item" href="../module/penf_global_parameters_variables%7E2.html">penf_global_parameters_variables</a>
+          
+          <a class="list-group-item" href="../module/penf_global_parameters_variables%7E3.html">penf_global_parameters_variables</a>
+          
+          <a class="list-group-item" href="../module/penf_stringify.html">penf_stringify</a>
+          
+          <a class="list-group-item" href="../module/penf_stringify%7E2.html">penf_stringify</a>
+          
+          <a class="list-group-item" href="../module/penf_stringify%7E3.html">penf_stringify</a>
+          
+          <a class="list-group-item" href="../module/stringifor.html">stringifor</a>
+          
+          <a class="list-group-item" href="../module/stringifor_string_t.html">stringifor_string_t</a>
+          
+        </div>
+    </div>
+  </div>
+  
+</div>
+
+    </div>
+    
+    <div class="col-lg-9" id='text'>
+    
+    
+  
+    <ul class="list-inline">
+      <li><h4>Uses:</h4></li>
+      
+      <li><a href='../module/penf.html'>penf</a></li>
+      
+      <li><a href='../module/befor64_pack_data_m.html'>befor64_pack_data_m</a></li>
+      
+    </ul>
+  
+
+    
+                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: module~~befor64~2~~UsesGraph Pages: 1 -->
+<svg id="modulebefor642UsesGraph" width="641pt" height="119pt"
+ viewBox="0.00 0.00 641.00 118.63" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~befor64~2~~UsesGraph" class="graph" transform="scale(0.845646 0.845646) rotate(0) translate(4 136.284)">
+<title>module~~befor64~2~~UsesGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-136.284 754,-136.284 754,4 -4,4"/>
+<!-- module~befor64~2 -->
+<g id="module~~befor64~2~~UsesGraph_node1" class="node"><title>module~befor64~2</title>
+<polygon fill="none" stroke="black" points="750,-124 696,-124 696,-100 750,-100 750,-124"/>
+<text text-anchor="middle" x="723" y="-109.6" font-family="Helvetica,sans-Serif" font-size="10.50">befor64</text>
+</g>
+<!-- module~befor64_pack_data_m -->
+<g id="module~~befor64~2~~UsesGraph_node2" class="node"><title>module~befor64_pack_data_m</title>
+<g id="a_module~~befor64~2~~UsesGraph_node2"><a xlink:href="../module/befor64_pack_data_m.html" xlink:title="befor64_pack_data_m">
+<polygon fill="#337ab7" stroke="#337ab7" points="660,-104 540,-104 540,-80 660,-80 660,-104"/>
+<text text-anchor="middle" x="600" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">befor64_pack_data_m</text>
+</a>
+</g>
+</g>
+<!-- module~befor64_pack_data_m&#45;&gt;module~befor64~2 -->
+<g id="module~~befor64~2~~UsesGraph_edge9" class="edge"><title>module~befor64_pack_data_m&#45;&gt;module~befor64~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M660.082,-101.766C668.94,-103.23 677.839,-104.701 686.018,-106.053"/>
+<polygon fill="#000000" stroke="#000000" points="685.499,-109.514 695.936,-107.692 686.64,-102.608 685.499,-109.514"/>
+</g>
+<!-- module~penf -->
+<g id="module~~befor64~2~~UsesGraph_node3" class="node"><title>module~penf</title>
+<g id="a_module~~befor64~2~~UsesGraph_node3"><a xlink:href="../module/penf.html" xlink:title="penf">
+<polygon fill="#337ab7" stroke="#337ab7" points="504,-124 450,-124 450,-100 504,-100 504,-124"/>
+<text text-anchor="middle" x="477" y="-109.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf</text>
+</a>
+</g>
+</g>
+<!-- module~penf&#45;&gt;module~befor64~2 -->
+<g id="module~~befor64~2~~UsesGraph_edge10" class="edge"><title>module~penf&#45;&gt;module~befor64~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M504.245,-112.517C515.285,-112.71 528.266,-112.905 540,-113 593.332,-113.43 606.668,-113.43 660,-113 668.25,-112.933 677.118,-112.817 685.493,-112.687"/>
+<polygon fill="#000000" stroke="#000000" points="685.815,-116.182 695.755,-112.517 685.699,-109.183 685.815,-116.182"/>
+</g>
+<!-- module~penf&#45;&gt;module~befor64_pack_data_m -->
+<g id="module~~befor64~2~~UsesGraph_edge1" class="edge"><title>module~penf&#45;&gt;module~befor64_pack_data_m</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M504.255,-107.66C511.83,-106.408 520.473,-104.98 529.386,-103.506"/>
+<polygon fill="#000000" stroke="#000000" points="530.227,-106.915 539.522,-101.831 529.085,-100.009 530.227,-106.915"/>
+</g>
+<!-- module~penf_global_parameters_variables -->
+<g id="module~~befor64~2~~UsesGraph_node4" class="node"><title>module~penf_global_parameters_variables</title>
+<g id="a_module~~befor64~2~~UsesGraph_node4"><a xlink:href="../module/penf_global_parameters_variables.html" xlink:title="penf_global_parameters_variables">
+<polygon fill="#337ab7" stroke="#337ab7" points="178,-104 1.42109e-14,-104 1.42109e-14,-80 178,-80 178,-104"/>
+<text text-anchor="middle" x="89" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_global_parameters_variables</text>
+</a>
+</g>
+</g>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf -->
+<g id="module~~befor64~2~~UsesGraph_edge6" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M141.186,-104.001C198,-116.192 292.567,-133.137 375,-132"/>
+</g>
+<!-- module~penf_b_size~3 -->
+<g id="module~~befor64~2~~UsesGraph_node5" class="node"><title>module~penf_b_size~3</title>
+<g id="a_module~~befor64~2~~UsesGraph_node5"><a xlink:href="../module/penf_b_size%7E3.html" xlink:title="penf_b_size">
+<polygon fill="#337ab7" stroke="#337ab7" points="293,-104 223,-104 223,-80 293,-80 293,-104"/>
+<text text-anchor="middle" x="258" y="-89.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_b_size</text>
+</a>
+</g>
+</g>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_b_size~3 -->
+<g id="module~~befor64~2~~UsesGraph_edge2" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_b_size~3</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M178.39,-92C190.243,-92 201.964,-92 212.594,-92"/>
+<polygon fill="#000000" stroke="#000000" points="212.824,-95.5001 222.824,-92 212.824,-88.5001 212.824,-95.5001"/>
+</g>
+<!-- module~penf_stringify -->
+<g id="module~~befor64~2~~UsesGraph_node6" class="node"><title>module~penf_stringify</title>
+<g id="a_module~~befor64~2~~UsesGraph_node6"><a xlink:href="../module/penf_stringify.html" xlink:title="penf_stringify">
+<polygon fill="#337ab7" stroke="#337ab7" points="414,-84 338,-84 338,-60 414,-60 414,-84"/>
+<text text-anchor="middle" x="376" y="-69.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">penf_stringify</text>
+</a>
+</g>
+</g>
+<!-- module~penf_global_parameters_variables&#45;&gt;module~penf_stringify -->
+<g id="module~~befor64~2~~UsesGraph_edge3" class="edge"><title>module~penf_global_parameters_variables&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M148.718,-79.9805C169.272,-76.3261 192.569,-72.8019 214,-71 252.974,-67.7231 262.89,-70.7321 302,-71 310.29,-71.0568 319.109,-71.1498 327.646,-71.2569"/>
+<polygon fill="#000000" stroke="#000000" points="327.818,-74.7594 337.864,-71.393 327.912,-67.76 327.818,-74.7594"/>
+</g>
+<!-- module~penf_b_size~3&#45;&gt;module~penf -->
+<g id="module~~befor64~2~~UsesGraph_edge7" class="edge"><title>module~penf_b_size~3&#45;&gt;module~penf</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M280.058,-104.191C302.746,-116.132 340.28,-132.479 375,-132"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M377,-132C398.155,-131.708 421.36,-127.249 439.984,-122.615"/>
+<polygon fill="#000000" stroke="#000000" points="441.025,-125.96 449.817,-120.048 439.257,-119.187 441.025,-125.96"/>
+</g>
+<!-- module~penf_b_size~3&#45;&gt;module~penf_stringify -->
+<g id="module~~befor64~2~~UsesGraph_edge5" class="edge"><title>module~penf_b_size~3&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M293.176,-86.1075C304.031,-84.236 316.233,-82.1322 327.836,-80.1318"/>
+<polygon fill="#000000" stroke="#000000" points="328.568,-83.5572 337.828,-78.4089 327.379,-76.659 328.568,-83.5572"/>
+</g>
+<!-- module~penf_stringify&#45;&gt;module~penf -->
+<g id="module~~befor64~2~~UsesGraph_edge8" class="edge"><title>module~penf_stringify&#45;&gt;module~penf</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M406.703,-84.0013C417.276,-88.273 429.29,-93.1274 440.312,-97.5807"/>
+<polygon fill="#000000" stroke="#000000" points="439.098,-100.865 449.681,-101.366 441.72,-94.3747 439.098,-100.865"/>
+</g>
+<!-- iso_fortran_env -->
+<g id="module~~befor64~2~~UsesGraph_node7" class="node"><title>iso_fortran_env</title>
+<g id="a_module~~befor64~2~~UsesGraph_node7"><a xlink:href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="301.5,-24 214.5,-24 214.5,-0 301.5,-0 301.5,-24"/>
+<text text-anchor="middle" x="258" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- iso_fortran_env&#45;&gt;module~penf_stringify -->
+<g id="module~~befor64~2~~UsesGraph_edge4" class="edge"><title>iso_fortran_env&#45;&gt;module~penf_stringify</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M282.474,-24.1419C299.77,-33.0878 323.505,-45.3646 342.605,-55.244"/>
+<polygon fill="#000000" stroke="#000000" points="341.07,-58.3906 351.561,-59.8762 344.286,-52.1731 341.07,-58.3906"/>
+</g>
+</g>
+</svg>
+</div>
+                <script>var panmodulebefor642UsesGraph = svgPanZoom('#modulebefor642UsesGraph', {
+                    zoomEnabled: true,
+                    controlIconsEnabled: true,
+                    fit: true,
+                    center: true,});
+                    </script>
+                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                      </div>
+                      <div class="modal-body">
+                        
+Nodes of different colours represent the following:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="26pt"
+ viewBox="0.00 0.00 641.00 26.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.812421 0.812421) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28 785,-28 785,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node"><title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,-0 54,-0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node"><title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.25,-24 72.75,-24 72.75,-0 139.25,-0 139.25,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Type -->
+<g id="node3" class="node"><title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="212,-24 158,-24 158,-0 212,-0 212,-24"/>
+<text text-anchor="middle" x="185" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- Subroutine -->
+<g id="node4" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="294,-24 230,-24 230,-0 294,-0 294,-24"/>
+<text text-anchor="middle" x="262" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node5" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="366,-24 312,-24 312,-0 366,-0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node6" class="node"><title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="439.25,-24 384.75,-24 384.75,-0 439.25,-0 439.25,-24"/>
+<text text-anchor="middle" x="412" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node7" class="node"><title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="594,-24 458,-24 458,-0 594,-0 594,-24"/>
+<text text-anchor="middle" x="526" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node8" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="666,-24 612,-24 612,-0 666,-0 666,-24"/>
+<text text-anchor="middle" x="639" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node9" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="781.25,-24 684.75,-24 684.75,-0 781.25,-0 781.25,-24"/>
+<text text-anchor="middle" x="733" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+Where possible, edges connecting nodes are given different colours to make them
+easier to distinguish in large graphs.
+<h5>Module Graph</h5>
+<p>Solid arrows point from a parent (sub)module to the submodule which is
+descended from it. Dashed arrows point from a module being used to the
+module using it.</p>
+<h5>Type Graph</h5>
+<p>Solid arrows point from one derived type to another which extends
+(inherits from) it. Dashed arrows point from a derived type to another
+type containing it as a components, with a label listing the name(s) of
+said component(s).</p>
+<h5>Call Graph</h5>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+    
+    <p>BeFoR64, Base64 encoding/decoding library for FoRtran poor people.</p>
+    
+    
+    <h3>Used By</h3>
+    
+                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: module~~befor64~2~~UsedByGraph Pages: 1 -->
+<svg id="modulebefor642UsedByGraph" width="426pt" height="2258pt"
+ viewBox="0.00 0.00 426.00 2258.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~befor64~2~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 2254)">
+<title>module~~befor64~2~~UsedByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-2254 422,-2254 422,4 -4,4"/>
+<!-- module~befor64~2 -->
+<g id="module~~befor64~2~~UsedByGraph_node1" class="node"><title>module~befor64~2</title>
+<polygon fill="none" stroke="black" points="54,-1116 0,-1116 0,-1092 54,-1092 54,-1116"/>
+<text text-anchor="middle" x="27" y="-1101.6" font-family="Helvetica,sans-Serif" font-size="10.50">befor64</text>
+</g>
+<!-- module~stringifor_string_t -->
+<g id="module~~befor64~2~~UsedByGraph_node2" class="node"><title>module~stringifor_string_t</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node2"><a xlink:href="../module/stringifor_string_t.html" xlink:title="stringifor_string_t">
+<polygon fill="#337ab7" stroke="#337ab7" points="185.5,-1137 90.5,-1137 90.5,-1113 185.5,-1113 185.5,-1137"/>
+<text text-anchor="middle" x="138" y="-1122.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t</text>
+</a>
+</g>
+</g>
+<!-- module~befor64~2&#45;&gt;module~stringifor_string_t -->
+<g id="module~~befor64~2~~UsedByGraph_edge56" class="edge"><title>module~befor64~2&#45;&gt;module~stringifor_string_t</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M54.1082,-1109.03C62.0636,-1110.56 71.1388,-1112.31 80.297,-1114.08"/>
+<polygon fill="#000000" stroke="#000000" points="79.7367,-1117.53 90.2183,-1115.99 81.061,-1110.66 79.7367,-1117.53"/>
+</g>
+<!-- program~test_driver -->
+<g id="module~~befor64~2~~UsedByGraph_node3" class="node"><title>program~test_driver</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node3"><a xlink:href="../program/test_driver.html" xlink:title="Test_Driver">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="172,-1095 104,-1095 104,-1071 172,-1071 172,-1095"/>
+<text text-anchor="middle" x="138" y="-1080.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Test_Driver</text>
+</a>
+</g>
+</g>
+<!-- module~befor64~2&#45;&gt;program~test_driver -->
+<g id="module~~befor64~2~~UsedByGraph_edge57" class="edge"><title>module~befor64~2&#45;&gt;program~test_driver</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M54.1082,-1098.97C65.9527,-1096.69 80.2795,-1093.93 93.667,-1091.35"/>
+<polygon fill="#000000" stroke="#000000" points="94.5074,-1094.75 103.665,-1089.42 93.1831,-1087.88 94.5074,-1094.75"/>
+</g>
+<!-- module~stringifor -->
+<g id="module~~befor64~2~~UsedByGraph_node4" class="node"><title>module~stringifor</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node4"><a xlink:href="../module/stringifor.html" xlink:title="stringifor">
+<polygon fill="#337ab7" stroke="#337ab7" points="276,-1137 222,-1137 222,-1113 276,-1113 276,-1137"/>
+<text text-anchor="middle" x="249" y="-1122.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor_string_t&#45;&gt;module~stringifor -->
+<g id="module~~befor64~2~~UsedByGraph_edge55" class="edge"><title>module~stringifor_string_t&#45;&gt;module~stringifor</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M185.542,-1125C194.249,-1125 203.232,-1125 211.578,-1125"/>
+<polygon fill="#000000" stroke="#000000" points="211.739,-1128.5 221.739,-1125 211.739,-1121.5 211.739,-1128.5"/>
+</g>
+<!-- program~strip -->
+<g id="module~~befor64~2~~UsedByGraph_node5" class="node"><title>program~strip</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node5"><a xlink:href="../program/strip.html" xlink:title="strip">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-2250 338,-2250 338,-2226 392,-2226 392,-2250"/>
+<text text-anchor="middle" x="365" y="-2235.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strip</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~strip -->
+<g id="module~~befor64~2~~UsedByGraph_edge1" class="edge"><title>module~stringifor&#45;&gt;program~strip</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.912,-1137.23C249.19,-1251.14 245.837,-2124.68 312,-2217 316.077,-2222.69 321.966,-2226.84 328.326,-2229.87"/>
+<polygon fill="#000000" stroke="#000000" points="327.237,-2233.2 337.826,-2233.54 329.765,-2226.67 327.237,-2233.2"/>
+</g>
+<!-- program~free -->
+<g id="module~~befor64~2~~UsedByGraph_node6" class="node"><title>program~free</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node6"><a xlink:href="../program/free.html" xlink:title="free">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-2208 338,-2208 338,-2184 392,-2184 392,-2208"/>
+<text text-anchor="middle" x="365" y="-2193.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">free</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~free -->
+<g id="module~~befor64~2~~UsedByGraph_edge2" class="edge"><title>module~stringifor&#45;&gt;program~free</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.942,-1137.1C249.506,-1248.05 248.34,-2086.39 312,-2175 316.084,-2180.68 321.975,-2184.83 328.336,-2187.86"/>
+<polygon fill="#000000" stroke="#000000" points="327.247,-2191.19 337.836,-2191.54 329.775,-2184.66 327.247,-2191.19"/>
+</g>
+<!-- program~sadjustlr -->
+<g id="module~~befor64~2~~UsedByGraph_node7" class="node"><title>program~sadjustlr</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node7"><a xlink:href="../program/sadjustlr.html" xlink:title="sadjustlr">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-2166 338,-2166 338,-2142 392,-2142 392,-2166"/>
+<text text-anchor="middle" x="365" y="-2151.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sadjustlr</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~sadjustlr -->
+<g id="module~~befor64~2~~UsedByGraph_edge3" class="edge"><title>module~stringifor&#45;&gt;program~sadjustlr</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.973,-1137.3C249.833,-1246.5 250.901,-2048.17 312,-2133 316.091,-2138.68 321.985,-2142.83 328.347,-2145.85"/>
+<polygon fill="#000000" stroke="#000000" points="327.258,-2149.18 337.847,-2149.53 329.786,-2142.65 327.258,-2149.18"/>
+</g>
+<!-- program~io_basic -->
+<g id="module~~befor64~2~~UsedByGraph_node8" class="node"><title>program~io_basic</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node8"><a xlink:href="../program/io_basic.html" xlink:title="io_basic">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-2124 338,-2124 338,-2100 392,-2100 392,-2124"/>
+<text text-anchor="middle" x="365" y="-2109.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">io_basic</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~io_basic -->
+<g id="module~~befor64~2~~UsedByGraph_edge4" class="edge"><title>module~stringifor&#45;&gt;program~io_basic</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.008,-1137.12C250.172,-1243.06 253.39,-2009.86 312,-2091 316.098,-2096.67 321.996,-2100.82 328.358,-2103.84"/>
+<polygon fill="#000000" stroke="#000000" points="327.269,-2107.17 337.858,-2107.52 329.797,-2100.65 327.269,-2107.17"/>
+</g>
+<!-- program~sverify -->
+<g id="module~~befor64~2~~UsedByGraph_node9" class="node"><title>program~sverify</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node9"><a xlink:href="../program/sverify.html" xlink:title="sverify">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-2082 338,-2082 338,-2058 392,-2058 392,-2082"/>
+<text text-anchor="middle" x="365" y="-2067.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sverify</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~sverify -->
+<g id="module~~befor64~2~~UsedByGraph_edge5" class="edge"><title>module~stringifor&#45;&gt;program~sverify</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.046,-1137.24C250.531,-1241.01 255.933,-1971.61 312,-2049 316.107,-2054.67 322.008,-2058.81 328.371,-2061.83"/>
+<polygon fill="#000000" stroke="#000000" points="327.282,-2065.16 337.871,-2065.51 329.81,-2058.64 327.282,-2065.16"/>
+</g>
+<!-- program~startcase -->
+<g id="module~~befor64~2~~UsedByGraph_node10" class="node"><title>program~startcase</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node10"><a xlink:href="../program/startcase.html" xlink:title="startcase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="393,-2040 337,-2040 337,-2016 393,-2016 393,-2040"/>
+<text text-anchor="middle" x="365" y="-2025.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">startcase</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~startcase -->
+<g id="module~~befor64~2~~UsedByGraph_edge6" class="edge"><title>module~stringifor&#45;&gt;program~startcase</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.088,-1137.32C250.907,-1238.68 258.465,-1933.36 312,-2007 315.87,-2012.32 321.321,-2016.3 327.249,-2019.27"/>
+<polygon fill="#000000" stroke="#000000" points="326.217,-2022.63 336.798,-2023.16 328.855,-2016.14 326.217,-2022.63"/>
+</g>
+<!-- program~capitalize -->
+<g id="module~~befor64~2~~UsedByGraph_node11" class="node"><title>program~capitalize</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node11"><a xlink:href="../program/capitalize.html" xlink:title="capitalize">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="393.5,-1998 336.5,-1998 336.5,-1974 393.5,-1974 393.5,-1998"/>
+<text text-anchor="middle" x="365" y="-1983.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">capitalize</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~capitalize -->
+<g id="module~~befor64~2~~UsedByGraph_edge7" class="edge"><title>module~stringifor&#45;&gt;program~capitalize</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.13,-1137.04C251.281,-1234.67 260.933,-1895.01 312,-1965 315.804,-1970.21 321.123,-1974.13 326.919,-1977.08"/>
+<polygon fill="#000000" stroke="#000000" points="325.692,-1980.36 336.27,-1980.96 328.375,-1973.9 325.692,-1980.36"/>
+</g>
+<!-- program~unique -->
+<g id="module~~befor64~2~~UsedByGraph_node12" class="node"><title>program~unique</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node12"><a xlink:href="../program/unique.html" xlink:title="unique">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1956 338,-1956 338,-1932 392,-1932 392,-1956"/>
+<text text-anchor="middle" x="365" y="-1941.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unique</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~unique -->
+<g id="module~~befor64~2~~UsedByGraph_edge8" class="edge"><title>module~stringifor&#45;&gt;program~unique</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.179,-1137.03C251.689,-1231.84 263.446,-1856.72 312,-1923 316.136,-1928.65 322.05,-1932.78 328.417,-1935.8"/>
+<polygon fill="#000000" stroke="#000000" points="327.327,-1939.13 337.916,-1939.48 329.856,-1932.6 327.327,-1939.13"/>
+</g>
+<!-- program~count_string -->
+<g id="module~~befor64~2~~UsedByGraph_node13" class="node"><title>program~count_string</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node13"><a xlink:href="../program/count_string.html" xlink:title="count_string">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="400.5,-1914 329.5,-1914 329.5,-1890 400.5,-1890 400.5,-1914"/>
+<text text-anchor="middle" x="365" y="-1899.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">count_string</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~count_string -->
+<g id="module~~befor64~2~~UsedByGraph_edge9" class="edge"><title>module~stringifor&#45;&gt;program~count_string</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.239,-1137.27C252.143,-1229.98 265.998,-1818.49 312,-1881 314.299,-1884.12 317.142,-1886.79 320.304,-1889.05"/>
+<polygon fill="#000000" stroke="#000000" points="318.846,-1892.25 329.265,-1894.17 322.319,-1886.17 318.846,-1892.25"/>
+</g>
+<!-- program~concatenation -->
+<g id="module~~befor64~2~~UsedByGraph_node14" class="node"><title>program~concatenation</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node14"><a xlink:href="../program/concatenation.html" xlink:title="concatenation">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="404.5,-1872 325.5,-1872 325.5,-1848 404.5,-1848 404.5,-1872"/>
+<text text-anchor="middle" x="365" y="-1857.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">concatenation</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~concatenation -->
+<g id="module~~befor64~2~~UsedByGraph_edge10" class="edge"><title>module~stringifor&#45;&gt;program~concatenation</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.298,-1137.15C252.59,-1226.52 268.487,-1780.17 312,-1839 313.411,-1840.91 315.025,-1842.64 316.79,-1844.22"/>
+<polygon fill="#000000" stroke="#000000" points="315.134,-1847.33 325.339,-1850.18 319.136,-1841.59 315.134,-1847.33"/>
+</g>
+<!-- program~insert -->
+<g id="module~~befor64~2~~UsedByGraph_node15" class="node"><title>program~insert</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node15"><a xlink:href="../program/insert.html" xlink:title="insert">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1830 338,-1830 338,-1806 392,-1806 392,-1830"/>
+<text text-anchor="middle" x="365" y="-1815.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">insert</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~insert -->
+<g id="module~~befor64~2~~UsedByGraph_edge11" class="edge"><title>module~stringifor&#45;&gt;program~insert</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.371,-1137.26C253.092,-1223.88 271.009,-1741.89 312,-1797 316.177,-1802.62 322.109,-1806.73 328.481,-1809.75"/>
+<polygon fill="#000000" stroke="#000000" points="327.388,-1813.08 337.977,-1813.43 329.919,-1806.56 327.388,-1813.08"/>
+</g>
+<!-- program~greater_than -->
+<g id="module~~befor64~2~~UsedByGraph_node16" class="node"><title>program~greater_than</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node16"><a xlink:href="../program/greater_than.html" xlink:title="greater_than">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="402,-1788 328,-1788 328,-1764 402,-1764 402,-1788"/>
+<text text-anchor="middle" x="365" y="-1773.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">greater_than</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~greater_than -->
+<g id="module~~befor64~2~~UsedByGraph_edge12" class="edge"><title>module~stringifor&#45;&gt;program~greater_than</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.441,-1137.02C253.577,-1219.78 273.473,-1703.53 312,-1755 314.013,-1757.69 316.427,-1760.03 319.099,-1762.08"/>
+<polygon fill="#000000" stroke="#000000" points="317.383,-1765.13 327.741,-1767.36 321.034,-1759.16 317.383,-1765.13"/>
+</g>
+<!-- program~io_formatted -->
+<g id="module~~befor64~2~~UsedByGraph_node17" class="node"><title>program~io_formatted</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node17"><a xlink:href="../program/io_formatted.html" xlink:title="io_formatted">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="401.5,-1746 328.5,-1746 328.5,-1722 401.5,-1722 401.5,-1746"/>
+<text text-anchor="middle" x="365" y="-1731.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">io_formatted</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~io_formatted -->
+<g id="module~~befor64~2~~UsedByGraph_edge13" class="edge"><title>module~stringifor&#45;&gt;program~io_formatted</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.54,-1137.23C254.172,-1217.33 276.004,-1665.26 312,-1713 314.146,-1715.85 316.741,-1718.31 319.614,-1720.44"/>
+<polygon fill="#000000" stroke="#000000" points="317.916,-1723.5 328.301,-1725.6 321.491,-1717.48 317.916,-1723.5"/>
+</g>
+<!-- program~read_lines -->
+<g id="module~~befor64~2~~UsedByGraph_node18" class="node"><title>program~read_lines</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node18"><a xlink:href="../program/read_lines.html" xlink:title="read_lines">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="396,-1704 334,-1704 334,-1680 396,-1680 396,-1704"/>
+<text text-anchor="middle" x="365" y="-1689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_lines</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~read_lines -->
+<g id="module~~befor64~2~~UsedByGraph_edge14" class="edge"><title>module~stringifor&#45;&gt;program~read_lines</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.75,-1137.09C248.493,-1209.3 245.314,-1583.28 312,-1671 315.388,-1675.46 319.878,-1678.97 324.803,-1681.74"/>
+<polygon fill="#000000" stroke="#000000" points="323.447,-1684.97 333.995,-1685.97 326.371,-1678.61 323.447,-1684.97"/>
+</g>
+<!-- program~unescape -->
+<g id="module~~befor64~2~~UsedByGraph_node19" class="node"><title>program~unescape</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node19"><a xlink:href="../program/unescape.html" xlink:title="unescape">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="394.5,-1662 335.5,-1662 335.5,-1638 394.5,-1638 394.5,-1662"/>
+<text text-anchor="middle" x="365" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">unescape</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~unescape -->
+<g id="module~~befor64~2~~UsedByGraph_edge15" class="edge"><title>module~stringifor&#45;&gt;program~unescape</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.878,-1137.05C249.415,-1205.84 250.266,-1548.58 312,-1629 315.684,-1633.8 320.643,-1637.51 326.042,-1640.37"/>
+<polygon fill="#000000" stroke="#000000" points="324.828,-1643.66 335.394,-1644.43 327.617,-1637.24 324.828,-1643.66"/>
+</g>
+<!-- program~swapcase -->
+<g id="module~~befor64~2~~UsedByGraph_node20" class="node"><title>program~swapcase</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node20"><a xlink:href="../program/swapcase.html" xlink:title="swapcase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="395,-1620 335,-1620 335,-1596 395,-1596 395,-1620"/>
+<text text-anchor="middle" x="365" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">swapcase</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~swapcase -->
+<g id="module~~befor64~2~~UsedByGraph_edge16" class="edge"><title>module~stringifor&#45;&gt;program~swapcase</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.03,-1137.32C250.423,-1203.24 255.298,-1513.97 312,-1587 315.545,-1591.57 320.243,-1595.14 325.368,-1597.95"/>
+<polygon fill="#000000" stroke="#000000" points="324.34,-1601.32 334.899,-1602.2 327.193,-1594.93 324.34,-1601.32"/>
+</g>
+<!-- program~assignments -->
+<g id="module~~befor64~2~~UsedByGraph_node21" class="node"><title>program~assignments</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node21"><a xlink:href="../program/assignments.html" xlink:title="assignments">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="401.5,-1578 328.5,-1578 328.5,-1554 401.5,-1554 401.5,-1578"/>
+<text text-anchor="middle" x="365" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assignments</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~assignments -->
+<g id="module~~befor64~2~~UsedByGraph_edge17" class="edge"><title>module~stringifor&#45;&gt;program~assignments</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.206,-1137.01C251.491,-1198.64 260.148,-1479.12 312,-1545 314.204,-1547.8 316.842,-1550.23 319.743,-1552.34"/>
+<polygon fill="#000000" stroke="#000000" points="318.082,-1555.42 328.479,-1557.46 321.624,-1549.38 318.082,-1555.42"/>
+</g>
+<!-- program~reverse -->
+<g id="module~~befor64~2~~UsedByGraph_node22" class="node"><title>program~reverse</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node22"><a xlink:href="../program/reverse.html" xlink:title="reverse">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1536 338,-1536 338,-1512 392,-1512 392,-1536"/>
+<text text-anchor="middle" x="365" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">reverse</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~reverse -->
+<g id="module~~befor64~2~~UsedByGraph_edge18" class="edge"><title>module~stringifor&#45;&gt;program~reverse</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.436,-1137.32C252.732,-1195.75 265.158,-1444.45 312,-1503 316.291,-1508.36 322.166,-1512.37 328.426,-1515.35"/>
+<polygon fill="#000000" stroke="#000000" points="327.147,-1518.61 337.734,-1519.03 329.723,-1512.1 327.147,-1518.61"/>
+</g>
+<!-- program~read_line -->
+<g id="module~~befor64~2~~UsedByGraph_node23" class="node"><title>program~read_line</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node23"><a xlink:href="../program/read_line.html" xlink:title="read_line">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="393.5,-1494 336.5,-1494 336.5,-1470 393.5,-1470 393.5,-1494"/>
+<text text-anchor="middle" x="365" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_line</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~read_line -->
+<g id="module~~befor64~2~~UsedByGraph_edge19" class="edge"><title>module~stringifor&#45;&gt;program~read_line</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.694,-1137.03C254.027,-1190.88 269.982,-1409.54 312,-1461 316.041,-1465.95 321.427,-1469.74 327.204,-1472.64"/>
+<polygon fill="#000000" stroke="#000000" points="325.888,-1475.89 336.465,-1476.51 328.586,-1469.43 325.888,-1475.89"/>
+</g>
+<!-- program~is_digit -->
+<g id="module~~befor64~2~~UsedByGraph_node24" class="node"><title>program~is_digit</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node24"><a xlink:href="../program/is_digit.html" xlink:title="is_digit">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1452 338,-1452 338,-1428 392,-1428 392,-1452"/>
+<text text-anchor="middle" x="365" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_digit</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_digit -->
+<g id="module~~befor64~2~~UsedByGraph_edge20" class="edge"><title>module~stringifor&#45;&gt;program~is_digit</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M251.053,-1137.17C255.584,-1186.97 274.897,-1374.72 312,-1419 316.411,-1424.26 322.34,-1428.22 328.615,-1431.19"/>
+<polygon fill="#000000" stroke="#000000" points="327.334,-1434.45 337.92,-1434.88 329.912,-1427.94 327.334,-1434.45"/>
+</g>
+<!-- program~is_integer -->
+<g id="module~~befor64~2~~UsedByGraph_node25" class="node"><title>program~is_integer</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node25"><a xlink:href="../program/is_integer.html" xlink:title="is_integer">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="394.5,-1410 335.5,-1410 335.5,-1386 394.5,-1386 394.5,-1410"/>
+<text text-anchor="middle" x="365" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_integer</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_integer -->
+<g id="module~~befor64~2~~UsedByGraph_edge21" class="edge"><title>module~stringifor&#45;&gt;program~is_integer</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.36,-1137.24C247.955,-1177 248.852,-1304.14 312,-1377 315.881,-1381.48 320.855,-1385.01 326.184,-1387.8"/>
+<polygon fill="#000000" stroke="#000000" points="324.792,-1391.01 335.356,-1391.82 327.603,-1384.6 324.792,-1391.01"/>
+</g>
+<!-- program~slen -->
+<g id="module~~befor64~2~~UsedByGraph_node26" class="node"><title>program~slen</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node26"><a xlink:href="../program/slen.html" xlink:title="slen">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1368 338,-1368 338,-1344 392,-1344 392,-1368"/>
+<text text-anchor="middle" x="365" y="-1353.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slen</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~slen -->
+<g id="module~~befor64~2~~UsedByGraph_edge22" class="edge"><title>module~stringifor&#45;&gt;program~slen</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.089,-1137.18C250.998,-1172.45 258.347,-1275.89 312,-1335 316.466,-1339.92 322.247,-1343.71 328.324,-1346.62"/>
+<polygon fill="#000000" stroke="#000000" points="327.387,-1350.02 337.971,-1350.51 330.005,-1343.53 327.387,-1350.02"/>
+</g>
+<!-- program~start_end -->
+<g id="module~~befor64~2~~UsedByGraph_node27" class="node"><title>program~start_end</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node27"><a xlink:href="../program/start_end.html" xlink:title="start_end">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="394,-1326 336,-1326 336,-1302 394,-1302 394,-1326"/>
+<text text-anchor="middle" x="365" y="-1311.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">start_end</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~start_end -->
+<g id="module~~befor64~2~~UsedByGraph_edge23" class="edge"><title>module~stringifor&#45;&gt;program~start_end</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M251.169,-1137.34C254.688,-1167.83 267.837,-1247.48 312,-1293 316.126,-1297.25 321.229,-1300.67 326.611,-1303.41"/>
+<polygon fill="#000000" stroke="#000000" points="325.244,-1306.63 335.81,-1307.41 328.033,-1300.21 325.244,-1306.63"/>
+</g>
+<!-- program~is_number -->
+<g id="module~~befor64~2~~UsedByGraph_node28" class="node"><title>program~is_number</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node28"><a xlink:href="../program/is_number.html" xlink:title="is_number">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="396.5,-1284 333.5,-1284 333.5,-1260 396.5,-1260 396.5,-1284"/>
+<text text-anchor="middle" x="365" y="-1269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_number</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_number -->
+<g id="module~~befor64~2~~UsedByGraph_edge24" class="edge"><title>module~stringifor&#45;&gt;program~is_number</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M252.852,-1137.16C259.247,-1161.89 276.993,-1218.47 312,-1251 315.557,-1254.31 319.702,-1257.12 324.071,-1259.51"/>
+<polygon fill="#000000" stroke="#000000" points="322.699,-1262.73 333.236,-1263.84 325.688,-1256.4 322.699,-1262.73"/>
+</g>
+<!-- program~escape -->
+<g id="module~~befor64~2~~UsedByGraph_node29" class="node"><title>program~escape</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node29"><a xlink:href="../program/escape.html" xlink:title="escape">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1242 338,-1242 338,-1218 392,-1218 392,-1242"/>
+<text text-anchor="middle" x="365" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">escape</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~escape -->
+<g id="module~~befor64~2~~UsedByGraph_edge25" class="edge"><title>module~stringifor&#45;&gt;program~escape</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M256.17,-1137.23C265.813,-1155.23 286.07,-1188.9 312,-1209 316.88,-1212.78 322.534,-1215.98 328.279,-1218.65"/>
+<polygon fill="#000000" stroke="#000000" points="327.334,-1222.05 337.911,-1222.66 330.021,-1215.58 327.334,-1222.05"/>
+</g>
+<!-- program~is_real -->
+<g id="module~~befor64~2~~UsedByGraph_node30" class="node"><title>program~is_real</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node30"><a xlink:href="../program/is_real.html" xlink:title="is_real">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1200 338,-1200 338,-1176 392,-1176 392,-1200"/>
+<text text-anchor="middle" x="365" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_real</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~is_real -->
+<g id="module~~befor64~2~~UsedByGraph_edge26" class="edge"><title>module~stringifor&#45;&gt;program~is_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M265.73,-1137.03C277.926,-1146.01 295.478,-1158.2 312,-1167 317.229,-1169.79 322.911,-1172.44 328.535,-1174.85"/>
+<polygon fill="#000000" stroke="#000000" points="327.274,-1178.12 337.854,-1178.69 329.939,-1171.65 327.274,-1178.12"/>
+</g>
+<!-- program~upper_lower -->
+<g id="module~~befor64~2~~UsedByGraph_node31" class="node"><title>program~upper_lower</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node31"><a xlink:href="../program/upper_lower.html" xlink:title="upper_lower">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="401,-1158 329,-1158 329,-1134 401,-1134 401,-1158"/>
+<text text-anchor="middle" x="365" y="-1143.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper_lower</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~upper_lower -->
+<g id="module~~befor64~2~~UsedByGraph_edge27" class="edge"><title>module~stringifor&#45;&gt;program~upper_lower</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M276.154,-1129.82C288.866,-1132.16 304.506,-1135.04 319.05,-1137.72"/>
+<polygon fill="#000000" stroke="#000000" points="318.425,-1141.16 328.894,-1139.53 319.694,-1134.28 318.425,-1141.16"/>
+</g>
+<!-- program~write_file -->
+<g id="module~~befor64~2~~UsedByGraph_node32" class="node"><title>program~write_file</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node32"><a xlink:href="../program/write_file.html" xlink:title="write_file">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392.5,-1116 337.5,-1116 337.5,-1092 392.5,-1092 392.5,-1116"/>
+<text text-anchor="middle" x="365" y="-1101.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_file</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~write_file -->
+<g id="module~~befor64~2~~UsedByGraph_edge28" class="edge"><title>module~stringifor&#45;&gt;program~write_file</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M276.154,-1120.18C291.288,-1117.39 310.572,-1113.84 327.216,-1110.78"/>
+<polygon fill="#000000" stroke="#000000" points="327.976,-1114.19 337.176,-1108.94 326.708,-1107.31 327.976,-1114.19"/>
+</g>
+<!-- program~strim -->
+<g id="module~~befor64~2~~UsedByGraph_node33" class="node"><title>program~strim</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node33"><a xlink:href="../program/strim.html" xlink:title="strim">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1074 338,-1074 338,-1050 392,-1050 392,-1074"/>
+<text text-anchor="middle" x="365" y="-1059.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strim</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~strim -->
+<g id="module~~befor64~2~~UsedByGraph_edge29" class="edge"><title>module~stringifor&#45;&gt;program~strim</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M265.73,-1112.97C277.926,-1103.99 295.478,-1091.8 312,-1083 317.229,-1080.21 322.911,-1077.56 328.535,-1075.15"/>
+<polygon fill="#000000" stroke="#000000" points="329.939,-1078.35 337.854,-1071.31 327.274,-1071.88 329.939,-1078.35"/>
+</g>
+<!-- program~sscan -->
+<g id="module~~befor64~2~~UsedByGraph_node34" class="node"><title>program~sscan</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node34"><a xlink:href="../program/sscan.html" xlink:title="sscan">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-1032 338,-1032 338,-1008 392,-1008 392,-1032"/>
+<text text-anchor="middle" x="365" y="-1017.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sscan</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~sscan -->
+<g id="module~~befor64~2~~UsedByGraph_edge30" class="edge"><title>module~stringifor&#45;&gt;program~sscan</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M256.17,-1112.77C265.813,-1094.77 286.07,-1061.1 312,-1041 316.88,-1037.22 322.534,-1034.02 328.279,-1031.35"/>
+<polygon fill="#000000" stroke="#000000" points="330.021,-1034.42 337.911,-1027.34 327.334,-1027.95 330.021,-1034.42"/>
+</g>
+<!-- program~extension -->
+<g id="module~~befor64~2~~UsedByGraph_node35" class="node"><title>program~extension</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node35"><a xlink:href="../program/extension.html" xlink:title="extension">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="394,-990 336,-990 336,-966 394,-966 394,-990"/>
+<text text-anchor="middle" x="365" y="-975.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">extension</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~extension -->
+<g id="module~~befor64~2~~UsedByGraph_edge31" class="edge"><title>module~stringifor&#45;&gt;program~extension</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M252.852,-1112.84C259.247,-1088.11 276.993,-1031.53 312,-999 316.19,-995.107 321.196,-991.894 326.422,-989.255"/>
+<polygon fill="#000000" stroke="#000000" points="328.174,-992.31 335.939,-985.101 325.374,-985.894 328.174,-992.31"/>
+</g>
+<!-- program~partition -->
+<g id="module~~befor64~2~~UsedByGraph_node36" class="node"><title>program~partition</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node36"><a xlink:href="../program/partition.html" xlink:title="partition">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-948 338,-948 338,-924 392,-924 392,-948"/>
+<text text-anchor="middle" x="365" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">partition</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~partition -->
+<g id="module~~befor64~2~~UsedByGraph_edge32" class="edge"><title>module~stringifor&#45;&gt;program~partition</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M251.169,-1112.66C254.688,-1082.17 267.837,-1002.52 312,-957 316.583,-952.277 322.37,-948.583 328.408,-945.706"/>
+<polygon fill="#000000" stroke="#000000" points="330.015,-948.831 337.962,-941.824 327.38,-942.345 330.015,-948.831"/>
+</g>
+<!-- program~to_number -->
+<g id="module~~befor64~2~~UsedByGraph_node37" class="node"><title>program~to_number</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node37"><a xlink:href="../program/to_number.html" xlink:title="to_number">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="397,-906 333,-906 333,-882 397,-882 397,-906"/>
+<text text-anchor="middle" x="365" y="-891.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">to_number</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~to_number -->
+<g id="module~~befor64~2~~UsedByGraph_edge33" class="edge"><title>module~stringifor&#45;&gt;program~to_number</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.089,-1112.82C250.998,-1077.55 258.347,-974.111 312,-915 315.302,-911.362 319.324,-908.342 323.652,-905.837"/>
+<polygon fill="#000000" stroke="#000000" points="325.362,-908.898 332.836,-901.389 322.311,-902.598 325.362,-908.898"/>
+</g>
+<!-- program~lower_than -->
+<g id="module~~befor64~2~~UsedByGraph_node38" class="node"><title>program~lower_than</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node38"><a xlink:href="../program/lower_than.html" xlink:title="lower_than">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="397.5,-864 332.5,-864 332.5,-840 397.5,-840 397.5,-864"/>
+<text text-anchor="middle" x="365" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lower_than</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~lower_than -->
+<g id="module~~befor64~2~~UsedByGraph_edge34" class="edge"><title>module~stringifor&#45;&gt;program~lower_than</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.36,-1112.76C247.955,-1073 248.852,-945.86 312,-873 315.18,-869.331 319.095,-866.294 323.338,-863.782"/>
+<polygon fill="#000000" stroke="#000000" points="324.951,-866.889 332.376,-859.331 321.858,-860.61 324.951,-866.889"/>
+</g>
+<!-- program~equal -->
+<g id="module~~befor64~2~~UsedByGraph_node39" class="node"><title>program~equal</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node39"><a xlink:href="../program/equal.html" xlink:title="equal">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-822 338,-822 338,-798 392,-798 392,-822"/>
+<text text-anchor="middle" x="365" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">equal</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~equal -->
+<g id="module~~befor64~2~~UsedByGraph_edge35" class="edge"><title>module~stringifor&#45;&gt;program~equal</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M251.053,-1112.83C255.584,-1063.03 274.897,-875.283 312,-831 316.411,-825.735 322.34,-821.777 328.615,-818.806"/>
+<polygon fill="#000000" stroke="#000000" points="329.912,-822.057 337.92,-815.121 327.334,-815.549 329.912,-822.057"/>
+</g>
+<!-- program~sindex -->
+<g id="module~~befor64~2~~UsedByGraph_node40" class="node"><title>program~sindex</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node40"><a xlink:href="../program/sindex.html" xlink:title="sindex">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-780 338,-780 338,-756 392,-756 392,-780"/>
+<text text-anchor="middle" x="365" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">sindex</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~sindex -->
+<g id="module~~befor64~2~~UsedByGraph_edge36" class="edge"><title>module~stringifor&#45;&gt;program~sindex</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.694,-1112.97C254.027,-1059.12 269.982,-840.461 312,-789 316.344,-783.68 322.243,-779.697 328.51,-776.718"/>
+<polygon fill="#000000" stroke="#000000" points="329.806,-779.969 337.816,-773.035 327.23,-773.461 329.806,-779.969"/>
+</g>
+<!-- program~read_file -->
+<g id="module~~befor64~2~~UsedByGraph_node41" class="node"><title>program~read_file</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node41"><a xlink:href="../program/read_file.html" xlink:title="read_file">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-738 338,-738 338,-714 392,-714 392,-738"/>
+<text text-anchor="middle" x="365" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_file</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~read_file -->
+<g id="module~~befor64~2~~UsedByGraph_edge37" class="edge"><title>module~stringifor&#45;&gt;program~read_file</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.436,-1112.68C252.732,-1054.25 265.158,-805.549 312,-747 316.291,-741.637 322.166,-737.635 328.426,-734.651"/>
+<polygon fill="#000000" stroke="#000000" points="329.723,-737.902 337.734,-730.968 327.147,-731.393 329.723,-737.902"/>
+</g>
+<!-- program~replace -->
+<g id="module~~befor64~2~~UsedByGraph_node42" class="node"><title>program~replace</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node42"><a xlink:href="../program/replace.html" xlink:title="replace">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-696 338,-696 338,-672 392,-672 392,-696"/>
+<text text-anchor="middle" x="365" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">replace</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~replace -->
+<g id="module~~befor64~2~~UsedByGraph_edge38" class="edge"><title>module~stringifor&#45;&gt;program~replace</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.206,-1112.99C251.491,-1051.36 260.148,-770.885 312,-705 316.288,-699.551 322.215,-695.509 328.537,-692.512"/>
+<polygon fill="#000000" stroke="#000000" points="329.904,-695.735 337.937,-688.827 327.349,-689.218 329.904,-695.735"/>
+</g>
+<!-- program~greater_equal_than -->
+<g id="module~~befor64~2~~UsedByGraph_node43" class="node"><title>program~greater_equal_than</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node43"><a xlink:href="../program/greater_equal_than.html" xlink:title="greater_equal_than">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="418,-654 312,-654 312,-630 418,-630 418,-654"/>
+<text text-anchor="middle" x="365" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">greater_equal_than</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~greater_equal_than -->
+<g id="module~~befor64~2~~UsedByGraph_edge39" class="edge"><title>module~stringifor&#45;&gt;program~greater_equal_than</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.03,-1112.68C250.423,-1046.76 255.298,-736.032 312,-663 312.687,-662.116 313.417,-661.268 314.184,-660.457"/>
+<polygon fill="#000000" stroke="#000000" points="316.463,-663.114 321.978,-654.068 312.025,-657.701 316.463,-663.114"/>
+</g>
+<!-- program~slice -->
+<g id="module~~befor64~2~~UsedByGraph_node44" class="node"><title>program~slice</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node44"><a xlink:href="../program/slice.html" xlink:title="slice">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-612 338,-612 338,-588 392,-588 392,-612"/>
+<text text-anchor="middle" x="365" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">slice</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~slice -->
+<g id="module~~befor64~2~~UsedByGraph_edge40" class="edge"><title>module~stringifor&#45;&gt;program~slice</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.878,-1112.95C249.415,-1044.16 250.266,-701.421 312,-621 316.222,-615.5 322.12,-611.434 328.434,-608.432"/>
+<polygon fill="#000000" stroke="#000000" points="329.801,-611.655 337.835,-604.749 327.248,-605.137 329.801,-611.655"/>
+</g>
+<!-- program~snakecase -->
+<g id="module~~befor64~2~~UsedByGraph_node45" class="node"><title>program~snakecase</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node45"><a xlink:href="../program/snakecase.html" xlink:title="snakecase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="397,-570 333,-570 333,-546 397,-546 397,-570"/>
+<text text-anchor="middle" x="365" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">snakecase</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~snakecase -->
+<g id="module~~befor64~2~~UsedByGraph_edge41" class="edge"><title>module~stringifor&#45;&gt;program~snakecase</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.75,-1112.91C248.493,-1040.7 245.314,-666.717 312,-579 315.16,-574.844 319.277,-571.507 323.813,-568.829"/>
+<polygon fill="#000000" stroke="#000000" points="325.417,-571.942 332.909,-564.45 322.38,-565.635 325.417,-571.942"/>
+</g>
+<!-- program~srepeat -->
+<g id="module~~befor64~2~~UsedByGraph_node46" class="node"><title>program~srepeat</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node46"><a xlink:href="../program/srepeat.html" xlink:title="srepeat">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-528 338,-528 338,-504 392,-504 392,-528"/>
+<text text-anchor="middle" x="365" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">srepeat</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~srepeat -->
+<g id="module~~befor64~2~~UsedByGraph_edge42" class="edge"><title>module~stringifor&#45;&gt;program~srepeat</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.54,-1112.77C254.172,-1032.67 276.004,-584.744 312,-537 316.174,-531.463 322.051,-527.382 328.359,-524.375"/>
+<polygon fill="#000000" stroke="#000000" points="329.726,-527.598 337.762,-520.693 327.174,-521.08 329.726,-527.598"/>
+</g>
+<!-- program~basename_dir -->
+<g id="module~~befor64~2~~UsedByGraph_node47" class="node"><title>program~basename_dir</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node47"><a xlink:href="../program/basename_dir.html" xlink:title="basename_dir">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="405.5,-486 324.5,-486 324.5,-462 405.5,-462 405.5,-486"/>
+<text text-anchor="middle" x="365" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">basename_dir</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~basename_dir -->
+<g id="module~~befor64~2~~UsedByGraph_edge43" class="edge"><title>module~stringifor&#45;&gt;program~basename_dir</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.441,-1112.98C253.577,-1030.22 273.473,-546.472 312,-495 313.225,-493.363 314.599,-491.854 316.09,-490.461"/>
+<polygon fill="#000000" stroke="#000000" points="318.34,-493.152 324.359,-484.433 314.216,-487.496 318.34,-493.152"/>
+</g>
+<!-- program~not_equal -->
+<g id="module~~befor64~2~~UsedByGraph_node48" class="node"><title>program~not_equal</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node48"><a xlink:href="../program/not_equal.html" xlink:title="not_equal">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="395,-444 335,-444 335,-420 395,-420 395,-444"/>
+<text text-anchor="middle" x="365" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">not_equal</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~not_equal -->
+<g id="module~~befor64~2~~UsedByGraph_edge44" class="edge"><title>module~stringifor&#45;&gt;program~not_equal</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.371,-1112.74C253.092,-1026.12 271.009,-508.114 312,-453 315.573,-448.195 320.431,-444.487 325.749,-441.626"/>
+<polygon fill="#000000" stroke="#000000" points="327.242,-444.793 334.99,-437.567 324.427,-438.385 327.242,-444.793"/>
+</g>
+<!-- program~search -->
+<g id="module~~befor64~2~~UsedByGraph_node49" class="node"><title>program~search</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node49"><a xlink:href="../program/search.html" xlink:title="search">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-402 338,-402 338,-378 392,-378 392,-402"/>
+<text text-anchor="middle" x="365" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">search</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~search -->
+<g id="module~~befor64~2~~UsedByGraph_edge45" class="edge"><title>module~stringifor&#45;&gt;program~search</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.298,-1112.85C252.59,-1023.48 268.487,-469.835 312,-411 316.162,-405.372 322.087,-401.25 328.457,-398.23"/>
+<polygon fill="#000000" stroke="#000000" points="329.895,-401.426 337.954,-394.549 327.365,-394.899 329.895,-401.426"/>
+</g>
+<!-- program~write_lines -->
+<g id="module~~befor64~2~~UsedByGraph_node50" class="node"><title>program~write_lines</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node50"><a xlink:href="../program/write_lines.html" xlink:title="write_lines">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="396.5,-360 333.5,-360 333.5,-336 396.5,-336 396.5,-360"/>
+<text text-anchor="middle" x="365" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_lines</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~write_lines -->
+<g id="module~~befor64~2~~UsedByGraph_edge46" class="edge"><title>module~stringifor&#45;&gt;program~write_lines</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.239,-1112.73C252.143,-1020.02 265.998,-431.513 312,-369 315.165,-364.699 319.36,-361.277 323.999,-358.555"/>
+<polygon fill="#000000" stroke="#000000" points="325.779,-361.585 333.313,-354.136 322.778,-355.261 325.779,-361.585"/>
+</g>
+<!-- program~csv_naive_parser -->
+<g id="module~~befor64~2~~UsedByGraph_node51" class="node"><title>program~csv_naive_parser</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node51"><a xlink:href="../program/csv_naive_parser.html" xlink:title="csv_naive_parser">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="413.5,-318 316.5,-318 316.5,-294 413.5,-294 413.5,-318"/>
+<text text-anchor="middle" x="365" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">csv_naive_parser</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~csv_naive_parser -->
+<g id="module~~befor64~2~~UsedByGraph_edge47" class="edge"><title>module~stringifor&#45;&gt;program~csv_naive_parser</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.179,-1112.97C251.689,-1018.16 263.446,-393.278 312,-327 312.475,-326.352 312.973,-325.724 313.492,-325.115"/>
+<polygon fill="#000000" stroke="#000000" points="316.102,-327.481 321.289,-318.242 311.473,-322.23 316.102,-327.481"/>
+</g>
+<!-- program~fill -->
+<g id="module~~befor64~2~~UsedByGraph_node52" class="node"><title>program~fill</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node52"><a xlink:href="../program/fill.html" xlink:title="fill">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-276 338,-276 338,-252 392,-252 392,-276"/>
+<text text-anchor="middle" x="365" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">fill</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~fill -->
+<g id="module~~befor64~2~~UsedByGraph_edge48" class="edge"><title>module~stringifor&#45;&gt;program~fill</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.13,-1112.96C251.281,-1015.33 260.933,-354.992 312,-285 316.126,-279.346 322.035,-275.211 328.401,-272.188"/>
+<polygon fill="#000000" stroke="#000000" points="329.839,-275.384 337.899,-268.508 327.31,-268.857 329.839,-275.384"/>
+</g>
+<!-- program~lower_equal_than -->
+<g id="module~~befor64~2~~UsedByGraph_node53" class="node"><title>program~lower_equal_than</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node53"><a xlink:href="../program/lower_equal_than.html" xlink:title="lower_equal_than">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="413.5,-234 316.5,-234 316.5,-210 413.5,-210 413.5,-234"/>
+<text text-anchor="middle" x="365" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lower_equal_than</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~lower_equal_than -->
+<g id="module~~befor64~2~~UsedByGraph_edge49" class="edge"><title>module~stringifor&#45;&gt;program~lower_equal_than</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.088,-1112.68C250.907,-1011.32 258.465,-316.644 312,-243 312.472,-242.35 312.968,-241.721 313.486,-241.11"/>
+<polygon fill="#000000" stroke="#000000" points="316.097,-243.473 321.263,-234.223 311.456,-238.233 316.097,-243.473"/>
+</g>
+<!-- program~decode -->
+<g id="module~~befor64~2~~UsedByGraph_node54" class="node"><title>program~decode</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node54"><a xlink:href="../program/decode.html" xlink:title="decode">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-192 338,-192 338,-168 392,-168 392,-192"/>
+<text text-anchor="middle" x="365" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">decode</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~decode -->
+<g id="module~~befor64~2~~UsedByGraph_edge50" class="edge"><title>module~stringifor&#45;&gt;program~decode</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.046,-1112.76C250.531,-1008.99 255.933,-278.386 312,-201 316.107,-195.332 322.008,-191.191 328.371,-188.167"/>
+<polygon fill="#000000" stroke="#000000" points="329.81,-191.363 337.871,-184.487 327.282,-184.836 329.81,-191.363"/>
+</g>
+<!-- program~join -->
+<g id="module~~befor64~2~~UsedByGraph_node55" class="node"><title>program~join</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node55"><a xlink:href="../program/join.html" xlink:title="join">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-150 338,-150 338,-126 392,-126 392,-150"/>
+<text text-anchor="middle" x="365" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">join</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~join -->
+<g id="module~~befor64~2~~UsedByGraph_edge51" class="edge"><title>module~stringifor&#45;&gt;program~join</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M250.008,-1112.88C250.172,-1006.94 253.39,-240.143 312,-159 316.098,-153.326 321.996,-149.183 328.358,-146.158"/>
+<polygon fill="#000000" stroke="#000000" points="329.797,-149.354 337.858,-142.478 327.269,-142.826 329.797,-149.354"/>
+</g>
+<!-- program~camelcase -->
+<g id="module~~befor64~2~~UsedByGraph_node56" class="node"><title>program~camelcase</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node56"><a xlink:href="../program/camelcase.html" xlink:title="camelcase">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="397,-108 333,-108 333,-84 397,-84 397,-108"/>
+<text text-anchor="middle" x="365" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">camelcase</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~camelcase -->
+<g id="module~~befor64~2~~UsedByGraph_edge52" class="edge"><title>module~stringifor&#45;&gt;program~camelcase</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.973,-1112.7C249.833,-1003.5 250.901,-201.827 312,-117 315.086,-112.715 319.198,-109.304 323.764,-106.587"/>
+<polygon fill="#000000" stroke="#000000" points="325.452,-109.659 332.95,-102.174 322.421,-103.349 325.452,-109.659"/>
+</g>
+<!-- program~encode -->
+<g id="module~~befor64~2~~UsedByGraph_node57" class="node"><title>program~encode</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node57"><a xlink:href="../program/encode.html" xlink:title="encode">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-66 338,-66 338,-42 392,-42 392,-66"/>
+<text text-anchor="middle" x="365" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">encode</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~encode -->
+<g id="module~~befor64~2~~UsedByGraph_edge53" class="edge"><title>module~stringifor&#45;&gt;program~encode</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.942,-1112.9C249.506,-1001.95 248.34,-163.612 312,-75 316.084,-69.3155 321.975,-65.1676 328.336,-62.1415"/>
+<polygon fill="#000000" stroke="#000000" points="329.775,-65.3375 337.836,-58.4624 327.247,-58.8099 329.775,-65.3375"/>
+</g>
+<!-- program~split -->
+<g id="module~~befor64~2~~UsedByGraph_node58" class="node"><title>program~split</title>
+<g id="a_module~~befor64~2~~UsedByGraph_node58"><a xlink:href="../program/split.html" xlink:title="split">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="392,-24 338,-24 338,-0 392,-0 392,-24"/>
+<text text-anchor="middle" x="365" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">split</text>
+</a>
+</g>
+</g>
+<!-- module~stringifor&#45;&gt;program~split -->
+<g id="module~~befor64~2~~UsedByGraph_edge54" class="edge"><title>module~stringifor&#45;&gt;program~split</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M249.912,-1112.77C249.19,-998.857 245.837,-125.316 312,-33 316.077,-27.3109 321.966,-23.1609 328.326,-20.1343"/>
+<polygon fill="#000000" stroke="#000000" points="329.765,-23.3303 337.826,-16.4554 327.237,-16.8027 329.765,-23.3303"/>
+</g>
+</g>
+</svg>
+</div>
+                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                      </div>
+                      <div class="modal-body">
+                        
+Nodes of different colours represent the following:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="26pt"
+ viewBox="0.00 0.00 641.00 26.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.812421 0.812421) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28 785,-28 785,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node"><title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,-0 54,-0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node"><title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.25,-24 72.75,-24 72.75,-0 139.25,-0 139.25,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Type -->
+<g id="node3" class="node"><title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="212,-24 158,-24 158,-0 212,-0 212,-24"/>
+<text text-anchor="middle" x="185" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- Subroutine -->
+<g id="node4" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="294,-24 230,-24 230,-0 294,-0 294,-24"/>
+<text text-anchor="middle" x="262" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node5" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="366,-24 312,-24 312,-0 366,-0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node6" class="node"><title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="439.25,-24 384.75,-24 384.75,-0 439.25,-0 439.25,-24"/>
+<text text-anchor="middle" x="412" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node7" class="node"><title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="594,-24 458,-24 458,-0 594,-0 594,-24"/>
+<text text-anchor="middle" x="526" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node8" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="666,-24 612,-24 612,-0 666,-0 666,-24"/>
+<text text-anchor="middle" x="639" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node9" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="781.25,-24 684.75,-24 684.75,-0 781.25,-0 781.25,-24"/>
+<text text-anchor="middle" x="733" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+Where possible, edges connecting nodes are given different colours to make them
+easier to distinguish in large graphs.
+<h5>Module Graph</h5>
+<p>Solid arrows point from a parent (sub)module to the submodule which is
+descended from it. Dashed arrows point from a module being used to the
+module using it.</p>
+<h5>Type Graph</h5>
+<p>Solid arrows point from one derived type to another which extends
+(inherits from) it. Dashed arrows point from a derived type to another
+type containing it as a components, with a label listing the name(s) of
+said component(s).</p>
+<h5>Call Graph</h5>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+    <br>
+    
+
+    
+    <section>
+    <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-is_b64_initialized"></span>logical,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>is_b64_initialized</strong></td><td> =</td><td>.false.</td><td><p>Flag for checking the initialization of the library.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-base64"></span>character(len=64),</td>
+  
+  <td>private</td>
+  <td></td><td>::</td>
+  <td><strong>base64</strong></td><td> =</td><td>"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"</td><td><p>Base64 alphabet.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
+    
+    
+    
+    
+    <section>
+	 <h2>Interfaces</h2>
+	 
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="interface-b64_encode"></span><h3>public interface <a href='../interface/b64_encode.html'>b64_encode</a>
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+    <p>Encode numbers (integer and real) to base64.</p>
+  </div>
+  
+  <ul class="list-group">
+  
+  
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_r8.html'>b64_encode_R8</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (R8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_r8_a.html'>b64_encode_R8_a</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (R8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_r4.html'>b64_encode_R4</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (R4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_r4_a.html'>b64_encode_R4_a</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (R4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i8.html'>b64_encode_I8</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i8_a.html'>b64_encode_I8_a</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i4.html'>b64_encode_I4</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i4_a.html'>b64_encode_I4_a</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i2.html'>b64_encode_I2</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I2P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i2_a.html'>b64_encode_I2_a</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I2P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i1.html'>b64_encode_I1</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I1P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_i1_a.html'>b64_encode_I1_a</a>(n, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I1P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_string.html'>b64_encode_string</a>(s, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong></td><td><p>String to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar string to base64.</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_string_a.html'>b64_encode_string_a</a>(s, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong>(1:)</td><td><p>String to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array string to base64.</p>
+        
+
+    </li>
+  
+  
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="interface-b64_encode_up"></span><h3>public interface <a href='../interface/b64_encode_up.html'>b64_encode_up</a>
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+    <p>Encode unlimited polymorphic variable to base64.</p>
+  </div>
+  
+  <ul class="list-group">
+  
+  
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+public interface <a href='../interface/b64_encode_up.html'>b64_encode_up</a>()
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      <em>None</em>
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode unlimited polymorphic variable to base64.</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_encode_up_a.html'>b64_encode_up_a</a>(up, code)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>up</strong>(1:)</td><td><p>Unlimited polymorphic variable to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode an unlimited polymorphic array to base64.</p>
+        
+
+    </li>
+  
+  
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="interface-b64_decode"></span><h3>public interface <a href='../interface/b64_decode.html'>b64_decode</a>
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+    <p>Decode numbers (integer and real) from base64.</p>
+  </div>
+  
+  <ul class="list-group">
+  
+  
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private elemental subroutine <a href='../proc/b64_decode_r8.html'>b64_decode_R8</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (R8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_decode_r8_a.html'>b64_decode_R8_a</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (R8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private elemental subroutine <a href='../proc/b64_decode_r4.html'>b64_decode_R4</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (R4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_decode_r4_a.html'>b64_decode_R4_a</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (R4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private elemental subroutine <a href='../proc/b64_decode_i8.html'>b64_decode_I8</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_decode_i8_a.html'>b64_decode_I8_a</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I8P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private elemental subroutine <a href='../proc/b64_decode_i4.html'>b64_decode_I4</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_decode_i4_a.html'>b64_decode_I4_a</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I4P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private elemental subroutine <a href='../proc/b64_decode_i2.html'>b64_decode_I2</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I2P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_decode_i2_a.html'>b64_decode_I2_a</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I2P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private elemental subroutine <a href='../proc/b64_decode_i1.html'>b64_decode_I1</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I1P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_decode_i1_a.html'>b64_decode_I1_a</a>(code, n)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I1P).</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private elemental subroutine <a href='../proc/b64_decode_string.html'>b64_decode_string</a>(code, s)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong></td><td><p>String to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar string.</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private pure subroutine <a href='../proc/b64_decode_string_a.html'>b64_decode_string_a</a>(code, s)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong>(1:)</td><td><p>String to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array of strings.</p>
+        
+
+    </li>
+  
+  
+  </ul>
+</div>
+
+    
+	   
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="interface-b64_decode_up"></span><h3>public interface <a href='../interface/b64_decode_up.html'>b64_decode_up</a>
+    
+  </h3></div>
+  
+  <div class="panel-body">
+    
+    <p>Decode unlimited polymorphic variable from base64.</p>
+  </div>
+  
+  <ul class="list-group">
+  
+  
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+public interface <a href='../interface/b64_decode_up.html'>b64_decode_up</a>()
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      <em>None</em>
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode unlimited polymorphic variable from base64.</p>
+        
+
+    </li>
+  
+    <li class="list-group-item">
+    
+    
+    <h3>
+private subroutine <a href='../proc/b64_decode_up_a.html'>b64_decode_up_a</a>(code, up)
+    
+    
+    
+</h3>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>up</strong>(1:)</td><td><p>Unlimited polymorphic variable to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode an unlimited polymorphic array from base64.</p>
+        
+
+    </li>
+  
+  
+  </ul>
+</div>
+
+    
+    </section>
+	<br>
+    
+
+    
+    
+    
+    
+    
+
+    
+    <section>
+    <h2>Subroutines</h2>
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_init"></span><h3>
+public subroutine <a href='../proc/b64_init.html'>b64_init</a>()
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      <em>None</em>
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Initialize the BeFoR64 library.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-encode_bits"></span><h3>
+private pure subroutine <a href='../proc/encode_bits.html'>encode_bits</a>(bits, padd, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>bits</strong>(1:)</td><td><p>Bits to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>padd</strong></td><td><p>Number of padding characters ('=').</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Characters code.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode a bits stream (must be multiple of 24 bits) into base64 charcaters code (of length multiple of 4).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-decode_bits"></span><h3>
+private pure subroutine <a href='../proc/decode_bits.html'>decode_bits</a>(code, bits)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Characters code.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>bits</strong>(1:)</td><td><p>Bits decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 string into a sequence of bits stream.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_up"></span><h3>
+public subroutine <a href='../proc/b64_encode_up.html'>b64_encode_up</a>(up, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>up</strong></td><td><p>Unlimited polymorphic variable to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode an unlimited polymorphic scalar to base64.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_up_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_up_a.html'>b64_encode_up_a</a>(up, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>up</strong>(1:)</td><td><p>Unlimited polymorphic variable to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode an unlimited polymorphic array to base64.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_up"></span><h3>
+public subroutine <a href='../proc/b64_decode_up.html'>b64_decode_up</a>(code, up)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>up</strong></td><td><p>Unlimited polymorphic variable to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode an unlimited polymorphic scalar from base64.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_up_a"></span><h3>
+private subroutine <a href='../proc/b64_decode_up_a.html'>b64_decode_up_a</a>(code, up)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>up</strong>(1:)</td><td><p>Unlimited polymorphic variable to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode an unlimited polymorphic array from base64.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_r16"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_r16.html'>b64_encode_R16</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (R16P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_r8"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_r8.html'>b64_encode_R8</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (R8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_r4"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_r4.html'>b64_encode_R4</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (R4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i8"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i8.html'>b64_encode_I8</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i4"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i4.html'>b64_encode_I4</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i2"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i2.html'>b64_encode_I2</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I2P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i1"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i1.html'>b64_encode_I1</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar number to base64 (I1P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_string"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_string.html'>b64_encode_string</a>(s, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong></td><td><p>String to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode scalar string to base64.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_r16_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_r16_a.html'>b64_encode_R16_a</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (R16P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_r8_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_r8_a.html'>b64_encode_R8_a</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (R8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_r4_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_r4_a.html'>b64_encode_R4_a</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (R4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i8_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i8_a.html'>b64_encode_I8_a</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i4_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i4_a.html'>b64_encode_I4_a</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i2_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i2_a.html'>b64_encode_I2_a</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I2P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_i1_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_i1_a.html'>b64_encode_I1_a</a>(n, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array numbers to base64 (I1P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_encode_string_a"></span><h3>
+private pure subroutine <a href='../proc/b64_encode_string_a.html'>b64_encode_string_a</a>(s, code)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong>(1:)</td><td><p>String to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=:),</td>
+  <td>intent(out),</td>
+  <td></td>
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Encode array string to base64.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_r16"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_r16.html'>b64_decode_R16</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (R16P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_r8"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_r8.html'>b64_decode_R8</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (R8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_r4"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_r4.html'>b64_decode_R4</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (R4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i8"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_i8.html'>b64_decode_I8</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i4"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_i4.html'>b64_decode_I4</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i2"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_i2.html'>b64_decode_I2</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I2P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i1"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_i1.html'>b64_decode_I1</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong></td><td><p>Number to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar number (I1P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_string"></span><h3>
+private elemental subroutine <a href='../proc/b64_decode_string.html'>b64_decode_string</a>(code, s)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong></td><td><p>String to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into a scalar string.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_r16_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_r16_a.html'>b64_decode_R16_a</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R16P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (R16P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_r8_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_r8_a.html'>b64_decode_R8_a</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (R8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_r4_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_r4_a.html'>b64_decode_R4_a</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=R4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (R4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i8_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_i8_a.html'>b64_decode_I8_a</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I8P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I8P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i4_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_i4_a.html'>b64_decode_I4_a</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I4P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I4P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i2_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_i2_a.html'>b64_decode_I2_a</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I2P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I2P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_i1_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_i1_a.html'>b64_decode_I1_a</a>(code, n)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded array.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>integer(kind=I1P),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>n</strong>(1:)</td><td><p>Array of numbers to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array numbers (I1P).</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-b64_decode_string_a"></span><h3>
+private pure subroutine <a href='../proc/b64_decode_string_a.html'>b64_decode_string_a</a>(code, s)
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Encoded scalar.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>character(len=*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>s</strong>(1:)</td><td><p>String to be decoded.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Decode a base64 code into an array of strings.</p>
+        
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-autotest"></span><h3>
+public subroutine <a href='../proc/autotest.html'>autotest</a>()
+    
+    
+    
+</h3></div>
+  <div class="panel-body">
+       
+    
+    <h4>Arguments</h4>
+    
+      <em>None</em>
+    
+    
+    
+    <h4>Description</h4>
+       
+       
+
+
+       
+       <p>Procedure for autotesting the library functionalities.</p>
+        
+
+  </div>
+  </div>
+
+    
+    </section>    
+    <br>
+    
+    
+    
+    </div>
+  </div>
+
+    <hr>
+    <footer>
+      <div class="row">
+        <div class="col-md-4">&copy; 2016 </div>
+        <div class="col-md-4"><span class="text-center"> StringiFor was developed by Stefano Zaghi</span></div>
+        <div class="col-md-4">
+          <span class="pull-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </span>
+        </div>
+      </div>
+      <br>
+    </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
+        'HTML-CSS': { 
+           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
+        }
+      });
+    </script>
+    <script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  </body>
+</html>

@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	 
+	 <meta name="description" content="Strings Fortran Manipulator, yet another strings Fortran module">
+    
+    <meta name="author" content="Chris MacMackin" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>encode_bits &ndash; StringiFor</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">StringiFor </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+				
+                
+            <li><a href="../lists/files.html">Source Files</a></li>
+				
+				
+            <li><a href="../lists/modules.html">Modules</a></li>
+				
+				
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+				
+								
+            <li><a href="../lists/types.html">Derived Types</a></li>
+				
+				
+            <li><a href="../lists/programs.html">Programs</a></li>
+				
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>encode_bits
+    <small>Subroutine</small>
+    
+    </h1>
+	 
+<div class="row">
+<div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+    <li><i class="fa fa-code"></i><a href="../src/befor64.F90"> Source File</a></li>
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+     <li><a href='../sourcefile/befor64.f90%7E2.html'>befor64.F90</a></li>
+  
+     <li><a href='../module/befor64.html'>befor64</a></li>
+  
+     <li class="active">encode_bits</li>
+  </ol>
+</div>
+</div>
+</div>
+    
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-3">
+    
+<div id="sidebar">
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars">Variables</a></h3></div>
+    <div id="vars" class="panel-collapse collapse">
+      <div class="list-group">
+        
+        <a class="list-group-item" href="../proc/encode_bits%7E2.html#variable-sixb%7E3">sixb</a>
+        
+        <a class="list-group-item" href="../proc/encode_bits%7E2.html#variable-c%7E3">c</a>
+        
+        <a class="list-group-item" href="../proc/encode_bits%7E2.html#variable-e%7E3">e</a>
+        
+        <a class="list-group-item" href="../proc/encode_bits%7E2.html#variable-nb%7E3">Nb</a>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div class="panel panel-primary">
+    <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+    <div class="list-group">
+      <a class="list-group-item" href="../proc/encode_bits%7E2.html#src">encode_bits</a>
+    </div>
+  </div>
+  
+  <hr>
+  
+  <div class="panel panel-default">
+    <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allprocs">All Procedures</a></h3></div>
+    <div id="allprocs" class="panel-collapse collapse">
+        <div class="list-group">
+          
+          <a class="list-group-item" href="../interface/adjustl.html">adjustl</a>
+          
+          <a class="list-group-item" href="../interface/adjustr.html">adjustr</a>
+          
+          <a class="list-group-item" href="../proc/autotest.html">autotest</a>
+          
+          <a class="list-group-item" href="../proc/autotest%7E2.html">autotest</a>
+          
+          <a class="list-group-item" href="../interface/b64_decode.html">b64_decode</a>
+          
+          <a class="list-group-item" href="../interface/b64_decode%7E2.html">b64_decode</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i1.html">b64_decode_I1</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i1%7E2.html">b64_decode_I1</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i1_a.html">b64_decode_I1_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i1_a%7E2.html">b64_decode_I1_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i2.html">b64_decode_I2</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i2%7E2.html">b64_decode_I2</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i2_a.html">b64_decode_I2_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i2_a%7E2.html">b64_decode_I2_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i4.html">b64_decode_I4</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i4%7E2.html">b64_decode_I4</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i4_a.html">b64_decode_I4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i4_a%7E2.html">b64_decode_I4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i8.html">b64_decode_I8</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i8%7E2.html">b64_decode_I8</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i8_a.html">b64_decode_I8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_i8_a%7E2.html">b64_decode_I8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r16.html">b64_decode_R16</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r16%7E2.html">b64_decode_R16</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r16_a.html">b64_decode_R16_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r16_a%7E2.html">b64_decode_R16_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r4.html">b64_decode_R4</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r4%7E2.html">b64_decode_R4</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r4_a.html">b64_decode_R4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r4_a%7E2.html">b64_decode_R4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r8.html">b64_decode_R8</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r8%7E2.html">b64_decode_R8</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r8_a.html">b64_decode_R8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_r8_a%7E2.html">b64_decode_R8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_string.html">b64_decode_string</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_string%7E2.html">b64_decode_string</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_string_a.html">b64_decode_string_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_string_a%7E2.html">b64_decode_string_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_up.html">b64_decode_up</a>
+          
+          <a class="list-group-item" href="../interface/b64_decode_up.html">b64_decode_up</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_up%7E2.html">b64_decode_up</a>
+          
+          <a class="list-group-item" href="../interface/b64_decode_up%7E2.html">b64_decode_up</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_up_a.html">b64_decode_up_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_decode_up_a%7E2.html">b64_decode_up_a</a>
+          
+          <a class="list-group-item" href="../interface/b64_encode.html">b64_encode</a>
+          
+          <a class="list-group-item" href="../interface/b64_encode%7E2.html">b64_encode</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i1.html">b64_encode_I1</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i1%7E2.html">b64_encode_I1</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i1_a.html">b64_encode_I1_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i1_a%7E2.html">b64_encode_I1_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i2.html">b64_encode_I2</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i2%7E2.html">b64_encode_I2</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i2_a.html">b64_encode_I2_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i2_a%7E2.html">b64_encode_I2_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i4.html">b64_encode_I4</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i4%7E2.html">b64_encode_I4</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i4_a.html">b64_encode_I4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i4_a%7E2.html">b64_encode_I4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i8.html">b64_encode_I8</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i8%7E2.html">b64_encode_I8</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i8_a.html">b64_encode_I8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_i8_a%7E2.html">b64_encode_I8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r16.html">b64_encode_R16</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r16%7E2.html">b64_encode_R16</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r16_a.html">b64_encode_R16_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r16_a%7E2.html">b64_encode_R16_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r4.html">b64_encode_R4</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r4%7E2.html">b64_encode_R4</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r4_a.html">b64_encode_R4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r4_a%7E2.html">b64_encode_R4_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r8.html">b64_encode_R8</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r8%7E2.html">b64_encode_R8</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r8_a.html">b64_encode_R8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_r8_a%7E2.html">b64_encode_R8_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_string.html">b64_encode_string</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_string%7E2.html">b64_encode_string</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_string_a.html">b64_encode_string_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_string_a%7E2.html">b64_encode_string_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_up.html">b64_encode_up</a>
+          
+          <a class="list-group-item" href="../interface/b64_encode_up.html">b64_encode_up</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_up%7E2.html">b64_encode_up</a>
+          
+          <a class="list-group-item" href="../interface/b64_encode_up%7E2.html">b64_encode_up</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_up_a.html">b64_encode_up_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_encode_up_a%7E2.html">b64_encode_up_a</a>
+          
+          <a class="list-group-item" href="../proc/b64_init.html">b64_init</a>
+          
+          <a class="list-group-item" href="../proc/b64_init%7E2.html">b64_init</a>
+          
+          <a class="list-group-item" href="../proc/basedir.html">basedir</a>
+          
+          <a class="list-group-item" href="../proc/basename.html">basename</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i1p.html">bctoi_I1P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i1p%7E2.html">bctoi_I1P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i1p%7E3.html">bctoi_I1P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i2p.html">bctoi_I2P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i2p%7E2.html">bctoi_I2P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i2p%7E3.html">bctoi_I2P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i4p.html">bctoi_I4P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i4p%7E2.html">bctoi_I4P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i4p%7E3.html">bctoi_I4P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i8p.html">bctoi_I8P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i8p%7E2.html">bctoi_I8P</a>
+          
+          <a class="list-group-item" href="../proc/bctoi_i8p%7E3.html">bctoi_I8P</a>
+          
+          <a class="list-group-item" href="../interface/bcton.html">bcton</a>
+          
+          <a class="list-group-item" href="../interface/bcton%7E2.html">bcton</a>
+          
+          <a class="list-group-item" href="../interface/bcton%7E3.html">bcton</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r16p.html">bctor_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r16p%7E2.html">bctor_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r16p%7E3.html">bctor_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r4p.html">bctor_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r4p%7E2.html">bctor_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r4p%7E3.html">bctor_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r8p.html">bctor_R8P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r8p%7E2.html">bctor_R8P</a>
+          
+          <a class="list-group-item" href="../proc/bctor_r8p%7E3.html">bctor_R8P</a>
+          
+          <a class="list-group-item" href="../interface/bit_size.html">bit_size</a>
+          
+          <a class="list-group-item" href="../interface/bit_size%7E2.html">bit_size</a>
+          
+          <a class="list-group-item" href="../interface/bit_size%7E3.html">bit_size</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_chr.html">bit_size_chr</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_chr%7E2.html">bit_size_chr</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_chr%7E3.html">bit_size_chr</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r16p.html">bit_size_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r16p%7E2.html">bit_size_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r16p%7E3.html">bit_size_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r4p.html">bit_size_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r4p%7E2.html">bit_size_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r4p%7E3.html">bit_size_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r8p.html">bit_size_R8P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r8p%7E2.html">bit_size_R8P</a>
+          
+          <a class="list-group-item" href="../proc/bit_size_r8p%7E3.html">bit_size_R8P</a>
+          
+          <a class="list-group-item" href="../interface/bstr.html">bstr</a>
+          
+          <a class="list-group-item" href="../interface/bstr%7E2.html">bstr</a>
+          
+          <a class="list-group-item" href="../interface/bstr%7E3.html">bstr</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i1p.html">bstr_I1P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i1p%7E2.html">bstr_I1P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i1p%7E3.html">bstr_I1P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i2p.html">bstr_I2P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i2p%7E2.html">bstr_I2P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i2p%7E3.html">bstr_I2P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i4p.html">bstr_I4P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i4p%7E2.html">bstr_I4P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i4p%7E3.html">bstr_I4P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i8p.html">bstr_I8P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i8p%7E2.html">bstr_I8P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_i8p%7E3.html">bstr_I8P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r16p.html">bstr_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r16p%7E2.html">bstr_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r16p%7E3.html">bstr_R16P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r4p.html">bstr_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r4p%7E2.html">bstr_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r4p%7E3.html">bstr_R4P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r8p.html">bstr_R8P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r8p%7E2.html">bstr_R8P</a>
+          
+          <a class="list-group-item" href="../proc/bstr_r8p%7E3.html">bstr_R8P</a>
+          
+          <a class="list-group-item" href="../interface/byte_size.html">byte_size</a>
+          
+          <a class="list-group-item" href="../interface/byte_size%7E2.html">byte_size</a>
+          
+          <a class="list-group-item" href="../interface/byte_size%7E3.html">byte_size</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_chr.html">byte_size_chr</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_chr%7E2.html">byte_size_chr</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_chr%7E3.html">byte_size_chr</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i1p.html">byte_size_I1P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i1p%7E2.html">byte_size_I1P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i1p%7E3.html">byte_size_I1P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i2p.html">byte_size_I2P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i2p%7E2.html">byte_size_I2P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i2p%7E3.html">byte_size_I2P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i4p.html">byte_size_I4P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i4p%7E2.html">byte_size_I4P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i4p%7E3.html">byte_size_I4P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i8p.html">byte_size_I8P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i8p%7E2.html">byte_size_I8P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_i8p%7E3.html">byte_size_I8P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r16p.html">byte_size_R16P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r16p%7E2.html">byte_size_R16P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r16p%7E3.html">byte_size_R16P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r4p.html">byte_size_R4P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r4p%7E2.html">byte_size_R4P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r4p%7E3.html">byte_size_R4P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r8p.html">byte_size_R8P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r8p%7E2.html">byte_size_R8P</a>
+          
+          <a class="list-group-item" href="../proc/byte_size_r8p%7E3.html">byte_size_R8P</a>
+          
+          <a class="list-group-item" href="../proc/camelcase.html">camelcase</a>
+          
+          <a class="list-group-item" href="../proc/capitalize.html">capitalize</a>
+          
+          <a class="list-group-item" href="../proc/character_concat_string.html">character_concat_string</a>
+          
+          <a class="list-group-item" href="../proc/character_concat_string_string.html">character_concat_string_string</a>
+          
+          <a class="list-group-item" href="../proc/character_eq_string.html">character_eq_string</a>
+          
+          <a class="list-group-item" href="../proc/character_ge_string.html">character_ge_string</a>
+          
+          <a class="list-group-item" href="../proc/character_gt_string.html">character_gt_string</a>
+          
+          <a class="list-group-item" href="../proc/character_le_string.html">character_le_string</a>
+          
+          <a class="list-group-item" href="../proc/character_lt_string.html">character_lt_string</a>
+          
+          <a class="list-group-item" href="../proc/character_ne_string.html">character_ne_string</a>
+          
+          <a class="list-group-item" href="../proc/chars.html">chars</a>
+          
+          <a class="list-group-item" href="../proc/check_endian.html">check_endian</a>
+          
+          <a class="list-group-item" href="../proc/check_endian%7E2.html">check_endian</a>
+          
+          <a class="list-group-item" href="../proc/check_endian%7E3.html">check_endian</a>
+          
+          <a class="list-group-item" href="../interface/count.html">count</a>
+          
+          <a class="list-group-item" href="../proc/count_substring.html">count_substring</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i1p.html">ctoi_I1P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i1p%7E2.html">ctoi_I1P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i1p%7E3.html">ctoi_I1P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i2p.html">ctoi_I2P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i2p%7E2.html">ctoi_I2P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i2p%7E3.html">ctoi_I2P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i4p.html">ctoi_I4P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i4p%7E2.html">ctoi_I4P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i4p%7E3.html">ctoi_I4P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i8p.html">ctoi_I8P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i8p%7E2.html">ctoi_I8P</a>
+          
+          <a class="list-group-item" href="../proc/ctoi_i8p%7E3.html">ctoi_I8P</a>
+          
+          <a class="list-group-item" href="../interface/cton.html">cton</a>
+          
+          <a class="list-group-item" href="../interface/cton%7E2.html">cton</a>
+          
+          <a class="list-group-item" href="../interface/cton%7E3.html">cton</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r16p.html">ctor_R16P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r16p%7E2.html">ctor_R16P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r16p%7E3.html">ctor_R16P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r4p.html">ctor_R4P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r4p%7E2.html">ctor_R4P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r4p%7E3.html">ctor_R4P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r8p.html">ctor_R8P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r8p%7E2.html">ctor_R8P</a>
+          
+          <a class="list-group-item" href="../proc/ctor_r8p%7E3.html">ctor_R8P</a>
+          
+          <a class="list-group-item" href="../proc/decode.html">decode</a>
+          
+          <a class="list-group-item" href="../proc/decode_bits.html">decode_bits</a>
+          
+          <a class="list-group-item" href="../proc/decode_bits%7E2.html">decode_bits</a>
+          
+          <a class="list-group-item" href="../interface/digit.html">digit</a>
+          
+          <a class="list-group-item" href="../interface/digit%7E2.html">digit</a>
+          
+          <a class="list-group-item" href="../interface/digit%7E3.html">digit</a>
+          
+          <a class="list-group-item" href="../proc/digit_i1.html">digit_I1</a>
+          
+          <a class="list-group-item" href="../proc/digit_i1%7E2.html">digit_I1</a>
+          
+          <a class="list-group-item" href="../proc/digit_i1%7E3.html">digit_I1</a>
+          
+          <a class="list-group-item" href="../proc/digit_i2.html">digit_I2</a>
+          
+          <a class="list-group-item" href="../proc/digit_i2%7E2.html">digit_I2</a>
+          
+          <a class="list-group-item" href="../proc/digit_i2%7E3.html">digit_I2</a>
+          
+          <a class="list-group-item" href="../proc/digit_i4.html">digit_I4</a>
+          
+          <a class="list-group-item" href="../proc/digit_i4%7E2.html">digit_I4</a>
+          
+          <a class="list-group-item" href="../proc/digit_i4%7E3.html">digit_I4</a>
+          
+          <a class="list-group-item" href="../proc/digit_i8.html">digit_I8</a>
+          
+          <a class="list-group-item" href="../proc/digit_i8%7E2.html">digit_I8</a>
+          
+          <a class="list-group-item" href="../proc/digit_i8%7E3.html">digit_I8</a>
+          
+          <a class="list-group-item" href="../proc/encode.html">encode</a>
+          
+          <a class="list-group-item" href="../proc/encode_bits.html">encode_bits</a>
+          
+          <a class="list-group-item" href="../proc/encode_bits%7E2.html">encode_bits</a>
+          
+          <a class="list-group-item" href="../proc/end_with.html">end_with</a>
+          
+          <a class="list-group-item" href="../proc/escape.html">escape</a>
+          
+          <a class="list-group-item" href="../proc/extension.html">extension</a>
+          
+          <a class="list-group-item" href="../proc/fill.html">fill</a>
+          
+          <a class="list-group-item" href="../proc/free.html">free</a>
+          
+          <a class="list-group-item" href="../proc/get_decimal_mode.html">get_decimal_mode</a>
+          
+          <a class="list-group-item" href="../proc/get_delimiter_mode.html">get_delimiter_mode</a>
+          
+          <a class="list-group-item" href="../proc/get_next_non_blank_character_any_record.html">get_next_non_blank_character_any_record</a>
+          
+          <a class="list-group-item" href="../proc/get_next_non_blank_character_this_record.html">get_next_non_blank_character_this_record</a>
+          
+          <a class="list-group-item" href="../interface/index.html">index</a>
+          
+          <a class="list-group-item" href="../proc/insert_character.html">insert_character</a>
+          
+          <a class="list-group-item" href="../proc/insert_string.html">insert_string</a>
+          
+          <a class="list-group-item" href="../proc/is_allocated.html">is_allocated</a>
+          
+          <a class="list-group-item" href="../proc/is_digit.html">is_digit</a>
+          
+          <a class="list-group-item" href="../proc/is_integer.html">is_integer</a>
+          
+          <a class="list-group-item" href="../proc/is_lower.html">is_lower</a>
+          
+          <a class="list-group-item" href="../proc/is_number.html">is_number</a>
+          
+          <a class="list-group-item" href="../proc/is_real.html">is_real</a>
+          
+          <a class="list-group-item" href="../proc/is_upper.html">is_upper</a>
+          
+          <a class="list-group-item" href="../proc/join_characters.html">join_characters</a>
+          
+          <a class="list-group-item" href="../proc/join_strings.html">join_strings</a>
+          
+          <a class="list-group-item" href="../interface/len.html">len</a>
+          
+          <a class="list-group-item" href="../interface/len_trim.html">len_trim</a>
+          
+          <a class="list-group-item" href="../proc/lower.html">lower</a>
+          
+          <a class="list-group-item" href="../interface/pack_data.html">pack_data</a>
+          
+          <a class="list-group-item" href="../interface/pack_data%7E2.html">pack_data</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_i2.html">pack_data_I1_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_i2%7E2.html">pack_data_I1_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_i4.html">pack_data_I1_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_i4%7E2.html">pack_data_I1_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_i8.html">pack_data_I1_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_i8%7E2.html">pack_data_I1_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_r4.html">pack_data_I1_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_r4%7E2.html">pack_data_I1_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_r8.html">pack_data_I1_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i1_r8%7E2.html">pack_data_I1_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_i1.html">pack_data_I2_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_i1%7E2.html">pack_data_I2_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_i4.html">pack_data_I2_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_i4%7E2.html">pack_data_I2_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_i8.html">pack_data_I2_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_i8%7E2.html">pack_data_I2_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_r4.html">pack_data_I2_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_r4%7E2.html">pack_data_I2_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_r8.html">pack_data_I2_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i2_r8%7E2.html">pack_data_I2_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_i1.html">pack_data_I4_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_i1%7E2.html">pack_data_I4_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_i2.html">pack_data_I4_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_i2%7E2.html">pack_data_I4_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_i8.html">pack_data_I4_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_i8%7E2.html">pack_data_I4_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_r4.html">pack_data_I4_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_r4%7E2.html">pack_data_I4_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_r8.html">pack_data_I4_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i4_r8%7E2.html">pack_data_I4_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_i1.html">pack_data_I8_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_i1%7E2.html">pack_data_I8_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_i2.html">pack_data_I8_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_i2%7E2.html">pack_data_I8_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_i4.html">pack_data_I8_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_i4%7E2.html">pack_data_I8_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_r4.html">pack_data_I8_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_r4%7E2.html">pack_data_I8_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_r8.html">pack_data_I8_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_i8_r8%7E2.html">pack_data_I8_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i1.html">pack_data_R4_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i1%7E2.html">pack_data_R4_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i2.html">pack_data_R4_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i2%7E2.html">pack_data_R4_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i4.html">pack_data_R4_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i4%7E2.html">pack_data_R4_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i8.html">pack_data_R4_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_i8%7E2.html">pack_data_R4_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_r8.html">pack_data_R4_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r4_r8%7E2.html">pack_data_R4_R8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i1.html">pack_data_R8_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i1%7E2.html">pack_data_R8_I1</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i2.html">pack_data_R8_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i2%7E2.html">pack_data_R8_I2</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i4.html">pack_data_R8_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i4%7E2.html">pack_data_R8_I4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i8.html">pack_data_R8_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_i8%7E2.html">pack_data_R8_I8</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_r4.html">pack_data_R8_R4</a>
+          
+          <a class="list-group-item" href="../proc/pack_data_r8_r4%7E2.html">pack_data_R8_R4</a>
+          
+          <a class="list-group-item" href="../proc/partition.html">partition</a>
+          
+          <a class="list-group-item" href="../proc/penf_init.html">penf_init</a>
+          
+          <a class="list-group-item" href="../proc/penf_init%7E2.html">penf_init</a>
+          
+          <a class="list-group-item" href="../proc/penf_init%7E3.html">penf_init</a>
+          
+          <a class="list-group-item" href="../proc/penf_print.html">penf_print</a>
+          
+          <a class="list-group-item" href="../proc/penf_print%7E2.html">penf_print</a>
+          
+          <a class="list-group-item" href="../proc/penf_print%7E3.html">penf_print</a>
+          
+          <a class="list-group-item" href="../proc/read_delimited.html">read_delimited</a>
+          
+          <a class="list-group-item" href="../proc/read_file.html">read_file</a>
+          
+          <a class="list-group-item" href="../proc/read_file%7E2.html">read_file</a>
+          
+          <a class="list-group-item" href="../proc/read_formatted.html">read_formatted</a>
+          
+          <a class="list-group-item" href="../proc/read_line.html">read_line</a>
+          
+          <a class="list-group-item" href="../proc/read_lines.html">read_lines</a>
+          
+          <a class="list-group-item" href="../proc/read_lines%7E2.html">read_lines</a>
+          
+          <a class="list-group-item" href="../proc/read_undelimited.html">read_undelimited</a>
+          
+          <a class="list-group-item" href="../proc/read_undelimited_listdirected.html">read_undelimited_listdirected</a>
+          
+          <a class="list-group-item" href="../proc/read_unformatted.html">read_unformatted</a>
+          
+          <a class="list-group-item" href="../interface/repeat.html">repeat</a>
+          
+          <a class="list-group-item" href="../proc/replace.html">replace</a>
+          
+          <a class="list-group-item" href="../proc/replace_one_occurrence.html">replace_one_occurrence</a>
+          
+          <a class="list-group-item" href="../proc/reverse.html">reverse</a>
+          
+          <a class="list-group-item" href="../proc/sadjustl.html">sadjustl</a>
+          
+          <a class="list-group-item" href="../proc/sadjustl_character.html">sadjustl_character</a>
+          
+          <a class="list-group-item" href="../proc/sadjustr.html">sadjustr</a>
+          
+          <a class="list-group-item" href="../proc/sadjustr_character.html">sadjustr_character</a>
+          
+          <a class="list-group-item" href="../interface/scan.html">scan</a>
+          
+          <a class="list-group-item" href="../proc/scount.html">scount</a>
+          
+          <a class="list-group-item" href="../proc/search.html">search</a>
+          
+          <a class="list-group-item" href="../proc/sindex_character_string.html">sindex_character_string</a>
+          
+          <a class="list-group-item" href="../proc/sindex_string_character.html">sindex_string_character</a>
+          
+          <a class="list-group-item" href="../proc/sindex_string_string.html">sindex_string_string</a>
+          
+          <a class="list-group-item" href="../proc/slen.html">slen</a>
+          
+          <a class="list-group-item" href="../proc/slen_trim.html">slen_trim</a>
+          
+          <a class="list-group-item" href="../proc/slice.html">slice</a>
+          
+          <a class="list-group-item" href="../proc/snakecase.html">snakecase</a>
+          
+          <a class="list-group-item" href="../proc/split.html">split</a>
+          
+          <a class="list-group-item" href="../proc/srepeat_character_string.html">srepeat_character_string</a>
+          
+          <a class="list-group-item" href="../proc/srepeat_string_string.html">srepeat_string_string</a>
+          
+          <a class="list-group-item" href="../proc/sscan_character_string.html">sscan_character_string</a>
+          
+          <a class="list-group-item" href="../proc/sscan_string_character.html">sscan_string_character</a>
+          
+          <a class="list-group-item" href="../proc/sscan_string_string.html">sscan_string_string</a>
+          
+          <a class="list-group-item" href="../proc/start_with.html">start_with</a>
+          
+          <a class="list-group-item" href="../proc/startcase.html">startcase</a>
+          
+          <a class="list-group-item" href="../interface/str.html">str</a>
+          
+          <a class="list-group-item" href="../interface/str%7E2.html">str</a>
+          
+          <a class="list-group-item" href="../interface/str%7E3.html">str</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i1p.html">str_a_I1P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i1p%7E2.html">str_a_I1P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i1p%7E3.html">str_a_I1P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i2p.html">str_a_I2P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i2p%7E2.html">str_a_I2P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i2p%7E3.html">str_a_I2P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i4p.html">str_a_I4P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i4p%7E2.html">str_a_I4P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i4p%7E3.html">str_a_I4P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i8p.html">str_a_I8P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i8p%7E2.html">str_a_I8P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_i8p%7E3.html">str_a_I8P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r16p.html">str_a_R16P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r16p%7E2.html">str_a_R16P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r16p%7E3.html">str_a_R16P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r4p.html">str_a_R4P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r4p%7E2.html">str_a_R4P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r4p%7E3.html">str_a_R4P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r8p.html">str_a_R8P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r8p%7E2.html">str_a_R8P</a>
+          
+          <a class="list-group-item" href="../proc/str_a_r8p%7E3.html">str_a_R8P</a>
+          
+          <a class="list-group-item" href="../proc/str_bol.html">str_bol</a>
+          
+          <a class="list-group-item" href="../proc/str_bol%7E2.html">str_bol</a>
+          
+          <a class="list-group-item" href="../proc/str_bol%7E3.html">str_bol</a>
+          
+          <a class="list-group-item" href="../proc/str_i1p.html">str_I1P</a>
+          
+          <a class="list-group-item" href="../proc/str_i1p%7E2.html">str_I1P</a>
+          
+          <a class="list-group-item" href="../proc/str_i1p%7E3.html">str_I1P</a>
+          
+          <a class="list-group-item" href="../proc/str_i2p.html">str_I2P</a>
+          
+          <a class="list-group-item" href="../proc/str_i2p%7E2.html">str_I2P</a>
+          
+          <a class="list-group-item" href="../proc/str_i2p%7E3.html">str_I2P</a>
+          
+          <a class="list-group-item" href="../proc/str_i4p.html">str_I4P</a>
+          
+          <a class="list-group-item" href="../proc/str_i4p%7E2.html">str_I4P</a>
+          
+          <a class="list-group-item" href="../proc/str_i4p%7E3.html">str_I4P</a>
+          
+          <a class="list-group-item" href="../proc/str_i8p.html">str_I8P</a>
+          
+          <a class="list-group-item" href="../proc/str_i8p%7E2.html">str_I8P</a>
+          
+          <a class="list-group-item" href="../proc/str_i8p%7E3.html">str_I8P</a>
+          
+          <a class="list-group-item" href="../proc/str_r16p.html">str_R16P</a>
+          
+          <a class="list-group-item" href="../proc/str_r16p%7E2.html">str_R16P</a>
+          
+          <a class="list-group-item" href="../proc/str_r16p%7E3.html">str_R16P</a>
+          
+          <a class="list-group-item" href="../proc/str_r4p.html">str_R4P</a>
+          
+          <a class="list-group-item" href="../proc/str_r4p%7E2.html">str_R4P</a>
+          
+          <a class="list-group-item" href="../proc/str_r4p%7E3.html">str_R4P</a>
+          
+          <a class="list-group-item" href="../proc/str_r8p.html">str_R8P</a>
+          
+          <a class="list-group-item" href="../proc/str_r8p%7E2.html">str_R8P</a>
+          
+          <a class="list-group-item" href="../proc/str_r8p%7E3.html">str_R8P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i1p.html">strf_I1P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i1p%7E2.html">strf_I1P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i1p%7E3.html">strf_I1P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i2p.html">strf_I2P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i2p%7E2.html">strf_I2P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i2p%7E3.html">strf_I2P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i4p.html">strf_I4P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i4p%7E2.html">strf_I4P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i4p%7E3.html">strf_I4P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i8p.html">strf_I8P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i8p%7E2.html">strf_I8P</a>
+          
+          <a class="list-group-item" href="../proc/strf_i8p%7E3.html">strf_I8P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r16p.html">strf_R16P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r16p%7E2.html">strf_R16P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r16p%7E3.html">strf_R16P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r4p.html">strf_R4P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r4p%7E2.html">strf_R4P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r4p%7E3.html">strf_R4P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r8p.html">strf_R8P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r8p%7E2.html">strf_R8P</a>
+          
+          <a class="list-group-item" href="../proc/strf_r8p%7E3.html">strf_R8P</a>
+          
+          <a class="list-group-item" href="../proc/strim.html">strim</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_character.html">string_assign_character</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_integer_i1p.html">string_assign_integer_I1P</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_integer_i2p.html">string_assign_integer_I2P</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_integer_i4p.html">string_assign_integer_I4P</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_integer_i8p.html">string_assign_integer_I8P</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_real_r16p.html">string_assign_real_R16P</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_real_r4p.html">string_assign_real_R4P</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_real_r8p.html">string_assign_real_R8P</a>
+          
+          <a class="list-group-item" href="../proc/string_assign_string.html">string_assign_string</a>
+          
+          <a class="list-group-item" href="../proc/string_concat_character.html">string_concat_character</a>
+          
+          <a class="list-group-item" href="../proc/string_concat_character_string.html">string_concat_character_string</a>
+          
+          <a class="list-group-item" href="../proc/string_concat_string.html">string_concat_string</a>
+          
+          <a class="list-group-item" href="../proc/string_concat_string_string.html">string_concat_string_string</a>
+          
+          <a class="list-group-item" href="../proc/string_eq_character.html">string_eq_character</a>
+          
+          <a class="list-group-item" href="../proc/string_eq_string.html">string_eq_string</a>
+          
+          <a class="list-group-item" href="../proc/string_ge_character.html">string_ge_character</a>
+          
+          <a class="list-group-item" href="../proc/string_ge_string.html">string_ge_string</a>
+          
+          <a class="list-group-item" href="../proc/string_gt_character.html">string_gt_character</a>
+          
+          <a class="list-group-item" href="../proc/string_gt_string.html">string_gt_string</a>
+          
+          <a class="list-group-item" href="../proc/string_le_character.html">string_le_character</a>
+          
+          <a class="list-group-item" href="../proc/string_le_string.html">string_le_string</a>
+          
+          <a class="list-group-item" href="../proc/string_lt_character.html">string_lt_character</a>
+          
+          <a class="list-group-item" href="../proc/string_lt_string.html">string_lt_string</a>
+          
+          <a class="list-group-item" href="../proc/string_ne_character.html">string_ne_character</a>
+          
+          <a class="list-group-item" href="../proc/string_ne_string.html">string_ne_string</a>
+          
+          <a class="list-group-item" href="../proc/strip.html">strip</a>
+          
+          <a class="list-group-item" href="../interface/strz.html">strz</a>
+          
+          <a class="list-group-item" href="../interface/strz%7E2.html">strz</a>
+          
+          <a class="list-group-item" href="../interface/strz%7E3.html">strz</a>
+          
+          <a class="list-group-item" href="../proc/strz_i1p.html">strz_I1P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i1p%7E2.html">strz_I1P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i1p%7E3.html">strz_I1P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i2p.html">strz_I2P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i2p%7E2.html">strz_I2P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i2p%7E3.html">strz_I2P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i4p.html">strz_I4P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i4p%7E2.html">strz_I4P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i4p%7E3.html">strz_I4P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i8p.html">strz_I8P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i8p%7E2.html">strz_I8P</a>
+          
+          <a class="list-group-item" href="../proc/strz_i8p%7E3.html">strz_I8P</a>
+          
+          <a class="list-group-item" href="../proc/sverify.html">sverify</a>
+          
+          <a class="list-group-item" href="../proc/swapcase.html">swapcase</a>
+          
+          <a class="list-group-item" href="../proc/to_integer_i1p.html">to_integer_I1P</a>
+          
+          <a class="list-group-item" href="../proc/to_integer_i2p.html">to_integer_I2P</a>
+          
+          <a class="list-group-item" href="../proc/to_integer_i4p.html">to_integer_I4P</a>
+          
+          <a class="list-group-item" href="../proc/to_integer_i8p.html">to_integer_I8P</a>
+          
+          <a class="list-group-item" href="../proc/to_real_r16p.html">to_real_R16P</a>
+          
+          <a class="list-group-item" href="../proc/to_real_r4p.html">to_real_R4P</a>
+          
+          <a class="list-group-item" href="../proc/to_real_r8p.html">to_real_R8P</a>
+          
+          <a class="list-group-item" href="../interface/trim.html">trim</a>
+          
+          <a class="list-group-item" href="../proc/unescape.html">unescape</a>
+          
+          <a class="list-group-item" href="../proc/unique.html">unique</a>
+          
+          <a class="list-group-item" href="../proc/upper.html">upper</a>
+          
+          <a class="list-group-item" href="../proc/write_file.html">write_file</a>
+          
+          <a class="list-group-item" href="../proc/write_file%7E2.html">write_file</a>
+          
+          <a class="list-group-item" href="../proc/write_formatted.html">write_formatted</a>
+          
+          <a class="list-group-item" href="../proc/write_line.html">write_line</a>
+          
+          <a class="list-group-item" href="../proc/write_lines.html">write_lines</a>
+          
+          <a class="list-group-item" href="../proc/write_lines%7E2.html">write_lines</a>
+          
+          <a class="list-group-item" href="../proc/write_unformatted.html">write_unformatted</a>
+          
+        </div>
+    </div>
+  </div>
+  
+</div>
+
+    </div>
+    
+    <div class="col-lg-9" id='text'>
+    <h2>
+private pure subroutine encode_bits(bits, padd, code)
+    
+    
+    
+</h2>
+    
+  
+
+
+
+    <h3>Arguments</h3>
+    
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-bits%7E15"></span>integer(kind=I1P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>bits</strong>(1:)</td><td><p>Bits to be encoded.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-padd%7E18"></span>integer(kind=I4P),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>padd</strong></td><td><p>Number of padding characters ('=').</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-code%7E39"></span>character(len=*),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>code</strong></td><td><p>Characters code.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    
+    
+    
+    <h3>Description</h3>
+    <p>Encode a bits stream (must be multiple of 24 bits) into base64 charcaters code (of length multiple of 4).</p>
+<p>The bits stream are encoded in chunks of 24 bits as the following example (in little endian order)</p>
+<div class="codehilite"><pre><span></span> +--first octet--+-second octet--+--third octet--+
+ |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
+ +-----------+---+-------+-------+---+-----------+
+ |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
+ +--1.index--+--2.index--+--3.index--+--4.index--+
+</pre></div>
+
+
+<p></p><div class="alert alert-info" role="alert"><h4>Note</h4>The 4 indexes are stored into 4 elements 8 bits array, thus 2 bits of each array element are not used.</div>
+<p></p><div class="alert alert-info" role="alert"><h4>Note</h4>The number of paddings must be computed outside this procedure, into the calling scope.</div>
+<p></p><div class="alert alert-warning" role="alert"><h4>Warning</h4>This procedure is the backend of encoding, thus it must be never called outside the module.</div>
+    
+    
+     
+     <h3>Called By</h3>
+     
+                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: proc~~encode_bits~2~~CalledByGraph Pages: 1 -->
+<svg id="procencode_bits2CalledByGraph" width="494pt" height="662pt"
+ viewBox="0.00 0.00 494.00 662.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~encode_bits~2~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 658)">
+<title>proc~~encode_bits~2~~CalledByGraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-658 490,-658 490,4 -4,4"/>
+<!-- proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node1" class="node"><title>proc~encode_bits~2</title>
+<polygon fill="none" stroke="black" points="486,-339 416,-339 416,-315 486,-315 486,-339"/>
+<text text-anchor="middle" x="451" y="-324.6" font-family="Helvetica,sans-Serif" font-size="10.50">encode_bits</text>
+</g>
+<!-- proc~b64_encode_r4_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node2" class="node"><title>proc~b64_encode_r4_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node2"><a xlink:href="../proc/b64_encode_r4_a%7E2.html" xlink:title="b64_encode_R4_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="373.5,-402 270.5,-402 270.5,-378 373.5,-378 373.5,-402"/>
+<text text-anchor="middle" x="322" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_R4_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_r4_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge33" class="edge"><title>proc~b64_encode_r4_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M359.001,-377.902C366.064,-375.204 373.342,-372.189 380,-369 394.811,-361.906 410.555,-352.629 423.354,-344.598"/>
+<polygon fill="#000000" stroke="#000000" points="425.549,-347.35 432.097,-339.021 421.784,-341.448 425.549,-347.35"/>
+</g>
+<!-- proc~b64_encode_i4_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node3" class="node"><title>proc~b64_encode_i4_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node3"><a xlink:href="../proc/b64_encode_i4_a%7E2.html" xlink:title="b64_encode_I4_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="371.5,-360 272.5,-360 272.5,-336 371.5,-336 371.5,-360"/>
+<text text-anchor="middle" x="322" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I4_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i4_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge34" class="edge"><title>proc~b64_encode_i4_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M371.738,-339.941C382.87,-338.1 394.643,-336.154 405.583,-334.345"/>
+<polygon fill="#000000" stroke="#000000" points="406.473,-337.745 415.768,-332.66 405.331,-330.839 406.473,-337.745"/>
+</g>
+<!-- proc~b64_encode_i4~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node4" class="node"><title>proc~b64_encode_i4~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node4"><a xlink:href="../proc/b64_encode_i4%7E2.html" xlink:title="b64_encode_I4">
+<polygon fill="#d9534f" stroke="#d9534f" points="365.5,-276 278.5,-276 278.5,-252 365.5,-252 365.5,-276"/>
+<text text-anchor="middle" x="322" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I4</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i4~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge35" class="edge"><title>proc~b64_encode_i4~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M359.001,-276.098C366.064,-278.796 373.342,-281.811 380,-285 394.811,-292.094 410.555,-301.371 423.354,-309.402"/>
+<polygon fill="#000000" stroke="#000000" points="421.784,-312.552 432.097,-314.979 425.549,-306.65 421.784,-312.552"/>
+</g>
+<!-- proc~b64_encode_r16_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node5" class="node"><title>proc~b64_encode_r16_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node5"><a xlink:href="../proc/b64_encode_r16_a%7E2.html" xlink:title="b64_encode_R16_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="376.5,-528 267.5,-528 267.5,-504 376.5,-504 376.5,-528"/>
+<text text-anchor="middle" x="322" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_R16_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_r16_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge36" class="edge"><title>proc~b64_encode_r16_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M367.504,-503.877C372.059,-501.432 376.347,-498.504 380,-495 422.184,-454.543 439.954,-384.837 446.567,-349.274"/>
+<polygon fill="#000000" stroke="#000000" points="450.087,-349.458 448.339,-339.008 443.189,-348.267 450.087,-349.458"/>
+</g>
+<!-- proc~b64_encode_string_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node6" class="node"><title>proc~b64_encode_string_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node6"><a xlink:href="../proc/b64_encode_string_a%7E2.html" xlink:title="b64_encode_string_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="380,-612 264,-612 264,-588 380,-588 380,-612"/>
+<text text-anchor="middle" x="322" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_string_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_string_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge37" class="edge"><title>proc~b64_encode_string_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M368.505,-587.994C372.767,-585.532 376.713,-582.568 380,-579 441.09,-512.68 449.525,-397.617 450.235,-349.337"/>
+<polygon fill="#000000" stroke="#000000" points="453.736,-349.088 450.28,-339.072 446.736,-349.057 453.736,-349.088"/>
+</g>
+<!-- proc~b64_encode_r16~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node7" class="node"><title>proc~b64_encode_r16~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node7"><a xlink:href="../proc/b64_encode_r16%7E2.html" xlink:title="b64_encode_R16">
+<polygon fill="#d9534f" stroke="#d9534f" points="370.5,-444 273.5,-444 273.5,-420 370.5,-420 370.5,-444"/>
+<text text-anchor="middle" x="322" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_R16</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_r16~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge38" class="edge"><title>proc~b64_encode_r16~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M363.877,-419.943C369.538,-417.43 375.089,-414.466 380,-411 404.259,-393.881 425.005,-366.325 437.475,-347.475"/>
+<polygon fill="#000000" stroke="#000000" points="440.455,-349.312 442.911,-339.005 434.564,-345.531 440.455,-349.312"/>
+</g>
+<!-- proc~b64_encode_i2~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node8" class="node"><title>proc~b64_encode_i2~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node8"><a xlink:href="../proc/b64_encode_i2%7E2.html" xlink:title="b64_encode_I2">
+<polygon fill="#d9534f" stroke="#d9534f" points="365.5,-24 278.5,-24 278.5,-0 365.5,-0 365.5,-24"/>
+<text text-anchor="middle" x="322" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I2</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i2~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge39" class="edge"><title>proc~b64_encode_i2~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M365.548,-22.1894C370.971,-24.9685 376.01,-28.5037 380,-33 416.308,-73.9178 439.91,-243.238 447.416,-304.636"/>
+<polygon fill="#000000" stroke="#000000" points="443.968,-305.275 448.63,-314.789 450.918,-304.444 443.968,-305.275"/>
+</g>
+<!-- proc~b64_encode_r8~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node9" class="node"><title>proc~b64_encode_r8~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node9"><a xlink:href="../proc/b64_encode_r8%7E2.html" xlink:title="b64_encode_R8">
+<polygon fill="#d9534f" stroke="#d9534f" points="367.5,-234 276.5,-234 276.5,-210 367.5,-210 367.5,-234"/>
+<text text-anchor="middle" x="322" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_R8</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_r8~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge40" class="edge"><title>proc~b64_encode_r8~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M363.877,-234.057C369.538,-236.57 375.089,-239.534 380,-243 404.259,-260.119 425.005,-287.675 437.475,-306.525"/>
+<polygon fill="#000000" stroke="#000000" points="434.564,-308.469 442.911,-314.995 440.455,-304.688 434.564,-308.469"/>
+</g>
+<!-- proc~b64_encode_r8_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node10" class="node"><title>proc~b64_encode_r8_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node10"><a xlink:href="../proc/b64_encode_r8_a%7E2.html" xlink:title="b64_encode_R8_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="373.5,-570 270.5,-570 270.5,-546 373.5,-546 373.5,-570"/>
+<text text-anchor="middle" x="322" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_R8_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_r8_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge41" class="edge"><title>proc~b64_encode_r8_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M368.044,-545.98C372.446,-543.519 376.55,-540.559 380,-537 431.683,-483.676 445.226,-391.205 448.76,-349.066"/>
+<polygon fill="#000000" stroke="#000000" points="452.255,-349.265 449.488,-339.038 445.273,-348.759 452.255,-349.265"/>
+</g>
+<!-- proc~b64_encode_i2_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node11" class="node"><title>proc~b64_encode_i2_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node11"><a xlink:href="../proc/b64_encode_i2_a%7E2.html" xlink:title="b64_encode_I2_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="371.5,-318 272.5,-318 272.5,-294 371.5,-294 371.5,-318"/>
+<text text-anchor="middle" x="322" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I2_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i2_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge42" class="edge"><title>proc~b64_encode_i2_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M371.738,-314.059C382.87,-315.9 394.643,-317.846 405.583,-319.655"/>
+<polygon fill="#000000" stroke="#000000" points="405.331,-323.161 415.768,-321.34 406.473,-316.255 405.331,-323.161"/>
+</g>
+<!-- proc~b64_encode_i1~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node12" class="node"><title>proc~b64_encode_i1~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node12"><a xlink:href="../proc/b64_encode_i1%7E2.html" xlink:title="b64_encode_I1">
+<polygon fill="#d9534f" stroke="#d9534f" points="365.5,-192 278.5,-192 278.5,-168 365.5,-168 365.5,-192"/>
+<text text-anchor="middle" x="322" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I1</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i1~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge43" class="edge"><title>proc~b64_encode_i1~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M365.675,-191.813C370.825,-194.333 375.755,-197.364 380,-201 413.029,-229.294 433.474,-277.244 443.199,-305.12"/>
+<polygon fill="#000000" stroke="#000000" points="439.922,-306.359 446.405,-314.739 446.563,-304.145 439.922,-306.359"/>
+</g>
+<!-- proc~b64_encode_i1_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node13" class="node"><title>proc~b64_encode_i1_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node13"><a xlink:href="../proc/b64_encode_i1_a%7E2.html" xlink:title="b64_encode_I1_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="371.5,-654 272.5,-654 272.5,-630 371.5,-630 371.5,-654"/>
+<text text-anchor="middle" x="322" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I1_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i1_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge44" class="edge"><title>proc~b64_encode_i1_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M368.916,-629.953C373.046,-627.5 376.85,-624.55 380,-621 416.308,-580.082 439.91,-410.762 447.416,-349.364"/>
+<polygon fill="#000000" stroke="#000000" points="450.918,-349.556 448.63,-339.211 443.968,-348.725 450.918,-349.556"/>
+</g>
+<!-- proc~b64_encode_i8_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node14" class="node"><title>proc~b64_encode_i8_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node14"><a xlink:href="../proc/b64_encode_i8_a%7E2.html" xlink:title="b64_encode_I8_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="371.5,-486 272.5,-486 272.5,-462 371.5,-462 371.5,-486"/>
+<text text-anchor="middle" x="322" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I8_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i8_a~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge45" class="edge"><title>proc~b64_encode_i8_a~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M366.257,-461.9C371.196,-459.438 375.915,-456.499 380,-453 413.029,-424.706 433.474,-376.756 443.199,-348.88"/>
+<polygon fill="#000000" stroke="#000000" points="446.563,-349.855 446.405,-339.261 439.922,-347.641 446.563,-349.855"/>
+</g>
+<!-- proc~b64_encode_string~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node15" class="node"><title>proc~b64_encode_string~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node15"><a xlink:href="../proc/b64_encode_string%7E2.html" xlink:title="b64_encode_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="374,-150 270,-150 270,-126 374,-126 374,-150"/>
+<text text-anchor="middle" x="322" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_string</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_string~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge46" class="edge"><title>proc~b64_encode_string~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M367.504,-150.123C372.059,-152.568 376.347,-155.496 380,-159 422.184,-199.457 439.954,-269.163 446.567,-304.726"/>
+<polygon fill="#000000" stroke="#000000" points="443.189,-305.733 448.339,-314.992 450.087,-304.542 443.189,-305.733"/>
+</g>
+<!-- proc~b64_encode_i8~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node16" class="node"><title>proc~b64_encode_i8~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node16"><a xlink:href="../proc/b64_encode_i8%7E2.html" xlink:title="b64_encode_I8">
+<polygon fill="#d9534f" stroke="#d9534f" points="365.5,-108 278.5,-108 278.5,-84 365.5,-84 365.5,-108"/>
+<text text-anchor="middle" x="322" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_I8</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_i8~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge47" class="edge"><title>proc~b64_encode_i8~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M365.772,-106.806C371.03,-109.49 375.963,-112.835 380,-117 431.683,-170.324 445.226,-262.795 448.76,-304.934"/>
+<polygon fill="#000000" stroke="#000000" points="445.273,-305.241 449.488,-314.962 452.255,-304.735 445.273,-305.241"/>
+</g>
+<!-- proc~b64_encode_r4~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node17" class="node"><title>proc~b64_encode_r4~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node17"><a xlink:href="../proc/b64_encode_r4%7E2.html" xlink:title="b64_encode_R4">
+<polygon fill="#d9534f" stroke="#d9534f" points="367.5,-66 276.5,-66 276.5,-42 367.5,-42 367.5,-66"/>
+<text text-anchor="middle" x="322" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_R4</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_r4~2&#45;&gt;proc~encode_bits~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge48" class="edge"><title>proc~b64_encode_r4~2&#45;&gt;proc~encode_bits~2</title>
+<path fill="none" stroke="#000000" d="M367.667,-65.5313C372.25,-68.084 376.499,-71.1992 380,-75 441.09,-141.32 449.525,-256.383 450.235,-304.663"/>
+<polygon fill="#000000" stroke="#000000" points="446.736,-304.943 450.28,-314.928 453.736,-304.912 446.736,-304.943"/>
+</g>
+<!-- proc~b64_encode_up_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node18" class="node"><title>proc~b64_encode_up_a~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node18"><a xlink:href="../proc/b64_encode_up_a%7E2.html" xlink:title="b64_encode_up_a">
+<polygon fill="#d9534f" stroke="#d9534f" points="228,-486 126,-486 126,-462 228,-462 228,-486"/>
+<text text-anchor="middle" x="177" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_up_a</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_r4_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge4" class="edge"><title>proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_r4_a~2</title>
+<path fill="none" stroke="#000000" d="M191.788,-461.998C208.128,-448.242 236.603,-425.705 264,-411 267.258,-409.251 270.693,-407.588 274.195,-406.018"/>
+<polygon fill="#000000" stroke="#000000" points="275.681,-409.19 283.547,-402.092 272.972,-402.736 275.681,-409.19"/>
+</g>
+<!-- proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i4_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge7" class="edge"><title>proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i4_a~2</title>
+<path fill="none" stroke="#000000" d="M184.929,-461.839C197.823,-440.228 227.531,-394.968 264,-369 266.219,-367.42 268.57,-365.945 271.005,-364.57"/>
+<polygon fill="#000000" stroke="#000000" points="272.72,-367.626 280.096,-360.02 269.587,-361.366 272.72,-367.626"/>
+</g>
+<!-- proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_string_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge11" class="edge"><title>proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_string_a~2</title>
+<path fill="none" stroke="#000000" d="M184.929,-486.161C197.823,-507.772 227.531,-553.032 264,-579 266.219,-580.58 268.57,-582.055 271.005,-583.43"/>
+<polygon fill="#000000" stroke="#000000" points="269.587,-586.634 280.096,-587.98 272.72,-580.374 269.587,-586.634"/>
+</g>
+<!-- proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_r8_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge17" class="edge"><title>proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_r8_a~2</title>
+<path fill="none" stroke="#000000" d="M191.788,-486.002C208.128,-499.758 236.603,-522.295 264,-537 267.258,-538.749 270.693,-540.412 274.195,-541.982"/>
+<polygon fill="#000000" stroke="#000000" points="272.972,-545.264 283.547,-545.908 275.681,-538.81 272.972,-545.264"/>
+</g>
+<!-- proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i2_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge19" class="edge"><title>proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i2_a~2</title>
+<path fill="none" stroke="#000000" d="M181.894,-461.844C191.406,-434.018 218.439,-365.16 264,-327 265.577,-325.68 267.244,-324.438 268.978,-323.272"/>
+<polygon fill="#000000" stroke="#000000" points="271.17,-326.051 278.109,-318.045 267.692,-319.976 271.17,-326.051"/>
+</g>
+<!-- proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i1_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge23" class="edge"><title>proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i1_a~2</title>
+<path fill="none" stroke="#000000" d="M181.894,-486.156C191.406,-513.982 218.439,-582.84 264,-621 265.577,-622.32 267.244,-623.562 268.978,-624.728"/>
+<polygon fill="#000000" stroke="#000000" points="267.692,-628.024 278.109,-629.955 271.17,-621.949 267.692,-628.024"/>
+</g>
+<!-- proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i8_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge25" class="edge"><title>proc~b64_encode_up_a~2&#45;&gt;proc~b64_encode_i8_a~2</title>
+<path fill="none" stroke="#000000" d="M228.014,-474C238.991,-474 250.712,-474 262.003,-474"/>
+<polygon fill="#000000" stroke="#000000" points="262.219,-477.5 272.219,-474 262.219,-470.5 262.219,-477.5"/>
+</g>
+<!-- interface~b64_encode_up~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node19" class="node"><title>interface~b64_encode_up~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node19"><a xlink:href="../interface/b64_encode_up%7E2.html" xlink:title="b64_encode_up">
+<polygon fill="#a7506f" stroke="#a7506f" points="90,-486 0,-486 0,-462 90,-462 90,-486"/>
+<text text-anchor="middle" x="45" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_up</text>
+</a>
+</g>
+</g>
+<!-- interface~b64_encode_up~2&#45;&gt;proc~b64_encode_up_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge2" class="edge"><title>interface~b64_encode_up~2&#45;&gt;proc~b64_encode_up_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M90.0121,-467.573C98.2712,-467.31 107.037,-467.208 115.691,-467.266"/>
+<polygon fill="#000000" stroke="#000000" points="115.714,-470.766 125.762,-467.407 115.812,-463.767 115.714,-470.766"/>
+</g>
+<!-- interface~b64_encode_up~2&#45;&gt;proc~b64_encode_up_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge3" class="edge"><title>interface~b64_encode_up~2&#45;&gt;proc~b64_encode_up_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M90.0121,-480.427C98.2712,-480.69 107.037,-480.792 115.691,-480.734"/>
+<polygon fill="#000000" stroke="#000000" points="115.812,-484.233 125.762,-480.593 115.714,-477.234 115.812,-484.233"/>
+</g>
+<!-- interface~b64_encode_up~2&#45;&gt;interface~b64_encode_up~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge1" class="edge"><title>interface~b64_encode_up~2&#45;&gt;interface~b64_encode_up~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M23.1746,-486.014C15.553,-494.972 22.8281,-504 45,-504 58.511,-504 66.4903,-500.647 68.9378,-496.001"/>
+<polygon fill="#000000" stroke="#000000" points="72.319,-495.073 66.8254,-486.014 65.4705,-496.522 72.319,-495.073"/>
+</g>
+<!-- interface~b64_encode~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node20" class="node"><title>interface~b64_encode~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node20"><a xlink:href="../interface/b64_encode%7E2.html" xlink:title="b64_encode">
+<polygon fill="#a7506f" stroke="#a7506f" points="213,-297 141,-297 141,-273 213,-273 213,-297"/>
+<text text-anchor="middle" x="177" y="-282.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode</text>
+</a>
+</g>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_r4_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge6" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_r4_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M187.595,-297.211C202.295,-315.189 232.06,-348.828 264,-369 266.635,-370.664 269.42,-372.224 272.287,-373.681"/>
+<polygon fill="#000000" stroke="#000000" points="271.087,-376.981 281.634,-377.988 274.017,-370.624 271.087,-376.981"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i4_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge8" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i4_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M201.065,-297.055C218.214,-305.824 242.302,-317.733 264,-327 268.149,-328.772 272.503,-330.538 276.878,-332.251"/>
+<polygon fill="#000000" stroke="#000000" points="275.827,-335.596 286.417,-335.897 278.326,-329.058 275.827,-335.596"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i4~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge10" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i4~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M213.348,-279.809C229.957,-277.37 250.098,-274.412 268.445,-271.718"/>
+<polygon fill="#000000" stroke="#000000" points="269.034,-275.169 278.419,-270.253 268.017,-268.243 269.034,-275.169"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_string_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge12" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_string_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M181.685,-297.213C190.027,-324.899 210.959,-394.572 228,-453 244.307,-508.911 224.384,-536.309 264,-579 265.031,-580.111 266.126,-581.164 267.275,-582.161"/>
+<polygon fill="#000000" stroke="#000000" points="265.33,-585.072 275.521,-587.969 269.361,-579.349 265.33,-585.072"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i2~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge14" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i2~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M183.232,-272.986C192.813,-250.748 213.518,-201.554 228,-159 246.764,-103.865 224.384,-75.6914 264,-33 265.758,-31.106 267.701,-29.3823 269.778,-27.8134"/>
+<polygon fill="#000000" stroke="#000000" points="271.693,-30.7444 278.345,-22.4983 268.002,-24.7962 271.693,-30.7444"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_r8~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge16" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_r8~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M201.065,-272.945C218.214,-264.176 242.302,-252.267 264,-243 268.149,-241.228 272.503,-239.462 276.878,-237.749"/>
+<polygon fill="#000000" stroke="#000000" points="278.326,-240.942 286.417,-234.103 275.827,-234.404 278.326,-240.942"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_r8_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge18" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_r8_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M181.476,-297.142C195.261,-344.987 246.199,-518.765 264,-537 265.082,-538.108 266.227,-539.159 267.426,-540.154"/>
+<polygon fill="#000000" stroke="#000000" points="265.741,-543.24 275.982,-545.956 269.669,-537.447 265.741,-543.24"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i2_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge20" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i2_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M213.348,-290.191C228.074,-292.354 245.576,-294.924 262.143,-297.357"/>
+<polygon fill="#000000" stroke="#000000" points="261.902,-300.859 272.305,-298.849 262.919,-293.933 261.902,-300.859"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i1~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge22" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i1~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M187.595,-272.789C202.295,-254.811 232.06,-221.172 264,-201 266.635,-199.336 269.42,-197.776 272.287,-196.319"/>
+<polygon fill="#000000" stroke="#000000" points="274.017,-199.376 281.634,-192.012 271.087,-193.019 274.017,-199.376"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i1_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge24" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i1_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M181.968,-297.135C190.89,-324.663 212.932,-394.033 228,-453 246.906,-526.984 213.968,-563.312 264,-621 264.855,-621.986 265.761,-622.926 266.71,-623.821"/>
+<polygon fill="#000000" stroke="#000000" points="264.634,-626.639 274.728,-629.86 268.846,-621.048 264.634,-626.639"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i8_a~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge26" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i8_a~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M180.895,-297.041C188.826,-327.516 213.738,-408.44 264,-453 265.48,-454.312 267.048,-455.544 268.685,-456.701"/>
+<polygon fill="#000000" stroke="#000000" points="266.961,-459.749 277.339,-461.886 270.559,-453.744 266.961,-459.749"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_string~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge28" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_string~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M183.213,-272.742C194.402,-247.825 223.069,-190.927 264,-159 265.824,-157.577 267.754,-156.244 269.759,-154.995"/>
+<polygon fill="#000000" stroke="#000000" points="271.788,-157.878 278.926,-150.049 268.463,-151.717 271.788,-157.878"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_i8~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge30" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_i8~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M180.895,-272.959C188.826,-242.484 213.738,-161.56 264,-117 265.731,-115.465 267.584,-114.039 269.526,-112.715"/>
+<polygon fill="#000000" stroke="#000000" points="271.588,-115.566 278.498,-107.534 268.088,-109.503 271.588,-115.566"/>
+</g>
+<!-- interface~b64_encode~2&#45;&gt;proc~b64_encode_r4~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge32" class="edge"><title>interface~b64_encode~2&#45;&gt;proc~b64_encode_r4~2</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M182.867,-272.739C200.49,-228.39 260.137,-78.7273 264,-75 265.252,-73.7917 266.58,-72.652 267.968,-71.5769"/>
+<polygon fill="#000000" stroke="#000000" points="269.961,-74.4565 276.475,-66.1007 266.172,-68.5706 269.961,-74.4565"/>
+</g>
+<!-- proc~autotest~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node21" class="node"><title>proc~autotest~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node21"><a xlink:href="../proc/autotest%7E2.html" xlink:title="autotest">
+<polygon fill="#d9534f" stroke="#d9534f" points="72,-297 18,-297 18,-273 72,-273 72,-297"/>
+<text text-anchor="middle" x="45" y="-282.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">autotest</text>
+</a>
+</g>
+</g>
+<!-- proc~autotest~2&#45;&gt;interface~b64_encode~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge5" class="edge"><title>proc~autotest~2&#45;&gt;interface~b64_encode~2</title>
+<path fill="none" stroke="#000000" d="M72.3074,-285C89.036,-285 111.141,-285 130.642,-285"/>
+<polygon fill="#000000" stroke="#000000" points="130.858,-288.5 140.858,-285 130.858,-281.5 130.858,-288.5"/>
+</g>
+<!-- proc~b64_encode_up~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_node22" class="node"><title>proc~b64_encode_up~2</title>
+<g id="a_proc~~encode_bits~2~~CalledByGraph_node22"><a xlink:href="../proc/b64_encode_up%7E2.html" xlink:title="b64_encode_up">
+<polygon fill="#d9534f" stroke="#d9534f" points="222,-150 132,-150 132,-126 222,-126 222,-150"/>
+<text text-anchor="middle" x="177" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">b64_encode_up</text>
+</a>
+</g>
+</g>
+<!-- proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i4~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge9" class="edge"><title>proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i4~2</title>
+<path fill="none" stroke="#000000" d="M184.929,-150.161C197.823,-171.772 227.531,-217.032 264,-243 266.219,-244.58 268.57,-246.055 271.005,-247.43"/>
+<polygon fill="#000000" stroke="#000000" points="269.587,-250.634 280.096,-251.98 272.72,-244.374 269.587,-250.634"/>
+</g>
+<!-- proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i2~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge13" class="edge"><title>proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i2~2</title>
+<path fill="none" stroke="#000000" d="M184.929,-125.839C197.823,-104.228 227.531,-58.9681 264,-33 266.219,-31.4201 268.57,-29.9452 271.005,-28.5702"/>
+<polygon fill="#000000" stroke="#000000" points="272.72,-31.6256 280.096,-24.0196 269.587,-25.3659 272.72,-31.6256"/>
+</g>
+<!-- proc~b64_encode_up~2&#45;&gt;proc~b64_encode_r8~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge15" class="edge"><title>proc~b64_encode_up~2&#45;&gt;proc~b64_encode_r8~2</title>
+<path fill="none" stroke="#000000" d="M191.788,-150.002C208.128,-163.758 236.603,-186.295 264,-201 267.258,-202.749 270.693,-204.412 274.195,-205.982"/>
+<polygon fill="#000000" stroke="#000000" points="272.972,-209.264 283.547,-209.908 275.681,-202.81 272.972,-209.264"/>
+</g>
+<!-- proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i1~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge21" class="edge"><title>proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i1~2</title>
+<path fill="none" stroke="#000000" d="M218.978,-150.036C234.984,-154.737 253.502,-160.175 270.333,-165.119"/>
+<polygon fill="#000000" stroke="#000000" points="269.435,-168.503 280.016,-167.963 271.408,-161.786 269.435,-168.503"/>
+</g>
+<!-- proc~b64_encode_up~2&#45;&gt;proc~b64_encode_string~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge27" class="edge"><title>proc~b64_encode_up~2&#45;&gt;proc~b64_encode_string~2</title>
+<path fill="none" stroke="#000000" d="M222.072,-138C233.986,-138 247.099,-138 259.771,-138"/>
+<polygon fill="#000000" stroke="#000000" points="259.809,-141.5 269.809,-138 259.809,-134.5 259.809,-141.5"/>
+</g>
+<!-- proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i8~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge29" class="edge"><title>proc~b64_encode_up~2&#45;&gt;proc~b64_encode_i8~2</title>
+<path fill="none" stroke="#000000" d="M218.978,-125.964C234.984,-121.263 253.502,-115.825 270.333,-110.881"/>
+<polygon fill="#000000" stroke="#000000" points="271.408,-114.214 280.016,-108.037 269.435,-107.497 271.408,-114.214"/>
+</g>
+<!-- proc~b64_encode_up~2&#45;&gt;proc~b64_encode_r4~2 -->
+<g id="proc~~encode_bits~2~~CalledByGraph_edge31" class="edge"><title>proc~b64_encode_up~2&#45;&gt;proc~b64_encode_r4~2</title>
+<path fill="none" stroke="#000000" d="M191.788,-125.998C208.128,-112.242 236.603,-89.7052 264,-75 267.258,-73.2512 270.693,-71.5875 274.195,-70.0185"/>
+<polygon fill="#000000" stroke="#000000" points="275.681,-73.1905 283.547,-66.0925 272.972,-66.7361 275.681,-73.1905"/>
+</g>
+</g>
+</svg>
+</div>
+                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                      </div>
+                      <div class="modal-body">
+                        
+Nodes of different colours represent the following:
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.36.0 (20140111.2315)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="26pt"
+ viewBox="0.00 0.00 641.00 26.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.812421 0.812421) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-28 785,-28 785,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node"><title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,-0 54,-0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node"><title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="139.25,-24 72.75,-24 72.75,-0 139.25,-0 139.25,-24"/>
+<text text-anchor="middle" x="106" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Type -->
+<g id="node3" class="node"><title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="212,-24 158,-24 158,-0 212,-0 212,-24"/>
+<text text-anchor="middle" x="185" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- Subroutine -->
+<g id="node4" class="node"><title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="294,-24 230,-24 230,-0 294,-0 294,-24"/>
+<text text-anchor="middle" x="262" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node5" class="node"><title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="366,-24 312,-24 312,-0 366,-0 366,-24"/>
+<text text-anchor="middle" x="339" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node6" class="node"><title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="439.25,-24 384.75,-24 384.75,-0 439.25,-0 439.25,-24"/>
+<text text-anchor="middle" x="412" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node7" class="node"><title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="594,-24 458,-24 458,-0 594,-0 594,-24"/>
+<text text-anchor="middle" x="526" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node8" class="node"><title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="666,-24 612,-24 612,-0 666,-0 666,-24"/>
+<text text-anchor="middle" x="639" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node9" class="node"><title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="781.25,-24 684.75,-24 684.75,-0 781.25,-0 781.25,-24"/>
+<text text-anchor="middle" x="733" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+Where possible, edges connecting nodes are given different colours to make them
+easier to distinguish in large graphs.
+<h5>Module Graph</h5>
+<p>Solid arrows point from a parent (sub)module to the submodule which is
+descended from it. Dashed arrows point from a module being used to the
+module using it.</p>
+<h5>Type Graph</h5>
+<p>Solid arrows point from one derived type to another which extends
+(inherits from) it. Dashed arrows point from a derived type to another
+type containing it as a components, with a label listing the name(s) of
+said component(s).</p>
+<h5>Call Graph</h5>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+     
+    <br>
+    
+    <section>
+    <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-sixb%7E3"></span>integer(kind=I1P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>sixb</strong>(1:4)</td><td></td><td></td><td><p>6 bits slices (stored into 8 bits integer) of 24 bits input.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-c%7E3"></span>integer(kind=I8P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>c</strong></td><td></td><td></td><td><p>Counter.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-e%7E3"></span>integer(kind=I8P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>e</strong></td><td></td><td></td><td><p>Counter.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-nb%7E3"></span>integer(kind=I8P),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>Nb</strong></td><td></td><td></td><td><p>Length of bits array.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>  <span class="k">pure subroutine </span><span class="n">encode_bits</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span> <span class="n">padd</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
+  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
+  <span class="c">!&lt; Encode a bits stream (must be multiple of 24 bits) into base64 charcaters code (of length multiple of 4).</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt; The bits stream are encoded in chunks of 24 bits as the following example (in little endian order)</span>
+  <span class="c">!&lt;```</span>
+  <span class="c">!&lt; +--first octet--+-second octet--+--third octet--+</span>
+  <span class="c">!&lt; |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|</span>
+  <span class="c">!&lt; +-----------+---+-------+-------+---+-----------+</span>
+  <span class="c">!&lt; |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|</span>
+  <span class="c">!&lt; +--1.index--+--2.index--+--3.index--+--4.index--+</span>
+  <span class="c">!&lt;```</span>
+  <span class="c">!&lt; @note The 4 indexes are stored into 4 elements 8 bits array, thus 2 bits of each array element are not used.</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt; @note The number of paddings must be computed outside this procedure, into the calling scope.</span>
+  <span class="c">!&lt;</span>
+  <span class="c">!&lt; @warning This procedure is the backend of encoding, thus it must be never called outside the module.</span>
+  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">I1P</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">bits</span><span class="p">(</span><span class="mi">1</span><span class="p">:)</span>  <span class="c">!&lt; Bits to be encoded.</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">I4P</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">padd</span>      <span class="c">!&lt; Number of padding characters (&#39;=&#39;).</span>
+  <span class="kt">character</span><span class="p">(</span><span class="o">*</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">code</span>      <span class="c">!&lt; Characters code.</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">I1P</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">sixb</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">)</span> <span class="c">!&lt; 6 bits slices (stored into 8 bits integer) of 24 bits input.</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">I8P</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">c</span>         <span class="c">!&lt; Counter.</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">I8P</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">e</span>         <span class="c">!&lt; Counter.</span>
+  <span class="kt">integer</span><span class="p">(</span><span class="n">I8P</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">Nb</span>        <span class="c">!&lt; Length of bits array.</span>
+  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
+
+  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
+  <span class="n">Nb</span><span class="o">=</span><span class="n">size</span><span class="p">(</span><span class="n">bits</span><span class="p">,</span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="nb">kind</span><span class="o">=</span><span class="n">I8P</span><span class="p">)</span>
+  <span class="n">c</span> <span class="o">=</span> <span class="mi">1_I8P</span>
+  <span class="k">do </span><span class="n">e</span><span class="o">=</span><span class="mi">1_I8P</span><span class="p">,</span><span class="n">Nb</span><span class="p">,</span><span class="mi">3_I8P</span> <span class="c">! loop over array elements: 3 bytes (24 bits) scanning</span>
+    <span class="n">sixb</span> <span class="o">=</span> <span class="mi">0_I1P</span>
+    <span class="k">call </span><span class="nb">mvbits</span><span class="p">(</span><span class="n">bits</span><span class="p">(</span><span class="n">e</span>  <span class="p">),</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="n">sixb</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">call </span><span class="nb">mvbits</span><span class="p">(</span><span class="n">bits</span><span class="p">(</span><span class="n">e</span>  <span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">sixb</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="o">&lt;=</span><span class="n">Nb</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">      call </span><span class="nb">mvbits</span><span class="p">(</span><span class="n">bits</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">sixb</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+      <span class="k">call </span><span class="nb">mvbits</span><span class="p">(</span><span class="n">bits</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">sixb</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">endif</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">2</span><span class="o">&lt;=</span><span class="n">Nb</span><span class="p">)</span> <span class="k">then</span>
+<span class="k">      call </span><span class="nb">mvbits</span><span class="p">(</span><span class="n">bits</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">sixb</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+      <span class="k">call </span><span class="nb">mvbits</span><span class="p">(</span><span class="n">bits</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="n">sixb</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">endif</span>
+    <span class="n">sixb</span> <span class="o">=</span> <span class="n">sixb</span> <span class="o">+</span> <span class="mi">1_I1P</span>
+    <span class="n">code</span><span class="p">(</span><span class="n">c</span>  <span class="p">:</span><span class="n">c</span>  <span class="p">)</span> <span class="o">=</span> <span class="n">base64</span><span class="p">(</span><span class="n">sixb</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span><span class="n">sixb</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">code</span><span class="p">(</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">base64</span><span class="p">(</span><span class="n">sixb</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span><span class="n">sixb</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">code</span><span class="p">(</span><span class="n">c</span><span class="o">+</span><span class="mi">2</span><span class="p">:</span><span class="n">c</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">base64</span><span class="p">(</span><span class="n">sixb</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span><span class="n">sixb</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">code</span><span class="p">(</span><span class="n">c</span><span class="o">+</span><span class="mi">3</span><span class="p">:</span><span class="n">c</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">base64</span><span class="p">(</span><span class="n">sixb</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span><span class="n">sixb</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">4_I8P</span>
+  <span class="n">enddo</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">padd</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">code</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">-</span><span class="n">padd</span><span class="o">+</span><span class="mi">1</span><span class="p">:)</span><span class="o">=</span><span class="nb">repeat</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="n">padd</span><span class="p">)</span>
+  <span class="k">return</span>
+  <span class="c">!---------------------------------------------------------------------------------------------------------------------------------</span>
+  <span class="n">endsubroutine</span> <span class="n">encode_bits</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
+
+    <hr>
+    <footer>
+      <div class="row">
+        <div class="col-md-4">&copy; 2016 </div>
+        <div class="col-md-4"><span class="text-center"> StringiFor was developed by Stefano Zaghi</span></div>
+        <div class="col-md-4">
+          <span class="pull-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </span>
+        </div>
+      </div>
+      <br>
+    </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
+        'HTML-CSS': { 
+           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
+        }
+      });
+    </script>
+    <script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  </body>
+</html>

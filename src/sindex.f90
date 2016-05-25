@@ -24,12 +24,12 @@ acharacter = 'Hello World Hello!'
 anothercharacter = 'llo'
 astring = acharacter
 
-i = astring%sindex(substring=anothercharacter)
+i = astring%index(substring=anothercharacter)
 ic = index(string=acharacter, substring=anothercharacter)
 test_passed(1) = i==ic
 write(stdout, "(A,I2,A,L1)") 'Sindex basic call result: ', i, ' is correct? ', test_passed(1)
 
-i = astring%sindex(substring=anothercharacter, back=.true.)
+i = astring%index(substring=anothercharacter, back=.true.)
 ic = index(string=acharacter, substring=anothercharacter, back=.true.)
 test_passed(2) = i==ic
 write(stdout, "(A,I2,A,L1)") 'Sindex back call result: ', i, ' is correct? ', test_passed(2)
