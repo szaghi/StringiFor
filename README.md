@@ -41,7 +41,7 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 
 ---
 
-[What is StringiFor?](#what-is-penf?) | [Main features](#main-features) | [Copyrights](#copyrights) | [Download](#download) | [Compilation](#compilation) | [Documentation](#documentation) | [Comparison to other Approaches](#comparison-to-other-approaches)
+[What is StringiFor?](#what-is-stringifor?) | [Main features](#main-features) | [Copyrights](#copyrights) | [Download](#download) | [Compilation](#compilation) | [Documentation](#documentation) | [Comparison to other Approaches](#comparison-to-other-approaches)
 
 ---
 
