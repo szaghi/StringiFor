@@ -180,6 +180,10 @@
           
           <a class="list-group-item" href="../sourcefile/capitalize.f90.html">capitalize.f90</a>
           
+          <a class="list-group-item" href="../sourcefile/compact_real.f90.html">compact_real.f90</a>
+          
+          <a class="list-group-item" href="../sourcefile/compact_real.f90%7E2.html">compact_real.f90</a>
+          
           <a class="list-group-item" href="../sourcefile/concatenation.f90.html">concatenation.f90</a>
           
           <a class="list-group-item" href="../sourcefile/csv_naive_parser.f90.html">csv_naive_parser.f90</a>
@@ -322,7 +326,7 @@
 <a name="ln-10"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 <a name="ln-11"></a><span class="k">implicit none</span>
 <a name="ln-12"></a><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>        <span class="c">!&lt; A string.</span>
-<a name="ln-13"></a><span class="kt">logical</span>      <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
+<a name="ln-13"></a><span class="kt">logical</span>      <span class="kd">::</span> <span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c">!&lt; List of passed tests.</span>
 <a name="ln-14"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
 <a name="ln-15"></a>
 <a name="ln-16"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
@@ -337,10 +341,17 @@
 <a name="ln-25"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="s1">&#39;YOU&#39;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="s1">&#39;THEY&#39;</span><span class="p">,</span> <span class="nb">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;When THEY are sad YOU should think to me :-)&#39;</span><span class="p">)</span>
 <a name="ln-26"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Replace only the first &quot;YOU&quot; with &quot;THEY&quot;: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="p">%</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="s1">&#39;YOU&#39;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="s1">&#39;THEY&#39;</span><span class="p">,</span> <span class="nb">count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
 <a name="ln-27"></a>
-<a name="ln-28"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
-<a name="ln-29"></a><span class="k">stop</span>
-<a name="ln-30"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
-<a name="ln-31"></a><span class="n">endprogram</span> <span class="n">replace</span>
+<a name="ln-28"></a><span class="n">astring</span> <span class="o">=</span> <span class="nb">repeat</span><span class="p">(</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;abcd&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<a name="ln-29"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Original new_line test: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
+<a name="ln-30"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">),</span> <span class="n">new</span><span class="o">=</span><span class="s1">&#39;|cr|&#39;</span><span class="p">)</span>
+<a name="ln-31"></a><span class="n">astring</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="s1">&#39;|cr|&#39;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;    &#39;</span><span class="p">)</span>
+<a name="ln-32"></a><span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="nb">repeat</span><span class="p">(</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;    &#39;</span><span class="o">//</span><span class="s1">&#39;abcd&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<a name="ln-33"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A)&quot;</span><span class="p">)</span> <span class="s1">&#39;Replace &quot;new_line&quot; with &quot;new_line+indent&quot;: &quot;&#39;</span><span class="o">//</span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span>
+<a name="ln-34"></a>
+<a name="ln-35"></a><span class="k">write</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;(A,L1)&quot;</span><span class="p">)</span> <span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span> <span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
+<a name="ln-36"></a><span class="k">stop</span>
+<a name="ln-37"></a><span class="c">!-----------------------------------------------------------------------------------------------------------------------------------</span>
+<a name="ln-38"></a><span class="n">endprogram</span> <span class="n">replace</span>
 </pre></div>
 
     </section>

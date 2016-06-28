@@ -17,8 +17,8 @@ implicit none
 !-----------------------------------------------------------------------------------------------------------------------------------
 
 !-----------------------------------------------------------------------------------------------------------------------------------
-call penf_Init
-call penf_Print(unit=stdout)
+call penf_init
+call penf_print(unit=stdout)
 print "(A)", ''
 print "(A)", 'Testing IR_Precision tools'
 print "(A)", 'Casting real-to-string: '//str(n=1._R8P)

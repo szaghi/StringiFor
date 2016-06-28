@@ -568,12 +568,13 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction strf_I1P
 
-  elemental function str_R16P(n, no_sign) result(str)
+  elemental function str_R16P(n, no_sign, compact) result(str)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Convert real to string.
   !---------------------------------------------------------------------------------------------------------------------------------
   real(R16P), intent(in)           :: n       !< Real to be converted.
   logical,    intent(in), optional :: no_sign !< Flag for leaving out the sign.
+  logical,    intent(in), optional :: compact !< Flag for *compacting* string encoding.
   character(DR16P)                 :: str     !< Returned string containing input number.
   !---------------------------------------------------------------------------------------------------------------------------------
 
@@ -581,16 +582,20 @@ contains
   write(str, FR16P) n               ! Casting of n to string.
   if (n>0._R16P) str(1:1)='+'       ! Prefixing plus if n>0.
   if (present(no_sign)) str=str(2:) ! Leaving out the sign.
+  if (present(compact)) then
+    if (compact) call compact_real_string(string=str)
+  endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction str_R16P
 
-  elemental function str_R8P(n, no_sign) result(str)
+  elemental function str_R8P(n, no_sign, compact) result(str)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Convert real to string.
   !---------------------------------------------------------------------------------------------------------------------------------
   real(R8P), intent(in)           :: n       !< Real to be converted.
   logical,   intent(in), optional :: no_sign !< Flag for leaving out the sign.
+  logical,   intent(in), optional :: compact !< Flag for *compacting* string encoding.
   character(DR8P)                 :: str     !< Returned string containing input number.
   !---------------------------------------------------------------------------------------------------------------------------------
 
@@ -598,16 +603,20 @@ contains
   write(str, FR8P) n                ! Casting of n to string.
   if (n>0._R8P) str(1:1)='+'        ! Prefixing plus if n>0.
   if (present(no_sign)) str=str(2:) ! Leaving out the sign.
+  if (present(compact)) then
+    if (compact) call compact_real_string(string=str)
+  endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction str_R8P
 
-  elemental function str_R4P(n, no_sign) result(str)
+  elemental function str_R4P(n, no_sign, compact) result(str)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Convert real to string.
   !---------------------------------------------------------------------------------------------------------------------------------
   real(R4P), intent(in)           :: n       !< Real to be converted.
   logical,   intent(in), optional :: no_sign !< Flag for leaving out the sign.
+  logical,   intent(in), optional :: compact !< Flag for *compacting* string encoding.
   character(DR4P)                 :: str     !< Returned string containing input number.
   !---------------------------------------------------------------------------------------------------------------------------------
 
@@ -615,6 +624,9 @@ contains
   write(str, FR4P) n                ! Casting of n to string.
   if (n>0._R4P) str(1:1)='+'        ! Prefixing plus if n>0.
   if (present(no_sign)) str=str(2:) ! Leaving out the sign.
+  if (present(compact)) then
+    if (compact) call compact_real_string(string=str)
+  endif
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction str_R4P
@@ -705,96 +717,75 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction str_bol
 
-  pure function str_a_R16P(n, no_sign, delimiters) result(str)
+  pure function str_a_R16P(n, no_sign, delimiters, compact) result(str)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Converting real array to string.
   !---------------------------------------------------------------------------------------------------------------------------------
   real(R16P),   intent(in)           :: n(:)            !< Real array to be converted.
   logical,      intent(in), optional :: no_sign         !< Flag for leaving out the sign.
   character(*), intent(in), optional :: delimiters(1:2) !< Eventual delimiters of array values.
+  logical,      intent(in), optional :: compact         !< Flag for *compacting* string encoding.
   character(len=:), allocatable      :: str             !< Returned string containing input number.
   character(DR16P)                   :: strn            !< String containing of element of input array number.
   integer                            :: i               !< Counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  if (present(no_sign)) then
-    str = ''
-    do i=1,size(n)
-      strn = str_R16P(no_sign=no_sign, n=n(i))
-      str = str//','//trim(strn)
-    enddo
-  else
-    str = ''
-    do i=1,size(n)
-      strn = str_R16P(n=n(i))
-      str = str//','//trim(strn)
-    enddo
-  endif
+  str = ''
+  do i=1,size(n)
+    strn = str_R16P(no_sign=no_sign, compact=compact, n=n(i))
+    str = str//','//trim(strn)
+  enddo
   str = trim(str(2:))
   if (present(delimiters)) str = delimiters(1)//str//delimiters(2)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction str_a_R16P
 
-  pure function str_a_R8P(n, no_sign, delimiters) result(str)
+  pure function str_a_R8P(n, no_sign, delimiters, compact) result(str)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Convert real array to string.
   !---------------------------------------------------------------------------------------------------------------------------------
   real(R8P),    intent(in)           :: n(:)            !< Real array to be converted.
   logical,      intent(in), optional :: no_sign         !< Flag for leaving out the sign.
   character(*), intent(in), optional :: delimiters(1:2) !< Eventual delimiters of array values.
+  logical,      intent(in), optional :: compact         !< Flag for *compacting* string encoding.
   character(len=:), allocatable      :: str             !< Returned string containing input number.
   character(DR8P)                    :: strn            !< String containing of element of input array number.
   integer                            :: i               !< Counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  if (present(no_sign)) then
-    str = ''
-    do i=1,size(n)
-      strn = str_R8P(no_sign=no_sign, n=n(i))
-      str = str//','//trim(strn)
-    enddo
-  else
-    str = ''
-    do i=1,size(n)
-      strn = str_R8P(n=n(i))
-      str = str//','//trim(strn)
-    enddo
-  endif
+  str = ''
+  do i=1,size(n)
+    strn = str_R8P(no_sign=no_sign, compact=compact, n=n(i))
+    str = str//','//trim(strn)
+  enddo
   str = trim(str(2:))
   if (present(delimiters)) str = delimiters(1)//str//delimiters(2)
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction str_a_R8P
 
-  pure function str_a_R4P(n, no_sign, delimiters) result(str)
+  pure function str_a_R4P(n, no_sign, delimiters, compact) result(str)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Convert real array to string.
   !---------------------------------------------------------------------------------------------------------------------------------
   real(R4P),    intent(in)           :: n(:)            !< Real array to be converted.
   logical,      intent(in), optional :: no_sign         !< Flag for leaving out the sign.
   character(*), intent(in), optional :: delimiters(1:2) !< Eventual delimiters of array values.
+  logical,      intent(in), optional :: compact         !< Flag for *compacting* string encoding.
   character(len=:), allocatable      :: str             !< Returned string containing input number.
   character(DR4P)                    :: strn            !< String containing of element of input array number.
   integer                            :: i               !< Counter.
   !---------------------------------------------------------------------------------------------------------------------------------
 
   !---------------------------------------------------------------------------------------------------------------------------------
-  if (present(no_sign)) then
-    str = ''
-    do i=1,size(n)
-      strn = str_R4P(no_sign=no_sign, n=n(i))
-      str = str//','//trim(strn)
-    enddo
-  else
-    str = ''
-    do i=1,size(n)
-      strn = str_R4P(n=n(i))
-      str = str//','//trim(strn)
-    enddo
-  endif
+  str = ''
+  do i=1,size(n)
+    strn = str_R4P(no_sign=no_sign, compact=compact, n=n(i))
+    str = str//','//trim(strn)
+  enddo
   str = trim(str(2:))
   if (present(delimiters)) str = delimiters(1)//str//delimiters(2)
   return
@@ -928,6 +919,73 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction str_a_I1P
+
+  pure subroutine compact_real_string(string)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< author: Izaak Beekman
+  !< date: 02/24/2015
+  !<
+  !< Compact a string representing a real number, so that the same value is displayed with fewer characters.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  character(len=*),intent(inout) :: string      !< string representation of a real number.
+  character(len=len(string))     :: significand !< Significand characters.
+  character(len=len(string))     :: expnt       !< Exponent characters.
+  character(len=2)               :: separator   !< Separator characters.
+  integer(I4P)                   :: exp_start   !< Start position of exponent.
+  integer(I4P)                   :: decimal_pos !< Decimal positions.
+  integer(I4P)                   :: sig_trim    !< Signature trim.
+  integer(I4P)                   :: exp_trim    !< Exponent trim.
+  integer(I4P)                   :: i           !< counter
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  string = adjustl(string)
+  exp_start = scan(string, 'eEdD')
+  if (exp_start == 0) exp_start = scan(string, '-+', back=.true.)
+  decimal_pos = scan(string, '.')
+  if (exp_start /= 0) separator = string(exp_start:exp_start)
+  if ( exp_start < decimal_pos ) then ! possibly signed, exponent-less float
+    significand = string
+    sig_trim = len(trim(significand))
+    do i = len(trim(significand)), decimal_pos+2, -1 ! look from right to left at 0s, but save one after the decimal place
+      if (significand(i:i) == '0') then
+        sig_trim = i-1
+      else
+        exit
+      endif
+    enddo
+    string = trim(significand(1:sig_trim))
+  elseif (exp_start > decimal_pos) then ! float has exponent
+    significand = string(1:exp_start-1)
+    sig_trim = len(trim(significand))
+    do i = len(trim(significand)),decimal_pos+2,-1 ! look from right to left at 0s
+      if (significand(i:i) == '0') then
+        sig_trim = i-1
+      else
+        exit
+      endif
+    enddo
+    expnt = adjustl(string(exp_start+1:))
+    if (expnt(1:1) == '+' .or. expnt(1:1) == '-') then
+      separator = trim(adjustl(separator))//expnt(1:1)
+      exp_start = exp_start + 1
+      expnt     = adjustl(string(exp_start+1:))
+    endif
+    exp_trim = 1
+    do i = 1,(len(trim(expnt))-1) ! look at exponent leading zeros saving last
+      if (expnt(i:i) == '0') then
+        exp_trim = i+1
+      else
+        exit
+      endif
+    enddo
+    string = trim(adjustl(significand(1:sig_trim)))// &
+             trim(adjustl(separator))// &
+             trim(adjustl(expnt(exp_trim:)))
+  !else ! mal-formed real, BUT this code should be unreachable
+  endif
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine compact_real_string
 
   elemental function strz_I8P(n, nz_pad) result(str)
   !---------------------------------------------------------------------------------------------------------------------------------
