@@ -108,7 +108,7 @@ StringiFor is a modern Fortran project thus a modern Fortran compiler is need to
 The library is modular, namely it exploits Fortran modules. As a consequence, there is compilation-cascade hierarchy to build the library. To correctly build the library the following approaches are supported
 
 + [Build by means of FoBiS](#build-by-means-of-fobis): full support;
-+ [Build by means of GNU Make](#build-by-means-of-fobis): support only Intel Fortran;
++ [Build by means of GNU Make](#build-by-means-of-gnu-make): support only Intel Fortran;
 + [Build by means of CMake](#build-by-means-of-fobis): to be implemented.
 
 The FoBiS building support is the most complete, as it is the one used for the developing StringiFor.
