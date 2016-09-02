@@ -1397,46 +1397,50 @@ contains
 
     temporary = self%unique(sep_)
     No = temporary%count(sep_)
-    allocate(temp_toks(3, No))
-    temp_toks(:, 1) = temporary%partition(sep_)
-    if (No>1) then
-      do t=2, No
-        temp_toks(:, t) = temp_toks(3, t-1)%partition(sep_)
-      enddo
-    endif
-    if (temp_toks(1, 1)%raw/=''.and.temp_toks(3, No)%raw/='') then
-      allocate(tokens(No+1))
-      do t=1, No
-        if (t==No) then
-          tokens(t  ) = temp_toks(1, t)
-          tokens(t+1) = temp_toks(3, t)
-        else
+    if (No>0) then
+      allocate(temp_toks(3, No))
+      temp_toks(:, 1) = temporary%partition(sep_)
+      if (No>1) then
+        do t=2, No
+          temp_toks(:, t) = temp_toks(3, t-1)%partition(sep_)
+        enddo
+      endif
+      if (temp_toks(1, 1)%raw/=''.and.temp_toks(3, No)%raw/='') then
+        allocate(tokens(No+1))
+        do t=1, No
+          if (t==No) then
+            tokens(t  ) = temp_toks(1, t)
+            tokens(t+1) = temp_toks(3, t)
+          else
+            tokens(t) = temp_toks(1, t)
+          endif
+        enddo
+      elseif (temp_toks(1, 1)%raw/='') then
+        allocate(tokens(No))
+        do t=1, No
           tokens(t) = temp_toks(1, t)
-        endif
-      enddo
-    elseif (temp_toks(1, 1)%raw/='') then
-      allocate(tokens(No))
-      do t=1, No
-        tokens(t) = temp_toks(1, t)
-      enddo
-    elseif (temp_toks(3, No)%raw/='') then
-      allocate(tokens(No))
-      do t=2, No
-        if (t==No) then
+        enddo
+      elseif (temp_toks(3, No)%raw/='') then
+        allocate(tokens(No))
+        do t=2, No
+          if (t==No) then
+            tokens(t-1) = temp_toks(1, t)
+            tokens(t  ) = temp_toks(3, t)
+          else
+            tokens(t-1) = temp_toks(1, t)
+          endif
+        enddo
+      else
+        allocate(tokens(No-1))
+        do t=2, No
           tokens(t-1) = temp_toks(1, t)
-          tokens(t  ) = temp_toks(3, t)
-        else
-          tokens(t-1) = temp_toks(1, t)
-        endif
-      enddo
+        enddo
+      endif
     else
-      allocate(tokens(No-1))
-      do t=2, No
-        tokens(t-1) = temp_toks(1, t)
-      enddo
+      allocate(tokens(1))
+      tokens(1) = self
     endif
   endif
-  return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine split
 

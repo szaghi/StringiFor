@@ -21,7 +21,7 @@ for e in $( find ./exe/ -type f -executable -print ); do
   if [ "$is_passed" == 'F' ]; then
     echo
     echo "Test failed"
-    ./exe/$e
+    $e
   fi
 done
 passed=$(all_passed tests_executed)
