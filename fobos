@@ -11,7 +11,7 @@ $LSHARED     = -shared
 $CSTATIC_GNU = -c -frealloc-lhs -std=f2008 -fall-intrinsics
 $CSTATIC_INT = -c -assume realloc_lhs -standard-semantics -std08
 $DEBUG_GNU   = -O0 -g3 -Warray-bounds -Wcharacter-truncation -Wline-truncation -Wimplicit-interface -Wimplicit-procedure -Wunderflow -fcheck=all -fmodule-private -ffree-line-length-132 -fimplicit-none -fbacktrace -fdump-core -finit-real=nan
-$DEBUG_INT   = -O0 -debug all -warn all -extend-source 132 -traceback
+$DEBUG_INT   = -O0 -check arg_temp_created -check format -check assume -check format -check output_conversion -check pointers -check stack -check uninit -debug all -warn all -extend-source 132 -traceback
 $OPTIMIZE    = -O2
 $EXDIRS      = ./src/third_party/BeFoR64/ ./src/third_party/PENF/
 
@@ -151,4 +151,16 @@ help   = Rule for performing coverage analysis
 rule_1 = FoBiS.py clean -mode tests-gnu
 rule_2 = FoBiS.py build -mode tests-gnu -coverage
 rule_3 = ./run_tests.sh
-rule_4 = gcov -o exe/obj/ src/lib/stringifor.f90
+rule_4 = rm -f exe/obj/penf* exe/obj/befor64*
+rule_5 = gcov -o exe/obj/ src/lib/stringifor*
+rule_6 = rm -f *.gcov
+
+[rule-coverage-analysis]
+help   = Rule for performing coverage analysis and saving reports in markdown
+rule_1 = FoBiS.py clean -mode tests-gnu
+rule_2 = FoBiS.py build -mode tests-gnu -coverage
+rule_3 = ./run_tests.sh
+rule_4 = rm -f exe/obj/penf* exe/obj/befor64*
+rule_5 = gcov -o exe/obj/ src/lib/stringifor*
+rule_6 = FoBiS.py rule -gcov_analyzer wiki/ Coverage-Analysis
+rule_7 = rm -f *.gcov
