@@ -1,8 +1,8 @@
 [submodule "src/third_party/PENF"]
-	path = src/third_party/PENF
-	url = https://github.com/szaghi/PENF
+  path = src/third_party/PENF
+  url = https://github.com/szaghi/PENF
   branch = master
 [submodule "src/third_party/BeFoR64"]
-	path = src/third_party/BeFoR64
-	url = https://github.com/szaghi/BeFoR64
+  path = src/third_party/BeFoR64
+  url = https://github.com/szaghi/BeFoR64
   branch = master
