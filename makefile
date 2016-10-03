@@ -2,12 +2,26 @@
 MAKEFLAGS = -j 1
 
 #main building variables
-DSRC    = src
+DSRC = src
+
+COMPILER = gnu
+ifeq "$(COMPILER)" "gnu"
+  FC    = gfortran
+  OPTSC = -c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p -J $(DMOD)
+  OPTSL = -O2 -J $(DMOD)
+endif
+ifeq "$(COMPILER)" "intel"
+  FC    = ifort
+  OPTSC = -c -assume realloc_lhs -standard-semantics -std08 -O2 -Dr16p -module $(DMOD)
+  OPTSL = -O2 -module $(DMOD)
+endif
+
+TESTS = no
 ifeq "$(TESTS)" "yes"
   DOBJ = exe/obj/
   DMOD = exe/mod/
   DEXE = exe/
-  RULE = ALL_TESTS
+  RULE = .NOTPARALLEL
 else
   DOBJ = lib/obj/
   DMOD = lib/mod/
@@ -15,9 +29,6 @@ else
   RULE = STRINGIFOR
 endif
 LIBS    =
-FC      = ifort
-OPTSC   =  -c -assume realloc_lhs -standard-semantics -std08 -O2 -Dr16p -module $(DMOD)
-OPTSL   =  -O2  -module $(DMOD)
 VPATH   = $(DSRC) $(DOBJ) $(DMOD)
 MKDIRS  = $(DOBJ) $(DMOD) $(DEXE)
 LCEXES  = $(shell echo $(EXES) | tr '[:upper:]' '[:lower:]')
@@ -38,60 +49,60 @@ STRINGIFOR: $(MKDIRS) $(DOBJ)stringifor.o
 	@$(MAKELIB)
 
 #tests
-ALL_TESTS: $(DEXE)IS_REAL            \
-           $(DEXE)SLEN               \
-           $(DEXE)IS_NUMBER          \
-           $(DEXE)FILL               \
-           $(DEXE)WRITE_LINES        \
-           $(DEXE)CONCATENATION      \
-           $(DEXE)SEARCH             \
-           $(DEXE)CAPITALIZE         \
-           $(DEXE)SVERIFY            \
-           $(DEXE)IS_INTEGER         \
-           $(DEXE)STRIP              \
-           $(DEXE)SREPEAT            \
-           $(DEXE)SPLIT              \
-           $(DEXE)SLICE              \
-           $(DEXE)ESCAPE             \
-           $(DEXE)SADJUSTLR          \
-           $(DEXE)CSV_NAIVE_PARSER   \
-           $(DEXE)TO_NUMBER          \
-           $(DEXE)IS_DIGIT           \
-           $(DEXE)IO_BASIC           \
-           $(DEXE)SINDEX             \
-           $(DEXE)WRITE_FILE         \
-           $(DEXE)EQUAL              \
-           $(DEXE)CAMELCASE          \
-           $(DEXE)SNAKECASE          \
-           $(DEXE)REVERSE            \
-           $(DEXE)BASENAME_DIR       \
-           $(DEXE)SCOUNT             \
-           $(DEXE)READ_LINES         \
-           $(DEXE)UPPER_LOWER        \
-           $(DEXE)UNIQUE             \
-           $(DEXE)JOIN               \
-           $(DEXE)GREATER_EQUAL_THAN \
-           $(DEXE)READ_FILE          \
-           $(DEXE)EXTENSION          \
-           $(DEXE)SWAPCASE           \
-           $(DEXE)IO_LISTDIRECTED    \
-           $(DEXE)UNESCAPE           \
-           $(DEXE)STARTCASE          \
-           $(DEXE)FREE               \
-           $(DEXE)NOT_EQUAL          \
-           $(DEXE)INSERT             \
-           $(DEXE)PARTITION          \
-           $(DEXE)STRIM              \
-           $(DEXE)ASSIGNMENTS        \
-           $(DEXE)GREATER_THAN       \
-           $(DEXE)ENCODE             \
-           $(DEXE)LOWER_THAN         \
-           $(DEXE)SSCAN              \
-           $(DEXE)DECODE             \
-           $(DEXE)REPLACE            \
-           $(DEXE)READ_LINE          \
-           $(DEXE)LOWER_EQUAL_THAN   \
-           $(DEXE)START_END          \
+.NOTPARALLEL: $(DEXE)IS_REAL            \
+              $(DEXE)SLEN               \
+              $(DEXE)IS_NUMBER          \
+              $(DEXE)FILL               \
+              $(DEXE)WRITE_LINES        \
+              $(DEXE)CONCATENATION      \
+              $(DEXE)SEARCH             \
+              $(DEXE)CAPITALIZE         \
+              $(DEXE)SVERIFY            \
+              $(DEXE)IS_INTEGER         \
+              $(DEXE)STRIP              \
+              $(DEXE)SREPEAT            \
+              $(DEXE)SPLIT              \
+              $(DEXE)SLICE              \
+              $(DEXE)ESCAPE             \
+              $(DEXE)SADJUSTLR          \
+              $(DEXE)CSV_NAIVE_PARSER   \
+              $(DEXE)TO_NUMBER          \
+              $(DEXE)IS_DIGIT           \
+              $(DEXE)IO_BASIC           \
+              $(DEXE)SINDEX             \
+              $(DEXE)WRITE_FILE         \
+              $(DEXE)EQUAL              \
+              $(DEXE)CAMELCASE          \
+              $(DEXE)SNAKECASE          \
+              $(DEXE)REVERSE            \
+              $(DEXE)BASENAME_DIR       \
+              $(DEXE)SCOUNT             \
+              $(DEXE)READ_LINES         \
+              $(DEXE)UPPER_LOWER        \
+              $(DEXE)UNIQUE             \
+              $(DEXE)JOIN               \
+              $(DEXE)GREATER_EQUAL_THAN \
+              $(DEXE)READ_FILE          \
+              $(DEXE)EXTENSION          \
+              $(DEXE)SWAPCASE           \
+              $(DEXE)IO_LISTDIRECTED    \
+              $(DEXE)UNESCAPE           \
+              $(DEXE)STARTCASE          \
+              $(DEXE)FREE               \
+              $(DEXE)NOT_EQUAL          \
+              $(DEXE)INSERT             \
+              $(DEXE)PARTITION          \
+              $(DEXE)STRIM              \
+              $(DEXE)ASSIGNMENTS        \
+              $(DEXE)GREATER_THAN       \
+              $(DEXE)ENCODE             \
+              $(DEXE)LOWER_THAN         \
+              $(DEXE)SSCAN              \
+              $(DEXE)DECODE             \
+              $(DEXE)REPLACE            \
+              $(DEXE)READ_LINE          \
+              $(DEXE)LOWER_EQUAL_THAN   \
+              $(DEXE)START_END
 
 $(DEXE)IS_REAL: $(MKDIRS) $(DOBJ)is_real.o
 	@rm -f $(filter-out $(DOBJ)is_real.o,$(EXESOBJ))
@@ -369,24 +380,24 @@ $(DOBJ)penf.o: src/lib/penf.F90
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)lib_pack_data.o: src/lib/Lib_Pack_Data.f90 \
+$(DOBJ)befor64_pack_data_m.o: src/lib/befor64_pack_data_m.F90 \
 	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
 $(DOBJ)stringifor.o: src/lib/stringifor.F90 \
 	$(DOBJ)penf.o \
-	$(DOBJ)string_t.o
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
 $(DOBJ)befor64.o: src/lib/befor64.F90 \
 	$(DOBJ)penf.o \
-	$(DOBJ)lib_pack_data.o
+	$(DOBJ)befor64_pack_data_m.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)string_t.o: src/lib/string_t.F90 \
+$(DOBJ)stringifor_string_t.o: src/lib/stringifor_string_t.F90 \
 	$(DOBJ)befor64.o \
 	$(DOBJ)penf.o
 	@echo $(COTEXT)
