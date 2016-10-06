@@ -37,8 +37,8 @@ EXESOBJ = $(addprefix $(DOBJ),$(EXESPO))
 MAKELIB = ar -rcs $(DEXE)libstringifor.a $(DOBJ)*.o ; ranlib $(DEXE)libstringifor.a
 
 #auxiliary variables
-COTEXT = "Compiling $(<F)"
-LITEXT = "Assembling $@"
+COTEXT = "Compile $(<F)"
+LITEXT = "Assemble $@"
 
 firstrule: $(RULE)
 
@@ -376,30 +376,49 @@ $(DEXE)START_END: $(MKDIRS) $(DOBJ)start_end.o
 EXES := $(EXES) START_END
 
 #compiling rules
-$(DOBJ)penf.o: src/lib/penf.F90
-	@echo $(COTEXT)
-	@$(FC) $(OPTSC)  $< -o $@
-
-$(DOBJ)befor64_pack_data_m.o: src/lib/befor64_pack_data_m.F90 \
-	$(DOBJ)penf.o
-	@echo $(COTEXT)
-	@$(FC) $(OPTSC)  $< -o $@
-
 $(DOBJ)stringifor.o: src/lib/stringifor.F90 \
 	$(DOBJ)penf.o \
 	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)befor64.o: src/lib/befor64.F90 \
+$(DOBJ)stringifor_string_t.o: src/lib/stringifor_string_t.F90 \
+	$(DOBJ)befor64.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)penf.o: src/third_party/BeFoR64/src/lib/penf.F90 \
+	$(DOBJ)penf_global_parameters_variables.o \
+	$(DOBJ)penf_b_size.o \
+	$(DOBJ)penf_stringify.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+	@rm -f $(DOBJ)penf_global_parameters_variables.o $(DOBJ)penf_b_size.o $(DOBJ)penf_stringify.o
+
+$(DOBJ)befor64_pack_data_m.o: src/third_party/BeFoR64/src/lib/befor64_pack_data_m.F90 \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)befor64.o: src/third_party/BeFoR64/src/lib/befor64.F90 \
 	$(DOBJ)penf.o \
 	$(DOBJ)befor64_pack_data_m.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)stringifor_string_t.o: src/lib/stringifor_string_t.F90 \
-	$(DOBJ)befor64.o \
-	$(DOBJ)penf.o
+$(DOBJ)penf_b_size.o: src/third_party/PENF/src/lib/penf_b_size.F90 \
+	$(DOBJ)penf_global_parameters_variables.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)penf_stringify.o: src/third_party/PENF/src/lib/penf_stringify.F90 \
+	$(DOBJ)penf_b_size.o \
+	$(DOBJ)penf_global_parameters_variables.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)penf_global_parameters_variables.o: src/third_party/PENF/src/lib/penf_global_parameters_variables.F90
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
