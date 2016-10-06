@@ -1,5 +1,4 @@
 coverage:
   ignore:
-    - src/lib/befor64*
-    - src/lib/penf.F90
+    - src/third_party/
     - doc
