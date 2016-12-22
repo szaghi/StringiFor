@@ -56,6 +56,9 @@ type :: string
     procedure, pass(self) :: extension        !< Return the extension of a string containing a file name.
     procedure, pass(self) :: fill             !< Pad string on the left (or right) with zeros (or other char) to fill width.
     procedure, pass(self) :: free             !< Free dynamic memory.
+    generic               :: glob =>         &
+                             glob_character, &
+                             glob_string      !< Glob search, finds all the pathnames matching a given pattern.
     generic               :: insert =>      &
                              insert_string, &
                              insert_character !< Insert substring into string at a specified position.
@@ -159,6 +162,8 @@ type :: string
     procedure, private, pass(self) :: sscan_string_string      !< Scan replacement.
     procedure, private, pass(self) :: sscan_string_character   !< Scan replacement.
     ! auxiliary methods
+    procedure, private, pass(self) :: glob_character   !< Glob search (character output).
+    procedure, private, pass(self) :: glob_string      !< Glob search (string output).
     procedure, private, pass(self) :: insert_string    !< Insert substring into string at a specified position.
     procedure, private, pass(self) :: insert_character !< Insert substring into string at a specified position.
     procedure, private, pass(self) :: join_strings     !< Return join string of an array of strings.
@@ -884,6 +889,61 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine free
 
+  subroutine glob_character(self, pattern, list)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Glob search (character output), finds all the pathnames matching a given pattern according to the rules used by the Unix shell.
+  !<
+  !< @note Method not portable: works only on Unix/GNU Linux OS.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),                 intent(in)  :: self           !< The string.
+  character(*),                  intent(in)  :: pattern        !< Given pattern.
+  character(len=:), allocatable, intent(out) :: list(:)        !< List of matching pathnames.
+  type(string), allocatable                  :: list_(:)       !< List of matching pathnames.
+  integer(I4P)                               :: max_len        !< Maximum length.
+  integer(I4P)                               :: matches_number !< Matches number.
+  integer(I4P)                               :: m              !< Counter.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  call self%glob(pattern=pattern, list=list_)
+  if (allocated(list_)) then
+    matches_number = size(list_, dim=1)
+    max_len = 0
+    do m=1, matches_number
+      max_len = max(max_len, list_(m)%len())
+    enddo
+    allocate(character(max_len) :: list(1:matches_number))
+    do m=1, matches_number
+      list(m) = list_(m)%chars()
+    enddo
+  endif
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine glob_character
+
+  subroutine glob_string(self, pattern, list)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Glob search (string output), finds all the pathnames matching a given pattern according to the rules used by the Unix shell.
+  !<
+  !< @note Method not portable: works only on Unix/GNU Linux OS.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)  :: self     !< The string.
+  character(*),              intent(in)  :: pattern  !< Given pattern.
+  type(string), allocatable, intent(out) :: list(:)  !< List of matching pathnames.
+  type(string)                           :: tempfile !< Safe temporary file.
+  character(len=:), allocatable          :: tempname !< Safe temporary name.
+  integer(I4P)                           :: tempunit !< Unit of temporary file.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  tempname = self%tempname()
+  call execute_command_line('ls -1 '//trim(adjustl(pattern))//' > '//tempname)
+  call tempfile%read_file(file=tempname)
+  call tempfile%split(sep=new_line('a'), tokens=list)
+  open(newunit=tempunit, file=tempname)
+  close(unit=tempunit, status='delete')
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endsubroutine glob_string
+
   elemental function insert_character(self, substring, pos) result(inserted)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Insert substring into string at a specified position.
@@ -1115,7 +1175,6 @@ contains
   endif
   if (present(iostat)) iostat = iostat_
   if (present(iomsg)) iomsg = iomsg_
-  return
   !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_file
 
