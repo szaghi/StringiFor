@@ -76,6 +76,7 @@ type :: string
     procedure, pass(self) :: startcase        !< Return a string with all words capitalized, e.g. title case.
     procedure, pass(self) :: strip            !< Return a string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase         !< Return a string with uppercase chars converted to lowercase and vice versa.
+    procedure, pass(self) :: tempname         !< Return a safe temporary name suitable for temporary file or directories.
     generic               :: to_number =>   &
                              to_integer_I1P,&
                              to_integer_I2P,&
@@ -1519,6 +1520,54 @@ contains
   return
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction swapcase
+
+  function tempname(self, is_file, prefix, path)
+  !---------------------------------------------------------------------------------------------------------------------------------
+  !< Return a safe temporary name suitable for temporary file or directories.
+  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string), intent(in)           :: self                   !< The string.
+  logical,       intent(in), optional :: is_file                !< True if tempname should be used for file (the default).
+  character(*),  intent(in), optional :: prefix                 !< Name prefix, otherwise self is used (if allocated).
+  character(*),  intent(in), optional :: path                   !< Path where file/directory should be used, default `./`.
+  character(len=:), allocatable       :: tempname               !< Safe (unique) temporary name.
+  logical                             :: is_file_               !< True if tempname should be used for file (the default).
+  character(len=:), allocatable       :: prefix_                !< Name prefix, otherwise self is used (if allocated).
+  character(len=:), allocatable       :: path_                  !< Path where file/directory should be used, default `./`.
+  logical, save                       :: is_initialized=.false. !< Status of random seed initialization.
+  real(R4P)                           :: random_real            !< Random number (real).
+  integer(I4P)                        :: random_integer         !< Random number (integer).
+  logical                             :: is_hold                !< Flag to check if a safe tempname has been found.
+  !---------------------------------------------------------------------------------------------------------------------------------
+
+  !---------------------------------------------------------------------------------------------------------------------------------
+  is_file_ = .true. ; if (present(is_file)) is_file_ = is_file
+  path_ = '' ; if (present(path)) path_ = path
+  prefix_ = ''
+  if (present(prefix)) then
+    prefix_ = prefix
+  elseif (allocated(self%raw)) then
+    prefix_ = self%raw
+  endif
+  if (.not.is_initialized) then
+    call random_seed
+    is_initialized = .true.
+  endif
+  tempname = repeat(' ', len(path_) + len(prefix_) + 10) ! [path_] + [prefix_] + 6 random chars + [.tmp]
+  do
+    call random_number(random_real)
+    random_integer = transfer(random_real, random_integer)
+    random_integer = iand(random_integer, 16777215_I4P)
+    if (is_file_)  then
+      write(tempname, '(A,Z6.6,A)') path_//prefix_, random_integer, '.tmp'
+    else
+      write(tempname, '(A,Z6.6)') path_//prefix_, random_integer
+      tempname = trim(tempname)
+    endif
+    inquire(file=tempname, exist=is_hold)
+    if (.not.is_hold) exit
+  enddo
+  !---------------------------------------------------------------------------------------------------------------------------------
+  endfunction tempname
 
   elemental function to_integer_I1P(self, kind) result(to_number)
   !---------------------------------------------------------------------------------------------------------------------------------

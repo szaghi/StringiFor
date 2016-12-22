@@ -514,6 +514,7 @@ In the following all the methods of `string` are listed with a brief description
 |[startcase  ](#startcase                                            ) | return a string with all words capitalized, e.g. title case                      |
 |[strip      ](#strip                                                ) | return a string with the leading and trailing characters removed                 |
 |[swapcase   ](#swapcase                                             ) | return a string with uppercase chars converted to lowercase and vice versa       |
+|[tempname   ](#tempname                                             ) | return a safe temporary name suitable for temporary file or directories          |
 |[to_number  ](#to_number                                            ) | cast string to number                                                            |
 |[unescape   ](#unescape                                             ) | unescape double backslashes (or custom escaped character)                        |
 |[unique     ](#unique                                               ) | reduce to one (unique) multiple occurrences of a substring into a string         |

@@ -80,7 +80,7 @@ function projectbuild () {
   fi
 
   if [ "$BUILD" == "FoBiS.py" ]; then
-    FoBiS.py build -mode static-gnu
+    FoBiS.py build -mode stringifor-static-gnu
   elif [ "$BUILD" == "make" ]; then
     make -j 1 STATIC=yes
   elif [ "$BUILD" == "cmake" ]; then
