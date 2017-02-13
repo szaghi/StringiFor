@@ -663,7 +663,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction basename
 
-  elemental function camelcase(self, sep)
+  impure elemental function camelcase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all words capitalized without spaces.
   !<
@@ -1413,7 +1413,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction slice
 
-  elemental function snakecase(self, sep)
+  impure elemental function snakecase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all words lowercase separated by "_".
   !<
@@ -1435,12 +1435,10 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction snakecase
 
-  pure subroutine split(self, tokens, sep)
-  !---------------------------------------------------------------------------------------------------------------------------------
+  impure subroutine split(self, tokens, sep)
   !< Return a list of substring in the string, using sep as the delimiter string.
   !<
   !< @note Multiple subsequent separators are collapsed to one occurence.
-  !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self           !< The string.
   character(kind=CK, len=*), intent(in), optional :: sep            !< Separator.
   type(string), allocatable, intent(out)          :: tokens(:)      !< Tokens substring.
@@ -1449,9 +1447,7 @@ contains
   integer                                         :: t              !< Character counter.
   type(string)                                    :: temporary      !< Temporary storage.
   type(string), allocatable                       :: temp_toks(:,:) !< Temporary tokens substring.
-  !---------------------------------------------------------------------------------------------------------------------------------
 
-  !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
     sep_ = SPACE ; if (present(sep)) sep_ = sep
 
@@ -1482,13 +1478,8 @@ contains
         enddo
       elseif (temp_toks(3, No)%raw/='') then
         allocate(tokens(No))
-        do t=2, No
-          if (t==No) then
-            tokens(t-1) = temp_toks(1, t)
-            tokens(t  ) = temp_toks(3, t)
-          else
-            tokens(t-1) = temp_toks(1, t)
-          endif
+        do t=1, No
+          tokens(t) = temp_toks(3, t)
         enddo
       else
         allocate(tokens(No-1))
@@ -1501,10 +1492,9 @@ contains
       tokens(1) = self
     endif
   endif
-  !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine split
 
-  elemental function startcase(self, sep)
+  impure elemental function startcase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all words capitalized, e.g. title case.
   !<
