@@ -1435,7 +1435,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction snakecase
 
-  subroutine split(self, tokens, sep)
+  pure subroutine split(self, tokens, sep)
   !< Return a list of substring in the string, using sep as the delimiter string.
   !<
   !< @note Multiple subsequent separators are collapsed to one occurence.
