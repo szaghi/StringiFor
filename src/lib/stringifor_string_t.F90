@@ -663,7 +663,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction basename
 
-  impure elemental function camelcase(self, sep)
+  elemental function camelcase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all words capitalized without spaces.
   !<
@@ -1413,7 +1413,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction slice
 
-  impure elemental function snakecase(self, sep)
+  elemental function snakecase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all words lowercase separated by "_".
   !<
@@ -1435,7 +1435,7 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction snakecase
 
-  impure subroutine split(self, tokens, sep)
+  subroutine split(self, tokens, sep)
   !< Return a list of substring in the string, using sep as the delimiter string.
   !<
   !< @note Multiple subsequent separators are collapsed to one occurence.
@@ -1494,7 +1494,7 @@ contains
   endif
   endsubroutine split
 
-  impure elemental function startcase(self, sep)
+  elemental function startcase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all words capitalized, e.g. title case.
   !<
