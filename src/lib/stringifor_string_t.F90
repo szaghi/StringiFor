@@ -1453,6 +1453,7 @@ contains
 
     temporary = self%unique(sep_)
     No = temporary%count(sep_)
+
     if (No>0) then
       allocate(temp_toks(3, No))
       temp_toks(:, 1) = temporary%partition(sep_)
@@ -1461,6 +1462,7 @@ contains
           temp_toks(:, t) = temp_toks(3, t-1)%partition(sep_)
         enddo
       endif
+
       if (temp_toks(1, 1)%raw/=''.and.temp_toks(3, No)%raw/='') then
         allocate(tokens(No+1))
         do t=1, No
@@ -1478,15 +1480,17 @@ contains
         enddo
       elseif (temp_toks(3, No)%raw/='') then
         allocate(tokens(No))
-        do t=1, No
-          tokens(t) = temp_toks(3, t)
+        do t=1, No-1
+          tokens(t) = temp_toks(1, t+1)
         enddo
+        tokens(No) = temp_toks(3, No)
       else
         allocate(tokens(No-1))
         do t=2, No
           tokens(t-1) = temp_toks(1, t)
         enddo
       endif
+
     else
       allocate(tokens(1))
       tokens(1) = self

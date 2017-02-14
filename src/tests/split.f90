@@ -5,10 +5,10 @@ use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string
 
 implicit none
-type(string)              :: astring        !< A string.
-type(string), allocatable :: strings(:)     !< A set of strings.
-logical                   :: test_passed(7) !< List of passed tests.
-integer                   :: s              !< Counter.
+type(string)              :: astring         !< A string.
+type(string), allocatable :: strings(:)      !< A set of strings.
+logical                   :: test_passed(10) !< List of passed tests.
+integer                   :: s               !< Counter.
 
 test_passed = .false.
 
@@ -64,6 +64,30 @@ astring = '+ab-'
 write(stdout, "(A)") 'Split "'//astring//'" at "-"'
 call astring%split(tokens=strings, sep='-')
 test_passed(7) = (strings(1)//''=='+ab')
+do s=1, size(strings)
+  write(stdout, "(A)") '+ "'//strings(s)//'"'
+enddo
+
+astring = '+ab-+cd-'
+write(stdout, "(A)") 'Split "'//astring//'" at "+"'
+call astring%split(tokens=strings, sep='+')
+test_passed(8) = (strings(1)//''=='ab-'.and.strings(2)//''=='cd-')
+do s=1, size(strings)
+  write(stdout, "(A)") '+ "'//strings(s)//'"'
+enddo
+
+astring = 'ab-+cd-+'
+write(stdout, "(A)") 'Split "'//astring//'" at "+"'
+call astring%split(tokens=strings, sep='+')
+test_passed(9) = (strings(1)//''=='ab-'.and.strings(2)//''=='cd-')
+do s=1, size(strings)
+  write(stdout, "(A)") '+ "'//strings(s)//'"'
+enddo
+
+astring = '+ab-+cd-+'
+write(stdout, "(A)") 'Split "'//astring//'" at "+"'
+call astring%split(tokens=strings, sep='+')
+test_passed(10) = (strings(1)//''=='ab-'.and.strings(2)//''=='cd-')
 do s=1, size(strings)
   write(stdout, "(A)") '+ "'//strings(s)//'"'
 enddo
