@@ -1,13 +1,10 @@
 !< StringiFor, definition of `string` type.
 module stringifor_string_t
-!-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor, definition of `string` type.
-!-----------------------------------------------------------------------------------------------------------------------------------
+use, intrinsic :: iso_fortran_env, only : iostat_eor
 use befor64, only : b64_decode, b64_encode
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
-!-----------------------------------------------------------------------------------------------------------------------------------
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 private
 save
@@ -19,9 +16,7 @@ public :: sadjustl_character, sadjustr_character,                               
           sscan_string_string, sscan_string_character, sscan_character_string,    &
           strim
 public :: string
-!-----------------------------------------------------------------------------------------------------------------------------------
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 integer, parameter :: CK = selected_char_kind('DEFAULT') !< Default character kind.
 
 type :: string
@@ -230,7 +225,7 @@ character(kind=CK, len=1),  parameter :: SPACE          = ' '                   
 character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
 character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)                     !< Backslash character.
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 contains
   ! public methods
 
@@ -1138,14 +1133,12 @@ contains
   endfunction partition
 
   subroutine read_file(self, file, form, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
   !< Read a file as a single string stream.
   !<
   !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
   !< character.
   !<
   !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
-  !---------------------------------------------------------------------------------------------------------------------------------
   class(string),    intent(inout)           :: self       !< The string.
   character(len=*), intent(in)              :: file       !< File name.
   character(len=*), intent(in),    optional :: form       !< Format of unit.
@@ -1156,9 +1149,7 @@ contains
   character(len=:), allocatable             :: iomsg_     !< IO status message, local variable.
   integer                                   :: unit       !< Logical unit.
   logical                                   :: does_exist !< Check if file exist.
-  !---------------------------------------------------------------------------------------------------------------------------------
 
-  !---------------------------------------------------------------------------------------------------------------------------------
   iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
   inquire(file=file, iomsg=iomsg_, iostat=iostat_, exist=does_exist)
   if (does_exist) then
@@ -1172,22 +1163,20 @@ contains
     endselect
     call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
     10 close(unit)
+  else
+    iostat_ = 1
+    iomsg_ = 'file not found'
   endif
   if (present(iostat)) iostat = iostat_
   if (present(iomsg)) iomsg = iomsg_
-  !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_file
 
   subroutine read_line(self, unit, form, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
   !< Read line (record) from a connected unit.
   !<
   !< The line is read as an ascii stream read until the eor is reached.
   !<
   !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  use, intrinsic :: iso_fortran_env, only : iostat_eor
-  !---------------------------------------------------------------------------------------------------------------------------------
   class(string),    intent(inout)           :: self    !< The string.
   integer,          intent(in)              :: unit    !< Logical unit.
   character(len=*), intent(in),    optional :: form    !< Format of unit.
@@ -1198,9 +1187,7 @@ contains
   character(len=:),          allocatable    :: iomsg_  !< IO status message, local variable.
   character(kind=CK, len=:), allocatable    :: line    !< Line storage.
   character(kind=CK, len=1)                 :: ch      !< Character storage.
-  !---------------------------------------------------------------------------------------------------------------------------------
 
-  !---------------------------------------------------------------------------------------------------------------------------------
   form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
   iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
   line = ''
@@ -1223,12 +1210,9 @@ contains
   10 if (line/='') self%raw = line
   if (present(iostat)) iostat = iostat_
   if (present(iomsg)) iomsg = iomsg_
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_line
 
   subroutine read_lines(self, unit, form, iostat, iomsg)
-  !---------------------------------------------------------------------------------------------------------------------------------
   !< Read (all) lines (records) from a connected unit as a single ascii stream.
   !<
   !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
@@ -1237,7 +1221,6 @@ contains
   !< @note The connected unit is rewinded. At a successful exit current record is at eof, at the beginning otherwise.
   !<
   !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
-  !---------------------------------------------------------------------------------------------------------------------------------
   class(string),    intent(inout)           :: self    !< The string.
   integer,          intent(in)              :: unit    !< Logical unit.
   character(len=*), intent(in),    optional :: form    !< Format of unit.
@@ -1247,9 +1230,7 @@ contains
   character(len=:), allocatable             :: iomsg_  !< IO status message, local variable.
   type(string)                              :: lines   !< Lines storage.
   type(string)                              :: line    !< Line storage.
-  !---------------------------------------------------------------------------------------------------------------------------------
 
-  !---------------------------------------------------------------------------------------------------------------------------------
   iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
   rewind(unit)
   iostat_ = 0
@@ -1267,7 +1248,6 @@ contains
   if (present(iostat)) iostat = iostat_
   if (present(iomsg)) iomsg = iomsg_
   return
-  !---------------------------------------------------------------------------------------------------------------------------------
   endsubroutine read_lines
 
   elemental function replace(self, old, new, count) result(replaced)

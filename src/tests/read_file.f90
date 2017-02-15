@@ -1,13 +1,9 @@
 !< StringiFor `read_file` test.
 program read_file
-!-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor `read_file` test.
-!-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit, iostat_end
 use stringifor, only : read_file_standalone => read_file, string
-!-----------------------------------------------------------------------------------------------------------------------------------
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 type(string)              :: astring         !< A string.
 type(string), allocatable :: strings(:)      !< A set of strings.
@@ -16,10 +12,8 @@ integer                   :: iostat          !< IO status code.
 character(len=99)         :: iomsg           !< IO status message.
 integer                   :: scratch         !< Scratch file unit.
 integer                   :: l               !< Counter.
-logical                   :: test_passed(16) !< List of passed tests.
-!-----------------------------------------------------------------------------------------------------------------------------------
+logical                   :: test_passed(17) !< List of passed tests.
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 test_passed = .false.
 
 line(1) = ' Hello World!   '
@@ -79,7 +73,9 @@ enddo
 open(newunit=scratch, file='read_file_test.tmp', form='UNFORMATTED', access='STREAM')
 close(scratch, status='DELETE')
 
+call astring%read_file(file='read_file_test.tmp', iostat=iostat)
+test_passed(17) = (iostat/=0)
+write(stdout, "(A,L1)") new_line('a')//'Test iostat read from missing file passed? ', test_passed(17)
+
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
-stop
-!-----------------------------------------------------------------------------------------------------------------------------------
 endprogram read_file
