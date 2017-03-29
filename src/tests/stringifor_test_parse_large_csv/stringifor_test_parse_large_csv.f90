@@ -15,14 +15,14 @@ logical                       :: test_passed(1) !< List of passed tests.
 
 test_passed = .false.
 
-call csv%read_file(file='stringifor_test_parse_large_csv.csv', is_fast=.true.) ! read the CSV file as a single stream
-call csv%split_chunked(tokens=rows, sep=new_line('a'), chunks=10)             ! get the CSV file rows
-rows_number = size(rows, dim=1)                                               ! get the CSV file rows number
-columns_number = rows(1)%count(',') + 1                                       ! get the CSV file columns number
-allocate(cells(1:columns_number, 1:rows_number))                              ! allocate the CSV file cells
-do r=1, rows_number                                                           ! parse all cells
-  call rows(r)%split(tokens=columns, sep=',')                                 ! get current columns
-  cells(1:columns_number, r) = columns                                        ! save current columns into cells
+call csv%read_file(file='src/tests/stringifor_test_parse_large_csv/stringifor_test_parse_large_csv.csv', is_fast=.true.)
+call csv%split_chunked(tokens=rows, sep=new_line('a'), chunks=10) ! get the CSV file rows
+rows_number = size(rows, dim=1)                                   ! get the CSV file rows number
+columns_number = rows(1)%count(',') + 1                           ! get the CSV file columns number
+allocate(cells(1:columns_number, 1:rows_number))                  ! allocate the CSV file cells
+do r=1, rows_number                                               ! parse all cells
+  call rows(r)%split(tokens=columns, sep=',')                     ! get current columns
+  cells(1:columns_number, r) = columns                            ! save current columns into cells
 enddo
 
 ! now you can do whatever with your parsed data
@@ -36,4 +36,7 @@ do r=2, rows_number
   print "(A)", '|'//csv%join(array=cells(:, r), sep='|')//'|'
 enddo
 print "(A)", ''
+
+test_passed = .true.
+print "(A,L1)", new_line('a')//'Are all tests passed? ', all(test_passed)
 endprogram stringifor_test_parse_large_csv
