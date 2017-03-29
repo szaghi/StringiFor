@@ -71,6 +71,7 @@ type :: string
     procedure, pass(self) :: slice            !< Return the raw characters data sliced.
     procedure, pass(self) :: snakecase        !< Return a string with all words lowercase separated by "_".
     procedure, pass(self) :: split            !< Return a list of substring in the string, using sep as the delimiter string.
+    procedure, pass(self) :: split_chunked    !< Return a list of substring in the string, using sep as the delimiter string.
     procedure, pass(self) :: startcase        !< Return a string with all words capitalized, e.g. title case.
     procedure, pass(self) :: strip            !< Return a string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase         !< Return a string with uppercase chars converted to lowercase and vice versa.
@@ -1132,37 +1133,52 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction partition
 
-  subroutine read_file(self, file, form, iostat, iomsg)
+  subroutine read_file(self, file, is_fast, form, iostat, iomsg)
   !< Read a file as a single string stream.
   !<
   !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
   !< character.
   !<
   !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+  !<
+  !< @note *Fast* file reading allows a very efficient reading of streamed file, but it dumps file as single streamed string.
   class(string),    intent(inout)           :: self       !< The string.
   character(len=*), intent(in)              :: file       !< File name.
+  logical,          intent(in),    optional :: is_fast    !< Flag to enable (super) fast file reading.
   character(len=*), intent(in),    optional :: form       !< Format of unit.
   integer,          intent(out),   optional :: iostat     !< IO status code.
   character(len=*), intent(inout), optional :: iomsg      !< IO status message.
+  logical                                   :: is_fast_   !< Flag to enable (super) fast file reading, local variable.
   type(string)                              :: form_      !< Format of unit, local variable.
   integer                                   :: iostat_    !< IO status code, local variable.
   character(len=:), allocatable             :: iomsg_     !< IO status message, local variable.
   integer                                   :: unit       !< Logical unit.
   logical                                   :: does_exist !< Check if file exist.
+  integer(I4P)                              :: filesize   !< Size of the file for fast reading.
 
   iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
   inquire(file=file, iomsg=iomsg_, iostat=iostat_, exist=does_exist)
   if (does_exist) then
-    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
-    select case(form_%chars())
-    case('FORMATTED')
-      open(newunit=unit, file=file, status='OLD', action='READ', iomsg=iomsg_, iostat=iostat_, err=10)
-    case('UNFORMATTED')
-      open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
-           iomsg=iomsg_, iostat=iostat_, err=10)
-    endselect
-    call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
-    10 close(unit)
+    is_fast_ = .false. ; if (present(is_fast)) is_fast_ = is_fast
+    if (is_fast_) then
+      open(newunit=unit, file=file, access='STREAM', form='UNFORMATTED', iomsg=iomsg_, iostat=iostat_)
+      inquire(file=file, size=filesize)
+      if (allocated(self%raw)) deallocate(self%raw)
+      allocate(character(len=filesize):: self%raw)
+      read(unit=unit, iostat=iostat_, iomsg=iomsg_) self%raw
+      close(unit)
+    else
+      form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
+      select case(form_%chars())
+      case('FORMATTED')
+        open(newunit=unit, file=file, status='OLD', action='READ', iomsg=iomsg_, iostat=iostat_, err=10)
+      case('UNFORMATTED')
+        open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
+             iomsg=iomsg_, iostat=iostat_, err=10)
+      endselect
+      call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
+      10 close(unit)
+    endif
   else
     iostat_ = 1
     iomsg_ = 'file not found'
@@ -1415,13 +1431,16 @@ contains
   !---------------------------------------------------------------------------------------------------------------------------------
   endfunction snakecase
 
-  pure subroutine split(self, tokens, sep)
+  pure subroutine split(self, tokens, sep, max_tokens)
   !< Return a list of substring in the string, using sep as the delimiter string.
   !<
-  !< @note Multiple subsequent separators are collapsed to one occurence.
+  !< @note Multiple subsequent separators are collapsed to one occurrence.
+  !<
+  !< @note If `max_tokens` is passed the returned number of tokens is either `max_tokens` or `max_tokens + 1`.
   class(string),             intent(in)           :: self           !< The string.
-  character(kind=CK, len=*), intent(in), optional :: sep            !< Separator.
   type(string), allocatable, intent(out)          :: tokens(:)      !< Tokens substring.
+  character(kind=CK, len=*), intent(in), optional :: sep            !< Separator.
+  integer,                   intent(in), optional :: max_tokens     !< Fix the maximum number of returned tokens.
   character(kind=CK, len=:), allocatable          :: sep_           !< Separator, default value.
   integer                                         :: No             !< Number of occurrences of sep.
   integer                                         :: t              !< Character counter.
@@ -1435,6 +1454,9 @@ contains
     No = temporary%count(sep_)
 
     if (No>0) then
+      if (present(max_tokens)) then
+        if (max_tokens < No.and.max_tokens > 0) No = max_tokens
+      endif
       allocate(temp_toks(3, No))
       temp_toks(:, 1) = temporary%partition(sep_)
       if (No>1) then
@@ -1478,6 +1500,61 @@ contains
   endif
   endsubroutine split
 
+  pure subroutine split_chunked(self, tokens, chunks, sep)
+  !< Return a list of substring in the string, using sep as the delimiter string, chunked (memory-efficient) algorithm.
+  !<
+  !< @note Multiple subsequent separators are collapsed to one occurrence.
+  !<
+  !< @note The split is performed in chunks of `#chunks` to avoid excessive memory consumption.
+  class(string),             intent(in)           :: self           !< The string.
+  type(string), allocatable, intent(out)          :: tokens(:)      !< Tokens substring.
+  integer,                   intent(in)           :: chunks         !< Number of chunks.
+  character(kind=CK, len=*), intent(in), optional :: sep            !< Separator.
+  character(kind=CK, len=:), allocatable          :: sep_           !< Separator, default value.
+  integer                                         :: Nt             !< Number of actual tokens.
+  integer                                         :: t              !< Counter.
+
+  if (allocated(self%raw)) then
+    sep_ = SPACE ; if (present(sep)) sep_ = sep
+
+    Nt = self%count(sep_)
+    if (self%start_with(prefix=sep_)) Nt = Nt - 1
+    if (self%end_with(suffix=sep_)) Nt = Nt - 1
+    t = 0
+    call self%split(tokens=tokens, sep=sep_, max_tokens=chunks)
+    do
+      t = size(tokens, dim=1)
+      if (t > Nt) exit
+      call split_last_token(max_tokens=chunks)
+    enddo
+
+    t = size(tokens, dim=1)
+    if (tokens(t)%count(sep_) > 0) then
+       call split_last_token
+    endif
+  endif
+
+  contains
+     pure subroutine split_last_token(max_tokens)
+     integer, intent(in), optional :: max_tokens     !< Max tokens returned.
+     type(string), allocatable     :: tokens_(:)     !< Temporary tokens.
+     type(string), allocatable     :: tokens_swap(:) !< Swap tokens.
+     integer                       :: Nt_            !< Number of last created tokens.
+
+     call tokens(t)%split(tokens=tokens_, sep=sep_, max_tokens=max_tokens)
+     if (allocated(tokens_)) then
+       Nt_ = size(tokens_, dim=1)
+       if (Nt_ >= 1) then
+         allocate(tokens_swap(1:t-1+Nt_))
+         tokens_swap(1:t-1) = tokens(1:t-1)
+         tokens_swap(t:)    = tokens_(:)
+         call move_alloc(from=tokens_swap, to=tokens)
+       endif
+       deallocate(tokens_)
+     endif
+     endsubroutine split_last_token
+  endsubroutine split_chunked
+
   elemental function startcase(self, sep)
   !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a string with all words capitalized, e.g. title case.
@@ -1503,16 +1580,12 @@ contains
   endfunction startcase
 
   elemental function strip(self, remove_nulls)
-  !---------------------------------------------------------------------------------------------------------------------------------
   !< Return a copy of the string with the leading and trailing characters removed.
-  !---------------------------------------------------------------------------------------------------------------------------------
   class(string), intent(in)           :: self         !< The string.
   logical,       intent(in), optional :: remove_nulls !< Remove null characters at the end.
   type(string)                        :: strip        !< The stripped string.
   integer                             :: c            !< Counter.
-  !---------------------------------------------------------------------------------------------------------------------------------
 
-  !---------------------------------------------------------------------------------------------------------------------------------
   if (allocated(self%raw)) then
     strip = self%adjustl()
     strip = strip%trim()
@@ -1523,8 +1596,6 @@ contains
       endif
     endif
   endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
   endfunction strip
 
   elemental function swapcase(self)
@@ -1908,30 +1979,28 @@ contains
   endsubroutine write_lines
 
   ! inquire
-  elemental function end_with(self, suffix, start, end)
-  !---------------------------------------------------------------------------------------------------------------------------------
+  elemental function end_with(self, suffix, start, end, ignore_null_eof)
   !< Return true if a string ends with a specified suffix.
-  !---------------------------------------------------------------------------------------------------------------------------------
-  class(string),             intent(in)           :: self     !< The string.
-  character(kind=CK, len=*), intent(in)           :: suffix   !< Searched suffix.
-  integer,                   intent(in), optional :: start    !< Start position into the string.
-  integer,                   intent(in), optional :: end      !< End position into the string.
-  logical                                         :: end_with !< Result of the test.
-  integer                                         :: start_   !< Start position into the string, local variable.
-  integer                                         :: end_     !< End position into the string, local variable.
-  !---------------------------------------------------------------------------------------------------------------------------------
+  class(string),             intent(in)           :: self             !< The string.
+  character(kind=CK, len=*), intent(in)           :: suffix           !< Searched suffix.
+  integer,                   intent(in), optional :: start            !< Start position into the string.
+  integer,                   intent(in), optional :: end              !< End position into the string.
+  logical,                   intent(in), optional :: ignore_null_eof  !< Ignore null character at the end of file.
+  logical                                         :: end_with         !< Result of the test.
+  integer                                         :: start_           !< Start position into the string, local variable.
+  integer                                         :: end_             !< End position into the string, local variable.
+  logical                                         :: ignore_null_eof_ !< Ignore null character at the end of file, local variable.
 
-  !---------------------------------------------------------------------------------------------------------------------------------
   end_with = .false.
   if (allocated(self%raw)) then
-    start_ = 1             ; if (present(start)) start_ = start
-    end_   = len(self%raw) ; if (present(end))   end_   = end
-    if (len(suffix)<=len(self%raw(start_:end_))) then
-      end_with = index(self%raw(start_:end_), suffix)==(len(self%raw(start_:end_)) - len(suffix) + 1)
+    start_           = 1             ; if (present(start))           start_           = start
+    end_             = len(self%raw) ; if (present(end))             end_             = end
+    ignore_null_eof_ = .false.       ; if (present(ignore_null_eof)) ignore_null_eof_ = ignore_null_eof
+    if (ignore_null_eof_.and.(self%raw(end_:end_) == char(0))) end_ = end_ - 1
+    if (len(suffix) <= len(self%raw(start_:end_))) then
+      end_with = self%raw(end_-len(suffix)+1:end_) == suffix
     endif
   endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
   endfunction end_with
 
   elemental function is_allocated(self)
@@ -2234,9 +2303,7 @@ contains
   endfunction is_upper
 
   elemental function start_with(self, prefix, start, end)
-  !---------------------------------------------------------------------------------------------------------------------------------
   !< Return true if a string starts with a specified prefix.
-  !---------------------------------------------------------------------------------------------------------------------------------
   class(string),             intent(in)           :: self       !< The string.
   character(kind=CK, len=*), intent(in)           :: prefix     !< Searched prefix.
   integer,                   intent(in), optional :: start      !< Start position into the string.
@@ -2244,9 +2311,7 @@ contains
   logical                                         :: start_with !< Result of the test.
   integer                                         :: start_     !< Start position into the string, local variable.
   integer                                         :: end_       !< End position into the string, local variable.
-  !---------------------------------------------------------------------------------------------------------------------------------
 
-  !---------------------------------------------------------------------------------------------------------------------------------
   start_with = .false.
   if (allocated(self%raw)) then
     start_ = 1             ; if (present(start)) start_ = start
@@ -2255,8 +2320,6 @@ contains
       start_with = index(self%raw(start_:end_), prefix)==1
     endif
   endif
-  return
-  !---------------------------------------------------------------------------------------------------------------------------------
   endfunction start_with
 
   ! private methods

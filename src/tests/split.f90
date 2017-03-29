@@ -7,7 +7,7 @@ use stringifor, only : string
 implicit none
 type(string)              :: astring         !< A string.
 type(string), allocatable :: strings(:)      !< A set of strings.
-logical                   :: test_passed(10) !< List of passed tests.
+logical                   :: test_passed(12) !< List of passed tests.
 integer                   :: s               !< Counter.
 
 test_passed = .false.
@@ -88,6 +88,23 @@ astring = '+ab-+cd-+'
 write(stdout, "(A)") 'Split "'//astring//'" at "+"'
 call astring%split(tokens=strings, sep='+')
 test_passed(10) = (strings(1)//''=='ab-'.and.strings(2)//''=='cd-')
+do s=1, size(strings)
+  write(stdout, "(A)") '+ "'//strings(s)//'"'
+enddo
+
+astring = '1-2-3-4-5-6-7-8'
+write(stdout, "(A)") 'Split "'//astring//'" at "-" in max 3 or 4 tokens'
+call astring%split(tokens=strings, sep='-', max_tokens=3)
+test_passed(11) = (strings(1)//''=='1'.and.strings(2)//''=='2'.and.strings(3)//''=='3'.and.strings(4)//''=='4-5-6-7-8')
+do s=1, size(strings)
+  write(stdout, "(A)") '+ "'//strings(s)//'"'
+enddo
+
+astring = '-1-2-3-4-5-6-7-8-'
+write(stdout, "(A)") 'Split "'//astring//'" at "-" in chunks of 3'
+call astring%split_chunked(tokens=strings, sep='-', chunks=3)
+test_passed(12) = (strings(1)//''=='1'.and.strings(2)//''=='2'.and.strings(3)//''=='3'.and.strings(4)//''=='4'.and. &
+                   strings(5)//''=='5'.and.strings(6)//''=='6'.and.strings(7)//''=='7'.and.strings(8)//''=='8')
 do s=1, size(strings)
   write(stdout, "(A)") '+ "'//strings(s)//'"'
 enddo
