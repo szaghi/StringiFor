@@ -1,19 +1,13 @@
 !< StringiFor `start_end` test.
 program start_end
-!-----------------------------------------------------------------------------------------------------------------------------------
 !< StringiFor `start_end` test.
-!-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string
-!-----------------------------------------------------------------------------------------------------------------------------------
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 type(string) :: astring        !< A string.
-logical      :: test_passed(8) !< List of passed tests.
-!-----------------------------------------------------------------------------------------------------------------------------------
+logical      :: test_passed(9) !< List of passed tests.
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 test_passed = .false.
 
 astring = 'Hello WorLD!'
@@ -43,7 +37,8 @@ write(stdout, "(A,L1)") 'slice (5:) end with "orLD!"? ', astring%end_with(suffix
 test_passed(8) = astring%end_with(suffix='orLD!', start=8, end=12).eqv..true.
 write(stdout, "(A,L1)") 'slice (8:12) end with "orLD!"? ', astring%end_with(suffix='orLD!', start=8, end=12)
 
+test_passed(9) = astring%end_with(suffix='!').eqv..true.
+write(stdout, "(A,L1)") 'end with "!"? ', astring%end_with(suffix='!')
+
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
-stop
-!-----------------------------------------------------------------------------------------------------------------------------------
 endprogram start_end
