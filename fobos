@@ -10,10 +10,10 @@ $CSHARED_INT = -c -fpic -assume realloc_lhs
 $LSHARED     = -shared
 $CSTATIC_GNU = -c -frealloc-lhs -std=f2008 -fall-intrinsics
 $CSTATIC_INT = -c -assume realloc_lhs -standard-semantics -std08
-$DEBUG_GNU   = -O0 -g3 -Warray-bounds -Wcharacter-truncation -Wline-truncation -Wimplicit-interface -Wimplicit-procedure -Wunderflow -fcheck=all -fmodule-private -ffree-line-length-132 -fimplicit-none -fbacktrace -fdump-core -finit-real=nan
+$DEBUG_GNU   = -Og -g3 -Warray-bounds -Wcharacter-truncation -Wline-truncation -Wimplicit-interface -Wimplicit-procedure -Wunderflow -fcheck=all -fmodule-private -ffree-line-length-132 -fimplicit-none -fbacktrace -fdump-core -finit-real=nan
 $DEBUG_INT   = -O0 -check arg_temp_created -check format -check assume -check format -check output_conversion -check pointers -check stack -check uninit -debug all -warn all -extend-source 132 -traceback
 $OPTIMIZE    = -O2
-$EXDIRS      = BeFoR64/src/tests/ PENF/src/tests/
+$EXDIRS      = BeFoR64/src/tests/ BeFoR64/src/third_party/ PENF/src/tests/
 
 # main modes
 [tests-gnu]
