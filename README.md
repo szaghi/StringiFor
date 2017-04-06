@@ -254,16 +254,16 @@ Go to [Top](#top)
 
 StringiFor home is at [https://github.com/szaghi/StringiFor](https://github.com/szaghi/StringiFor). It uses `git submodule` to handle the third party dependencies. To download all the source files you can:
 
-+ clone recursively this repository (all dependencies are satisfied):
-  + `git clone --recursive https://github.com/szaghi/StringiFor`
++ clone this repository (all dependencies are satisfied):
+  + `git clone https://github.com/szaghi/StringiFor`
   + `cd StringiFor`
-  + `git submodule update --init --recursive`
+  + `git submodule update --init`
 + download only the StringiFor sources, all other dependencies must be downloaded manually:
   + download the latest master-branch archive:
     + `wget https://github.com/szaghi/StringiFor/archive/master.zip`
     + `unzip StringiFor-master.zip`
     + `cd StringiFor-master`
-    + `git submodule update --init --recursive`
+    + `git submodule update --init`
   + download a release archive at [https://github.com/szaghi/StringiFor/releases](https://github.com/szaghi/StringiFor/releases)
 
 #### Third Party dependencies
