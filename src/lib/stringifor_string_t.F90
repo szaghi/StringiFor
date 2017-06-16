@@ -1506,13 +1506,13 @@ contains
   !< @note Multiple subsequent separators are collapsed to one occurrence.
   !<
   !< @note The split is performed in chunks of `#chunks` to avoid excessive memory consumption.
-  class(string),             intent(in)           :: self           !< The string.
-  type(string), allocatable, intent(out)          :: tokens(:)      !< Tokens substring.
-  integer,                   intent(in)           :: chunks         !< Number of chunks.
-  character(kind=CK, len=*), intent(in), optional :: sep            !< Separator.
-  character(kind=CK, len=:), allocatable          :: sep_           !< Separator, default value.
-  integer                                         :: Nt             !< Number of actual tokens.
-  integer                                         :: t              !< Counter.
+  class(string),             intent(in)           :: self      !< The string.
+  type(string), allocatable, intent(out)          :: tokens(:) !< Tokens substring.
+  integer,                   intent(in)           :: chunks    !< Number of chunks.
+  character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+  character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+  integer                                         :: Nt        !< Number of actual tokens.
+  integer                                         :: t         !< Counter.
 
   if (allocated(self%raw)) then
     sep_ = SPACE ; if (present(sep)) sep_ = sep
@@ -1525,21 +1525,23 @@ contains
     do
       t = size(tokens, dim=1)
       if (t > Nt) exit
-      call split_last_token(max_tokens=chunks)
+      call split_last_token(tokens=tokens, max_tokens=chunks)
     enddo
 
     t = size(tokens, dim=1)
     if (tokens(t)%count(sep_) > 0) then
-       call split_last_token
+       call split_last_token(tokens=tokens)
     endif
   endif
 
   contains
-     pure subroutine split_last_token(max_tokens)
-     integer, intent(in), optional :: max_tokens     !< Max tokens returned.
-     type(string), allocatable     :: tokens_(:)     !< Temporary tokens.
-     type(string), allocatable     :: tokens_swap(:) !< Swap tokens.
-     integer                       :: Nt_            !< Number of last created tokens.
+     pure subroutine split_last_token(tokens, max_tokens)
+     !< Split last token.
+     type(string), allocatable, intent(inout)        :: tokens(:)      !< Tokens substring.
+     integer,                   intent(in), optional :: max_tokens     !< Max tokens returned.
+     type(string), allocatable                       :: tokens_(:)     !< Temporary tokens.
+     type(string), allocatable                       :: tokens_swap(:) !< Swap tokens.
+     integer                                         :: Nt_            !< Number of last created tokens.
 
      call tokens(t)%split(tokens=tokens_, sep=sep_, max_tokens=max_tokens)
      if (allocated(tokens_)) then
