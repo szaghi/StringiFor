@@ -7,13 +7,19 @@ DSRC = src
 COMPILER = gnu
 ifeq "$(COMPILER)" "gnu"
   FC    = gfortran
-  OPTSC = -c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -Dr16p -J $(DMOD)
+  OPTSC = -c -frealloc-lhs -std=f2008 -fall-intrinsics -O2 -D_R16P_SUPPORTED -J $(DMOD)
   OPTSL = -O2 -J $(DMOD)
 endif
 ifeq "$(COMPILER)" "intel"
   FC    = ifort
-  OPTSC = -c -assume realloc_lhs -standard-semantics -std08 -O2 -Dr16p -module $(DMOD)
+  OPTSC = -c -assume realloc_lhs -standard-semantics -std08 -O2 -D_R16P_SUPPORTED -module $(DMOD)
   OPTSL = -O2 -module $(DMOD)
+endif
+ifeq "$(COMPILER)" "nag"
+# nagfor has quad-precision (precision=31 range=291) but not the one demanded by R16P
+  FC    = nagfor
+  OPTSC = -c -C=array -C=bits -C=calls -C=dangling -C=do -C=intovf -C=present -C=pointer -C=recursion -colour -fpp -f2008 -gline -info -kind=unique -mtrace -nan -O4 -I $(DMOD) -mdir $(DMOD)
+  OPTSL = -I $(DMOD)
 endif
 
 TESTS = no
@@ -49,60 +55,63 @@ STRINGIFOR: $(MKDIRS) $(DOBJ)stringifor.o
 	@$(MAKELIB)
 
 #tests
-.NOTPARALLEL: $(DEXE)IS_REAL            \
-              $(DEXE)SLEN               \
-              $(DEXE)IS_NUMBER          \
-              $(DEXE)FILL               \
-              $(DEXE)WRITE_LINES        \
-              $(DEXE)CONCATENATION      \
-              $(DEXE)SEARCH             \
-              $(DEXE)CAPITALIZE         \
-              $(DEXE)SVERIFY            \
-              $(DEXE)IS_INTEGER         \
-              $(DEXE)STRIP              \
-              $(DEXE)SREPEAT            \
-              $(DEXE)SPLIT              \
-              $(DEXE)SLICE              \
-              $(DEXE)ESCAPE             \
-              $(DEXE)SADJUSTLR          \
-              $(DEXE)CSV_NAIVE_PARSER   \
-              $(DEXE)TO_NUMBER          \
-              $(DEXE)IS_DIGIT           \
-              $(DEXE)IO_BASIC           \
-              $(DEXE)SINDEX             \
-              $(DEXE)WRITE_FILE         \
-              $(DEXE)EQUAL              \
-              $(DEXE)CAMELCASE          \
-              $(DEXE)SNAKECASE          \
-              $(DEXE)REVERSE            \
-              $(DEXE)BASENAME_DIR       \
-              $(DEXE)SCOUNT             \
-              $(DEXE)READ_LINES         \
-              $(DEXE)UPPER_LOWER        \
-              $(DEXE)UNIQUE             \
-              $(DEXE)JOIN               \
-              $(DEXE)GREATER_EQUAL_THAN \
-              $(DEXE)READ_FILE          \
-              $(DEXE)EXTENSION          \
-              $(DEXE)SWAPCASE           \
-              $(DEXE)IO_LISTDIRECTED    \
-              $(DEXE)UNESCAPE           \
-              $(DEXE)STARTCASE          \
-              $(DEXE)FREE               \
-              $(DEXE)NOT_EQUAL          \
-              $(DEXE)INSERT             \
-              $(DEXE)PARTITION          \
-              $(DEXE)STRIM              \
-              $(DEXE)ASSIGNMENTS        \
-              $(DEXE)GREATER_THAN       \
-              $(DEXE)ENCODE             \
-              $(DEXE)LOWER_THAN         \
-              $(DEXE)SSCAN              \
-              $(DEXE)DECODE             \
-              $(DEXE)REPLACE            \
-              $(DEXE)READ_LINE          \
-              $(DEXE)LOWER_EQUAL_THAN   \
-              $(DEXE)START_END
+.NOTPARALLEL: $(DEXE)IS_REAL                     \
+              $(DEXE)SLEN                        \
+              $(DEXE)IS_NUMBER                   \
+              $(DEXE)FILL                        \
+              $(DEXE)WRITE_LINES                 \
+              $(DEXE)CONCATENATION               \
+              $(DEXE)SEARCH                      \
+              $(DEXE)CAPITALIZE                  \
+              $(DEXE)SVERIFY                     \
+              $(DEXE)IS_INTEGER                  \
+              $(DEXE)STRIP                       \
+              $(DEXE)SREPEAT                     \
+              $(DEXE)SPLIT                       \
+              $(DEXE)SLICE                       \
+              $(DEXE)ESCAPE                      \
+              $(DEXE)SADJUSTLR                   \
+              $(DEXE)CSV_NAIVE_PARSER            \
+              $(DEXE)TO_NUMBER                   \
+              $(DEXE)IS_DIGIT                    \
+              $(DEXE)IO_BASIC                    \
+              $(DEXE)SINDEX                      \
+              $(DEXE)WRITE_FILE                  \
+              $(DEXE)EQUAL                       \
+              $(DEXE)CAMELCASE                   \
+              $(DEXE)SNAKECASE                   \
+              $(DEXE)REVERSE                     \
+              $(DEXE)BASENAME_DIR                \
+              $(DEXE)SCOUNT                      \
+              $(DEXE)READ_LINES                  \
+              $(DEXE)UPPER_LOWER                 \
+              $(DEXE)UNIQUE                      \
+              $(DEXE)JOIN                        \
+              $(DEXE)GREATER_EQUAL_THAN          \
+              $(DEXE)READ_FILE                   \
+              $(DEXE)EXTENSION                   \
+              $(DEXE)SWAPCASE                    \
+              $(DEXE)IO_LISTDIRECTED             \
+              $(DEXE)UNESCAPE                    \
+              $(DEXE)STARTCASE                   \
+              $(DEXE)FREE                        \
+              $(DEXE)NOT_EQUAL                   \
+              $(DEXE)INSERT                      \
+              $(DEXE)PARTITION                   \
+              $(DEXE)STRIM                       \
+              $(DEXE)STRINGIFOR_TEST_ASSIGNMENTS \
+              $(DEXE)GREATER_THAN                \
+              $(DEXE)ENCODE                      \
+              $(DEXE)LOWER_THAN                  \
+              $(DEXE)SSCAN                       \
+              $(DEXE)DECODE                      \
+              $(DEXE)REPLACE                     \
+              $(DEXE)READ_LINE                   \
+              $(DEXE)LOWER_EQUAL_THAN            \
+              $(DEXE)START_END                   \
+              $(DEXE)GLOB                        \
+              $(DEXE)TEMPNAME                    \
+              $(DEXE)STRINGIFOR_TEST_PARSE_LARGE_CSV
 
 $(DEXE)IS_REAL: $(MKDIRS) $(DOBJ)is_real.o
 	@rm -f $(filter-out $(DOBJ)is_real.o,$(EXESOBJ))
@@ -324,11 +333,11 @@ $(DEXE)STRIM: $(MKDIRS) $(DOBJ)strim.o
 	@echo $(LITEXT)
 	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
 EXES := $(EXES) STRIM
-$(DEXE)ASSIGNMENTS: $(MKDIRS) $(DOBJ)assignments.o
-	@rm -f $(filter-out $(DOBJ)assignments.o,$(EXESOBJ))
+$(DEXE)STRINGIFOR_TEST_ASSIGNMENTS: $(MKDIRS) $(DOBJ)stringifor_test_assignments.o
+	@rm -f $(filter-out $(DOBJ)stringifor_test_assignments.o,$(EXESOBJ))
 	@echo $(LITEXT)
 	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) ASSIGNMENTS
+EXES := $(EXES) STRINGIFOR_TEST_ASSIGNMENTS
 $(DEXE)GREATER_THAN: $(MKDIRS) $(DOBJ)greater_than.o
 	@rm -f $(filter-out $(DOBJ)greater_than.o,$(EXESOBJ))
 	@echo $(LITEXT)
@@ -374,6 +383,21 @@ $(DEXE)START_END: $(MKDIRS) $(DOBJ)start_end.o
 	@echo $(LITEXT)
 	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
 EXES := $(EXES) START_END
+$(DEXE)GLOB: $(MKDIRS) $(DOBJ)glob.o
+	@rm -f $(filter-out $(DOBJ)glob.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) GLOB
+$(DEXE)TEMPNAME: $(MKDIRS) $(DOBJ)tempname.o
+	@rm -f $(filter-out $(DOBJ)tempname.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) TEMPNAME
+$(DEXE)STRINGIFOR_TEST_PARSE_LARGE_CSV: $(MKDIRS) $(DOBJ)stringifor_test_parse_large_csv.o
+	@rm -f $(filter-out $(DOBJ)stringifor_test_parse_large_csv.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_TEST_PARSE_LARGE_CSV
 
 #compiling rules
 $(DOBJ)stringifor.o: src/lib/stringifor.F90 \
@@ -388,14 +412,6 @@ $(DOBJ)stringifor_string_t.o: src/lib/stringifor_string_t.F90 \
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)penf.o: src/third_party/BeFoR64/src/lib/penf.F90 \
-	$(DOBJ)penf_global_parameters_variables.o \
-	$(DOBJ)penf_b_size.o \
-	$(DOBJ)penf_stringify.o
-	@echo $(COTEXT)
-	@$(FC) $(OPTSC)  $< -o $@
-	@rm -f $(DOBJ)penf_global_parameters_variables.o $(DOBJ)penf_b_size.o $(DOBJ)penf_stringify.o
-
 $(DOBJ)befor64_pack_data_m.o: src/third_party/BeFoR64/src/lib/befor64_pack_data_m.F90 \
 	$(DOBJ)penf.o
 	@echo $(COTEXT)
@@ -404,6 +420,13 @@ $(DOBJ)befor64_pack_data_m.o: src/third_party/BeFoR64/src/lib/befor64_pack_data_
 $(DOBJ)befor64.o: src/third_party/BeFoR64/src/lib/befor64.F90 \
 	$(DOBJ)penf.o \
 	$(DOBJ)befor64_pack_data_m.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)penf.o: src/third_party/PENF/src/lib/penf.F90 \
+	$(DOBJ)penf_global_parameters_variables.o \
+	$(DOBJ)penf_b_size.o \
+	$(DOBJ)penf_stringify.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
@@ -642,7 +665,7 @@ $(DOBJ)strim.o: src/tests/strim.f90 \
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)assignments.o: src/tests/assignments.f90 \
+$(DOBJ)stringifor_test_assignments.o: src/tests/stringifor_test_assignments.f90 \
 	$(DOBJ)stringifor.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
@@ -688,6 +711,21 @@ $(DOBJ)lower_equal_than.o: src/tests/lower_equal_than.f90 \
 	@$(FC) $(OPTSC)  $< -o $@
 
 $(DOBJ)start_end.o: src/tests/start_end.f90 \
+	$(DOBJ)stringifor.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)glob.o: src/tests/glob.f90 \
+	$(DOBJ)stringifor.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)tempname.o: src/tests/tempname.f90 \
+	$(DOBJ)stringifor.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_test_parse_large_csv.o: src/tests/stringifor_test_parse_large_csv/stringifor_test_parse_large_csv.f90 \
 	$(DOBJ)stringifor.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
