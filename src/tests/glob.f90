@@ -46,7 +46,7 @@ print*, ' Files found by glob (string output)'
 outer_str: do f=1, size(alist_str, dim=1)
   print*, alist_str(f)%chars()
   do ff=1, Nf
-    test_passed(1) = alist_str(f) == files(f)
+    test_passed(1) = alist_str(f) == files(ff)
     if (test_passed(1)) cycle outer_str
   enddo
 enddo outer_str
@@ -55,7 +55,7 @@ print*, ' Files found by glob (character output)'
 outer_chr: do f=1, size(alist_chr, dim=1)
   print*, alist_chr(f)
   do ff=1, Nf
-    test_passed(2) = alist_chr(f) == files(f)
+    test_passed(2) = alist_chr(f) == files(ff)
     if (test_passed(2)) cycle outer_chr
   enddo
 enddo outer_chr

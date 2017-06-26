@@ -1,13 +1,10 @@
 !< StringiFor `assignments` test.
-program assignments
-!-----------------------------------------------------------------------------------------------------------------------------------
+
+program stringifor_test_assignments
 !< StringiFor `assignments` test.
-!-----------------------------------------------------------------------------------------------------------------------------------
 use, intrinsic :: iso_fortran_env, only : stdout => output_unit
 use stringifor, only : string, I1P, I2P, I4P, I8P, R4P, R8P, R16P
-!-----------------------------------------------------------------------------------------------------------------------------------
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
 type(string) :: astring        !< A string.
 integer(I1P) :: ainteger_I1P   !< A integer (I1P).
@@ -18,9 +15,7 @@ real(R4P)    :: areal_R4P      !< A real (R4P).
 real(R8P)    :: areal_R8P      !< A real (R8P).
 real(R16P)   :: areal_R16P     !< A real (R16P).
 logical      :: test_passed(7) !< List of passed tests.
-!-----------------------------------------------------------------------------------------------------------------------------------
 
-!-----------------------------------------------------------------------------------------------------------------------------------
 test_passed = .false.
 
 ainteger_I1P = 127_I1P
@@ -59,6 +54,4 @@ test_passed(7) = astring//''=='+0.110000000000000000000000000000000E+0201'
 write(stdout, "(A,L1)") 'Assigned to: "'//astring//'" is correct? ', test_passed(7)
 
 write(stdout, "(A,L1)") new_line('a')//'Are all tests passed? ', all(test_passed)
-stop
-!-----------------------------------------------------------------------------------------------------------------------------------
-endprogram assignments
+endprogram stringifor_test_assignments
