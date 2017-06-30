@@ -1,6 +1,7 @@
 language: generic
 
 sudo: false
+dist: trusty
 
 cache:
   apt: true
@@ -13,7 +14,6 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - jonathonf/gcc-7.1
     packages:
       - gfortran-7
       - binutils
