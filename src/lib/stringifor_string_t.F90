@@ -141,12 +141,10 @@ type :: string
                               string_gt_character, &
                               character_gt_string                   !< Greater than operator overloading.
     ! IO
-#ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted       !< Formatted input.
     generic :: write(formatted) => write_formatted     !< Formatted output.
     generic :: read(unformatted) => read_unformatted   !< Unformatted input.
     generic :: write(unformatted) => write_unformatted !< Unformatted output.
-#endif
     ! private methods
     ! builtins replacements
     procedure, private, pass(self) :: sindex_string_string     !< Index replacement.
@@ -343,16 +341,12 @@ contains
    !<
    !<```fortran
    !< type(string) :: string1
+   !< logical      :: test_passed(2)
    !< string1 = 'llo'
-   !< print "(L1)", index(s='Hello World Hello!', substring=string1)==index(string='Hello World Hello!', substring='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< string1 = 'llo'
-   !< print "(L1)", index(s='Hello World Hello!', substring=string1, back=.true.)==index(string='Hello World Hello!', &
-   !<                                                                                         substring='llo', back=.true.)
+   !< test_passed(1) = index(s='Hello World Hello!', substring=string1)==index(string='Hello World Hello!', substring='llo')
+   !< test_passed(2) = index(s='Hello World Hello!', substring=string1, back=.true.)==index(string='Hello World Hello!', &
+   !<                                                                                       substring='llo', back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    character(kind=CK, len=*), intent(in)           :: s         !< String.
@@ -372,16 +366,12 @@ contains
    !<
    !<```fortran
    !< type(string) :: string1
+   !< logical      :: test_passed(2)
    !< string1 = 'llo'
-   !< print "(L1)", scan(s='Hello World Hello!', set=string1)==scan(string='Hello World Hello!', set='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< string1 = 'llo'
-   !< print "(L1)", scan(s='Hello World Hello!', set=string1, back=.true.)==scan(string='Hello World Hello!', &
-   !<                                                                                 set='llo', back=.true.)
+   !< test_passed(1) = scan(s='Hello World Hello!', set=string1)==scan(string='Hello World Hello!', set='llo')
+   !< test_passed(2) = scan(s='Hello World Hello!', set=string1, back=.true.)==scan(string='Hello World Hello!', &
+   !<                                                                               set='llo', back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    character(kind=CK, len=*), intent(in)           :: s    !< String.
@@ -402,16 +392,12 @@ contains
    !<
    !<```fortran
    !< type(string) :: string1
+   !< logical      :: test_passed(2)
    !< string1 = 'ell'
-   !< print "(L1)", verify(s='Hello World Hello!', set=string1)==verify(string='Hello World Hello!', set='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< string1 = 'ell'
-   !< print "(L1)", verify(s='Hello World Hello!', set=string1, back=.true.)==verify(string='Hello World Hello!', set='llo', &
-   !<                                                                                back=.true.)
+   !< test_passed(1) = verify(s='Hello World Hello!', set=string1)==verify(string='Hello World Hello!', set='llo')
+   !< test_passed(2) = verify(s='Hello World Hello!', set=string1, back=.true.)==verify(string='Hello World Hello!', set='llo', &
+   !<                                                                                   back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    character(kind=CK, len=*), intent(in)           :: s    !< String.
@@ -470,29 +456,16 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(4)
    !< astring = '   Hello World  !    '
-   !< print "(L1)", astring%count(substring=' ')==10
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
+   !< test_passed(1) = astring%count(substring=' ')==10
    !< astring = 'Hello World  !    '
-   !< print "(L1)", astring%count(substring=' ', ignore_isolated=.true.)==6
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
+   !< test_passed(2) = astring%count(substring=' ', ignore_isolated=.true.)==6
    !< astring = '    Hello World  !'
-   !< print "(L1)", astring%count(substring=' ', ignore_isolated=.true.)==6
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
+   !< test_passed(3) = astring%count(substring=' ', ignore_isolated=.true.)==6
    !< astring = '   Hello World  !    '
-   !< print "(L1)", astring%count(substring=' ', ignore_isolated=.true.)==8
+   !< test_passed(4) = astring%count(substring=' ', ignore_isolated=.true.)==8
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in)              :: self             !< The string.
@@ -541,18 +514,13 @@ contains
    !<```fortran
    !< type(string) :: string1
    !< type(string) :: string2
+   !< logical      :: test_passed(2)
    !< string1 = 'Hello World Hello!'
    !< string2 = 'llo'
-   !< print "(L1)", string1%index(substring=string2)==index(string='Hello World Hello!', substring='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< type(string) :: string2
-   !< string1 = 'Hello World Hello!'
-   !< string2 = 'llo'
-   !< print "(L1)", string1%index(substring=string2, back=.true.)==index(string='Hello World Hello!', substring='llo', back=.true.)
+   !< test_passed(1) = string1%index(substring=string2)==index(string='Hello World Hello!', substring='llo')
+   !< test_passed(2) = string1%index(substring=string2, back=.true.)==index(string='Hello World Hello!', substring='llo', &
+   !<                                                                       back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in)           :: self      !< The string.
@@ -574,15 +542,11 @@ contains
    !<
    !<```fortran
    !< type(string) :: string1
+   !< logical      :: test_passed(2)
    !< string1 = 'Hello World Hello!'
-   !< print "(L1)", string1%index(substring='llo')==index(string='Hello World Hello!', substring='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< string1 = 'Hello World Hello!'
-   !< print "(L1)", string1%index(substring='llo', back=.true.)==index(string='Hello World Hello!', substring='llo', back=.true.)
+   !< test_passed(1) = string1%index(substring='llo')==index(string='Hello World Hello!', substring='llo')
+   !< test_passed(2) = string1%index(substring='llo', back=.true.)==index(string='Hello World Hello!', substring='llo', back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self      !< The string.
@@ -673,18 +637,13 @@ contains
    !<```fortran
    !< type(string) :: string1
    !< type(string) :: string2
+   !< logical      :: test_passed(2)
    !< string1 = 'Hello World Hello!'
    !< string2 = 'llo'
-   !< print "(L1)", string1%scan(set=string2)==scan(string='Hello World Hello!', set='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< type(string) :: string2
-   !< string1 = 'Hello World Hello!'
-   !< string2 = 'llo'
-   !< print "(L1)", string1%scan(set=string2, back=.true.)==scan(string='Hello World Hello!', set='llo', back=.true.)
+   !< test_passed(1) = string1%scan(set=string2)==scan(string='Hello World Hello!', set='llo')
+   !< test_passed(2) = string1%scan(set=string2, back=.true.)==scan(string='Hello World Hello!', set='llo', back=.true.)
+   !< print '(L1)', all(test_passed)
+   !< print "(L1)",
    !<```
    !=> T <<<
    class(string), intent(in)           :: self  !< The string.
@@ -704,15 +663,11 @@ contains
    !<
    !<```fortran
    !< type(string) :: string1
+   !< logical      :: test_passed(2)
    !< string1 = 'Hello World Hello!'
-   !< print "(L1)", string1%scan(set='llo')==scan(string='Hello World Hello!', set='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< string1 = 'Hello World Hello!'
-   !< print "(L1)", string1%scan(set='llo', back=.true.)==scan(string='Hello World Hello!', set='llo', back=.true.)
+   !< test_passed(1) = string1%scan(set='llo')==scan(string='Hello World Hello!', set='llo')
+   !< test_passed(2) = string1%scan(set='llo', back=.true.)==scan(string='Hello World Hello!', set='llo', back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self  !< The string.
@@ -736,13 +691,6 @@ contains
    !< print "(L1)", astring%trim()==trim('Hello World!   ')
    !<```
    !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
-   !< astring = 'Hello World!   '
-   !< print "(L1)", trim(astring)==trim('Hello World!   ')
-   !<```
-   !=> T <<<
    class(string), intent(in) :: self    !< The string.
    type(string)              :: trimmed !< Trimmed string.
 
@@ -757,18 +705,12 @@ contains
    !<```fortran
    !< type(string) :: string1
    !< type(string) :: string2
+   !< logical      :: test_passed(2)
    !< string1 = 'Hello World Hello!'
    !< string2 = 'llo'
-   !< print "(L1)", string1%verify(set=string2)==verify(string='Hello World Hello!', set='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< type(string) :: string2
-   !< string1 = 'Hello World Hello!'
-   !< string2 = 'llo'
-   !< print "(L1)", string1%verify(set=string2, back=.true.)==verify(string='Hello World Hello!', set='llo', back=.true.)
+   !< test_passed(1) = string1%verify(set=string2)==verify(string='Hello World Hello!', set='llo')
+   !< test_passed(2) = string1%verify(set=string2, back=.true.)==verify(string='Hello World Hello!', set='llo', back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in)           :: self  !< The string.
@@ -789,15 +731,11 @@ contains
    !<
    !<```fortran
    !< type(string) :: string1
+   !< logical      :: test_passed(2)
    !< string1 = 'Hello World Hello!'
-   !< print "(L1)", string1%verify(set='llo')==verify(string='Hello World Hello!', set='llo')
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
-   !< string1 = 'Hello World Hello!'
-   !< print "(L1)", string1%verify(set='llo', back=.true.)==verify(string='Hello World Hello!', set='llo', back=.true.)
+   !< test_passed(1) = string1%verify(set='llo')==verify(string='Hello World Hello!', set='llo')
+   !< test_passed(2) = string1%verify(set='llo', back=.true.)==verify(string='Hello World Hello!', set='llo', back=.true.)
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self  !< The string.
@@ -818,29 +756,17 @@ contains
    !<
    !<```fortran
    !< type(string) :: string1
+   !< logical      :: test_passed(4)
    !< string1 = '/bar/foo.tar.bz2'
-   !< print "(L1)", string1%basedir()//''=='/bar'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
+   !< print "(L1)",
+   !< test_passed(1) = string1%basedir()//''=='/bar'
    !< string1 = './bar/foo.tar.bz2'
-   !< print "(L1)", string1%basedir()//''=='./bar'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
+   !< test_passed(2) = string1%basedir()//''=='./bar'
    !< string1 = 'bar/foo.tar.bz2'
-   !< print "(L1)", string1%basedir()//''=='bar'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: string1
+   !< test_passed(3) = string1%basedir()//''=='bar'
    !< string1 = '\bar\foo.tar.bz2'
-   !< print "(L1)", string1%basedir(sep='\')//''=='\bar'
+   !< test_passed(4) = string1%basedir(sep='\')//''=='\bar'
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self    !< The string.
@@ -864,29 +790,14 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(4)
    !< astring = 'bar/foo.tar.bz2'
-   !< print '(L1)', astring%basename()//''=='foo.tar.bz2'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
-   !< astring = 'bar/foo.tar.bz2'
-   !< print '(L1)', astring%basename(extension='.tar.bz2')//''=='foo'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
-   !< astring = 'bar/foo.tar.bz2'
-   !< print '(L1)', astring%basename(strip_last_extension=.true.)//''=='foo.tar'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
+   !< test_passed(1) = astring%basename()//''=='foo.tar.bz2'
+   !< test_passed(2) = astring%basename(extension='.tar.bz2')//''=='foo'
+   !< test_passed(3) = astring%basename(strip_last_extension=.true.)//''=='foo.tar'
    !< astring = '\bar\foo.tar.bz2'
-   !< print '(L1)', astring%basename(sep='\')//''=='foo.tar.bz2'
+   !< test_passed(4) = astring%basename(sep='\')//''=='foo.tar.bz2'
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self                 !< The string.
@@ -1053,15 +964,11 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(2)
    !< astring = '^\s \d+\s*'
-   !< print '(L1)', astring%escape(to_escape='\')//''=='^\\s \\d+\\s*'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
-   !< astring = '^\s \d+\s*'
-   !< print '(L1)', astring%escape(to_escape='\', esc='|')//''=='^|\s |\d+|\s*'
+   !< test_passed(1) = astring%escape(to_escape='\')//''=='^\\s \\d+\\s*'
+   !< test_passed(2) = astring%escape(to_escape='\', esc='|')//''=='^|\s |\d+|\s*'
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self      !< The string.
@@ -1117,29 +1024,13 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(4)
    !< astring = 'this is string example....wow!!!'
-   !< print '(L1)', astring%fill(width=40)//''=='00000000this is string example....wow!!!'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
-   !< astring = 'this is string example....wow!!!'
-   !< print '(L1)', astring%fill(width=50)//''=='000000000000000000this is string example....wow!!!'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
-   !< astring = 'this is string example....wow!!!'
-   !< print '(L1)', astring%fill(width=50, right=.true.)//''=='this is string example....wow!!!000000000000000000'
-   !<```
-   !=> T <<<
-   !<
-   !<```fortran
-   !< type(string) :: astring
-   !< astring = 'this is string example....wow!!!'
-   !< print '(L1)', astring%fill(width=40, filling_char='*')//''=='********this is string example....wow!!!'
+   !< test_passed(1) = astring%fill(width=40)//''=='00000000this is string example....wow!!!'
+   !< test_passed(2) = astring%fill(width=50)//''=='000000000000000000this is string example....wow!!!'
+   !< test_passed(3) = astring%fill(width=50, right=.true.)//''=='this is string example....wow!!!000000000000000000'
+   !< test_passed(4) = astring%fill(width=40, filling_char='*')//''=='********this is string example....wow!!!'
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self          !< The string.
@@ -1192,21 +1083,17 @@ contains
    !< integer                       :: f
    !< integer                       :: ff
    !< logical                       :: test_passed
-   !<
    !< do f=1, Nf
    !<    files(f) = astring%tempname(prefix='foo-')
    !<    open(newunit=file_unit, file=files(f))
    !<    write(file_unit, *)f
    !<    close(unit=file_unit)
    !< enddo
-   !<
    !< call astring%glob(pattern='foo-*', list=alist_chr)
-   !<
    !< do f=1, Nf
    !<    open(newunit=file_unit, file=files(f))
    !<    close(unit=file_unit, status='delete')
    !< enddo
-   !<
    !< test_passed = .false.
    !< outer_chr: do f=1, size(alist_chr, dim=1)
    !<    do ff=1, Nf
@@ -1260,14 +1147,11 @@ contains
    !<    write(file_unit, *)f
    !<    close(unit=file_unit)
    !< enddo
-   !<
    !< call astring%glob(pattern='foo-*', list=alist_str)
-   !<
    !< do f=1, Nf
    !<    open(newunit=file_unit, file=files(f))
    !<    close(unit=file_unit, status='delete')
    !< enddo
-   !<
    !< test_passed = .false.
    !< outer_str: do f=1, size(alist_str, dim=1)
    !<    do ff=1, Nf
@@ -1300,10 +1184,8 @@ contains
    !< type(string)                  :: astring
    !< character(len=:), allocatable :: acharacter
    !< logical                       :: test_passed(5)
-   !<
    !< astring = 'this is string example wow!!!'
    !< acharacter = '... '
-   !<
    !< test_passed(1) = astring%insert(substring=acharacter, pos=1)//''=='... this is string example wow!!!'
    !< test_passed(2) = astring%insert(substring=acharacter, pos=23)//''=='this is string example...  wow!!!'
    !< test_passed(3) = astring%insert(substring=acharacter, pos=29)//''=='this is string example wow!!!... '
@@ -1340,10 +1222,8 @@ contains
    !< type(string) :: astring
    !< type(string) :: anotherstring
    !< logical      :: test_passed(5)
-   !<
    !< astring = 'this is string example wow!!!'
    !< anotherstring = '... '
-   !<
    !< test_passed(1) = astring%insert(substring=anotherstring, pos=1)//''=='... this is string example wow!!!'
    !< test_passed(2) = astring%insert(substring=anotherstring, pos=23)//''=='this is string example...  wow!!!'
    !< test_passed(3) = astring%insert(substring=anotherstring, pos=29)//''=='this is string example wow!!!... '
@@ -1385,7 +1265,6 @@ contains
    !< type(string) :: astring
    !< type(string) :: strings(3)
    !< logical      :: test_passed(5)
-   !<
    !< strings(1) = 'one'
    !< strings(2) = 'two'
    !< strings(3) = 'three'
@@ -1440,7 +1319,6 @@ contains
    !< type(string) :: astring
    !< character(5) :: characters(3)
    !< logical      :: test_passed(6)
-   !<
    !< characters(1) = 'one'
    !< characters(2) = 'two'
    !< characters(3) = 'three'
@@ -1522,7 +1400,6 @@ contains
    !< type(string) :: astring
    !< type(string) :: strings(3)
    !< logical      :: test_passed(3)
-   !<
    !< astring = 'Hello WorLD!'
    !< strings = astring%partition(sep='lo Wo')
    !< test_passed(1) = (strings(1)//''=='Hel'.and.strings(2)//''=='lo Wo'.and.strings(3)//''=='rLD!')
@@ -1875,7 +1752,6 @@ contains
    !<```fortran
    !< type(string) :: astring
    !< logical      :: test_passed(2)
-   !<
    !< astring = 'abcdefghilmnopqrstuvz'
    !< test_passed(1) = (astring%reverse()//''=='zvutsrqponmlihgfedcba')
    !< astring = '0123456789'
@@ -1913,7 +1789,6 @@ contains
    !< integer                       :: istart
    !< integer                       :: iend
    !< logical                       :: test_passed(5)
-   !<
    !< astring = '<test> <first> hello </first> <first> not the first </first> </test>'
    !< anotherstring = astring%search(tag_start='<first>', tag_end='</first>')
    !< test_passed(1) = anotherstring//''=='<first> hello </first>'
@@ -2006,7 +1881,6 @@ contains
    !<```fortran
    !< type(string) :: astring
    !< logical      :: test_passed(1)
-   !<
    !< astring = 'the Quick Brown fox Jumps over the Lazy Dog.'
    !< test_passed(1) = astring%snakecase()//''=='the_quick_brown_fox_jumps_over_the_lazy_dog.'
    !< print '(L1)', all(test_passed)
@@ -3920,6 +3794,8 @@ contains
    !<
    !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
    !<
+   !< @bug Read listdirected with and without delimiters does not work.
+   !<
    !<```fortran
    !< type(string)                  :: astring
    !< character(len=:), allocatable :: acharacter
@@ -3927,10 +3803,15 @@ contains
    !< character(len=99)             :: iomsg
    !< logical                       :: test_passed(1)
    !< acharacter = 'New Hello World!'
-   !< !read(acharacter, "(DT)", iostat=iostat, iomsg=iomsg) astring
-   !< !test_passed(1) = iostat==0 .and. astring=='New Hello World!'
-   !< !print '(L1)', all(test_passed)
-   !< print '(L1)', .true.
+   !< read(acharacter, "(DT)", iostat=iostat, iomsg=iomsg) astring
+   !< test_passed(1) = iostat==0 .and. astring=='New Hello World!'
+   !< !acharacter = '"Has quotes" not read'
+   !< !read(acharacter, *, iostat=iostat, iomsg=iomsg) astring
+   !< !test_passed(2) = (astring == 'Has quotes')
+   !< !acharacter = 'NoSpaces'
+   !< !read(acharacter, *, iostat=iostat, iomsg=iomsg) astring
+   !< !test_passed(2) = (astring == 'NoSpaces')
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(inout) :: dtv         !< The string.
@@ -3967,52 +3848,54 @@ contains
    endif
    endsubroutine read_formatted
 
-  subroutine read_delimited(dtv, unit, delim, iostat, iomsg)
-  !< Read a delimited string from a unit connected for formatted input.
-  !<
-  !< If the closing delimiter is followed by end of record, then we return end of record.
-  class(string),             intent(out)   :: dtv       !< The string.
-  integer,                   intent(in)    :: unit      !< Logical unit.
-  character(kind=CK, len=1), intent(in)    :: delim     !< String delimiter.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK, len=1)                :: ch        !< A character read.
-  logical                                  :: was_delim !< Indicates that the last character read was a delimiter.
+   subroutine read_delimited(dtv, unit, delim, iostat, iomsg)
+   !< Read a delimited string from a unit connected for formatted input.
+   !<
+   !< If the closing delimiter is followed by end of record, then we return end of record.
+   !<
+   !< @note This does not need a doctest, it being tested by [[string::read_formatted]].
+   class(string),             intent(out)   :: dtv       !< The string.
+   integer,                   intent(in)    :: unit      !< Logical unit.
+   character(kind=CK, len=1), intent(in)    :: delim     !< String delimiter.
+   integer,                   intent(out)   :: iostat    !< IO status code.
+   character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+   character(kind=CK, len=1)                :: ch        !< A character read.
+   logical                                  :: was_delim !< Indicates that the last character read was a delimiter.
 
-  was_delim = .false.
-  dtv%raw = ''
-  do
-    read(unit, "(A)", iostat=iostat, iomsg=iomsg) ch
-    if (is_iostat_eor(iostat)) then
-      if (was_delim) then
-        ! end of delimited string followed by end of record is end of the string. Pass back the end of record condition to the
-        ! caller
+   was_delim = .false.
+   dtv%raw = ''
+   do
+      read(unit, "(A)", iostat=iostat, iomsg=iomsg) ch
+      if (is_iostat_eor(iostat)) then
+         if (was_delim) then
+           ! end of delimited string followed by end of record is end of the string. Pass back the
+           ! end of record condition to the caller
+           return
+         else
+           ! end of record without terminating delimiter - move along
+           cycle
+         endif
+      elseif (iostat /= 0) THEN
         return
-      else
-        ! end of record without terminating delimiter - move along
-        cycle
       endif
-    elseif (iostat /= 0) THEN
-      return
-    endif
-    if (ch == delim) then
-      if (was_delim) then
-        ! doubled delimiter is one delimiter in the value
-        dtv%raw = dtv%raw // ch
-        was_delim = .false.
+      if (ch == delim) then
+         if (was_delim) then
+            ! doubled delimiter is one delimiter in the value
+            dtv%raw = dtv%raw // ch
+            was_delim = .false.
+         else
+            ! need to test next character to see what is happening
+            was_delim = .true.
+         endif
+      elseif (was_delim) then
+         ! the previous character was actually the delimiter for the end of the string. Put back this character
+         read(unit, "(TL1)", iostat=iostat, iomsg=iomsg)
+         return
       else
-        ! need to test next character to see what is happening
-        was_delim = .true.
+         dtv%raw = dtv%raw // ch
       endif
-    elseif (was_delim) then
-      ! the previous character was actually the delimiter for the end of the string. Put back this character
-      read(unit, "(TL1)", iostat=iostat, iomsg=iomsg)
-      return
-    else
-      dtv%raw = dtv%raw // ch
-    endif
-  enddo
-  endsubroutine read_delimited
+   enddo
+   endsubroutine read_delimited
 
   subroutine read_undelimited_listdirected(dtv, unit, iostat, iomsg)
   !< Read an undelimited (no leading apostrophe or double quote) character value according to the rules for list directed input.
@@ -4066,49 +3949,49 @@ contains
   enddo
   endsubroutine read_undelimited
 
-  subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
-  !< Formatted output.
-  class(string),             intent(in)    :: dtv       !< The string.
-  integer,                   intent(in)    :: unit      !< Logical unit.
-  character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
-  integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+   subroutine write_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
+   !< Formatted output.
+   class(string),             intent(in)    :: dtv       !< The string.
+   integer,                   intent(in)    :: unit      !< Logical unit.
+   character(kind=CK, len=*), intent(in)    :: iotype    !< Edit descriptor.
+   integer,                   intent(in)    :: v_list(:) !< Edit descriptor list.
+   integer,                   intent(out)   :: iostat    !< IO status code.
+   character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
 
-  if (allocated(dtv%raw)) then
-    write(unit, "(A)", iostat=iostat, iomsg=iomsg)dtv%raw
-  else
-    write(unit, "(A)", iostat=iostat, iomsg=iomsg)''
-  endif
-  endsubroutine write_formatted
+   if (allocated(dtv%raw)) then
+     write(unit, "(A)", iostat=iostat, iomsg=iomsg)dtv%raw
+   else
+     write(unit, "(A)", iostat=iostat, iomsg=iomsg)''
+   endif
+   endsubroutine write_formatted
 
-  subroutine read_unformatted(dtv, unit, iostat, iomsg)
-  !< Unformatted input.
-  !<
-  !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
-  class(string),             intent(inout) :: dtv       !< The string.
-  integer,                   intent(in)    :: unit      !< Logical unit.
-  integer,                   intent(out)   :: iostat    !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-  character(kind=CK, len=100)              :: temporary !< Temporary storage string.
+   subroutine read_unformatted(dtv, unit, iostat, iomsg)
+   !< Unformatted input.
+   !<
+   !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
+   class(string),             intent(inout) :: dtv       !< The string.
+   integer,                   intent(in)    :: unit      !< Logical unit.
+   integer,                   intent(out)   :: iostat    !< IO status code.
+   character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
+   character(kind=CK, len=100)              :: temporary !< Temporary storage string.
 
-  read(unit, iostat=iostat, iomsg=iomsg)temporary
-  dtv%raw = trim(temporary)
-  endsubroutine read_unformatted
+   read(unit, iostat=iostat, iomsg=iomsg)temporary
+   dtv%raw = trim(temporary)
+   endsubroutine read_unformatted
 
-  subroutine write_unformatted(dtv, unit, iostat, iomsg)
-  !< Unformatted output.
-  class(string),             intent(in)    :: dtv    !< The string.
-  integer,                   intent(in)    :: unit   !< Logical unit.
-  integer,                   intent(out)   :: iostat !< IO status code.
-  character(kind=CK, len=*), intent(inout) :: iomsg  !< IO status message.
+   subroutine write_unformatted(dtv, unit, iostat, iomsg)
+   !< Unformatted output.
+   class(string),             intent(in)    :: dtv    !< The string.
+   integer,                   intent(in)    :: unit   !< Logical unit.
+   integer,                   intent(out)   :: iostat !< IO status code.
+   character(kind=CK, len=*), intent(inout) :: iomsg  !< IO status message.
 
-  if (allocated(dtv%raw)) then
-    write(unit, iostat=iostat, iomsg=iomsg)dtv%raw
-  else
-    write(unit, iostat=iostat, iomsg=iomsg)''
-  endif
-  endsubroutine write_unformatted
+   if (allocated(dtv%raw)) then
+     write(unit, iostat=iostat, iomsg=iomsg)dtv%raw
+   else
+     write(unit, iostat=iostat, iomsg=iomsg)''
+   endif
+   endsubroutine write_unformatted
 
    ! miscellanea
    elemental function replace_one_occurrence(self, old, new) result(replaced)
