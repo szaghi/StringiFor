@@ -141,10 +141,12 @@ type :: string
                               string_gt_character, &
                               character_gt_string                   !< Greater than operator overloading.
     ! IO
+#ifndef __GFORTRAN__
     generic :: read(formatted) => read_formatted       !< Formatted input.
     generic :: write(formatted) => write_formatted     !< Formatted output.
     generic :: read(unformatted) => read_unformatted   !< Unformatted input.
     generic :: write(unformatted) => write_unformatted !< Unformatted output.
+#endif
     ! private methods
     ! builtins replacements
     procedure, private, pass(self) :: sindex_string_string     !< Index replacement.
@@ -206,6 +208,7 @@ type :: string
     procedure, private, pass(lhs) :: string_gt_character !< Greater than to character logical operator.
     procedure, private, pass(rhs) :: character_gt_string !< Greater than to character (inverted) logical operator.
     ! IO
+#ifndef __GFORTRAN__
     procedure, private, pass(dtv) :: read_formatted                !< Formatted input.
     procedure, private, pass(dtv) :: read_delimited                !< Read a delimited input.
     procedure, private, pass(dtv) :: read_undelimited              !< Read an undelimited input.
@@ -213,6 +216,7 @@ type :: string
     procedure, private, pass(dtv) :: write_formatted               !< Formatted output.
     procedure, private, pass(dtv) :: read_unformatted              !< Unformatted input.
     procedure, private, pass(dtv) :: write_unformatted             !< Unformatted output.
+#endif
     ! miscellanea
     procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
 endtype string
@@ -3789,31 +3793,13 @@ contains
    endfunction character_gt_string
 
    ! IO
+#ifndef __GFORTRAN__
    subroutine read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
    !< Formatted input.
    !<
    !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
    !<
    !< @bug Read listdirected with and without delimiters does not work.
-   !<
-   !<```fortran
-   !< type(string)                  :: astring
-   !< character(len=:), allocatable :: acharacter
-   !< integer                       :: iostat
-   !< character(len=99)             :: iomsg
-   !< logical                       :: test_passed(1)
-   !< acharacter = 'New Hello World!'
-   !< read(acharacter, "(DT)", iostat=iostat, iomsg=iomsg) astring
-   !< test_passed(1) = iostat==0 .and. astring=='New Hello World!'
-   !< !acharacter = '"Has quotes" not read'
-   !< !read(acharacter, *, iostat=iostat, iomsg=iomsg) astring
-   !< !test_passed(2) = (astring == 'Has quotes')
-   !< !acharacter = 'NoSpaces'
-   !< !read(acharacter, *, iostat=iostat, iomsg=iomsg) astring
-   !< !test_passed(2) = (astring == 'NoSpaces')
-   !< print '(L1)', all(test_passed)
-   !<```
-   !=> T <<<
    class(string),             intent(inout) :: dtv         !< The string.
    integer,                   intent(in)    :: unit        !< Logical unit.
    character(len=*),          intent(in)    :: iotype      !< Edit descriptor.
@@ -3992,6 +3978,7 @@ contains
      write(unit, iostat=iostat, iomsg=iomsg)''
    endif
    endsubroutine write_unformatted
+#endif
 
    ! miscellanea
    elemental function replace_one_occurrence(self, old, new) result(replaced)
