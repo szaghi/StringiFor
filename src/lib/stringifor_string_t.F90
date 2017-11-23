@@ -794,13 +794,15 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(4)
+   !< logical      :: test_passed(5)
    !< astring = 'bar/foo.tar.bz2'
    !< test_passed(1) = astring%basename()//''=='foo.tar.bz2'
    !< test_passed(2) = astring%basename(extension='.tar.bz2')//''=='foo'
    !< test_passed(3) = astring%basename(strip_last_extension=.true.)//''=='foo.tar'
    !< astring = '\bar\foo.tar.bz2'
    !< test_passed(4) = astring%basename(sep='\')//''=='foo.tar.bz2'
+   !< astring = 'bar'
+   !< test_passed(5) = astring%basename(strip_last_extension=.true.)//''=='bar'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -840,10 +842,10 @@ contains
 #ifdef __GFORTRAN__
             temporary = basename%raw
             pos = index(temporary, '.', back=.true.)
-            basename%raw = temporary(1:pos-1)
+            if (pos>0) basename%raw = temporary(1:pos-1)
 #else
             pos = index(basename%raw, '.', back=.true.)
-            basename%raw = basename%raw(1:pos-1)
+            if (pos>0) basename%raw = basename%raw(1:pos-1)
 #endif
          endif
       endif
