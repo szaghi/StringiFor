@@ -8,5 +8,4 @@ use stringifor_string_t
  test_passed(1) = string1%scan(set=string2)==scan(string='Hello World Hello!', set='llo')
  test_passed(2) = string1%scan(set=string2, back=.true.)==scan(string='Hello World Hello!', set='llo', back=.true.)
  print '(L1)', all(test_passed)
- print "(L1)",
 endprogram volatile_doctest
