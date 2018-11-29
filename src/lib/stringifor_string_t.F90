@@ -9,7 +9,8 @@ implicit none
 private
 save
 ! expose StingiFor overloaded builtins
-public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify
+! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify
+public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
 ! expose StingiFor objects
 public :: CK
 public :: string
@@ -250,10 +251,10 @@ interface index
   module procedure sindex_string_string, sindex_string_character, sindex_character_string
 endinterface index
 
-interface len
-  !< Builtin len overloading.
-  module procedure slen
-endinterface len
+!interface len
+!  !< Builtin len overloading.
+!  module procedure slen
+!endinterface len
 
 interface len_trim
   !< Builtin len_trim overloading.
@@ -647,7 +648,6 @@ contains
    !< test_passed(1) = string1%scan(set=string2)==scan(string='Hello World Hello!', set='llo')
    !< test_passed(2) = string1%scan(set=string2, back=.true.)==scan(string='Hello World Hello!', set='llo', back=.true.)
    !< print '(L1)', all(test_passed)
-   !< print "(L1)",
    !<```
    !=> T <<<
    class(string), intent(in)           :: self  !< The string.
@@ -762,7 +762,6 @@ contains
    !< type(string) :: string1
    !< logical      :: test_passed(4)
    !< string1 = '/bar/foo.tar.bz2'
-   !< print "(L1)",
    !< test_passed(1) = string1%basedir()//''=='/bar'
    !< string1 = './bar/foo.tar.bz2'
    !< test_passed(2) = string1%basedir()//''=='./bar'
@@ -4106,7 +4105,7 @@ contains
    integer,                   intent(out)   :: iostat         !< IO status code.
    character(kind=CK, len=*), intent(inout) :: iomsg          !< IO status message.
    character(5)                             :: decimal_buffer !< Buffer for INQUIRE about DECIMAL, sized for POINT or COMMA.
-   character(len(iomsg))                    :: local_iomsg    !< Local variant of iomsg, so it doesn't get inappropriately redefined.
+   character(len(iomsg))                    :: local_iomsg    !< Local iomsg, so it doesn't get inappropriately redefined.
 
    inquire(unit, decimal=decimal_buffer, iostat=iostat, iomsg=local_iomsg)
    if (iostat == iostat_inquire_internal_unit) then
