@@ -230,6 +230,12 @@ character(kind=CK, len=1),  parameter :: TAB            = achar(9)              
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
 character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)                     !< Backslash character.
 
+! overloading string name
+interface string
+  !< Builtin adjustl overloading.
+  module procedure string_
+endinterface string
+
 ! builtins overloading interfaces
 interface adjustl
   !< Builtin adjustl overloading.
@@ -283,6 +289,20 @@ endinterface verify
 
 contains
    ! public non TBP
+
+   ! creator
+   pure function string_(c)
+   !< Return a string given a character input.
+   !<
+   !<```fortran
+   !< print "(L1)", string('Hello World')//''=='Hello World'
+   !<```
+   !=> T <<<
+   character(*), intent(in) :: c       !< Character.
+   type(string)             :: string_ !< String.
+
+   string_%raw = c
+   endfunction string_
 
    ! builtins replacements
    pure function sadjustl_character(s) result(adjusted)
