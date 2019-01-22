@@ -2058,6 +2058,7 @@ contains
    character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
    integer                                         :: Nt        !< Number of actual tokens.
    integer                                         :: t         !< Counter.
+   logical                                         :: isok
 
    if (allocated(self%raw)) then
      sep_ = SPACE ; if (present(sep)) sep_ = sep
@@ -2070,24 +2071,30 @@ contains
      do
        t = size(tokens, dim=1)
        if (t > Nt) exit
-       call split_last_token(tokens=tokens, max_tokens=chunks)
+       call split_last_token(tokens=tokens, max_tokens=chunks,isok=isok)
+       if(isok)then
+       else
+            exit
+       endif
      enddo
 
      t = size(tokens, dim=1)
      if (tokens(t)%count(sep_) > 0) then
-        call split_last_token(tokens=tokens)
+        call split_last_token(tokens=tokens,isok=isok)
      endif
    endif
 
    contains
-      pure subroutine split_last_token(tokens, max_tokens)
+      pure subroutine split_last_token(tokens, max_tokens,isok)
       !< Split last token.
       type(string), allocatable, intent(inout)        :: tokens(:)      !< Tokens substring.
       integer,                   intent(in), optional :: max_tokens     !< Max tokens returned.
       type(string), allocatable                       :: tokens_(:)     !< Temporary tokens.
       type(string), allocatable                       :: tokens_swap(:) !< Swap tokens.
       integer                                         :: Nt_            !< Number of last created tokens.
+      logical,intent(out)                             :: isok
 
+      isok=.true.
       call tokens(t)%split(tokens=tokens_, sep=sep_, max_tokens=max_tokens)
       if (allocated(tokens_)) then
         Nt_ = size(tokens_, dim=1)
@@ -2097,6 +2104,9 @@ contains
           tokens_swap(t:)    = tokens_(:)
           call move_alloc(from=tokens_swap, to=tokens)
         endif
+        if (Nt_ == 1) then
+            isok=.false.
+        end if
         deallocate(tokens_)
       endif
       endsubroutine split_last_token
