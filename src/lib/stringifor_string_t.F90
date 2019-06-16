@@ -240,7 +240,7 @@ interface string
   module procedure string_
 endinterface string
 
-#if !(__GNUC__ < 7)
+#if (__GNUC__ < 7)
 ! operators overloading interfaces
 interface operator(//)
   !< Builtin // overloading.
