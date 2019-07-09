@@ -11,10 +11,10 @@ save
 ! expose StingiFor overloaded builtins and operators
 ! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
-#if !(__GNUC__ < 7)
+! #if !(__GNUC__ < 7)
 public :: assignment(=), operator(//), operator(.cat.), operator(==), &
           operator(/=), operator(<), operator(<=), operator(>=), operator(>)
-#endif
+! #endif
 ! expose StingiFor objects
 public :: CK
 public :: string
@@ -240,7 +240,7 @@ interface string
   module procedure string_
 endinterface string
 
-#if (__GNUC__ < 7)
+! #if (__GNUC__ < 7)
 ! operators overloading interfaces
 interface operator(//)
   !< Builtin // overloading.
@@ -284,7 +284,7 @@ interface operator(.cat.)
   !< .cat. overloading.
   module procedure string_concat_string_string, string_concat_character_string, character_concat_string_string
 endinterface
-#endif
+! #endif
 
 ! builtin overloading
 interface adjustl

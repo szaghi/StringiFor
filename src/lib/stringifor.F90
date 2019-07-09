@@ -5,10 +5,11 @@ module stringifor
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P
 ! use stringifor_string_t, only : adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify, CK, string
 use stringifor_string_t, only : adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify, CK, string
-#ifndef __GFORTRAN__
+! #ifndef __GFORTRAN__
+! #if !(__GNUC__ < 7)
 use stringifor_string_t, only : assignment(=), operator(//), operator(.cat.), operator(==), &
                                 operator(/=), operator(<), operator(<=), operator(>=), operator(>)
-#endif
+! #endif
 
 implicit none
 private
@@ -19,10 +20,11 @@ public :: string
 ! expose StingiFor overloaded builtins and operators
 ! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
-#ifndef __GFORTRAN__
+! #ifndef __GFORTRAN__
+! #if !(__GNUC__ < 7)
 public :: assignment(=), operator(//), operator(.cat.), operator(==), &
           operator(/=), operator(<), operator(<=), operator(>=), operator(>)
-#endif
+! #endif
 ! expose StingiFor new procedures
 public :: read_file, read_lines, write_file, write_lines
 ! expose PENF kinds
