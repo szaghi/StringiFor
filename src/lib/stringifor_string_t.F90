@@ -8,9 +8,13 @@ use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 implicit none
 private
 save
-! expose StingiFor overloaded builtins
+! expose StingiFor overloaded builtins and operators
 ! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
+#if !(__GNUC__ < 7)
+public :: assignment(=), operator(//), operator(.cat.), operator(==), &
+          operator(/=), operator(<), operator(<=), operator(>=), operator(>)
+#endif
 ! expose StingiFor objects
 public :: CK
 public :: string
@@ -142,7 +146,7 @@ type :: string
                               string_gt_character, &
                               character_gt_string                   !< Greater than operator overloading.
     ! IO
-#ifndef __GFORTRAN__
+#if !(__GNUC__ < 7)
     generic :: read(formatted) => read_formatted       !< Formatted input.
     generic :: write(formatted) => write_formatted     !< Formatted output.
     generic :: read(unformatted) => read_unformatted   !< Unformatted input.
@@ -209,7 +213,7 @@ type :: string
     procedure, private, pass(lhs) :: string_gt_character !< Greater than to character logical operator.
     procedure, private, pass(rhs) :: character_gt_string !< Greater than to character (inverted) logical operator.
     ! IO
-#ifndef __GFORTRAN__
+#if !(__GNUC__ < 7)
     procedure, private, pass(dtv) :: read_formatted                !< Formatted input.
     procedure, private, pass(dtv) :: read_delimited                !< Read a delimited input.
     procedure, private, pass(dtv) :: read_undelimited              !< Read an undelimited input.
@@ -236,7 +240,53 @@ interface string
   module procedure string_
 endinterface string
 
-! builtins overloading interfaces
+#if (__GNUC__ < 7)
+! operators overloading interfaces
+interface operator(//)
+  !< Builtin // overloading.
+  module procedure string_concat_string, string_concat_character, character_concat_string
+endinterface
+interface assignment(=)
+  !< Builtin = overloading.
+  module procedure string_assign_string, string_assign_character, string_assign_integer_I1P, string_assign_integer_I2P, &
+                   string_assign_integer_I4P, string_assign_integer_I8P, string_assign_real_R4P,                        &
+#ifdef _R16P_SUPPORTED
+                   string_assign_real_R8P, string_assign_real_R16P
+#else
+                   string_assign_real_R8P
+#endif
+endinterface
+interface operator(==)
+  !< Builtin == overloading.
+  module procedure string_eq_string, string_eq_character, character_eq_string
+endinterface
+interface operator(/=)
+  !< Builtin /= overloading.
+  module procedure string_ne_string, string_ne_character, character_ne_string
+endinterface
+interface operator(<)
+  !< Builtin < overloading.
+  module procedure string_lt_string, string_lt_character, character_lt_string
+endinterface
+interface operator(<=)
+  !< Builtin <= overloading.
+  module procedure string_le_string, string_le_character, character_le_string
+endinterface
+interface operator(>=)
+  !< Builtin >= overloading.
+  module procedure string_ge_string, string_ge_character, character_ge_string
+endinterface
+interface operator(>)
+  !< Builtin > overloading.
+  module procedure string_gt_string, string_gt_character, character_gt_string
+endinterface
+interface operator(.cat.)
+  !< .cat. overloading.
+  module procedure string_concat_string_string, string_concat_character_string, character_concat_string_string
+endinterface
+#endif
+
+! builtin overloading
 interface adjustl
   !< Builtin adjustl overloading.
   module procedure sadjustl_character
@@ -2058,6 +2108,7 @@ contains
    character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
    integer                                         :: Nt        !< Number of actual tokens.
    integer                                         :: t         !< Counter.
+   logical                                         :: isok
 
    if (allocated(self%raw)) then
      sep_ = SPACE ; if (present(sep)) sep_ = sep
@@ -2070,24 +2121,30 @@ contains
      do
        t = size(tokens, dim=1)
        if (t > Nt) exit
-       call split_last_token(tokens=tokens, max_tokens=chunks)
+       call split_last_token(tokens=tokens, max_tokens=chunks,isok=isok)
+       if(isok)then
+       else
+            exit
+       endif
      enddo
 
      t = size(tokens, dim=1)
      if (tokens(t)%count(sep_) > 0) then
-        call split_last_token(tokens=tokens)
+        call split_last_token(tokens=tokens,isok=isok)
      endif
    endif
 
    contains
-      pure subroutine split_last_token(tokens, max_tokens)
+      pure subroutine split_last_token(tokens, max_tokens,isok)
       !< Split last token.
       type(string), allocatable, intent(inout)        :: tokens(:)      !< Tokens substring.
       integer,                   intent(in), optional :: max_tokens     !< Max tokens returned.
       type(string), allocatable                       :: tokens_(:)     !< Temporary tokens.
       type(string), allocatable                       :: tokens_swap(:) !< Swap tokens.
       integer                                         :: Nt_            !< Number of last created tokens.
+      logical,intent(out)                             :: isok
 
+      isok=.true.
       call tokens(t)%split(tokens=tokens_, sep=sep_, max_tokens=max_tokens)
       if (allocated(tokens_)) then
         Nt_ = size(tokens_, dim=1)
@@ -2097,6 +2154,9 @@ contains
           tokens_swap(t:)    = tokens_(:)
           call move_alloc(from=tokens_swap, to=tokens)
         endif
+        if (Nt_ == 1) then
+            isok=.false.
+        end if
         deallocate(tokens_)
       endif
       endsubroutine split_last_token
@@ -3814,7 +3874,7 @@ contains
    endfunction character_gt_string
 
    ! IO
-#ifndef __GFORTRAN__
+#if !(__GNUC__ < 7)
    subroutine read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
    !< Formatted input.
    !<
