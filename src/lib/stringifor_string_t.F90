@@ -11,7 +11,7 @@ save
 ! expose StingiFor overloaded builtins and operators
 ! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
-#if !(__GNUC__ < 7)
+#ifndef __GFORTRAN__
 public :: assignment(=), operator(//), operator(.cat.), operator(==), &
           operator(/=), operator(<), operator(<=), operator(>=), operator(>)
 #endif
@@ -240,7 +240,7 @@ interface string
   module procedure string_
 endinterface string
 
-#if (__GNUC__ < 7)
+#ifndef __GFORTRAN__
 ! operators overloading interfaces
 interface operator(//)
   !< Builtin // overloading.
