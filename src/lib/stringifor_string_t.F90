@@ -134,12 +134,10 @@ type :: string
                               string_gt_character, &
                               character_gt_string                   !< Greater than operator overloading.
     ! IO
-#if !(__GNUC__ < 7)
     generic :: read(formatted) => read_formatted       !< Formatted input.
     generic :: write(formatted) => write_formatted     !< Formatted output.
     generic :: read(unformatted) => read_unformatted   !< Unformatted input.
     generic :: write(unformatted) => write_unformatted !< Unformatted output.
-#endif
     ! private methods
     ! builtins replacements
     procedure, private, pass(self) :: sindex_string_string     !< Index replacement.
@@ -201,7 +199,6 @@ type :: string
     procedure, private, pass(lhs) :: string_gt_character !< Greater than to character logical operator.
     procedure, private, pass(rhs) :: character_gt_string !< Greater than to character (inverted) logical operator.
     ! IO
-#if !(__GNUC__ < 7)
     procedure, private, pass(dtv) :: read_formatted                !< Formatted input.
     procedure, private, pass(dtv) :: read_delimited                !< Read a delimited input.
     procedure, private, pass(dtv) :: read_undelimited              !< Read an undelimited input.
@@ -209,7 +206,6 @@ type :: string
     procedure, private, pass(dtv) :: write_formatted               !< Formatted output.
     procedure, private, pass(dtv) :: read_unformatted              !< Unformatted input.
     procedure, private, pass(dtv) :: write_unformatted             !< Unformatted output.
-#endif
     ! miscellanea
     procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
 endtype string
@@ -227,48 +223,6 @@ interface string
   !< Builtin adjustl overloading.
   module procedure string_
 endinterface string
-
-#if (__GNUC__ < 7)
-! operators overloading interfaces
-interface operator(//)
-  !< Builtin // overloading.
-  module procedure string_concat_string, string_concat_character, character_concat_string
-endinterface
-interface assignment(=)
-  !< Builtin = overloading.
-  module procedure string_assign_string, string_assign_character, string_assign_integer_I1P, string_assign_integer_I2P, &
-                   string_assign_integer_I4P, string_assign_integer_I8P, string_assign_real_R4P,                        &
-                   string_assign_real_R8P, string_assign_real_R16P
-endinterface
-interface operator(==)
-  !< Builtin == overloading.
-  module procedure string_eq_string, string_eq_character, character_eq_string
-endinterface
-interface operator(/=)
-  !< Builtin /= overloading.
-  module procedure string_ne_string, string_ne_character, character_ne_string
-endinterface
-interface operator(<)
-  !< Builtin < overloading.
-  module procedure string_lt_string, string_lt_character, character_lt_string
-endinterface
-interface operator(<=)
-  !< Builtin <= overloading.
-  module procedure string_le_string, string_le_character, character_le_string
-endinterface
-interface operator(>=)
-  !< Builtin >= overloading.
-  module procedure string_ge_string, string_ge_character, character_ge_string
-endinterface
-interface operator(>)
-  !< Builtin > overloading.
-  module procedure string_gt_string, string_gt_character, character_gt_string
-endinterface
-interface operator(.cat.)
-  !< .cat. overloading.
-  module procedure string_concat_string_string, string_concat_character_string, character_concat_string_string
-endinterface
-#endif
 
 ! builtin overloading
 interface adjustl
@@ -534,24 +488,14 @@ contains
    logical                                :: ignore_isolated_ !< Ignore "isolated" occurrences, local variable.
    integer                                :: c1               !< Counter.
    integer                                :: c2               !< Counter.
-#ifdef __GFORTRAN__
-   character(kind=CK, len=:), allocatable :: temporary        !< Temporary storage, workaround for GNU bug.
-#endif
 
    No = 0
    if (allocated(self%raw)) then
       if (len(substring)>len(self%raw)) return
       ignore_isolated_ = .false. ; if (present(ignore_isolated)) ignore_isolated_ = ignore_isolated
-#ifdef __GFORTRAN__
-      temporary = self%raw
-#endif
       c1 = 1
       do
-#ifdef __GFORTRAN__
-         c2 = index(string=temporary(c1:), substring=substring)
-#else
          c2 = index(string=self%raw(c1:), substring=substring)
-#endif
          if (c2==0) return
          if (.not.ignore_isolated_) then
             No = No + 1
@@ -866,40 +810,19 @@ contains
    type(string)                                    :: basename             !< Base file name.
    character(kind=CK, len=:), allocatable          :: sep_                 !< Separator, default value.
    integer                                         :: pos                  !< Character position.
-#ifdef __GFORTRAN__
-   character(kind=CK, len=:), allocatable          :: temporary            !< Temporary storage, workaround for GNU bug.
-#endif
 
    if (allocated(self%raw)) then
       sep_ = UIX_DIR_SEP ; if (present(sep)) sep_ = sep
       basename = self
-#ifdef __GFORTRAN__
-      temporary = basename%raw
-      pos = index(temporary, sep_, back=.true.)
-      if (pos>0) basename%raw = temporary(pos+1:)
-#else
       pos = index(basename%raw, sep_, back=.true.)
       if (pos>0) basename%raw = self%raw(pos+1:)
-#endif
       if (present(extension)) then
-#ifdef __GFORTRAN__
-         temporary = basename%raw
-         pos = index(temporary, extension, back=.true.)
-         if (pos>0) basename%raw = temporary(1:pos-1)
-#else
          pos = index(basename%raw, extension, back=.true.)
          if (pos>0) basename%raw = basename%raw(1:pos-1)
-#endif
       elseif (present(strip_last_extension)) then
          if (strip_last_extension) then
-#ifdef __GFORTRAN__
-            temporary = basename%raw
-            pos = index(temporary, '.', back=.true.)
-            if (pos>0) basename%raw = temporary(1:pos-1)
-#else
             pos = index(basename%raw, '.', back=.true.)
             if (pos>0) basename%raw = basename%raw(1:pos-1)
-#endif
          endif
       endif
    endif
@@ -1062,19 +985,11 @@ contains
    class(string), intent(in)              :: self      !< The string.
    type(string)                           :: extension !< Extension file name.
    integer                                :: pos       !< Character position.
-#ifdef __GFORTRAN__
-   character(kind=CK, len=:), allocatable :: temporary !< Temporary storage, workaround for GNU bug.
-#endif
 
    if (allocated(self%raw)) then
       extension = ''
       pos = index(self%raw, '.', back=.true.)
-#ifdef __GFORTRAN__
-      temporary = self%raw
-      if (pos>0) extension%raw = temporary(pos:)
-#else
       if (pos>0) extension%raw = self%raw(pos:)
-#endif
    endif
    endfunction extension
 
@@ -1476,9 +1391,6 @@ contains
                                                                       !< after the separator.
    character(kind=CK, len=:), allocatable          :: sep_            !< Separator, default value.
    integer                                         :: c               !< Character counter.
-#ifdef __GFORTRAN__
-   character(kind=CK, len=:), allocatable          :: temporary       !< Temporary storage, workaround for GNU bug.
-#endif
 
    if (allocated(self%raw)) then
       sep_ = SPACE ; if (present(sep)) sep_ = sep
@@ -1489,16 +1401,9 @@ contains
       if (len(sep_)>=len(self%raw)) return
       c = index(self%raw, sep_)
       if (c>0) then
-#ifdef __GFORTRAN__
-         temporary = self%raw
-         partitions(1)%raw = temporary(1:c-1)
-         partitions(2)%raw = temporary(c:c+len(sep_)-1)
-         partitions(3)%raw = temporary(c+len(sep_):)
-#else
          partitions(1)%raw = self%raw(1:c-1)
          partitions(2)%raw = self%raw(c:c+len(sep_)-1)
          partitions(3)%raw = self%raw(c+len(sep_):)
-#endif
       endif
    endif
    endfunction partition
@@ -3858,7 +3763,6 @@ contains
    endfunction character_gt_string
 
    ! IO
-#if !(__GNUC__ < 7)
    subroutine read_formatted(dtv, unit, iotype, v_list, iostat, iomsg)
    !< Formatted input.
    !<
@@ -4043,7 +3947,6 @@ contains
      write(unit, iostat=iostat, iomsg=iomsg)''
    endif
    endsubroutine write_unformatted
-#endif
 
    ! miscellanea
    elemental function replace_one_occurrence(self, old, new) result(replaced)
@@ -4055,28 +3958,16 @@ contains
    character(kind=CK, len=*), intent(in)  :: new       !< New substring.
    type(string)                           :: replaced  !< The string with old replaced by new.
    integer                                :: pos       !< Position from which replace old.
-#ifdef __GFORTRAN__
-   character(kind=CK, len=:), allocatable :: temporary !< Temporary storage, workaround for GNU bug.
-#endif
 
    if (allocated(self%raw)) then
       replaced = self
       pos = index(string=self%raw, substring=old)
       if (pos>0) then
-#ifdef __GFORTRAN__
-         temporary = self%raw
-         if (pos==1) then
-            replaced%raw = new//temporary(len(old)+1:)
-         else
-            replaced%raw = temporary(1:pos-1)//new//temporary(pos+len(old):)
-         endif
-#else
          if (pos==1) then
             replaced%raw = new//self%raw(len(old)+1:)
          else
             replaced%raw = self%raw(1:pos-1)//new//self%raw(pos+len(old):)
          endif
-#endif
       endif
    endif
    endfunction replace_one_occurrence
