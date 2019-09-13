@@ -5,8 +5,8 @@ modes = tests-gnu tests-gnu-debug
         stringifor-static-intel stringifor-shared-intel
 
 [common-variables]
-$CSHARED_GNU = -c -fPIC -frealloc-lhs
-$CSHARED_INT = -c -fpic -assume realloc_lhs
+$CSHARED_GNU = -c -fPIC -frealloc-lhs -std=f2008 -fall-intrinsics
+$CSHARED_INT = -c -fPIC -assume realloc_lhs -standard-semantics -std08
 $LSHARED     = -shared
 $CSTATIC_GNU = -c -frealloc-lhs -std=f2008 -fall-intrinsics
 $CSTATIC_INT = -c -assume realloc_lhs -standard-semantics -std08
@@ -40,7 +40,7 @@ output    = libstringifor.a
 mklib     = static
 
 [stringifor-shared-gnu]
-template  = template-static-gnu
+template  = template-shared-gnu
 build_dir = lib
 target    = stringifor.F90
 output    = libstringifor.so
@@ -54,7 +54,7 @@ output    = libstringifor.a
 mklib     = static
 
 [stringifor-shared-intel]
-template  = template-static-intel
+template  = template-shared-intel
 build_dir = lib
 target    = stringifor.F90
 output    = libstringifor.so
@@ -72,7 +72,6 @@ colors          = True
 quiet           = False
 log             = True
 jobs            = 10
-preproc         = -D_R16P_SUPPORTED
 
 [template-static-gnu-debug]
 compiler        = gnu
@@ -85,7 +84,6 @@ colors          = True
 quiet           = False
 log             = True
 jobs            = 10
-preproc         = -D_R16P_SUPPORTED
 
 [template-shared-gnu]
 compiler        = gnu
@@ -98,7 +96,6 @@ colors          = True
 quiet           = False
 log             = True
 jobs            = 10
-preproc         = -D_R16P_SUPPORTED
 
 [template-static-intel]
 compiler        = intel
@@ -111,7 +108,6 @@ colors          = True
 quiet           = False
 log             = True
 jobs            = 10
-preproc         = -D_R16P_SUPPORTED
 
 [template-static-intel-debug]
 compiler        = intel
@@ -124,7 +120,6 @@ colors          = True
 quiet           = False
 log             = True
 jobs            = 10
-preproc         = -D_R16P_SUPPORTED
 
 [template-shared-intel]
 compiler        = intel
@@ -137,7 +132,6 @@ colors          = True
 quiet           = False
 log             = True
 jobs            = 10
-preproc         = -D_R16P_SUPPORTED
 
 # rules
 [rule-makedoc]
