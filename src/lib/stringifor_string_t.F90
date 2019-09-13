@@ -11,10 +11,6 @@ save
 ! expose StingiFor overloaded builtins and operators
 ! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
-#if !(__GNUC__ < 7)
-public :: assignment(=), operator(//), operator(.cat.), operator(==), &
-          operator(/=), operator(<), operator(<=), operator(>=), operator(>)
-#endif
 ! expose StingiFor objects
 public :: CK
 public :: string
@@ -85,12 +81,8 @@ type :: string
                              to_integer_I4P,&
                              to_integer_I8P,&
                              to_real_R4P,   &
-#ifdef _R16P_SUPPORTED
                              to_real_R8P,   &
                              to_real_R16P     !< Cast string to number.
-#else
-                             to_real_R8P      !< Cast string to number.
-#endif
     procedure, pass(self) :: unescape         !< Unescape double backslashes (or custom escaped character).
     procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
@@ -115,12 +107,8 @@ type :: string
                                 string_assign_integer_I4P, &
                                 string_assign_integer_I8P, &
                                 string_assign_real_R4P,    &
-#ifdef _R16P_SUPPORTED
                                 string_assign_real_R8P,    &
                                 string_assign_real_R16P             !< Assignment operator overloading.
-#else
-                                string_assign_real_R8P              !< Assignment operator overloading.
-#endif
     generic :: operator(//) => string_concat_string,    &
                                string_concat_character, &
                                character_concat_string              !< Concatenation operator overloading.
@@ -250,11 +238,7 @@ interface assignment(=)
   !< Builtin = overloading.
   module procedure string_assign_string, string_assign_character, string_assign_integer_I1P, string_assign_integer_I2P, &
                    string_assign_integer_I4P, string_assign_integer_I8P, string_assign_real_R4P,                        &
-#ifdef _R16P_SUPPORTED
                    string_assign_real_R8P, string_assign_real_R16P
-#else
-                   string_assign_real_R8P
-#endif
 endinterface
 interface operator(==)
   !< Builtin == overloading.
