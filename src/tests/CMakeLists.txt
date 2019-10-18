@@ -1,23 +1,33 @@
-#################################################################
-# TESTS
-#################################################################
+include(GNUInstallDirs)
 
-FILE(GLOB_RECURSE TESTS_SRC *.f90 *.F90)
-SET(TESTS_SRC ${TESTS_SRC} PARENT_SCOPE)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/tests/${CMAKE_INSTALL_BINDIR}")
 
-#################################################################
-# EXTERNAL LIBRARIES
-#################################################################
+function(add_stringifor_doctest test_src libraries)
+    get_filename_component(test_name ${test_src} NAME_WE)
+    get_filename_component(test_dir ${test_src} DIRECTORY)
 
-FOREACH(TEST_SRC ${TESTS_SRC})
-    GET_FILENAME_COMPONENT(EXE_NAME ${TEST_SRC} NAME_WE)
-    ADD_EXECUTABLE(${EXE_NAME} ${TEST_SRC})
-    TARGET_LINK_LIBRARIES(${EXE_NAME} ${LIB})
-    FOREACH (EXT_LIB ${EXT_LIBS})
-        IF(DEFINED ${PROJECT_NAME}_ENABLE_${EXT_LIB} AND ${PROJECT_NAME}_ENABLE_${EXT_LIB} AND ${EXT_LIB}_FOUND)
-            TARGET_LINK_LIBRARIES(${EXE_NAME} ${${EXT_LIB}_LIBRARIES})
-        ENDIF()
-    ENDFOREACH()
-    ADD_TEST(NAME ${EXE_NAME}_TEST COMMAND ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-ENDFOREACH()
+    add_executable(${test_name} ${test_src})
+    foreach(lib IN LISTS libraries)
+        target_link_libraries(${test_name} ${lib})
+    endforeach()
+    if (${test_name} STREQUAL "stringifor_test_parse_large_csv" OR ${test_name} STREQUAL "stringifor_test_csv_naive_parser")
+        message(${test_name} , " needs special testing")
+        return()
+    endif()
+    add_test(NAME ${test_name} COMMAND ${test_name})
 
+    set(result_src "${test_dir}/${test_name}.result")
+
+    file(STRINGS ${result_src} result_raw)
+    string(REGEX REPLACE "([+.])([^+.]*)" "\\\\\\1\\2" result ${result_raw})
+
+    set_tests_properties(${test_name} PROPERTIES
+        PASS_REGULAR_EXPRESSION "${result}"
+    )
+endfunction()
+
+file(GLOB_RECURSE stringifor_doctests *.f90)
+
+foreach(stringifor_doctest IN LISTS stringifor_doctests)
+    add_stringifor_doctest(${stringifor_doctest} StringiFor BeFoR64 PENF)
+endforeach()
