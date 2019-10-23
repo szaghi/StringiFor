@@ -19,7 +19,6 @@ integer, parameter :: CK = selected_char_kind('DEFAULT') !< Default character ki
 
 type :: string
   !< OOP designed string class.
-  private
   character(kind=CK, len=:), allocatable :: raw !< Raw data.
   contains
     ! public methods
@@ -217,12 +216,6 @@ character(kind=CK, len=1),  parameter :: SPACE          = ' '                   
 character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
 character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)                     !< Backslash character.
-
-! overloading string name
-interface string
-  !< Builtin adjustl overloading.
-  module procedure string_
-endinterface string
 
 ! builtin overloading
 interface adjustl
@@ -3018,7 +3011,7 @@ contains
    ! private methods
 
    ! assignments
-   elemental subroutine string_assign_string(lhs, rhs)
+   pure subroutine string_assign_string(lhs, rhs)
    !< Assignment operator from string input.
    !<
    !<```fortran
@@ -3037,7 +3030,7 @@ contains
    if (allocated(rhs%raw)) lhs%raw = rhs%raw
    endsubroutine string_assign_string
 
-   elemental subroutine string_assign_character(lhs, rhs)
+   pure subroutine string_assign_character(lhs, rhs)
    !< Assignment operator from character input.
    !<
    !<```fortran
@@ -3054,7 +3047,7 @@ contains
    lhs%raw = rhs
    endsubroutine string_assign_character
 
-   elemental subroutine string_assign_integer_I1P(lhs, rhs)
+   pure subroutine string_assign_integer_I1P(lhs, rhs)
    !< Assignment operator from integer input.
    !<
    !<```fortran
@@ -3072,7 +3065,7 @@ contains
    lhs%raw = trim(str(rhs))
    endsubroutine string_assign_integer_I1P
 
-   elemental subroutine string_assign_integer_I2P(lhs, rhs)
+   pure subroutine string_assign_integer_I2P(lhs, rhs)
    !< Assignment operator from integer input.
    !<
    !<```fortran
@@ -3090,7 +3083,7 @@ contains
    lhs%raw = trim(str(rhs))
    endsubroutine string_assign_integer_I2P
 
-   elemental subroutine string_assign_integer_I4P(lhs, rhs)
+   pure subroutine string_assign_integer_I4P(lhs, rhs)
    !< Assignment operator from integer input.
    !<
    !<```fortran
@@ -3108,7 +3101,7 @@ contains
    lhs%raw = trim(str(rhs))
    endsubroutine string_assign_integer_I4P
 
-   elemental subroutine string_assign_integer_I8P(lhs, rhs)
+   pure subroutine string_assign_integer_I8P(lhs, rhs)
    !< Assignment operator from integer input.
    !<
    !<```fortran
@@ -3126,7 +3119,7 @@ contains
    lhs%raw = trim(str(rhs))
    endsubroutine string_assign_integer_I8P
 
-   elemental subroutine string_assign_real_R4P(lhs, rhs)
+   pure subroutine string_assign_real_R4P(lhs, rhs)
    !< Assignment operator from real input.
    !<
    !<```fortran
@@ -3144,7 +3137,7 @@ contains
    lhs%raw = trim(str(rhs))
    endsubroutine string_assign_real_R4P
 
-   elemental subroutine string_assign_real_R8P(lhs, rhs)
+   pure subroutine string_assign_real_R8P(lhs, rhs)
    !< Assignment operator from real input.
    !<
    !<```fortran
@@ -3162,7 +3155,7 @@ contains
    lhs%raw = trim(str(rhs))
    endsubroutine string_assign_real_R8P
 
-   elemental subroutine string_assign_real_R16P(lhs, rhs)
+   pure subroutine string_assign_real_R16P(lhs, rhs)
    !< Assignment operator from real input.
    !<
    !<```fortran
