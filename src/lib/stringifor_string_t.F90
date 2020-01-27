@@ -3,6 +3,7 @@ module stringifor_string_t
 !< StringiFor, definition of `string` type.
 use, intrinsic :: iso_fortran_env, only : iostat_eor
 use befor64, only : b64_decode, b64_encode
+use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 
 implicit none
@@ -44,6 +45,8 @@ type :: string
     procedure, pass(self) :: camelcase        !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize       !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: chars            !< Return the raw characters data.
+    generic               :: colorize => &
+                             colorize_str     !< Colorize and stylize strings.
     procedure, pass(self) :: decode           !< Decode string.
     procedure, pass(self) :: encode           !< Encode string.
     procedure, pass(self) :: escape           !< Escape backslashes (or custom escape character).
@@ -149,6 +152,7 @@ type :: string
     procedure, private, pass(self) :: sverify_string_string    !< Verify replacement.
     procedure, private, pass(self) :: sverify_string_character !< Verify replacement.
     ! auxiliary methods
+    procedure, private, pass(self) :: colorize_str     !< Colorize and stylize strings.
     procedure, private, pass(self) :: glob_character   !< Glob search (character output).
     procedure, private, pass(self) :: glob_string      !< Glob search (string output).
     procedure, private, pass(self) :: insert_string    !< Insert substring into string at a specified position.
@@ -929,6 +933,24 @@ contains
      raw = ''
    endif
    endfunction chars
+
+   pure function colorize_str(self, color_fg, color_bg, style) result(colorized)
+   !< Colorize and stylize strings, DEFAULT kind.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< astring = 'say all Hello WorLD!'
+   !< print '(L1)', astring%colorize(color_fg='red')=='[31msay all Hello WorLD![0m'
+   !<```
+   !=> T <<<
+   class(string),    intent(in)           :: self      !< The string.
+   character(len=*), intent(in), optional :: color_fg  !< Foreground color definition.
+   character(len=*), intent(in), optional :: color_bg  !< Background color definition.
+   character(len=*), intent(in), optional :: style     !< Style definition.
+   character(len=:), allocatable          :: colorized !< Colorized string.
+
+   colorized = colorize(string=self%chars(), color_fg=color_fg, color_bg=color_bg, style=style)
+   endfunction colorize_str
 
    elemental function decode(self, codec) result(decoded)
    !< Return a string decoded accordingly the codec.
