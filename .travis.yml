@@ -42,6 +42,7 @@ install:
   - ln -fs /usr/bin/gcov-9 "$HOME/.local/bin/gcov" && gcov --version
   - pip install --user --upgrade pygooglechart
   - pip install --user --upgrade graphviz
+  - pip install --user --upgrade future
   - pip install --user --upgrade FoBiS.py
   - pip install --user --upgrade markdown-checklist 
   - pip install --user --upgrade ford
