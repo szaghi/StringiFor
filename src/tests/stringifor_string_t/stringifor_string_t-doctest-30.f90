@@ -1,6 +1,6 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- astring = '/bar/foo.tar.bz2'
- print '(L1)', astring%extension()//''=='.bz2'
+ astring = 'How are you?'
+ print '(L1)', astring%encode(codec='base64')//''=='SG93IGFyZSB5b3U/'
 endprogram volatile_doctest
