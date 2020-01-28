@@ -37,7 +37,7 @@ before_install:
    - sudo apt-get -y install gfortran-9
    - python --version
    # - pip install --user pip
-   - sudo -H pip3 install pip3
+   # - sudo -H pip3 install pip3
    - git submodule update --init
 
 install:
