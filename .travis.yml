@@ -5,7 +5,6 @@ language: python
 dist: bionic
 python:
    - 3.8
-   - pypy3
 
 cache:
   apt: true
@@ -36,7 +35,8 @@ before_install:
    - sudo apt-get -q update
    - sudo apt-get -y install gfortran-9
    - python --version
-   - pip install --user pip
+   # - pip install --user pip
+   - sudo pip install pip
    - git submodule update --init
 
 install:
