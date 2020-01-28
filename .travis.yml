@@ -22,6 +22,7 @@ addons:
       - binutils
       # - python-pip
       - graphviz
+      - python3-pip
 
 env:
   global:
