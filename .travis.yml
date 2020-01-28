@@ -14,10 +14,10 @@ cache:
 
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
+    # sources:
+      # - ubuntu-toolchain-r-test
     packages:
-      - gfortran-9
+      # - gfortran-9
       - binutils
       # - python-pip
       - graphviz
@@ -30,6 +30,9 @@ env:
     - MAKETAR="FoBiS.py rule -ex maketar"
 
 before_install:
+   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+   - sudo apt-get -q update
+   - sudo apt-get -y install gfortran-9
    - python --version
    - pip install --user pip
    - git submodule update --init
