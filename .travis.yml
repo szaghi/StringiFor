@@ -13,16 +13,17 @@ cache:
     - $HOME/.cache/pip
     - $HOME/.local
 
-addons:
-  apt:
-    # sources:
-      # - ubuntu-toolchain-r-test
-    packages:
-      # - gfortran-9
-      - binutils
-      # - python-pip
-      - graphviz
-      - python3-pip
+# addons:
+#   apt:
+#     # sources:
+#       # - ubuntu-toolchain-r-test
+#     packages:
+#       # - gfortran-9
+#       - binutils
+#       # - python-pip
+#       - graphviz
+#       # - python3-pip
+#       # - python3-setuptools
 
 env:
   global:
@@ -34,7 +35,11 @@ env:
 before_install:
    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
    - sudo apt-get -q update
+   - sudo apt-get -y install binutils
+   - sudo apt-get -y install graphviz
    - sudo apt-get -y install gfortran-9
+   - sudo apt-get -y install python3-pip
+   - sudo apt-get -y install python3-setuptools
    - python --version
    # - pip install --user pip
    # - sudo -H pip3 install pip3
