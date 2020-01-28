@@ -36,7 +36,7 @@ before_install:
    - sudo apt-get -y install gfortran-9
    - python --version
    # - pip install --user pip
-   - sudo pip install pip
+   - sudo pip3 install pip3
    - git submodule update --init
 
 install:
@@ -56,13 +56,13 @@ install:
   # - pip install --user --upgrade markdown-checklist 
   # - pip install --user --upgrade ford
   # - pip install --user --upgrade FoBiS.py && FoBiS.py --version
-  - sudo pip install --upgrade pygooglechart
-  - sudo pip install --upgrade graphviz
-  - sudo pip install --upgrade future
-  - sudo pip install --upgrade configparser
-  - sudo pip install --upgrade markdown-checklist 
-  - sudo pip install --upgrade ford
-  - sudo pip install --upgrade FoBiS.py && FoBiS.py --version
+  - sudo pip3 install --upgrade pygooglechart
+  - sudo pip3 install --upgrade graphviz
+  - sudo pip3 install --upgrade future
+  - sudo pip3 install --upgrade configparser
+  - sudo pip3 install --upgrade markdown-checklist 
+  - sudo pip3 install --upgrade ford
+  - sudo pip3 install --upgrade FoBiS.py && FoBiS.py --version
 
 script:
   - $MAKECOVERAGE
