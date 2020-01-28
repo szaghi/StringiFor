@@ -1,7 +1,7 @@
 # language: generic
 language: python
 
-sudo: false
+# sudo: false
 dist: bionic
 python:
    - 3.8
@@ -49,13 +49,20 @@ install:
   - ln -fs /usr/bin/gfortran-9 "$HOME/.local/bin/gfortran" && gfortran --version
   - ls -l /usr/bin/gfortran-9
   - ln -fs /usr/bin/gcov-9 "$HOME/.local/bin/gcov" && gcov --version
-  - pip install --user --upgrade pygooglechart
-  - pip install --user --upgrade graphviz
-  - pip install --user --upgrade future
-  - pip install --user --upgrade configparser
-  - pip install --user --upgrade markdown-checklist 
-  - pip install --user --upgrade ford
-  - pip install --user --upgrade FoBiS.py && FoBiS.py --version
+  # - pip install --user --upgrade pygooglechart
+  # - pip install --user --upgrade graphviz
+  # - pip install --user --upgrade future
+  # - pip install --user --upgrade configparser
+  # - pip install --user --upgrade markdown-checklist 
+  # - pip install --user --upgrade ford
+  # - pip install --user --upgrade FoBiS.py && FoBiS.py --version
+  - sudo pip install --upgrade pygooglechart
+  - sudo pip install --upgrade graphviz
+  - sudo pip install --upgrade future
+  - sudo pip install --upgrade configparser
+  - sudo pip install --upgrade markdown-checklist 
+  - sudo pip install --upgrade ford
+  - sudo pip install --upgrade FoBiS.py && FoBiS.py --version
 
 script:
   - $MAKECOVERAGE
