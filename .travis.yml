@@ -8,9 +8,9 @@ python:
 
 cache:
   apt: true
-  # pip: true
+  pip: true
   directories:
-    # - $HOME/.cache/pip
+    - $HOME/.cache/pip
     - $HOME/.local
 
 addons:
@@ -37,7 +37,7 @@ before_install:
    - sudo apt-get -y install gfortran-9
    - python --version
    # - pip install --user pip
-   - sudo pip3 install pip3
+   - sudo -H pip3 install pip3
    - git submodule update --init
 
 install:
@@ -57,13 +57,13 @@ install:
   # - pip install --user --upgrade markdown-checklist 
   # - pip install --user --upgrade ford
   # - pip install --user --upgrade FoBiS.py && FoBiS.py --version
-  - sudo pip3 install --upgrade pygooglechart
-  - sudo pip3 install --upgrade graphviz
-  - sudo pip3 install --upgrade future
-  - sudo pip3 install --upgrade configparser
-  - sudo pip3 install --upgrade markdown-checklist 
-  - sudo pip3 install --upgrade ford
-  - sudo pip3 install --upgrade FoBiS.py && FoBiS.py --version
+  - sudo -H pip3 install --upgrade pygooglechart
+  - sudo -H pip3 install --upgrade graphviz
+  - sudo -H pip3 install --upgrade future
+  - sudo -H pip3 install --upgrade configparser
+  - sudo -H pip3 install --upgrade markdown-checklist 
+  - sudo -H pip3 install --upgrade ford
+  - sudo -H pip3 install --upgrade FoBiS.py && FoBiS.py --version
 
 script:
   - $MAKECOVERAGE
