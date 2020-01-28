@@ -1,7 +1,5 @@
-# language: generic
 language: python
 
-# sudo: false
 dist: bionic
 python:
    - 3.8
@@ -12,18 +10,6 @@ cache:
   directories:
     - $HOME/.cache/pip
     - $HOME/.local
-
-# addons:
-#   apt:
-#     # sources:
-#       # - ubuntu-toolchain-r-test
-#     packages:
-#       # - gfortran-9
-#       - binutils
-#       # - python-pip
-#       - graphviz
-#       # - python3-pip
-#       # - python3-setuptools
 
 env:
   global:
@@ -41,8 +27,6 @@ before_install:
    - sudo apt-get -y install python3-pip
    - sudo apt-get -y install python3-setuptools
    - python --version
-   # - pip install --user pip
-   # - sudo -H pip3 install pip3
    - git submodule update --init
 
 install:
@@ -55,13 +39,6 @@ install:
   - ln -fs /usr/bin/gfortran-9 "$HOME/.local/bin/gfortran" && gfortran --version
   - ls -l /usr/bin/gfortran-9
   - ln -fs /usr/bin/gcov-9 "$HOME/.local/bin/gcov" && gcov --version
-  # - pip install --user --upgrade pygooglechart
-  # - pip install --user --upgrade graphviz
-  # - pip install --user --upgrade future
-  # - pip install --user --upgrade configparser
-  # - pip install --user --upgrade markdown-checklist 
-  # - pip install --user --upgrade ford
-  # - pip install --user --upgrade FoBiS.py && FoBiS.py --version
   - sudo -H pip3 install --upgrade pygooglechart
   - sudo -H pip3 install --upgrade graphviz
   - sudo -H pip3 install --upgrade future
