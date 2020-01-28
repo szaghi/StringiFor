@@ -8,9 +8,9 @@ python:
 
 cache:
   apt: true
-  pip: true
+  # pip: true
   directories:
-    - $HOME/.cache/pip
+    # - $HOME/.cache/pip
     - $HOME/.local
 
 addons:
