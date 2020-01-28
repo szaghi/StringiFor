@@ -1,7 +1,9 @@
 language: generic
 
 sudo: false
-dist: trusty
+dist: bionic
+python:
+   - 3.8
 
 cache:
   apt: true
@@ -17,7 +19,7 @@ addons:
     packages:
       - gfortran-9
       - binutils
-      - python-pip
+      # - python-pip
       - graphviz
 
 env:
@@ -28,7 +30,9 @@ env:
     - MAKETAR="FoBiS.py rule -ex maketar"
 
 before_install:
-  - git submodule update --init
+   - python --version
+   - pip install --user pip
+   - git submodule update --init
 
 install:
   - |
