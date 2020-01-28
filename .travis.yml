@@ -1,9 +1,11 @@
-language: generic
+# language: generic
+language: python
 
-sudo: false
+# sudo: false
 dist: bionic
 python:
    - 3.8
+   - pypy3
 
 cache:
   apt: true
