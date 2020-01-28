@@ -43,9 +43,10 @@ install:
   - pip install --user --upgrade pygooglechart
   - pip install --user --upgrade graphviz
   - pip install --user --upgrade future
-  - pip install --user --upgrade FoBiS.py && FoBiS.py --version
+  - pip install --user --upgrade configparser
   - pip install --user --upgrade markdown-checklist 
   - pip install --user --upgrade ford
+  - pip install --user --upgrade FoBiS.py && FoBiS.py --version
 
 script:
   - $MAKECOVERAGE
