@@ -29,5 +29,5 @@ endfunction()
 file(GLOB_RECURSE stringifor_doctests *.f90)
 
 foreach(stringifor_doctest IN LISTS stringifor_doctests)
-    add_stringifor_doctest(${stringifor_doctest} StringiFor BeFoR64 PENF)
+    add_stringifor_doctest(${stringifor_doctest} StringiFor BeFoR64 PENF FACE)
 endforeach()

@@ -11,7 +11,7 @@ add_library(${LIB}
         stringifor.F90
         stringifor_string_t.F90
 )
-target_link_libraries(${LIB} PENF::PENF BeFoR64::BeFoR64)
+target_link_libraries(${LIB} PENF::PENF BeFoR64::BeFoR64 FACE::FACE)
 
 
 add_library(${NAMESPACE}${LIB} ALIAS ${LIB})

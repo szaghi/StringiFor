@@ -8,7 +8,7 @@
 #
 # the config file is generatet in the build and install directories
 
-cmake_minimum_required(VERSION 3.10...3.13)
+cmake_minimum_required(VERSION 3.13)
 project(StringiFor VERSION 0.9.9 LANGUAGES Fortran)
 
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
@@ -20,11 +20,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/Modules)
 set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
 set(NAMESPACE "${PROJECT_NAME}::")
 
-
-# generate the library and install instructions
-add_subdirectory(src/lib)
-
-
 if(NOT TARGET PENF)
     add_subdirectory(src/third_party/PENF)
 endif()
@@ -32,6 +27,13 @@ endif()
 if(NOT TARGET BeFoR64)
     add_subdirectory(src/third_party/BeFoR64)
 endif()
+
+if(NOT TARGET FACE)
+    add_subdirectory(src/third_party/FACE)
+endif()
+
+# generate the library and install instructions
+add_subdirectory(src/lib)
 
 # testing
 if(${PROJECT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
