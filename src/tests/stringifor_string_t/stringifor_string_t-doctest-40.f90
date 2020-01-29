@@ -1,15 +1,29 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: strings(3)
- logical :: test_passed(3)
- astring = 'Hello WorLD!'
- strings = astring%partition(sep='lo Wo')
- test_passed(1) = (strings(1)//''=='Hel'.and.strings(2)//''=='lo Wo'.and.strings(3)//''=='rLD!')
- strings = astring%partition(sep='Hello')
- test_passed(2) = (strings(1)//''==''.and.strings(2)//''=='Hello'.and.strings(3)//''==' WorLD!')
- astring = 'Hello WorLD!'
- strings = astring%partition()
- test_passed(3) = (strings(1)//''=='Hello'.and.strings(2)//''==' '.and.strings(3)//''=='WorLD!')
+ character(5) :: characters(3)
+ logical :: test_passed(6)
+ characters(1) = 'one'
+ characters(2) = 'two'
+ characters(3) = 'three'
+ test_passed(1) = (astring%join(array=characters)//''==characters(1)//characters(2)//characters(3))
+ test_passed(2) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(2)//'-'//characters(3))
+ characters(1) = ''
+ characters(2) = 'two'
+ characters(3) = 'three'
+ test_passed(3) = (astring%join(array=characters, sep='-')//''==characters(2)//'-'//characters(3))
+ characters(1) = 'one'
+ characters(2) = 'two'
+ characters(3) = ''
+ test_passed(4) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(2))
+ characters(1) = 'one'
+ characters(2) = ''
+ characters(3) = 'three'
+ test_passed(5) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(3))
+ characters(1) = 'one'
+ characters(2) = 'two'
+ characters(3) = 'three'
+ astring = '_'
+ test_passed(6) = (astring%join(array=characters)//''==characters(1)//'_'//characters(2)//'_'//characters(3))
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

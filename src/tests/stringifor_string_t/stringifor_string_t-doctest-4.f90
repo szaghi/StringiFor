@@ -1,4 +1,6 @@
 program volatile_doctest
 use stringifor_string_t
- print "(L1)", count('hello', substring='ll')==1
+ type(string) :: astring
+ astring = 'Hello World!   '
+ print "(L1)", adjustr(astring)=='   Hello World!'
 endprogram volatile_doctest
