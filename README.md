@@ -83,7 +83,7 @@ type(string) :: astring
 
 astring = 'Hello World'
 print "(A)", astring%chars() ! "chars" method returns a standard character variable
-print "(DT)", astring        ! defined IO is not enabled with GNU gfortran
+print "(DT)", astring        ! defined IO (in gfortran is available for GNU GCC >= 7.1)
 print "(A)", astring//''     ! on-the-fly conversion to standard character by means of concatenation
 ```
 
@@ -111,7 +111,7 @@ print "(A)", 'After sep:  "'//strings(3)//'"' ! print "rld"
 strings(1) = 'one'
 strings(2) = 'two'
 strings(3) = 'three'
-print "(A)", astring%join(strings)//''          ! print "onetwothree"
+print "(A)", astring%join(strings)//''          ! print "oneHello WorldtwoHello Worldthree"
 print "(A)", astring%join(strings, sep='-')//'' ! print "one-two-three"
 
 astring = ' a StraNgE caSe var'
@@ -155,7 +155,7 @@ astring = '/bar/foo.tar.bz2'
 print "(A)", astring%basedir()//''                       ! print "/bar"
 print "(A)", astring%basename()//''                      ! print "foo.tar.bz2"
 print "(A)", astring%basename(extension='.tar')//''      ! print "foo"
-print "(A)", astring%basename(last_extension=.true.)//'' ! print "foo.tar"
+print "(A)", astring%basename(strip_last_extension=.true.)//'' ! print "foo.tar"
 
 ! XML like tag parsing
 astring = '<test> <first> hello </first> <first> not the first </first> </test>'
@@ -205,8 +205,7 @@ enddo
 print "(A)", 'A markdown-formatted table'
 print "(A)", ''
 print "(A)", '|'//csv%join(array=cells(:, 1), sep='|')//'|'
-columns = '----' ! re-use columns for printing separators
-print "(A)", '|'//csv%join(array=columns, sep='|')//'|'
+print "(A)", '|'//repeat('----|', size(columns)) ! printing separators
 do r=2, rows_number
   print "(A)", '|'//csv%join(array=cells(:, r), sep='|')//'|'
 enddo
