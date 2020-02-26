@@ -4,7 +4,7 @@ module stringifor
 !< StringiFor, Strings Fortran Manipulator with steroids.
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P
 ! use stringifor_string_t, only : adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify, CK, string
-use stringifor_string_t, only : adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify, CK, glob, string
+use stringifor_string_t, only : adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify, CK, glob, string, strjoin
 
 implicit none
 private
@@ -12,6 +12,7 @@ save
 ! expose StingiFor objects
 public :: CK
 public :: glob
+public :: strjoin
 public :: string
 ! expose StingiFor overloaded builtins and operators
 ! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify

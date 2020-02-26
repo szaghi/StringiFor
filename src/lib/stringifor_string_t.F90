@@ -15,6 +15,7 @@ public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
 ! expose StingiFor objects
 public :: CK
 public :: glob
+public :: strjoin
 public :: string
 
 integer, parameter :: CK = selected_char_kind('DEFAULT') !< Default character kind.
@@ -62,6 +63,9 @@ type :: string
     generic               :: join =>       &
                              join_strings, &
                              join_characters  !< Return a string that is a join of an array of strings or characters.
+    generic               :: strjoin =>   &
+                             strjoin_strings, &
+                             strjoin_characters  !< Return a string that is a join of an array of strings or characters.
     procedure, pass(self) :: lower            !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition        !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: read_file        !< Read a file a single string stream.
@@ -159,6 +163,8 @@ type :: string
     procedure, private, pass(self) :: insert_character !< Insert substring into string at a specified position.
     procedure, private, pass(self) :: join_strings     !< Return join string of an array of strings.
     procedure, private, pass(self) :: join_characters  !< Return join string of an array of characters.
+    procedure, private, nopass ::     strjoin_strings  !< Return join string of an array of strings.
+    procedure, private, nopass ::     strjoin_characters  !< Return join string of an array of strings.
     procedure, private, pass(self) :: to_integer_I1P   !< Cast string to integer.
     procedure, private, pass(self) :: to_integer_I2P   !< Cast string to integer.
     procedure, private, pass(self) :: to_integer_I4P   !< Cast string to integer.
@@ -267,6 +273,10 @@ interface glob
   !=> T <<<
   module procedure glob_character, glob_string
 endinterface glob
+
+interface strjoin
+  module procedure strjoin_strings, strjoin_characters
+endinterface strjoin
 
 ! builtin overloading
 interface adjustl
@@ -1403,6 +1413,142 @@ contains
       join%raw = join%raw(len(sep_)+1:len(join%raw))
    endif
    endfunction join_characters
+
+   pure function strjoin_strings(array, sep) result(join)
+   !< Return a string that is a join of an array of strings.
+   !<
+   !< The join-separator is set equals to a null string '' if custom separator isn't specified.
+   !<
+   !<```fortran
+   !< type(string)     :: strings(3)
+   !< logical          :: test_passed(5)
+   !< strings(1) = 'one'
+   !< strings(2) = 'two'
+   !< strings(3) = 'three'
+   !< test_passed(1) = (strjoin(array=strings)//''==strings(1)//strings(2)//strings(3))
+   !< test_passed(2) = (strjoin(array=strings, sep='-')//''==strings(1)//'-'//strings(2)//'-'//strings(3))
+   !< call strings(1)%free
+   !< strings(2) = 'two'
+   !< strings(3) = 'three'
+   !< test_passed(3) = (strjoin(array=strings, sep='-')//''==strings(2)//'-'//strings(3))
+   !< strings(1) = 'one'
+   !< strings(2) = 'two'
+   !< call strings(3)%free
+   !< test_passed(4) = (strjoin(array=strings, sep='-')//''==strings(1)//'-'//strings(2))
+   !< strings(1) = 'one'
+   !< call strings(2)%free
+   !< strings(3) = 'three'
+   !< test_passed(5) = (strjoin(array=strings, sep='-')//''==strings(1)//'-'//strings(3))
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: array(1:) !< Array to be joined.
+   character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+   type(string)                                    :: join      !< The join of array.
+   character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+   integer                                         :: a         !< Counter.
+
+   sep_ = ''
+   if (present(sep)) sep_ = sep
+   join = ''
+   do a=2, size(array, dim=1)
+      if (allocated(array(a)%raw))join%raw = join%raw//sep_//array(a)%raw
+   enddo
+   if (allocated(array(1)%raw)) then
+      join%raw = array(1)%raw//join%raw
+   else
+      join%raw = join%raw(len(sep_)+1:len(join%raw))
+   endif
+   endfunction strjoin_strings
+
+  pure function strjoin_characters(array, sep, is_trim) result(join)
+   !< Return a string that is a join of an array of characters.
+   !<
+   !< The join-separator is set equals to a null string '' if custom separator isn't specified.
+   !< The trim function is applied to array items if optional logical is_trim variable isn't set to .false.
+   !<
+   !<```fortran
+   !< character(5) :: characters(3)
+   !< logical      :: test_passed(13)
+   !< characters(1) = 'one'
+   !< characters(2) = 'two'
+   !< characters(3) = 'three'
+   !< test_passed(1) = (strjoin(array=characters)//''==trim(characters(1))//trim(characters(2))//trim(characters(3)))
+   !< test_passed(2) = (strjoin(array=characters, sep='-')//''==trim(characters(1))//'-'//trim(characters(2))//'-'//trim(characters(3)))
+   !< test_passed(3) = ( strjoin(array=characters, is_trim=.false.)//''==characters(1)//characters(2)//characters(3))
+   !< test_passed(4) = ( strjoin(array=characters, sep='-', is_trim=.false.)//''==characters(1)//'-'//characters(2)//'-'//characters(3))
+   !< characters(1) = ''
+   !< characters(2) = 'two'
+   !< characters(3) = 'three'
+   !< test_passed(5) = (strjoin(array=characters)//''==trim(characters(2))//trim(characters(3)))
+   !< characters(1) = 'one'
+   !< characters(2) = 'two'
+   !< characters(3) = ''
+   !< test_passed(6) = (strjoin(array=characters)//''==trim(characters(1))//trim(characters(2)))
+   !< characters(1) = 'one'
+   !< characters(2) = ''
+   !< characters(3) = 'three'
+   !< test_passed(7) = (strjoin(array=characters)//''==trim(characters(1))//trim(characters(3)))
+   !< characters(1) = ''
+   !< characters(2) = 'two'
+   !< characters(3) = 'three'
+   !< test_passed(8) = (strjoin(array=characters, sep='-')//''==trim(characters(2))//'-'//trim(characters(3)))
+   !< characters(1) = 'one'
+   !< characters(2) = 'two'
+   !< characters(3) = ''
+   !< test_passed(9) = (strjoin(array=characters, sep='-')//''==trim(characters(1))//'-'//trim(characters(2)))
+   !< characters(1) = 'one'
+   !< characters(2) = ''
+   !< characters(3) = 'three'
+   !< test_passed(10) = (strjoin(array=characters, sep='-')//''==trim(characters(1))//'-'//trim(characters(3)))
+   !< characters(1) = ''
+   !< characters(2) = 'two'
+   !< characters(3) = 'three'
+   !< test_passed(11) = (strjoin(array=characters, sep='-', is_trim=.false.)//''==characters(2)//'-'//characters(3))
+   !< characters(1) = 'one'
+   !< characters(2) = 'two'
+   !< characters(3) = ''
+   !< test_passed(12) = (strjoin(array=characters, sep='-', is_trim=.false.)//''==characters(1)//'-'//characters(2))
+   !< characters(1) = 'one'
+   !< characters(2) = ''
+   !< characters(3) = 'three'
+   !< test_passed(13) = (strjoin(array=characters, sep='-', is_trim=.false.)//''==characters(1)//'-'//characters(3))
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   character(kind=CK, len=*), intent(in)           :: array(1:) !< Array to be joined.
+   character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+   logical,                   intent(in), optional :: is_trim   !< Flag to setup trim character or not
+   type(string)                                    :: join      !< The join of array.
+   character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+   logical                                         :: is_trim_  !< Flag to setup trim character or not
+   integer                                         :: a         !< Counter.
+
+   sep_ = ''
+   if (present(sep)) sep_ = sep
+   is_trim_ = .true. ; if (present(is_trim)) is_trim_ = is_trim
+   join = ''
+
+   if (is_trim_) then
+       do a=2, size(array, dim=1)
+          if (trim(array(a))/='') join%raw = join%raw//sep_//trim(array(a))
+       enddo
+       if (trim(array(1))/='') then
+          join%raw = trim(array(1))//join%raw
+       else
+          join%raw = join%raw(len(sep_)+1:len(join%raw))
+       endif
+   else
+       do a=2, size(array, dim=1)
+          if (array(a)/='') join%raw = join%raw//sep_//array(a)
+       enddo
+       if (array(1)/='') then
+          join%raw = array(1)//join%raw
+       else
+          join%raw = join%raw(len(sep_)+1:len(join%raw))
+       endif
+   endif
+   endfunction strjoin_characters
 
    elemental function lower(self)
    !< Return a string with all lowercase characters.
