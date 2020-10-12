@@ -87,9 +87,11 @@ type :: string
                              to_integer_I2P,&
                              to_integer_I4P,&
                              to_integer_I8P,&
-                             to_real_R4P,   &
+#if defined _R16P
+                             to_real_R16P,  &
+#endif
                              to_real_R8P,   &
-                             to_real_R16P     !< Cast string to number.
+                             to_real_R4P      !< Cast string to number.
     procedure, pass(self) :: unescape         !< Unescape double backslashes (or custom escaped character).
     procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
@@ -113,9 +115,11 @@ type :: string
                                 string_assign_integer_I2P, &
                                 string_assign_integer_I4P, &
                                 string_assign_integer_I8P, &
-                                string_assign_real_R4P,    &
+#if defined _R16P
+                                string_assign_real_R16P,   &
+#endif
                                 string_assign_real_R8P,    &
-                                string_assign_real_R16P             !< Assignment operator overloading.
+                                string_assign_real_R4P              !< Assignment operator overloading.
     generic :: operator(//) => string_concat_string,    &
                                string_concat_character, &
                                character_concat_string              !< Concatenation operator overloading.

@@ -16,7 +16,7 @@ type(string)              :: most_expensive !< The most expensive car.
 real(R8P)                 :: highest_cost   !< The highest cost.
 integer                   :: rows_number    !< The CSV file rows number.
 integer                   :: columns_number !< The CSV file columns number.
-integer                   :: r              !< Counter.
+integer                   :: c, r           !< Counter.
 logical                   :: test_passed(1) !< List of passed tests.
 
 test_passed = .false.
@@ -49,7 +49,9 @@ open(newunit=r, file='file_test_temp.csv') ; close(unit=r, status='DELETE')
 print "(A)", 'A markdown-formatted table'
 print "(A)", ''
 print "(A)", '|'//csv%join(array=cells(:, 1), sep='|')//'|'
-columns = '----' ! re-use columns for printing separators
+do c=1, columns_number
+   columns(c) = '----' ! re-use columns for printing separators
+enddo
 print "(A)", '|'//csv%join(array=columns, sep='|')//'|'
 do r=2, rows_number
   print "(A)", '|'//csv%join(array=cells(:, r), sep='|')//'|'
