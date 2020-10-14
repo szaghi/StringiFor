@@ -84,7 +84,9 @@ type :: string
     procedure, pass(self) :: tempname         !< Return a safe temporary name suitable for temporary file or directories.
     generic               :: to_number =>   &
                              to_integer_I1P,&
+#ifndef _NVF
                              to_integer_I2P,&
+#endif
                              to_integer_I4P,&
                              to_integer_I8P,&
 #if defined _R16P
@@ -170,7 +172,9 @@ type :: string
     procedure, private, nopass ::     strjoin_strings  !< Return join string of an array of strings.
     procedure, private, nopass ::     strjoin_characters  !< Return join string of an array of strings.
     procedure, private, pass(self) :: to_integer_I1P   !< Cast string to integer.
+#ifndef _NVF
     procedure, private, pass(self) :: to_integer_I2P   !< Cast string to integer.
+#endif
     procedure, private, pass(self) :: to_integer_I4P   !< Cast string to integer.
     procedure, private, pass(self) :: to_integer_I8P   !< Cast string to integer.
     procedure, private, pass(self) :: to_real_R4P      !< Cast string to real.
@@ -672,8 +676,16 @@ contains
    class(string), intent(in) :: self     !< String to be repeated.
    integer,       intent(in) :: ncopies  !< Number of string copies.
    type(string)              :: repeated !< Repeated string.
+#ifdef _NVF
+   character(9999)           :: nvf_bug  !< Work around for NVFortran bug.
+#endif
 
+#ifdef _NVF
+   nvf_bug = self%raw
+   repeated%raw = repeat(string=trim(nvf_bug), ncopies=ncopies)
+#else
    repeated%raw = repeat(string=self%raw, ncopies=ncopies)
+#endif
    endfunction srepeat_string_string
 
    elemental function srepeat_character_string(rstring, ncopies) result(repeated)
@@ -2440,6 +2452,7 @@ contains
    endif
    endfunction to_integer_I1P
 
+#ifndef _NVF
    elemental function to_integer_I2P(self, kind) result(to_number)
    !< Cast string to integer (I2P).
    !<
@@ -2462,6 +2475,7 @@ contains
      if (self%is_integer()) read(self%raw, *) to_number
    endif
    endfunction to_integer_I2P
+#endif
 
    elemental function to_integer_I4P(self, kind) result(to_number)
    !< Cast string to integer (I4P).
@@ -2637,14 +2651,23 @@ contains
    character(kind=CK, len=*), intent(in), optional :: substring  !< Substring which multiple occurences must be reduced to one.
    character(kind=CK, len=:), allocatable          :: substring_ !< Substring, default value.
    type(string)                                    :: uniq       !< String parsed.
+#ifdef _NVF
+   character(9999)                                 :: nvf_bug  !< Work around for NVFortran bug.
+#endif
 
    if (allocated(self%raw)) then
      substring_ = SPACE ; if (present(substring)) substring_ = substring
 
      uniq = self
      do
+#ifdef _NVF
+       nvf_bug = substring_
+       if (.not.uniq%index(repeat(trim(nvf_bug), 2))>0) exit
+       uniq = uniq%replace(old=repeat(trim(nvf_bug), 2), new=substring_)
+#else
        if (.not.uniq%index(repeat(substring_, 2))>0) exit
        uniq = uniq%replace(old=repeat(substring_, 2), new=substring_)
+#endif
      enddo
    endif
    endfunction unique
