@@ -55,349 +55,690 @@ STRINGIFOR: $(MKDIRS) $(DOBJ)stringifor.o
 	@$(MAKELIB)
 
 #tests
-.NOTPARALLEL: $(DEXE)IS_REAL                     \
-              $(DEXE)SLEN                        \
-              $(DEXE)IS_NUMBER                   \
-              $(DEXE)FILL                        \
-              $(DEXE)WRITE_LINES                 \
-              $(DEXE)CONCATENATION               \
-              $(DEXE)SEARCH                      \
-              $(DEXE)CAPITALIZE                  \
-              $(DEXE)SVERIFY                     \
-              $(DEXE)IS_INTEGER                  \
-              $(DEXE)STRIP                       \
-              $(DEXE)SREPEAT                     \
-              $(DEXE)SPLIT                       \
-              $(DEXE)SLICE                       \
-              $(DEXE)ESCAPE                      \
-              $(DEXE)SADJUSTLR                   \
-              $(DEXE)CSV_NAIVE_PARSER            \
-              $(DEXE)TO_NUMBER                   \
-              $(DEXE)IS_DIGIT                    \
-              $(DEXE)IO_BASIC                    \
-              $(DEXE)SINDEX                      \
-              $(DEXE)WRITE_FILE                  \
-              $(DEXE)EQUAL                       \
-              $(DEXE)CAMELCASE                   \
-              $(DEXE)SNAKECASE                   \
-              $(DEXE)REVERSE                     \
-              $(DEXE)BASENAME_DIR                \
-              $(DEXE)SCOUNT                      \
-              $(DEXE)READ_LINES                  \
-              $(DEXE)UPPER_LOWER                 \
-              $(DEXE)UNIQUE                      \
-              $(DEXE)JOIN                        \
-              $(DEXE)GREATER_EQUAL_THAN          \
-              $(DEXE)READ_FILE                   \
-              $(DEXE)EXTENSION                   \
-              $(DEXE)SWAPCASE                    \
-              $(DEXE)IO_LISTDIRECTED             \
-              $(DEXE)UNESCAPE                    \
-              $(DEXE)STARTCASE                   \
-              $(DEXE)FREE                        \
-              $(DEXE)NOT_EQUAL                   \
-              $(DEXE)INSERT                      \
-              $(DEXE)PARTITION                   \
-              $(DEXE)STRIM                       \
-              $(DEXE)STRINGIFOR_TEST_ASSIGNMENTS \
-              $(DEXE)GREATER_THAN                \
-              $(DEXE)ENCODE                      \
-              $(DEXE)LOWER_THAN                  \
-              $(DEXE)SSCAN                       \
-              $(DEXE)DECODE                      \
-              $(DEXE)REPLACE                     \
-              $(DEXE)READ_LINE                   \
-              $(DEXE)LOWER_EQUAL_THAN            \
-              $(DEXE)START_END                   \
-              $(DEXE)GLOB                        \
-              $(DEXE)TEMPNAME                    \
-              $(DEXE)STRINGIFOR_TEST_PARSE_LARGE_CSV
+.NOTPARALLEL: $(DEXE)STRINGIFOR_TEST_CSV_NAIVE_PARSER  \
+              $(DEXE)STRINGIFOR_TEST_PARSE_LARGE_CSV   \
+              $(DEXE)STRINGIFOR-DOCTEST-1              \
+              $(DEXE)STRINGIFOR-DOCTEST-2              \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-78    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-22    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-72    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-47    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-62    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-3     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-94    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-105   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-19    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-103   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-75    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-108   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-90    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-45    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-81    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-4     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-87    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-30    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-65    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-52    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-10    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-51    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-16    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-20    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-2     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-50    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-9     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-98    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-57    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-80    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-17    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-91    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-71    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-69    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-77    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-107   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-74    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-63    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-104   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-106   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-44    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-96    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-55    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-15    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-46    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-86    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-40    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-73    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-8     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-38    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-60    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-54    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-49    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-64    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-27    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-85    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-70    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-36    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-67    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-18    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-37    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-88    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-29    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-23    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-82    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-84    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-41    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-89    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-100   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-56    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-61    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-31    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-11    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-1     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-79    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-33    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-28    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-35    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-59    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-26    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-101   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-14    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-13    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-5     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-43    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-58    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-92    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-68    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-32    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-7     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-42    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-12    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-24    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-34    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-21    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-39    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-76    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-93    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-99    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-66    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-95    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-109   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-48    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-6     \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-25    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-102   \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-83    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-53    \
+              $(DEXE)STRINGIFOR_STRING_T-DOCTEST-97
 
-$(DEXE)IS_REAL: $(MKDIRS) $(DOBJ)is_real.o
-	@rm -f $(filter-out $(DOBJ)is_real.o,$(EXESOBJ))
+# tests
+DEXE)STRINGIFOR_TEST_CSV_NAIVE_PARSER: $(MKDIRS) $(DOBJ)stringifor_test_csv_naive_parser.o
+	@rm -f $(filter-out $(DOBJ)stringifor_test_csv_naive_parser.o,$(EXESOBJ))
 	@echo $(LITEXT)
 	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) IS_REAL
-$(DEXE)SLEN: $(MKDIRS) $(DOBJ)slen.o
-	@rm -f $(filter-out $(DOBJ)slen.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SLEN
-$(DEXE)IS_NUMBER: $(MKDIRS) $(DOBJ)is_number.o
-	@rm -f $(filter-out $(DOBJ)is_number.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) IS_NUMBER
-$(DEXE)FILL: $(MKDIRS) $(DOBJ)fill.o
-	@rm -f $(filter-out $(DOBJ)fill.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) FILL
-$(DEXE)WRITE_LINES: $(MKDIRS) $(DOBJ)write_lines.o
-	@rm -f $(filter-out $(DOBJ)write_lines.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) WRITE_LINES
-$(DEXE)CONCATENATION: $(MKDIRS) $(DOBJ)concatenation.o
-	@rm -f $(filter-out $(DOBJ)concatenation.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) CONCATENATION
-$(DEXE)SEARCH: $(MKDIRS) $(DOBJ)search.o
-	@rm -f $(filter-out $(DOBJ)search.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SEARCH
-$(DEXE)CAPITALIZE: $(MKDIRS) $(DOBJ)capitalize.o
-	@rm -f $(filter-out $(DOBJ)capitalize.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) CAPITALIZE
-$(DEXE)SVERIFY: $(MKDIRS) $(DOBJ)sverify.o
-	@rm -f $(filter-out $(DOBJ)sverify.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SVERIFY
-$(DEXE)IS_INTEGER: $(MKDIRS) $(DOBJ)is_integer.o
-	@rm -f $(filter-out $(DOBJ)is_integer.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) IS_INTEGER
-$(DEXE)STRIP: $(MKDIRS) $(DOBJ)strip.o
-	@rm -f $(filter-out $(DOBJ)strip.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) STRIP
-$(DEXE)SREPEAT: $(MKDIRS) $(DOBJ)srepeat.o
-	@rm -f $(filter-out $(DOBJ)srepeat.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SREPEAT
-$(DEXE)SPLIT: $(MKDIRS) $(DOBJ)split.o
-	@rm -f $(filter-out $(DOBJ)split.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SPLIT
-$(DEXE)SLICE: $(MKDIRS) $(DOBJ)slice.o
-	@rm -f $(filter-out $(DOBJ)slice.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SLICE
-$(DEXE)ESCAPE: $(MKDIRS) $(DOBJ)escape.o
-	@rm -f $(filter-out $(DOBJ)escape.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) ESCAPE
-$(DEXE)SADJUSTLR: $(MKDIRS) $(DOBJ)sadjustlr.o
-	@rm -f $(filter-out $(DOBJ)sadjustlr.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SADJUSTLR
-$(DEXE)CSV_NAIVE_PARSER: $(MKDIRS) $(DOBJ)csv_naive_parser.o
-	@rm -f $(filter-out $(DOBJ)csv_naive_parser.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) CSV_NAIVE_PARSER
-$(DEXE)TO_NUMBER: $(MKDIRS) $(DOBJ)to_number.o
-	@rm -f $(filter-out $(DOBJ)to_number.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) TO_NUMBER
-$(DEXE)IS_DIGIT: $(MKDIRS) $(DOBJ)is_digit.o
-	@rm -f $(filter-out $(DOBJ)is_digit.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) IS_DIGIT
-$(DEXE)IO_BASIC: $(MKDIRS) $(DOBJ)io_basic.o
-	@rm -f $(filter-out $(DOBJ)io_basic.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) IO_BASIC
-$(DEXE)SINDEX: $(MKDIRS) $(DOBJ)sindex.o
-	@rm -f $(filter-out $(DOBJ)sindex.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SINDEX
-$(DEXE)WRITE_FILE: $(MKDIRS) $(DOBJ)write_file.o
-	@rm -f $(filter-out $(DOBJ)write_file.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) WRITE_FILE
-$(DEXE)EQUAL: $(MKDIRS) $(DOBJ)equal.o
-	@rm -f $(filter-out $(DOBJ)equal.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) EQUAL
-$(DEXE)CAMELCASE: $(MKDIRS) $(DOBJ)camelcase.o
-	@rm -f $(filter-out $(DOBJ)camelcase.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) CAMELCASE
-$(DEXE)SNAKECASE: $(MKDIRS) $(DOBJ)snakecase.o
-	@rm -f $(filter-out $(DOBJ)snakecase.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SNAKECASE
-$(DEXE)REVERSE: $(MKDIRS) $(DOBJ)reverse.o
-	@rm -f $(filter-out $(DOBJ)reverse.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) REVERSE
-$(DEXE)BASENAME_DIR: $(MKDIRS) $(DOBJ)basename_dir.o
-	@rm -f $(filter-out $(DOBJ)basename_dir.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) BASENAME_DIR
-$(DEXE)SCOUNT: $(MKDIRS) $(DOBJ)scount.o
-	@rm -f $(filter-out $(DOBJ)scount.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SCOUNT
-$(DEXE)READ_LINES: $(MKDIRS) $(DOBJ)read_lines.o
-	@rm -f $(filter-out $(DOBJ)read_lines.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) READ_LINES
-$(DEXE)UPPER_LOWER: $(MKDIRS) $(DOBJ)upper_lower.o
-	@rm -f $(filter-out $(DOBJ)upper_lower.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) UPPER_LOWER
-$(DEXE)UNIQUE: $(MKDIRS) $(DOBJ)unique.o
-	@rm -f $(filter-out $(DOBJ)unique.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) UNIQUE
-$(DEXE)JOIN: $(MKDIRS) $(DOBJ)join.o
-	@rm -f $(filter-out $(DOBJ)join.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) JOIN
-$(DEXE)GREATER_EQUAL_THAN: $(MKDIRS) $(DOBJ)greater_equal_than.o
-	@rm -f $(filter-out $(DOBJ)greater_equal_than.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) GREATER_EQUAL_THAN
-$(DEXE)READ_FILE: $(MKDIRS) $(DOBJ)read_file.o
-	@rm -f $(filter-out $(DOBJ)read_file.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) READ_FILE
-$(DEXE)EXTENSION: $(MKDIRS) $(DOBJ)extension.o
-	@rm -f $(filter-out $(DOBJ)extension.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) EXTENSION
-$(DEXE)SWAPCASE: $(MKDIRS) $(DOBJ)swapcase.o
-	@rm -f $(filter-out $(DOBJ)swapcase.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SWAPCASE
-$(DEXE)IO_LISTDIRECTED: $(MKDIRS) $(DOBJ)io_listdirected.o
-	@rm -f $(filter-out $(DOBJ)io_listdirected.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) IO_LISTDIRECTED
-$(DEXE)UNESCAPE: $(MKDIRS) $(DOBJ)unescape.o
-	@rm -f $(filter-out $(DOBJ)unescape.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) UNESCAPE
-$(DEXE)STARTCASE: $(MKDIRS) $(DOBJ)startcase.o
-	@rm -f $(filter-out $(DOBJ)startcase.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) STARTCASE
-$(DEXE)FREE: $(MKDIRS) $(DOBJ)free.o
-	@rm -f $(filter-out $(DOBJ)free.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) FREE
-$(DEXE)NOT_EQUAL: $(MKDIRS) $(DOBJ)not_equal.o
-	@rm -f $(filter-out $(DOBJ)not_equal.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) NOT_EQUAL
-$(DEXE)INSERT: $(MKDIRS) $(DOBJ)insert.o
-	@rm -f $(filter-out $(DOBJ)insert.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) INSERT
-$(DEXE)PARTITION: $(MKDIRS) $(DOBJ)partition.o
-	@rm -f $(filter-out $(DOBJ)partition.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) PARTITION
-$(DEXE)STRIM: $(MKDIRS) $(DOBJ)strim.o
-	@rm -f $(filter-out $(DOBJ)strim.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) STRIM
-$(DEXE)STRINGIFOR_TEST_ASSIGNMENTS: $(MKDIRS) $(DOBJ)stringifor_test_assignments.o
-	@rm -f $(filter-out $(DOBJ)stringifor_test_assignments.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) STRINGIFOR_TEST_ASSIGNMENTS
-$(DEXE)GREATER_THAN: $(MKDIRS) $(DOBJ)greater_than.o
-	@rm -f $(filter-out $(DOBJ)greater_than.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) GREATER_THAN
-$(DEXE)ENCODE: $(MKDIRS) $(DOBJ)encode.o
-	@rm -f $(filter-out $(DOBJ)encode.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) ENCODE
-$(DEXE)LOWER_THAN: $(MKDIRS) $(DOBJ)lower_than.o
-	@rm -f $(filter-out $(DOBJ)lower_than.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) LOWER_THAN
-$(DEXE)SSCAN: $(MKDIRS) $(DOBJ)sscan.o
-	@rm -f $(filter-out $(DOBJ)sscan.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) SSCAN
-$(DEXE)DECODE: $(MKDIRS) $(DOBJ)decode.o
-	@rm -f $(filter-out $(DOBJ)decode.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) DECODE
-$(DEXE)REPLACE: $(MKDIRS) $(DOBJ)replace.o
-	@rm -f $(filter-out $(DOBJ)replace.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) REPLACE
-$(DEXE)READ_LINE: $(MKDIRS) $(DOBJ)read_line.o
-	@rm -f $(filter-out $(DOBJ)read_line.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) READ_LINE
-$(DEXE)LOWER_EQUAL_THAN: $(MKDIRS) $(DOBJ)lower_equal_than.o
-	@rm -f $(filter-out $(DOBJ)lower_equal_than.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) LOWER_EQUAL_THAN
-$(DEXE)START_END: $(MKDIRS) $(DOBJ)start_end.o
-	@rm -f $(filter-out $(DOBJ)start_end.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) START_END
-$(DEXE)GLOB: $(MKDIRS) $(DOBJ)glob.o
-	@rm -f $(filter-out $(DOBJ)glob.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) GLOB
-$(DEXE)TEMPNAME: $(MKDIRS) $(DOBJ)tempname.o
-	@rm -f $(filter-out $(DOBJ)tempname.o,$(EXESOBJ))
-	@echo $(LITEXT)
-	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
-EXES := $(EXES) TEMPNAME
+EXES := $(EXES) STRINGIFOR_TEST_CSV_NAIVE_PARSER
 $(DEXE)STRINGIFOR_TEST_PARSE_LARGE_CSV: $(MKDIRS) $(DOBJ)stringifor_test_parse_large_csv.o
 	@rm -f $(filter-out $(DOBJ)stringifor_test_parse_large_csv.o,$(EXESOBJ))
 	@echo $(LITEXT)
 	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
 EXES := $(EXES) STRINGIFOR_TEST_PARSE_LARGE_CSV
+$(DEXE)STRINGIFOR-DOCTEST-1: $(MKDIRS) $(DOBJ)stringifor-doctest-1.o
+	@rm -f $(filter-out $(DOBJ)stringifor-doctest-1.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR-DOCTEST-1
+$(DEXE)STRINGIFOR-DOCTEST-2: $(MKDIRS) $(DOBJ)stringifor-doctest-2.o
+	@rm -f $(filter-out $(DOBJ)stringifor-doctest-2.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR-DOCTEST-2
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-78: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-78.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-78.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-78
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-22: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-22.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-22.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-22
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-72: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-72.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-72.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-72
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-47: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-47.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-47.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-47
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-62: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-62.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-62.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-62
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-3: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-3.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-3.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-3
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-94: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-94.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-94.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-94
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-105: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-105.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-105.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-105
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-19: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-19.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-19.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-19
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-103: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-103.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-103.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-103
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-75: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-75.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-75.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-75
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-108: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-108.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-108.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-108
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-90: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-90.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-90.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-90
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-45: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-45.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-45.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-45
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-81: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-81.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-81.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-81
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-4: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-4.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-4.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-4
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-87: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-87.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-87.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-87
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-30: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-30.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-30.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-30
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-65: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-65.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-65.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-65
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-52: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-52.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-52.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-52
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-10: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-10.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-10.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-10
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-51: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-51.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-51.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-51
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-16: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-16.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-16.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-16
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-20: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-20.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-20.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-20
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-2: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-2.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-2.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-2
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-50: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-50.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-50.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-50
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-9: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-9.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-9.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-9
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-98: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-98.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-98.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-98
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-57: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-57.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-57.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-57
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-80: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-80.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-80.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-80
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-17: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-17.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-17.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-17
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-91: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-91.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-91.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-91
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-71: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-71.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-71.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-71
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-69: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-69.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-69.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-69
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-77: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-77.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-77.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-77
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-107: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-107.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-107.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-107
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-74: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-74.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-74.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-74
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-63: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-63.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-63.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-63
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-104: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-104.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-104.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-104
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-106: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-106.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-106.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-106
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-44: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-44.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-44.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-44
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-96: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-96.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-96.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-96
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-55: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-55.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-55.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-55
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-15: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-15.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-15.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-15
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-46: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-46.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-46.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-46
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-86: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-86.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-86.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-86
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-40: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-40.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-40.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-40
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-73: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-73.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-73.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-73
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-8: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-8.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-8.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-8
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-38: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-38.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-38.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-38
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-60: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-60.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-60.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-60
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-54: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-54.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-54.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-54
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-49: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-49.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-49.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-49
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-64: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-64.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-64.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-64
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-27: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-27.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-27.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-27
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-85: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-85.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-85.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-85
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-70: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-70.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-70.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-70
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-36: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-36.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-36.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-36
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-67: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-67.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-67.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-67
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-18: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-18.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-18.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-18
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-37: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-37.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-37.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-37
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-88: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-88.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-88.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-88
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-29: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-29.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-29.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-29
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-23: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-23.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-23.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-23
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-82: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-82.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-82.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-82
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-84: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-84.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-84.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-84
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-41: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-41.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-41.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-41
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-89: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-89.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-89.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-89
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-100: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-100.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-100.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-100
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-56: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-56.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-56.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-56
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-61: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-61.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-61.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-61
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-31: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-31.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-31.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-31
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-11: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-11.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-11.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-11
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-1: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-1.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-1.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-1
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-79: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-79.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-79.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-79
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-33: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-33.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-33.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-33
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-28: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-28.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-28.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-28
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-35: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-35.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-35.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-35
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-59: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-59.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-59.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-59
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-26: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-26.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-26.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-26
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-101: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-101.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-101.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-101
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-14: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-14.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-14.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-14
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-13: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-13.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-13.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-13
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-5: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-5.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-5.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-5
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-43: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-43.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-43.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-43
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-58: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-58.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-58.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-58
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-92: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-92.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-92.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-92
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-68: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-68.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-68.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-68
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-32: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-32.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-32.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-32
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-7: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-7.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-7.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-7
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-42: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-42.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-42.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-42
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-12: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-12.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-12.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-12
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-24: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-24.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-24.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-24
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-34: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-34.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-34.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-34
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-21: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-21.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-21.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-21
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-39: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-39.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-39.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-39
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-76: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-76.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-76.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-76
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-93: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-93.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-93.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-93
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-99: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-99.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-99.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-99
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-66: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-66.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-66.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-66
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-95: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-95.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-95.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-95
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-109: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-109.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-109.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-109
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-48: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-48.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-48.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-48
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-6: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-6.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-6.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-6
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-25: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-25.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-25.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-25
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-102: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-102.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-102.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-102
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-83: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-83.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-83.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-83
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-53: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-53.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-53.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-53
+$(DEXE)STRINGIFOR_STRING_T-DOCTEST-97: $(MKDIRS) $(DOBJ)stringifor_string_t-doctest-97.o
+	@rm -f $(filter-out $(DOBJ)stringifor_string_t-doctest-97.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
+EXES := $(EXES) STRINGIFOR_STRING_T-DOCTEST-97
+$(DEXE)FACE_TEST_COLORS: $(MKDIRS) $(DOBJ)face_test_colors.o
+	@rm -f $(filter-out $(DOBJ)face_test_colors.o,$(EXESOBJ))
+	@echo $(LITEXT)
+	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
 
 #compiling rules
 $(DOBJ)stringifor.o: src/lib/stringifor.F90 \
@@ -450,288 +791,583 @@ $(DOBJ)penf_global_parameters_variables.o: src/third_party/PENF/src/lib/penf_glo
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)is_real.o: src/tests/is_real.f90 \
+# tests
+$(DOBJ)stringifor_test_csv_naive_parser.o: src/tests/stringifor/stringifor_test_csv_naive_parser.f90 \
 	$(DOBJ)stringifor.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)slen.o: src/tests/slen.f90 \
+$(DOBJ)stringifor_test_parse_large_csv.o: src/tests/stringifor/stringifor_test_parse_large_csv.f90 \
 	$(DOBJ)stringifor.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)is_number.o: src/tests/is_number.f90 \
+$(DOBJ)stringifor-doctest-1.o: src/tests/stringifor/stringifor-doctest-1.f90 \
 	$(DOBJ)stringifor.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)fill.o: src/tests/fill.f90 \
+$(DOBJ)stringifor-doctest-2.o: src/tests/stringifor/stringifor-doctest-2.f90 \
 	$(DOBJ)stringifor.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)write_lines.o: src/tests/write_lines.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-78.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-78.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)concatenation.o: src/tests/concatenation.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-22.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-22.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)search.o: src/tests/search.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-72.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-72.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)capitalize.o: src/tests/capitalize.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-47.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-47.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)sverify.o: src/tests/sverify.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-62.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-62.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)is_integer.o: src/tests/is_integer.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-3.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-3.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)strip.o: src/tests/strip.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-94.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-94.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)srepeat.o: src/tests/srepeat.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-105.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-105.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)split.o: src/tests/split.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-19.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-19.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)slice.o: src/tests/slice.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-103.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-103.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)escape.o: src/tests/escape.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-75.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-75.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)sadjustlr.o: src/tests/sadjustlr.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-108.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-108.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)csv_naive_parser.o: src/tests/csv_naive_parser.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-90.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-90.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)to_number.o: src/tests/to_number.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-45.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-45.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)is_digit.o: src/tests/is_digit.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-81.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-81.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)io_basic.o: src/tests/io_basic.F90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-4.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-4.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)sindex.o: src/tests/sindex.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-87.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-87.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)write_file.o: src/tests/write_file.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-30.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-30.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)equal.o: src/tests/equal.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-65.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-65.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)camelcase.o: src/tests/camelcase.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-52.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-52.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)snakecase.o: src/tests/snakecase.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-10.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-10.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)reverse.o: src/tests/reverse.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-51.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-51.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)basename_dir.o: src/tests/basename_dir.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-16.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-16.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)scount.o: src/tests/scount.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-20.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-20.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)read_lines.o: src/tests/read_lines.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-2.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-2.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)upper_lower.o: src/tests/upper_lower.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-50.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-50.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)unique.o: src/tests/unique.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-9.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-9.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)join.o: src/tests/join.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-98.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-98.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)greater_equal_than.o: src/tests/greater_equal_than.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-57.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-57.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)read_file.o: src/tests/read_file.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-80.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-80.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)extension.o: src/tests/extension.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-17.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-17.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)swapcase.o: src/tests/swapcase.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-91.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-91.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)io_listdirected.o: src/tests/io_listdirected.F90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-71.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-71.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)unescape.o: src/tests/unescape.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-69.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-69.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)startcase.o: src/tests/startcase.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-77.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-77.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)free.o: src/tests/free.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-107.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-107.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)not_equal.o: src/tests/not_equal.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-74.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-74.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)insert.o: src/tests/insert.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-63.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-63.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)partition.o: src/tests/partition.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-104.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-104.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)strim.o: src/tests/strim.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-106.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-106.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)stringifor_test_assignments.o: src/tests/stringifor_test_assignments.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-44.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-44.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)greater_than.o: src/tests/greater_than.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-96.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-96.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)encode.o: src/tests/encode.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-55.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-55.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)lower_than.o: src/tests/lower_than.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-15.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-15.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)sscan.o: src/tests/sscan.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-46.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-46.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)decode.o: src/tests/decode.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-86.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-86.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)replace.o: src/tests/replace.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-40.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-40.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)read_line.o: src/tests/read_line.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-73.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-73.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)lower_equal_than.o: src/tests/lower_equal_than.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-8.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-8.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)start_end.o: src/tests/start_end.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-38.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-38.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)glob.o: src/tests/glob.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-60.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-60.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)tempname.o: src/tests/tempname.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-54.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-54.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
-$(DOBJ)stringifor_test_parse_large_csv.o: src/tests/stringifor_test_parse_large_csv/stringifor_test_parse_large_csv.f90 \
-	$(DOBJ)stringifor.o
+$(DOBJ)stringifor_string_t-doctest-49.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-49.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-64.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-64.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-27.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-27.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-85.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-85.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-70.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-70.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-36.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-36.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-67.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-67.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-18.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-18.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-37.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-37.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-88.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-88.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-29.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-29.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-23.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-23.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-82.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-82.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-84.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-84.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-41.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-41.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-89.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-89.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-100.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-100.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-56.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-56.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-61.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-61.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-31.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-31.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-11.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-11.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-1.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-1.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-79.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-79.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-33.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-33.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-28.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-28.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-35.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-35.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-59.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-59.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-26.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-26.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-101.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-101.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-14.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-14.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-13.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-13.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-5.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-5.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-43.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-43.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-58.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-58.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-92.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-92.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-68.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-68.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-32.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-32.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-7.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-7.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-42.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-42.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-12.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-12.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-24.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-24.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-34.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-34.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-21.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-21.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-39.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-39.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-76.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-76.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-93.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-93.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-99.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-99.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-66.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-66.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-95.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-95.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-109.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-109.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-48.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-48.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-6.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-6.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-25.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-25.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-102.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-102.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-83.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-83.f90 \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-53.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-53.f90 \
+	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_string_t-doctest-97.o: src/tests/stringifor_string_t/stringifor_string_t-doctest-97.f90 \
+	$(DOBJ)stringifor_string_t.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
