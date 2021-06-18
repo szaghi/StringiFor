@@ -408,6 +408,7 @@ $(DOBJ)stringifor.o: src/lib/stringifor.F90 \
 
 $(DOBJ)stringifor_string_t.o: src/lib/stringifor_string_t.F90 \
 	$(DOBJ)befor64.o \
+	$(DOBJ)face.o \
 	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
@@ -420,6 +421,10 @@ $(DOBJ)befor64_pack_data_m.o: src/third_party/BeFoR64/src/lib/befor64_pack_data_
 $(DOBJ)befor64.o: src/third_party/BeFoR64/src/lib/befor64.F90 \
 	$(DOBJ)penf.o \
 	$(DOBJ)befor64_pack_data_m.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)face.o: src/third_party/FACE/src/lib/face.F90
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
