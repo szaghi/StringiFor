@@ -170,7 +170,7 @@ STRINGIFOR: $(MKDIRS) $(DOBJ)stringifor.o
               $(DEXE)STRINGIFOR_STRING_T-DOCTEST-97
 
 # tests
-DEXE)STRINGIFOR_TEST_CSV_NAIVE_PARSER: $(MKDIRS) $(DOBJ)stringifor_test_csv_naive_parser.o
+$(DEXE)STRINGIFOR_TEST_CSV_NAIVE_PARSER: $(MKDIRS) $(DOBJ)stringifor_test_csv_naive_parser.o
 	@rm -f $(filter-out $(DOBJ)stringifor_test_csv_naive_parser.o,$(EXESOBJ))
 	@echo $(LITEXT)
 	@$(FC) $(OPTSL) $(DOBJ)*.o $(LIBS) -o $@
