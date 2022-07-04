@@ -1,6 +1,6 @@
 <a name="top"></a>
 
-# StringiFor [![GitHub tag](https://img.shields.io/github/tag/szaghi/StringiFor.svg)]()
+# StringiFor [![GitHub tag](https://img.shields.io/github/tag/szaghi/StringiFor.svg)](https://github.com/szaghi/StringiFor/releases)
 
 [![License](https://img.shields.io/badge/license-GNU%20GeneraL%20Public%20License%20v3%20,%20GPLv3-blue.svg)]()
 [![License](https://img.shields.io/badge/license-BSD2-red.svg)]()
@@ -8,8 +8,8 @@
 [![License](https://img.shields.io/badge/license-MIT-red.svg)]()
 
 [![Status](https://img.shields.io/badge/status-stable-brightgreen.svg)]()
-[![Build Status](https://travis-ci.org/szaghi/StringiFor.svg?branch=master)](https://travis-ci.org/szaghi/StringiFor)
-[![Coverage Status](https://img.shields.io/codecov/c/github/szaghi/StringiFor.svg)](http://codecov.io/github/szaghi/StringiFor?branch=master)
+[![CI Status](https://github.com/szaghi/StringiFor/actions/workflows/ci.yml/badge.svg)](https://github.com/szaghi/StringiFor/actions)
+[![Coverage Status](https://img.shields.io/codecov/c/github/szaghi/StringiFor.svg)](https://app.codecov.io/gh/szaghi/StringiFor)
 
 ### StringiFor, Strings Fortran Manipulator, yet another strings Fortran module
 A KISS pure Fortran library providing  astrings (class) manipulator for modern (2003+) Fortran projects.
@@ -23,9 +23,6 @@ A KISS pure Fortran library providing  astrings (class) manipulator for modern (
 #### Issues
 
 [![GitHub issues](https://img.shields.io/github/issues/szaghi/StringiFor.svg)]()
-[![Ready in backlog](https://badge.waffle.io/szaghi/StringiFor.png?label=ready&title=Ready)](https://waffle.io/szaghi/StringiFor)
-[![In Progress](https://badge.waffle.io/szaghi/StringiFor.png?label=in%20progress&title=In%20Progress)](https://waffle.io/szaghi/StringiFor)
-[![Open bugs](https://badge.waffle.io/szaghi/StringiFor.png?label=bug&title=Open%20Bugs)](https://waffle.io/szaghi/StringiFor)
 
 #### Compiler Support
 
