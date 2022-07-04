@@ -4,10 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	 
-	 <meta name="description" content="Strings Fortran Manipulator, yet another strings Fortran module">
-    
-    <meta name="author" content="Chris MacMackin" >
+   <meta name="description" content="FStrings Fortran Manipulator">
+    <meta name="author" content="Stefano Zaghi" >
     <link rel="icon" href="./favicon.png">
 
     <title> StringiFor </title>
@@ -16,7 +14,7 @@
     <link href="./css/pygments.css" rel="stylesheet">
     <link href="./css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/local.css" rel="stylesheet">
-    
+    <link  href="./tipuesearch/tipuesearch.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,13 +24,6 @@
     
     <script src="./js/jquery-2.1.3.min.js"></script>
     <script src="./js/svg-pan-zoom.min.js"></script>
-
-    
-    <script src="./tipuesearch/tipuesearch_content.js"></script>
-    <link  href="./tipuesearch/tipuesearch.css" rel="stylesheet">
-    <script src="./tipuesearch/tipuesearch_set.js"></script>
-    <script src="./tipuesearch/tipuesearch.js"></script>
-    
 
   </head>
 
@@ -52,24 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-				
-                
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
             <li><a href="./lists/files.html">Source Files</a></li>
-				
-				
             <li><a href="./lists/modules.html">Modules</a></li>
-				
-				
             <li><a href="./lists/procedures.html">Procedures</a></li>
-				
-								
-            <li><a href="./lists/types.html">Derived Types</a></li>
-				
-				
+                   <li><a href="./lists/types.html">Derived Types</a></li>
             <li><a href="./lists/programs.html">Programs</a></li>
-				
-          </ul>
+       
+            </ul>
         
+            </li>
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/files.html">Source Files</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/modules.html">Modules</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/procedures.html">Procedures</a></li>
+                             <li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/programs.html">Programs</a></li>
+          </ul>
         <form action="./search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -78,45 +72,33 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <p>Strings Fortran Manipulator, yet another strings Fortran module</p>
-        	 
+        <p>FStrings Fortran Manipulator</p>
 	<p> Find us on&hellip;</p>
         <p>
-        	 
           <a class="btn btn-lg btn-primary" href="https://github.com/szaghi/StringiFor" role="button">GitHub</a>
-			 
-			 
-			 
-			 
-	         
-			 
         </p>
       </div>
 
       <div class="row" id='text'>
-		  
-        <div class="col-lg-8">
-		  
+        <div class="col-md-8">
           <h1>StringiFor</h1>
           <p><a name="top"></a></p>
-<h1 id="stringifor"><a class="toclink" href="#stringifor">StringiFor <a href=""><img alt="GitHub tag" src="https://img.shields.io/github/tag/szaghi/StringiFor.svg"></a></a></h1>
+<h1 id="stringifor">StringiFor <a href="https://github.com/szaghi/StringiFor/releases"><img alt="GitHub tag" src="https://img.shields.io/github/tag/szaghi/StringiFor.svg"></a></h1>
 <p><a href=""><img alt="License" src="https://img.shields.io/badge/license-GNU%20GeneraL%20Public%20License%20v3%20,%20GPLv3-blue.svg"></a>
 <a href=""><img alt="License" src="https://img.shields.io/badge/license-BSD2-red.svg"></a>
 <a href=""><img alt="License" src="https://img.shields.io/badge/license-BSD3-red.svg"></a>
 <a href=""><img alt="License" src="https://img.shields.io/badge/license-MIT-red.svg"></a></p>
 <p><a href=""><img alt="Status" src="https://img.shields.io/badge/status-stable-brightgreen.svg"></a>
-<a href="https://travis-ci.org/szaghi/StringiFor"><img alt="Build Status" src="https://travis-ci.org/szaghi/StringiFor.svg?branch=master"></a>
-<a href="http://codecov.io/github/szaghi/StringiFor?branch=master"><img alt="Coverage Status" src="https://img.shields.io/codecov/c/github/szaghi/StringiFor.svg"></a></p>
-<h3 id="stringifor-strings-fortran-manipulator-yet-another-strings-fortran-module"><a class="toclink" href="#stringifor-strings-fortran-manipulator-yet-another-strings-fortran-module">StringiFor, Strings Fortran Manipulator, yet another strings Fortran module</a></h3>
+<a href="https://github.com/szaghi/StringiFor/actions"><img alt="CI Status" src="https://github.com/szaghi/StringiFor/actions/workflows/ci.yml/badge.svg"></a>
+<a href="https://app.codecov.io/gh/szaghi/StringiFor"><img alt="Coverage Status" src="https://img.shields.io/codecov/c/github/szaghi/StringiFor.svg"></a></p>
+<h3 id="stringifor-strings-fortran-manipulator-yet-another-strings-fortran-module">StringiFor, Strings Fortran Manipulator, yet another strings Fortran module</h3>
 <p>A KISS pure Fortran library providing  astrings (class) manipulator for modern (2003+) Fortran projects.</p>
 <ul>
 <li>StringiFor is a pure Fortran (KISS) library providing a strings manipulator for modern Fortran projects;</li>
@@ -125,40 +107,178 @@
 <li>StringiFor is TDD designed;</li>
 <li>StringiFor is a Free, Open Source Project.</li>
 </ul>
-<h4 id="issues"><a class="toclink" href="#issues">Issues</a></h4>
-<p><a href=""><img alt="GitHub issues" src="https://img.shields.io/github/issues/szaghi/StringiFor.svg"></a>
-<a href="https://waffle.io/szaghi/StringiFor"><img alt="Ready in backlog" src="https://badge.waffle.io/szaghi/StringiFor.png?label=ready&amp;title=Ready"></a>
-<a href="https://waffle.io/szaghi/StringiFor"><img alt="In Progress" src="https://badge.waffle.io/szaghi/StringiFor.png?label=in%20progress&amp;title=In%20Progress"></a>
-<a href="https://waffle.io/szaghi/StringiFor"><img alt="Open bugs" src="https://badge.waffle.io/szaghi/StringiFor.png?label=bug&amp;title=Open%20Bugs"></a></p>
-<h4 id="compiler-support"><a class="toclink" href="#compiler-support">Compiler Support</a></h4>
-<p><a href=""><img alt="Compiler" src="https://img.shields.io/badge/GNU-v5.3.0+-orange.svg"></a>
-<a href=""><img alt="Compiler" src="https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg"></a>
+<h4 id="issues">Issues</h4>
+<p><a href=""><img alt="GitHub issues" src="https://img.shields.io/github/issues/szaghi/StringiFor.svg"></a></p>
+<h4 id="compiler-support">Compiler Support</h4>
+<p><a href=""><img alt="Compiler" src="https://img.shields.io/badge/GNU-v9.2.0+-brightgreen.svg"></a>
+<a href=""><img alt="Compiler" src="https://img.shields.io/badge/Intel-v19.0.4+-brightgreen.svg"></a>
 <a href=""><img alt="Compiler" src="https://img.shields.io/badge/IBM%20XL-not%20tested-yellow.svg"></a>
 <a href=""><img alt="Compiler" src="https://img.shields.io/badge/g95-not%20tested-yellow.svg"></a>
 <a href=""><img alt="Compiler" src="https://img.shields.io/badge/NAG-not%20tested-yellow.svg"></a>
 <a href=""><img alt="Compiler" src="https://img.shields.io/badge/PGI-not%20tested-yellow.svg"></a></p>
-<h5 id="gnu-partial-support"><a class="toclink" href="#gnu-partial-support">GNU partial support</a></h5>
-<blockquote>
-<p>GNU gfortran does not support user-defined-type-IO, thus some class features are disabled if GNU is used.</p>
-</blockquote>
 <hr>
 <p><a href="#what-is-stringifor?">What is StringiFor?</a> | <a href="#main-features">Main features</a> | <a href="#copyrights">Copyrights</a> | <a href="#download">Download</a> | <a href="#compilation">Compilation</a> | <a href="#documentation">Documentation</a> | <a href="#comparison-to-other-approaches">Comparison to other Approaches</a></p>
 <hr>
-<h2 id="what-is-stringifor"><a class="toclink" href="#what-is-stringifor">What is StringiFor?</a></h2>
+<h2 id="what-is-stringifor">What is StringiFor?</h2>
 <p>Modern Fortran standards (2003+) have introduced a better support for characters variables, but Fortraners still do not have the power on dealing with strings of other more-rich-programmers, e.g. Pythoners. Allocatable deferred length character variables are now quantum-leap with respect the old inflexible Fortran characters, but it is still not enough for many Fortraners. Moreover, Fortran does not provide builtin methods for widely used strings manipulations offered by other languages, e.g. UPPER/lowercase transformation, tokenization, etc&hellip; StringiFor attempts to fill this lack.</p>
 <p>Go to <a href="#top">Top</a></p>
-<h2 id="main-features"><a class="toclink" href="#main-features">Main features</a></h2>
+<h2 id="main-features">Main features</h2>
 <p>StringiFor exposes only one class (OO-designed), the <code>string</code> type, that should be used as a more powerful string variable with respect a standard Fortran <code>character</code> variable. The main features of this class are:</p>
-<ul class="checklist">
-<li><input type="checkbox" disabled checked> seamless interchangeability with standard character variables, e.g. concatenation, IO, etc&hellip;;</li>
-<li><input type="checkbox" disabled checked> handy builtin methods, e.g. split, search, basename, join, etc&hellip;;</li>
-<li><input type="checkbox" disabled checked> low memory consumption: only one deferred length allocatable character member is stored, allowing for efficient memory allocation in array of strings, the elements of which can have different lengths;</li>
-<li><input type="checkbox" disabled checked> safe: almost all methods are elemental or pure;</li>
-<li><input type="checkbox" disabled checked> robust: the library is Test Driven Developed <a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a>, a comprehensive tests suite is provided.</li>
+<ul>
+<li>[x] seamless interchangeability with standard character variables, e.g. concatenation, IO, etc&hellip;;</li>
+<li>[x] handy builtin methods, e.g. split, search, basename, join, etc&hellip;;</li>
+<li>[x] low memory consumption: only one deferred length allocatable character member is stored, allowing for efficient memory allocation in array of strings, the elements of which can have different lengths;</li>
+<li>[x] safe: almost all methods are elemental or pure;</li>
+<li>[x] robust: the library is Test Driven Developed <a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a>, a comprehensive tests suite is provided.</li>
 </ul>
 <p>Any feature request is welcome.</p>
 <p>Go to <a href="#top">Top</a></p>
-<h2 id="copyrights"><a class="toclink" href="#copyrights">Copyrights</a></h2>
+<hr>
+<h3 id="a-taste-of-stringifor">A Taste of StringiFor</h3>
+<p>StringiFor is very handy&hellip;</p>
+<ul>
+<li><a href="#basic_io">Basic IO</a></li>
+<li><a href="#string_manipulation">String manipulation</a></li>
+<li><a href="#numbers_handling">Numbers handling</a></li>
+<li><a href="#complex_scenario">Complex scenario</a></li>
+</ul>
+<h4 id="basic-io">Basic IO</h4>
+<p>The class <code>string</code>  IO is overloaded by defined write/read TBP. Moreover, dedicated methods and operators can be exploited for IO, e.g.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">use </span><span class="n">stringifor</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hello World&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">chars</span><span class="p">()</span><span class="w"> </span><span class="c">! &quot;chars&quot; method returns a standard character variable</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(DT)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="w">        </span><span class="c">! defined IO (in gfortran is available for GNU GCC &gt;= 7.1)</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w">     </span><span class="c">! on-the-fly conversion to standard character by means of concatenation</span>
+</code></pre></div>
+
+<h4 id="string-manipulation">String manipulation</h4>
+<p>The class <code>string</code> has many methods for a plethora of strings manipulations, e.g.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">use </span><span class="n">stringifor</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0123456789&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">reverse</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot;9876543210&quot;</span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hello World&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">new</span><span class="o">=</span><span class="s1">&#39;People&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot;Hello People&quot;</span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hello World&#39;</span><span class="w"></span>
+<span class="n">strings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">partition</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;lo Wo&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Before sep: &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span><span class="w"> </span><span class="c">! print &quot;Hel&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Sep itself: &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span><span class="w"> </span><span class="c">! print &quot;lo Wo&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;After sep:  &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span><span class="w"> </span><span class="c">! print &quot;rld&quot;</span>
+
+<span class="n">strings</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;one&#39;</span><span class="w"></span>
+<span class="n">strings</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;two&#39;</span><span class="w"></span>
+<span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;three&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w">          </span><span class="c">! print &quot;oneHello WorldtwoHello Worldthree&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot;one-two-three&quot;</span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39; a StraNgE caSe var&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">camelcase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot; AStrangeCaseVar&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">snakecase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot; a_strange_case_var&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">startcase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot; A Strange Case Var&quot;</span>
+</code></pre></div>
+
+<h4 id="numbers-handling">Numbers handling</h4>
+<p>StringiFor, by means of the <a href="https://github.com/szaghi/PENF">portability environment library, PENF</a> can handle numbers (reals and integers) effortless. The string/number <em>casting</em> (to/from and viceversa) is done by overloaded assignments (for all kinds of integers and reals). For convenience, StringiFor exposes the PENF number <em>portable</em> kind parameters.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">use </span><span class="n">stringifor</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">127</span><span class="w"> </span><span class="err">_</span><span class="n">I1P</span><span class="w">       </span><span class="c">! &quot;I1P&quot; is the PENF kind for 1-byte-like integer.</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot;+127&quot;</span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.021e6_R4P</span><span class="w">    </span><span class="c">! &quot;R4P&quot; is the PENF kind for 4-byte-like real.</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot;+0.302100E+07&quot;</span>
+
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;3.4e9&quot;</span><span class="w"> </span><span class="c">! assign to a string without the necessity to define a real kind</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">is_number</span><span class="p">())</span><span class="w"> </span><span class="k">then</span>
+<span class="k">  if</span><span class="w"> </span><span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">is_real</span><span class="p">())</span><span class="w"> </span><span class="k">then</span>
+<span class="k">    print</span><span class="w"> </span><span class="s2">&quot;(E13.6)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R4P</span><span class="p">)</span><span class="w"> </span><span class="c">! print &quot; 0.340000E+10&quot; using a 4-byte-like kind</span>
+<span class="w">  </span><span class="k">endif</span>
+<span class="k">endif</span><span class="w"></span>
+</code></pre></div>
+
+<h4 id="complex-scenario">Complex scenario</h4>
+<p>StingiFor is developed to improve the poor Fortran people with <em>daily</em> strings-usage, however, also complex scenario is taken into account, e.g. file parsing, OS operations, etc&hellip;</p>
+<div class="codehilite"><pre><span></span><code><span class="k">use </span><span class="n">stringifor</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+
+<span class="c">! OS like manipulation</span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/bar/foo.tar.bz2&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">basedir</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w">                       </span><span class="c">! print &quot;/bar&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w">                      </span><span class="c">! print &quot;foo.tar.bz2&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tar&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w">      </span><span class="c">! print &quot;foo&quot;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">strip_last_extension</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot;foo.tar&quot;</span>
+
+<span class="c">! XML like tag parsing</span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&lt;test&gt; &lt;first&gt; hello &lt;/first&gt; &lt;first&gt; not the first &lt;/first&gt; &lt;/test&gt;&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">search</span><span class="p">(</span><span class="n">tag_start</span><span class="o">=</span><span class="s1">&#39;&lt;first&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">tag_end</span><span class="o">=</span><span class="s1">&#39;&lt;/first&gt;&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="c">! print &quot;&lt;first&gt; hello &lt;/first&gt;&quot;</span>
+</code></pre></div>
+
+<h5 id="a-naive-csv-parser">A naive CSV parser</h5>
+<p>This is just a provocation, but with StringiFor it is easy to develop a naive CSV parser. Let us assume we want to parse a cars-price database as the following one</p>
+<div class="codehilite"><pre><span></span><code>Year, Make, Model, Description, Price
+1997, Ford, E350   , ac abs moon, 3000.00
+1999, Chevy, Venture &quot;Extended Edition&quot;  , , 4900.00
+1999, Chevy, Venture &quot;Extended Edition Very Large&quot;, , 5000.00
+</code></pre></div>
+
+<p>Well, parsing it and handling its cells values is very easy by means of StringiFor</p>
+<div class="codehilite"><pre><span></span><code><span class="k">use </span><span class="n">stringifor</span><span class="w"></span>
+
+<span class="k">implicit none</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">csv</span><span class="w">            </span><span class="c">!&lt; The CSV file as a single stream.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rows</span><span class="p">(:)</span><span class="w">        </span><span class="c">!&lt; The CSV table rows.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">columns</span><span class="p">(:)</span><span class="w">     </span><span class="c">!&lt; The CSV table columns.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">cells</span><span class="p">(:,:)</span><span class="w">     </span><span class="c">!&lt; The CSV table cells.</span>
+<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">most_expensive</span><span class="w"> </span><span class="c">!&lt; The most expensive car.</span>
+<span class="kt">real</span><span class="p">(</span><span class="n">R8P</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">highest_cost</span><span class="w">   </span><span class="c">!&lt; The highest cost.</span>
+<span class="kt">integer</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">rows_number</span><span class="w">    </span><span class="c">!&lt; The CSV file rows number.</span>
+<span class="kt">integer</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">columns_number</span><span class="w"> </span><span class="c">!&lt; The CSV file columns number.</span>
+<span class="kt">integer</span><span class="w">                   </span><span class="kd">::</span><span class="w"> </span><span class="n">r</span><span class="w">              </span><span class="c">!&lt; Counter.</span>
+
+<span class="c">! parsing the just created CSV file: all done 9 statements!</span>
+<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">read_file</span><span class="p">(</span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">)</span><span class="w">              </span><span class="c">! read the CSV file as a single stream</span>
+<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span><span class="w">   </span><span class="c">! get the CSV file rows</span>
+<span class="n">rows_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">                  </span><span class="c">! get the CSV file rows number</span>
+<span class="n">columns_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rows</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="nb">count</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">          </span><span class="c">! get the CSV file columns number</span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">rows_number</span><span class="p">))</span><span class="w"> </span><span class="c">! allocate the CSV file cells</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">rows_number</span><span class="w">                              </span><span class="c">! parse all cells</span>
+<span class="w">  </span><span class="k">call </span><span class="n">rows</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="w">    </span><span class="c">! get current columns</span>
+<span class="w">  </span><span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">columns</span><span class="w">           </span><span class="c">! save current columns into cells</span>
+<span class="k">enddo</span><span class="w"></span>
+
+<span class="c">! now you can do whatever with your parsed data</span>
+<span class="c">! print the table in markdown syntax</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;A markdown-formatted table&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="nb">repeat</span><span class="p">(</span><span class="s1">&#39;----|&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span><span class="w"> </span><span class="c">! printing separators</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">rows_number</span><span class="w"></span>
+<span class="w">  </span><span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span><span class="w"> </span><span class="n">r</span><span class="p">),</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span><span class="w"></span>
+<span class="k">enddo</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="c">! find the most expensive car</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Searching for the most expensive car&#39;</span><span class="w"></span>
+<span class="n">most_expensive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;unknown&#39;</span><span class="w"></span>
+<span class="n">highest_cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1._R8P</span><span class="w"></span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">rows_number</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">highest_cost</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">    </span><span class="n">highest_cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">most_expensive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="p">[</span><span class="n">cells</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">),</span><span class="w"> </span><span class="n">cells</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)],</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">endif</span>
+<span class="k">enddo</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;The most expensive car is : &#39;</span><span class="o">//</span><span class="n">most_expensive</span><span class="w"></span>
+</code></pre></div>
+
+<p>See the test program <a href="https://github.com/szaghi/StringiFor/blob/master/src/tests/csv_naive_parser.f90">csv_naive_parser</a> for a working example.</p>
+<p>Obviously, this is a naive parser without any robustness, but it proves the usefulness of the StringiFor approach.</p>
+<p>Go to <a href="#top">Top</a></p>
+<h2 id="copyrights">Copyrights</h2>
 <p>StringiFor is an open source project, it is distributed under a multi-licensing system:</p>
 <ul>
 <li>for FOSS projects:</li>
@@ -171,15 +291,36 @@
 <p>Anyone is interest to use, to develop or to contribute to StringiFor is welcome, feel free to select the license that best matches your soul!</p>
 <p>More details can be found on <a href="https://github.com/szaghi/StringiFor/wiki/Copyrights">wiki</a>.</p>
 <p>Go to <a href="#top">Top</a></p>
-<h2 id="download"><a class="toclink" href="#download">Download</a></h2>
-<p>StringiFor home is at <a href="https://github.com/szaghi/StringiFor">https://github.com/szaghi/StringiFor</a>. It uses <code>git submodule</code> to handle the third party dependency. To download all the source files you can:</p>
+<h2 id="download">Download</h2>
+<p>StringiFor home is at <a href="https://github.com/szaghi/StringiFor">https://github.com/szaghi/StringiFor</a>. It uses <code>git submodule</code> to handle the third party dependencies. To download all the source files you can:</p>
 <ul>
-<li>clone recursively this repository: <code>git clone --recursive https://github.com/szaghi/StringiFor</code></li>
-<li>download the latest master-branch archive at <a href="https://github.com/szaghi/StringiFor/archive/master.zip">https://github.com/szaghi/StringiFor/archive/master.zip</a></li>
+<li>clone this repository (all dependencies are satisfied):</li>
+<li><code>git clone https://github.com/szaghi/StringiFor</code></li>
+<li><code>cd StringiFor</code></li>
+<li><code>git submodule update --init</code></li>
+<li>download only the StringiFor sources, all other dependencies must be downloaded manually:</li>
+<li>download the latest master-branch archive:<ul>
+<li><code>wget https://github.com/szaghi/StringiFor/archive/master.zip</code></li>
+<li><code>unzip StringiFor-master.zip</code></li>
+<li><code>cd StringiFor-master</code></li>
+<li><code>git submodule update --init</code></li>
+</ul>
+</li>
 <li>download a release archive at <a href="https://github.com/szaghi/StringiFor/releases">https://github.com/szaghi/StringiFor/releases</a></li>
 </ul>
+<h4 id="third-party-dependencies">Third Party dependencies</h4>
+<p>Currently StringiFor depends on:</p>
+<ul>
+<li><a href="https://github.com/szaghi/FACE">FACE</a></li>
+<li><a href="https://github.com/szaghi/PENF">PENF</a></li>
+<li><a href="https://github.com/szaghi/BeFoR64">BeFoR64</a></li>
+</ul>
+<blockquote>
+<p>The third party libraries are necessary for building StringiFor. StringiFor is constantly made up-to-date with third party libraries master branch or their latest release.</p>
+</blockquote>
+<p>If you download a release of StringiFor manually (without git) you must download manually the above dependencies and place them into <code>src/third_party</code> sub-directory of the project root-tree.</p>
 <p>Go to <a href="#top">Top</a></p>
-<h2 id="compilation"><a class="toclink" href="#compilation">Compilation</a></h2>
+<h2 id="compilation">Compilation</h2>
 <p>StringiFor is a modern Fortran project thus a modern Fortran compiler is need to compile the project. In the following table the support for some widely-used Fortran compilers is summarized.</p>
 <table>
 <thead>
@@ -190,11 +331,11 @@
 </thead>
 <tbody>
 <tr>
-<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/GNU-v5.3.0+-orange.svg"></a></td>
-<td>does not support defined IO</td>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/GNU-v9.2.0+-brightgreen.svg"></a></td>
+<td>full support</td>
 </tr>
 <tr>
-<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/Intel-v16.x+-brightgreen.svg"></a></td>
+<td><a href=""><img alt="Compiler" src="https://img.shields.io/badge/Intel-v19.0.4+-brightgreen.svg"></a></td>
 <td>full support</td>
 </tr>
 <tr>
@@ -218,20 +359,19 @@
 <p>The library is modular, namely it exploits Fortran modules. As a consequence, there is compilation-cascade hierarchy to build the library. To correctly build the library the following approaches are supported</p>
 <ul>
 <li><a href="#build-by-means-of-fobis">Build by means of FoBiS</a>: full support;</li>
-<li><a href="#build-by-means-of-fobis">Build by means of GNU Make</a>: support only Intel Fortran;</li>
-<li><a href="#build-by-means-of-fobis">Build by means of CMake</a>: to be implemented.</li>
+<li><a href="#build-by-means-of-gnu-make">Build by means of GNU Make</a>: support for GNU Make is not provided, a Makefile is provided, but it is likely outdated and could not work as expected. Help for maintaining GNU Make support is strongly welcome, feel free to join this progect.</li>
+<li><a href="#build-by-means-of-fobis">Build by means of CMake</a>: support for CMake is not provide, some CMake support is provided by great users, but it could be outdated. Help for maintaining CMake support is strongly welcome, feel free to join this progect.</li>
 </ul>
-<p>The FoBiS building support is the most complete, as it is the one used for the developing StringiFor.</p>
-<h3 id="build-by-means-of-fobis"><a class="toclink" href="#build-by-means-of-fobis">Build by means of FoBiS</a></h3>
+<p>The FoBiS building support is the most complete and the only one officially supported by the author, as it is the one used for the developing StringiFor.</p>
+<h3 id="build-by-means-of-fobis">Build by means of FoBiS</h3>
 <p>A <code>fobos</code> file is provided to build the library by means of the Fortran Building System <a href="https://github.com/szaghi/FoBiS">FoBiS</a>.</p>
-<h4 id="build-all-tests"><a class="toclink" href="#build-all-tests">Build all tests</a></h4>
+<h4 id="build-all-tests">Build all tests</h4>
 <p>Type</p>
-<div class="codehilite"><pre><span></span>FoBiS.py build
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>FoBiS.py build
+</code></pre></div>
 
 <p>After (a successuful) building a directory <code>./exe</code> is created containing all the compiled tests that constitute the StringiFor <em>regression-tests-suite</em>, e.g.</p>
-<div class="codehilite"><pre><span></span>→ FoBiS.py build
+<div class="codehilite"><pre><span></span><code>→ FoBiS.py build
 Builder options
 Directories
   Building directory: <span class="s2">&quot;exe&quot;</span>
@@ -295,12 +435,11 @@ exe/
 ├── to_number
 ├── unique
 └── upper_lower
-</pre></div>
+</code></pre></div>
 
-
-<h4 id="build-the-library"><a class="toclink" href="#build-the-library">Build the library</a></h4>
+<h4 id="build-the-library">Build the library</h4>
 <p>Type</p>
-<div class="codehilite"><pre><span></span><span class="c1"># static-linked library by means of GNU gfortran</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># static-linked library by means of GNU gfortran</span>
 FoBiS.py build -mode stringifor-static-gnu
 
 <span class="c1"># shared-linked library by means of GNU gfortran</span>
@@ -311,13 +450,12 @@ FoBiS.py build -mode stringifor-static-intel
 
 <span class="c1"># shared-linked library by means of Intel Fortran</span>
 FoBiS.py build -mode stringifor-shared-intel
-</pre></div>
-
+</code></pre></div>
 
 <p>The library will be built into the directory <code>./lib</code>.</p>
-<h3 id="list-other-fobos-modes"><a class="toclink" href="#list-other-fobos-modes">List other fobos modes</a></h3>
+<h3 id="list-other-fobos-modes">List other fobos modes</h3>
 <p>To list all <em>fobos-provided</em> modes type</p>
-<div class="codehilite"><pre><span></span>→ FoBiS.py build -lmodes
+<div class="codehilite"><pre><span></span><code>→ FoBiS.py build -lmodes
 The fobos file defines the following modes:
   - <span class="s2">&quot;tests-gnu&quot;</span>
   - <span class="s2">&quot;tests-gnu-debug&quot;</span>
@@ -327,191 +465,43 @@ The fobos file defines the following modes:
   - <span class="s2">&quot;stringifor-shared-gnu&quot;</span>
   - <span class="s2">&quot;stringifor-static-intel&quot;</span>
   - <span class="s2">&quot;stringifor-shared-intel&quot;</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>It is worth to note that the first mode is the one automatically called by <code>FoBiS.py build</code>.</p>
-<h3 id="build-by-means-of-gnu-make"><a class="toclink" href="#build-by-means-of-gnu-make">Build by means of GNU Make</a></h3>
-<p>The provided makefile support only Intel Fortran Compiler and it has two main building rules:</p>
+<h3 id="build-by-means-of-gnu-make">Build by means of GNU Make</h3>
+<p>The provided makefile support only static-linked library building (not shared one) with both Intel Fortran Compiler and GNU gfortran, and it has two main building rules:</p>
 <ul>
 <li>build the (static linked) library;</li>
 <li>build the tests suite.</li>
 </ul>
-<p>To build the library type</p>
-<div class="codehilite"><pre><span></span>make
-</pre></div>
+<blockquote>
+<p>the GNU gfortran compiler is the default one, but the compiler used can be customized with COMPILER=#vendor switch.</p>
+</blockquote>
+<p>To build the library type with the GNU gfortran compiler.</p>
+<div class="codehilite"><pre><span></span><code>make
+</code></pre></div>
 
-
-<p>The library will be built into the directory <code>./lib</code>.</p>
+<p>The library will be built into the directory <code>./lib/libstringifor.a</code>.</p>
 <p>To build the tests suite type</p>
-<div class="codehilite"><pre><span></span>make <span class="nv">TESTS</span><span class="o">=</span>yes
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>make <span class="nv">TESTS</span><span class="o">=</span>yes
+</code></pre></div>
 
 <p>The tests will be built into the directory <code>./exe</code>.</p>
-<h3 id="build-by-means-of-cmake"><a class="toclink" href="#build-by-means-of-cmake">Build by means of CMake</a></h3>
+<p>If you want to use Intel Fortran Compiler add the switch <code>COMPILER=intel</code> to the above commands, i.e.</p>
+<div class="codehilite"><pre><span></span><code>make <span class="nv">COMPILER</span><span class="o">=</span>intel <span class="c1"># build only the library</span>
+make <span class="nv">COMPILER</span><span class="o">=</span>intel <span class="nv">TESTS</span><span class="o">=</span>yes <span class="c1"># build the tests suite</span>
+</code></pre></div>
+
+<h3 id="build-by-means-of-cmake">Build by means of CMake</h3>
 <p>To be done.</p>
 <p>Go to <a href="#top">Top</a></p>
 <hr>
-<h2 id="documentation"><a class="toclink" href="#documentation">Documentation</a></h2>
+<h2 id="documentation">Documentation</h2>
 <p>The StringiFor documentation is mainly contained into this file (it has its own <a href="https://github.com/szaghi/StringiFor/wiki">wiki</a> with some less important documents). Detailed documentation of the API is contained into the <a href="http://szaghi.github.io/StringiFor/index.html">GitHub Pages</a> that can also be created locally by means of <a href="https://github.com/cmacmackin/ford">ford tool</a>.</p>
-<ul>
-<li><a href="#a_taste_of_stringifor">A Taste of StringiFor</a></li>
-<li><a href="#basic_io">Basic IO</a></li>
-<li><a href="#string_manipulation">String manipulation</a></li>
-<li><a href="#numbers_handling">Numbers handling</a></li>
-<li><a href="#complex_scenario">Complex scenario</a></li>
-<li><a href="#methods-api">Methods API</a></li>
-</ul>
 <hr>
-<h3 id="a-taste-of-stringifor"><a class="toclink" href="#a-taste-of-stringifor">A Taste of StringiFor</a></h3>
-<p>StringiFor is very handy&hellip;</p>
-<h4 id="basic-io"><a class="toclink" href="#basic-io">Basic IO</a></h4>
-<p>The class <code>string</code>  IO is overloaded by defined write/read TBP. Moreover, dedicated methods and operators can be exploited for IO, e.g.</p>
-<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">chars</span><span class="p">()</span> <span class="c">! &quot;chars&quot; method returns a standard character variable</span>
-<span class="k">print</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="n">astring</span>        <span class="c">! defined IO is not enabled with GNU gfortran</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span>     <span class="c">! on-the-fly conversion to standard character by means of concatenation</span>
-</pre></div>
-
-
-<h4 id="string-manipulation"><a class="toclink" href="#string-manipulation">String manipulation</a></h4>
-<p>The class <code>string</code> has many methods for a plethora of strings manipulations, e.g.</p>
-<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;0123456789&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">reverse</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;9876543210&quot;</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">replace</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="s1">&#39;World&#39;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="s1">&#39;People&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;Hello People&quot;</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
-<span class="n">strings</span> <span class="o">=</span> <span class="n">astring</span><span class="p">%</span><span class="n">partition</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;lo Wo&#39;</span><span class="p">)</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;Before sep: &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span> <span class="c">! print &quot;Hel&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;Sep itself: &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span> <span class="c">! print &quot;lo Wo&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;After sep:  &quot;&#39;</span><span class="o">//</span><span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&quot;&#39;</span> <span class="c">! print &quot;rld&quot;</span>
-
-<span class="n">strings</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;one&#39;</span>
-<span class="n">strings</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;two&#39;</span>
-<span class="n">strings</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;three&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span>          <span class="c">! print &quot;onetwothree&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;one-two-three&quot;</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39; a StraNgE caSe var&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">camelcase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot; AStrangeCaseVar&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">snakecase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot; a_strange_case_var&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">startcase</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot; A Strange Case Var&quot;</span>
-</pre></div>
-
-
-<h4 id="numbers-handling"><a class="toclink" href="#numbers-handling">Numbers handling</a></h4>
-<p>StringiFor, by means of the <a href="https://github.com/szaghi/PENF">portability environment library, PENF</a> can handle numbers (reals and integers) effortless. The string/number <em>casting</em> (to/from and viceversa) is done by overloaded assignments (for all kinds of integers and reals). For convenience, StringiFor exposes the PENF number <em>portable</em> kind parameters.</p>
-<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="mi">127</span> <span class="err">_</span><span class="n">I1P</span>       <span class="c">! &quot;I1P&quot; is the PENF kind for 1-byte-like integer.</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;+127&quot;</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="mf">3.021e6_R4P</span>    <span class="c">! &quot;R4P&quot; is the PENF kind for 4-byte-like real.</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;+0.302100E+07&quot;</span>
-
-<span class="n">astring</span> <span class="o">=</span> <span class="s2">&quot;3.4e9&quot;</span> <span class="c">! assign to a string without the necessity to define a real kind</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">is_number</span><span class="p">())</span> <span class="k">then</span>
-<span class="k">  if</span> <span class="p">(</span><span class="n">astring</span><span class="p">%</span><span class="n">is_real</span><span class="p">())</span> <span class="k">then</span>
-<span class="k">    print</span> <span class="s2">&quot;(E13.6)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R4P</span><span class="p">)</span> <span class="c">! print &quot; 0.340000E+10&quot; using a 4-byte-like kind</span>
-  <span class="n">endif</span>
-<span class="n">endif</span>
-</pre></div>
-
-
-<h4 id="complex-scenario"><a class="toclink" href="#complex-scenario">Complex scenario</a></h4>
-<p>StingiFor is developed to improve the poor Fortran people with <em>daily</em> strings-usage, however, also complex scenario is taken into account, e.g. file parsing, OS operations, etc&hellip;</p>
-<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-
-<span class="c">! OS like manipulation</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;/bar/foo.tar.bz2&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basedir</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span>                       <span class="c">! print &quot;/bar&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">()</span><span class="o">//</span><span class="s1">&#39;&#39;</span>                      <span class="c">! print &quot;foo.tar.bz2&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="s1">&#39;.tar&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span>      <span class="c">! print &quot;foo&quot;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">basename</span><span class="p">(</span><span class="n">last_extension</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;foo.tar&quot;</span>
-
-<span class="c">! XML like tag parsing</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;&lt;test&gt; &lt;first&gt; hello &lt;/first&gt; &lt;first&gt; not the first &lt;/first&gt; &lt;/test&gt;&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">search</span><span class="p">(</span><span class="n">tag_start</span><span class="o">=</span><span class="s1">&#39;&lt;first&gt;&#39;</span><span class="p">,</span> <span class="n">tag_end</span><span class="o">=</span><span class="s1">&#39;&lt;/first&gt;&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span> <span class="c">! print &quot;&lt;first&gt; hello &lt;/first&gt;&quot;</span>
-</pre></div>
-
-
-<h5 id="a-naive-csv-parser"><a class="toclink" href="#a-naive-csv-parser">A naive CSV parser</a></h5>
-<p>This is just a provocation, but with StringiFor it is easy to develop a naive CSV parser. Let us assume we want to parse a cars-price database as the following one</p>
-<div class="codehilite"><pre><span></span>Year, Make, Model, Description, Price
-1997, Ford, E350   , ac abs moon, 3000.00
-1999, Chevy, Venture &quot;Extended Edition&quot;  , , 4900.00
-1999, Chevy, Venture &quot;Extended Edition Very Large&quot;, , 5000.00
-</pre></div>
-
-
-<p>Well, parsing it and handling its cells values is very easy by means of StringiFor</p>
-<div class="codehilite"><pre><span></span><span class="k">use </span><span class="n">stringifor</span>
-
-<span class="k">implicit none</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">csv</span>            <span class="c">!&lt; The CSV file as a single stream.</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">rows</span><span class="p">(:)</span>        <span class="c">!&lt; The CSV table rows.</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">columns</span><span class="p">(:)</span>     <span class="c">!&lt; The CSV table columns.</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">cells</span><span class="p">(:,:)</span>     <span class="c">!&lt; The CSV table cells.</span>
-<span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">most_expensive</span> <span class="c">!&lt; The most expensive car.</span>
-<span class="kt">real</span><span class="p">(</span><span class="n">R8P</span><span class="p">)</span>                 <span class="kd">::</span> <span class="n">highest_cost</span>   <span class="c">!&lt; The highest cost.</span>
-<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">rows_number</span>    <span class="c">!&lt; The CSV file rows number.</span>
-<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">columns_number</span> <span class="c">!&lt; The CSV file columns number.</span>
-<span class="kt">integer</span>                   <span class="kd">::</span> <span class="n">r</span>              <span class="c">!&lt; Counter.</span>
-
-<span class="c">! parsing the just created CSV file: all done 9 statements!</span>
-<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">read_file</span><span class="p">(</span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;cars.csv&#39;</span><span class="p">)</span>              <span class="c">! read the CSV file as a single stream</span>
-<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>   <span class="c">! get the CSV file rows</span>
-<span class="n">rows_number</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>                  <span class="c">! get the CSV file rows number</span>
-<span class="n">columns_number</span> <span class="o">=</span> <span class="n">rows</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="nb">count</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>          <span class="c">! get the CSV file columns number</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">rows_number</span><span class="p">))</span> <span class="c">! allocate the CSV file cells</span>
-<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rows_number</span>                              <span class="c">! parse all cells</span>
-  <span class="k">call </span><span class="n">rows</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>    <span class="c">! get current columns</span>
-  <span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">columns</span>           <span class="c">! save current columns into cells</span>
-<span class="n">enddo</span>
-
-<span class="c">! now you can do whatever with your parsed data</span>
-<span class="c">! print the table in markdown syntax</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;A markdown-formatted table&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
-<span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;----&#39;</span> <span class="c">! re-use columns for printing separators</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
-<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rows_number</span>
-  <span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span> <span class="n">r</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
-<span class="n">enddo</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
-<span class="c">! find the most expensive car</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;Searching for the most expensive car&#39;</span>
-<span class="n">most_expensive</span> <span class="o">=</span> <span class="s1">&#39;unknown&#39;</span>
-<span class="n">highest_cost</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1._R8P</span>
-<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rows_number</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">highest_cost</span><span class="p">)</span> <span class="k">then</span>
-<span class="k">    </span><span class="n">highest_cost</span> <span class="o">=</span> <span class="n">cells</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">r</span><span class="p">)%</span><span class="n">to_number</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="mf">1._R8P</span><span class="p">)</span>
-    <span class="n">most_expensive</span> <span class="o">=</span> <span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="p">[</span><span class="n">cells</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="n">cells</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">r</span><span class="p">)],</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-  <span class="n">endif</span>
-<span class="n">enddo</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="s1">&#39;The most expensive car is : &#39;</span><span class="o">//</span><span class="n">most_expensive</span>
-</pre></div>
-
-
-<p>See the test program <a href="https://github.com/szaghi/StringiFor/blob/master/src/tests/csv_naive_parser.f90">csv_naive_parser</a> for a working example.</p>
-<p>Obviously, this is a naive parser without any robustness, but it proves the usefulness of the StringiFor approach.</p>
-<hr>
-<h3 id="methods-api"><a class="toclink" href="#methods-api">Methods API</a></h3>
+<h3 id="methods-api">Methods API</h3>
 <p>In the following all the methods of <code>string</code> are listed with a brief description of their aim. The hyperlinks bring you to the full API explained into the GH pages.</p>
-<h5 id="builtins-replacements"><a class="toclink" href="#builtins-replacements">builtins replacements</a></h5>
+<h5 id="built-ins-replacements">built-ins replacements</h5>
 <table>
 <thead>
 <tr>
@@ -562,7 +552,7 @@ The fobos file defines the following modes:
 </tr>
 </tbody>
 </table>
-<h5 id="auxiliary-methods"><a class="toclink" href="#auxiliary-methods">auxiliary methods</a></h5>
+<h5 id="auxiliary-methods">auxiliary methods</h5>
 <table>
 <thead>
 <tr>
@@ -680,6 +670,10 @@ The fobos file defines the following modes:
 <td>return a string with uppercase chars converted to lowercase and vice versa</td>
 </tr>
 <tr>
+<td><a href="#tempname">tempname   </a></td>
+<td>return a safe temporary name suitable for temporary file or directories</td>
+</tr>
+<tr>
 <td><a href="#to_number">to_number  </a></td>
 <td>cast string to number</td>
 </tr>
@@ -709,7 +703,7 @@ The fobos file defines the following modes:
 </tr>
 </tbody>
 </table>
-<h5 id="inquire-methods"><a class="toclink" href="#inquire-methods">inquire methods</a></h5>
+<h5 id="inquire-methods">inquire methods</h5>
 <table>
 <thead>
 <tr>
@@ -756,7 +750,7 @@ The fobos file defines the following modes:
 </tr>
 </tbody>
 </table>
-<h5 id="operators"><a class="toclink" href="#operators">operators</a></h5>
+<h5 id="operators">operators</h5>
 <table>
 <thead>
 <tr>
@@ -803,7 +797,7 @@ The fobos file defines the following modes:
 </tr>
 </tbody>
 </table>
-<h5 id="io"><a class="toclink" href="#io">IO</a></h5>
+<h5 id="io">IO</h5>
 <table>
 <thead>
 <tr>
@@ -832,7 +826,7 @@ The fobos file defines the following modes:
 </table>
 <p>Go to <a href="#top">Top</a></p>
 <hr>
-<h2 id="comparison-to-other-approaches"><a class="toclink" href="#comparison-to-other-approaches">Comparison to other Approaches</a></h2>
+<h2 id="comparison-to-other-approaches">Comparison to other Approaches</h2>
 <p>The lack of Fortran support for strings manipulation has promoted different solutions in the past years. Following the classification of Clive Page <a href="#clive-page-talk">[1]</a> we can consider:</p>
 <ul>
 <li>standard character type;</li>
@@ -844,152 +838,139 @@ The fobos file defines the following modes:
 <ul>
 <li>fixed (at compile time) string length</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span> <span class="c">! further lengths different from 3 are not allowed</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="c">! further lengths different from 3 are not allowed</span>
+</code></pre></div>
 
 <ul>
 <li>silent truncation on assignment</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span> <span class="c">! silent trunctation at &#39;abc&#39;</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;abcdefgh&#39;</span><span class="w"> </span><span class="c">! silent trunctation at &#39;abc&#39;</span>
+</code></pre></div>
 
 <ul>
 <li>trim-cluttered code</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">anotherstring</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span>
-<span class="n">anotherstring</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;ilmnopqrst&#39;</span> <span class="c">! trim-cluttering is a necessity</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;abcdefgh&#39;</span><span class="w"></span>
+<span class="n">anotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;ilmnopqrst&#39;</span><span class="w"> </span><span class="c">! trim-cluttering is a necessity</span>
+</code></pre></div>
 
 <ul>
 <li>handle significant trailing spaces</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">anotherstring</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span> <span class="c">! for some reasons you want to keep these trailing white spaces</span>
-<span class="n">anotherstring</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;World&#39;</span> <span class="c">! you need trim because</span>
-                                       <span class="c">! len(astring)==len(anotherstring), but lost the significant</span>
-                                       <span class="c">! trailing spaces...</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hello &#39;</span><span class="w"> </span><span class="c">! for some reasons you want to keep these trailing white spaces</span>
+<span class="n">anotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">trim</span><span class="p">(</span><span class="n">astring</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;World&#39;</span><span class="w"> </span><span class="c">! you need trim because</span>
+<span class="w">                                       </span><span class="c">! len(astring)==len(anotherstring), but lost the significant</span>
+<span class="w">                                       </span><span class="c">! trailing spaces...</span>
+</code></pre></div>
 
 <ul>
 <li>different character definition</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span>         <span class="kd">::</span> <span class="n">astring</span><span class="o">*</span><span class="mi">10</span>    <span class="c">! old way</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="kd">::</span> <span class="n">anotherstring</span> <span class="c">! new way</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="o">*</span><span class="mi">10</span><span class="w">    </span><span class="c">! old way</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"> </span><span class="c">! new way</span>
+</code></pre></div>
 
 <ul>
 <li>allocation of array of strings</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">astring</span><span class="p">(:)</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">astring</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span> <span class="c">! all 100 elements of the array have 10 characters,</span>
-                       <span class="c">! different lengths cannot be declared</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="p">(:)</span><span class="w"></span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">astring</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span><span class="w"> </span><span class="c">! all 100 elements of the array have 10 characters,</span>
+<span class="w">                       </span><span class="c">! different lengths cannot be declared</span>
+</code></pre></div>
 
 <ul>
 <li>initialization of array of strings</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="c">! the following is illegal</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span> <span class="k">parameter</span> <span class="kd">::</span> <span class="n">day</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Monday&#39;</span><span class="p">,</span>    <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Tuesday&#39;</span><span class="p">,</span>   <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Thursday&#39;</span><span class="p">,</span>  <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Friday&#39;</span><span class="p">,</span>    <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Saturday&#39;</span><span class="p">,</span>  <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Sunday&#39;</span><span class="p">]</span>
+<div class="codehilite"><pre><span></span><code><span class="c">! the following is illegal</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">day</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;Monday&#39;</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Tuesday&#39;</span><span class="p">,</span><span class="w">   </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Thursday&#39;</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Friday&#39;</span><span class="p">,</span><span class="w">    </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Saturday&#39;</span><span class="p">,</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Sunday&#39;</span><span class="p">]</span><span class="w"></span>
 <span class="c">! the following is legal, but cluttered by non significant trailing spaces</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span> <span class="k">parameter</span> <span class="kd">::</span> <span class="n">day</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Monday   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Tuesday  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Thursday &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Friday   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Saturday &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                                         <span class="s1">&#39;Sunday&#39;</span><span class="p">]</span>
-</pre></div>
-
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span><span class="w"> </span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">day</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;Monday   &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Tuesday  &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Thursday &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Friday   &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Saturday &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">                                         </span><span class="s1">&#39;Sunday&#39;</span><span class="p">]</span><span class="w"></span>
+</code></pre></div>
 
 <ul>
 <li>IO limitations for non standard character variables</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">astring</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">anotherstring</span>
-<span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">yetanotherstring</span>
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">yetanotherstring</span><span class="w"></span>
 <span class="c">! fully-simple support for standard character variables</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span>
-<span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="n">astring</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span>
-<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="n">astring</span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;abcdefgh&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
 <span class="c">! partial-simple support for standard deferred length-length allocatable character variables</span>
 <span class="c">! care must be placed in input operation...</span>
-<span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="n">anotherstring</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">anotherstring</span>
-<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="n">anotherstring</span>
+<span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
+<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
 <span class="c">! support depends on the implementation of the varying string type</span>
-<span class="k">print</span><span class="o">*</span><span class="p">,</span> <span class="n">yetanotherstring</span>
-<span class="k">print</span> <span class="s2">&quot;(DT)&quot;</span><span class="p">,</span> <span class="n">yetanotherstring</span>
-<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span> <span class="n">yetanotherstring</span>
-</pre></div>
-
+<span class="k">print</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">yetanotherstring</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(DT)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">yetanotherstring</span><span class="w"></span>
+<span class="k">read</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">yetanotherstring</span><span class="w"></span>
+</code></pre></div>
 
 <ul>
 <li>substring notation (slice)  for non standard character variables</li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>             <span class="kd">::</span> <span class="n">astring</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">anotherstring</span>
-<span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span>          <span class="kd">::</span> <span class="n">yetanotherstring</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefgh&#39;</span>
-<span class="n">yetanotherstring</span> <span class="o">=</span> <span class="n">astring</span>
-<span class="n">anotherstring</span> <span class="o">=</span> <span class="n">astring</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">)</span>          <span class="c">! allowed</span>
-<span class="n">anotherstring</span> <span class="o">=</span> <span class="n">yetanotherstring</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">)</span> <span class="c">! not allowed</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
+<span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span><span class="w">          </span><span class="kd">::</span><span class="w"> </span><span class="n">yetanotherstring</span><span class="w"></span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;abcdefgh&#39;</span><span class="w"></span>
+<span class="n">yetanotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="n">anotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">)</span><span class="w">          </span><span class="c">! allowed</span>
+<span class="n">anotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yetanotherstring</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="c">! not allowed</span>
+</code></pre></div>
 
 <ul>
 <li>passing string to procedures expecting standard character argument is <em>complicated</em></li>
 </ul>
 <p>Analyzing the above issues we can agree that deferred-length allocatable character and aniso_varyng_string approaches address many of them, at the cost of introducing some oddies.</p>
-<h4 id="deferred-length-allocatable-character"><a class="toclink" href="#deferred-length-allocatable-character">deferred-length allocatable character</a></h4>
+<h4 id="deferred-length-allocatable-character">deferred-length allocatable character</h4>
 <p>This approaches addresses all the issues related to the fixed length limitation, e.g.</p>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">astring</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">anotherstring</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;Hello &#39;</span>
-<span class="n">anotherstring</span> <span class="o">=</span> <span class="n">astring</span><span class="o">//</span><span class="s1">&#39;World&#39;</span> <span class="c">! trailing with spaces of astring correctly handled</span>
-                                 <span class="c">! no need of trim</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anotherstring</span><span class="w"></span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hello &#39;</span><span class="w"></span>
+<span class="n">anotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="o">//</span><span class="s1">&#39;World&#39;</span><span class="w"> </span><span class="c">! trailing with spaces of astring correctly handled</span>
+<span class="w">                                 </span><span class="c">! no need of trim</span>
+</code></pre></div>
 
 <p>However, it has some limitations too. Aside the input operation, the most important (IMHO) are related to arrays of strings handling, e.g.</p>
-<div class="codehilite"><pre><span></span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">asetofstring</span><span class="p">(:)</span>
-<span class="k">allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span> <span class="kd">::</span> <span class="n">asetofstring</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c">! all 10 elements must have len=99</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">asetofstring</span><span class="p">(:)</span><span class="w"></span>
+<span class="k">allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">asetofstring</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="c">! all 10 elements must have len=99</span>
+</code></pre></div>
 
-
-<h4 id="aniso_varying_string"><a class="toclink" href="#aniso_varying_string">aniso_varying_string</a></h4>
+<h4 id="aniso_varying_string">aniso_varying_string</h4>
 <p>Aniso_varying_string is an implemention of ISO/IEC 1539-2:2000 (Varying length character strings) developed by Ian Harvey that is internally based on a deferred-lenght allocatable character variable: it is essentially a derived type wrapping a deferred-lenght allocatable character. As a consequence, it has all the advantages of the deferred-length allocatable character approach. The wrapping approach addresses the arrays related issues, e.g.</p>
-<div class="codehilite"><pre><span></span><span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">asetofstring</span><span class="p">(:)</span>
-<span class="k">allocate</span><span class="p">(</span><span class="n">asetofstring</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c">! all 10 elements can have diffent lengths</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">asetofstring</span><span class="p">(:)</span><span class="w"></span>
+<span class="k">allocate</span><span class="p">(</span><span class="n">asetofstring</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="c">! all 10 elements can have diffent lengths</span>
+</code></pre></div>
 
 <p>Its major issues are related to IO operations: however, this is addressed by new Fortran support for defined IO for derived type that make more effortless the IO of such an object. The other main issue is the impossibility to use the standard slice notation to access to substring: aniso_varying_string addresses (partially) this issue by public-exposing the wrapped allocatable character of its implementations thus allowing the slicing of it, e.g.</p>
-<div class="codehilite"><pre><span></span><span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span> <span class="kd">::</span> <span class="n">astring</span>
-<span class="n">astring</span> <span class="o">=</span> <span class="s1">&#39;abcdefg&#39;</span>
-<span class="k">print</span> <span class="s2">&quot;(A)&quot;</span><span class="p">,</span> <span class="n">astring</span><span class="p">%</span><span class="n">chars</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span> <span class="c">! print &#39;bc&#39;</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="n">varying_string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
+<span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;abcdefg&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">chars</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="c">! print &#39;bc&#39;</span>
+</code></pre></div>
 
-
-<h4 id="stringifor_1"><a class="toclink" href="#stringifor_1">StringiFor</a></h4>
+<h4 id="stringifor_1">StringiFor</h4>
 <p>StringiFor shares the same philosophy of aniso_varying_string, thut it has the same pros and cons. However, StringiFor is an Object Oriented Designed class, thus it has some peculiariaties distinguishing it from aniso_varying_string, see <a href="#stringifor-peculiarities">StringiFor Peculiarities</a>.</p>
-<h4 id="comparison-results"><a class="toclink" href="#comparison-results">Comparison results</a></h4>
+<h4 id="comparison-results">Comparison results</h4>
 <p>The following table summarizes the comparison analysis.</p>
 <table>
 <thead>
@@ -1074,7 +1055,7 @@ The fobos file defines the following modes:
 </tr>
 </tbody>
 </table>
-<h5 id="legend"><a class="toclink" href="#legend">legend</a></h5>
+<h5 id="legend">legend</h5>
 <table>
 <thead>
 <tr>
@@ -1097,1509 +1078,84 @@ The fobos file defines the following modes:
 </tr>
 </tbody>
 </table>
-<h3 id="stringifor-peculiarities"><a class="toclink" href="#stringifor-peculiarities">StringiFor Peculiarities</a></h3>
+<h3 id="stringifor-peculiarities">StringiFor Peculiarities</h3>
 <p>StringiFor publics an OOD class, the <code>string</code> object. This class is aimed to address all the issues of the standard character type, as ISO Varying String approaches do, but it is also designed to provide a features-rich string object as you can find on other languages like Python. As a matter of facts, the <em>auxiliary methods</em> added to the <code>string</code> object consitute a long list of new (for Fortraners) string-facilities, allowing you to handle strings effortless (cases-conversion, files-handling, encode/decode, numbers-casting, etc&hellip;), see the complete <a href="#methods-api">API</a>. It is worth to note that StringiFor is a tentative to adopt an fully OOD thus all methods and operators are TBP defined: to use StringiFor you can import only the <code>string</code> type, allowing a sane and robust names space handling. Only in the case you want the Fortran builtins to accept a <code>string</code> instead of a standard character type, e.g. to use <code>index(astring, 'c')</code> seamless with both a <code>type(string) :: astring</code> and a <code>character(99) :: astring</code>, you must use all the StringiFor public objects, including the overloaded interfaces of the Fortran builtins.</p>
-<h4 id="references"><a class="toclink" href="#references">References</a></h4>
+<h4 id="references">References</h4>
 <p>[1]<a name="clive-page-talk"></a> <a href="http://www.fortran.bcs.org/2015/suggestion_string_handling.pdf"><em>Improved String-handling in Fortran</em></a>, Clive Page, October 2015.</p>
 <p>[2]<a name="aniso_vstring"></a> <a href="http://www.megms.com.au/aniso_varying_string.htm"><em>aniso_varying_string</em></a>, Ian Harvey, 2016.</p>
 <p>Go to <a href="#top">Top</a></p>
         </div>
-		  
-        <div class="col-lg-4">
+        <div class="col-md-4">
 	  <div class="well">
           <h2>Developer Info</h2>
           <h4>Stefano Zaghi</h4>
           
-          
-			   
             <div class="text-center"><div class="btn-group" role="group">
-              
               <a class="btn btn-lg btn-primary" href="mailto:stefano.zaghi@gmail.com"><i class="fa fa-envelope fa-lg"></i></a>
-              
-              
-              
               <a class="btn btn-lg btn-primary" href="https://github.com/szaghi"><i class="fa fa-github fa-lg"></i></a>
-				  
-				  
-              
-              
-              
-              
             </div></div>
-            
        </div>
        </div>
-       
       </div>
-      
-      
-      
-      
-		
       <div class="row">
-          <div class="col-lg-3">
+        <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
-              <ul>
-                
-                  
-                    <li><a href='./sourcefile/assignments.f90.html'>assignments.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/basename_dir.f90.html'>basename_dir.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/befor64.f90.html'>befor64.F90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/befor64.f90%7E2.html'>befor64.F90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/befor64_pack_data_m.f90.html'>befor64_pack_data_m.F90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/befor64_pack_data_m.f90%7E2.html'>befor64_pack_data_m.F90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/camelcase.f90.html'>camelcase.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/capitalize.f90.html'>capitalize.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/compact_real.f90.html'>compact_real.f90</a></li>
-                  
-                
-                  
-                    <li><a href='./sourcefile/compact_real.f90%7E2.html'>compact_real.f90</a></li>
-                  
-                
-                  
-                    <li><a href="./lists/files.html"><em>All source files&hellip;</em></a></li>
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-              </ul>
+              <ul>                    <li><a href='./sourcefile/stringifor-doctest-1.f90.html'>stringifor-doctest-1.f90</a></li>
+                    <li><a href='./sourcefile/stringifor-doctest-2.f90.html'>stringifor-doctest-2.f90</a></li>
+                    <li><a href='./sourcefile/stringifor.f90.html'>stringifor.F90</a></li>
+                    <li><a href='./sourcefile/stringifor_string_t-doctest-1.f90.html'>stringifor_string_t-doctest-1.f90</a></li>
+                    <li><a href='./sourcefile/stringifor_string_t-doctest-10.f90.html'>stringifor_string_t-doctest-10.f90</a></li>
+                    <li><a href='./sourcefile/stringifor_string_t-doctest-100.f90.html'>stringifor_string_t-doctest-100.f90</a></li>
+                    <li><a href='./sourcefile/stringifor_string_t-doctest-101.f90.html'>stringifor_string_t-doctest-101.f90</a></li>
+                    <li><a href='./sourcefile/stringifor_string_t-doctest-102.f90.html'>stringifor_string_t-doctest-102.f90</a></li>
+                    <li><a href='./sourcefile/stringifor_string_t-doctest-103.f90.html'>stringifor_string_t-doctest-103.f90</a></li>
+                    <li><a href='./sourcefile/stringifor_string_t-doctest-104.f90.html'>stringifor_string_t-doctest-104.f90</a></li>
+</ul>
           </div>
-          
-          <div class="col-lg-3">
+		  <div class="col-xs-6 col-sm-3">
               <h3>Modules</h3>
-              <ul>
-                
-                  
-                    <li><a href='./module/befor64.html'>befor64</a></li>
-                  
-                
-                  
-                    <li><a href='./module/befor64%7E2.html'>befor64</a></li>
-                  
-                
-                  
-                    <li><a href='./module/befor64_pack_data_m%7E2.html'>befor64_pack_data_m</a></li>
-                  
-                
-                  
-                    <li><a href='./module/befor64_pack_data_m.html'>befor64_pack_data_m</a></li>
-                  
-                
-                  
-                    <li><a href='./module/penf%7E2.html'>penf</a></li>
-                  
-                
-                  
-                    <li><a href='./module/penf%7E3.html'>penf</a></li>
-                  
-                
-                  
-                    <li><a href='./module/penf%7E4.html'>penf</a></li>
-                  
-                
-                  
-                    <li><a href='./module/penf.html'>penf</a></li>
-                  
-                
-                  
-                    <li><a href='./module/penf_b_size.html'>penf_b_size</a></li>
-                  
-                
-                  
-                    <li><a href='./module/penf_b_size%7E3.html'>penf_b_size</a></li>
-                  
-                
-                  
-                    <li><a href="./lists/modules.html"><em>All modules&hellip;</em></a></li>
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-              </ul>
+              <ul>                    <li><a href='./module/stringifor.html'>stringifor</a></li>
+                    <li><a href='./module/stringifor_string_t.html'>stringifor_string_t</a></li>
+</ul>
           </div>
-          
-          
-          <div class="col-lg-3">
+		  <div class="col-xs-6 col-sm-3">
               <h3>Procedures</h3>
-              <ul>
-                
-                  
-                    <li><a href='./interface/adjustl.html'>adjustl</a></li>
-                  
-                
-                  
+              <ul>                    <li><a href='./interface/adjustl.html'>adjustl</a></li>
                     <li><a href='./interface/adjustr.html'>adjustr</a></li>
-                  
-                
-                  
-                    <li><a href='./proc/autotest.html'>autotest</a></li>
-                  
-                
-                  
-                    <li><a href='./proc/autotest%7E2.html'>autotest</a></li>
-                  
-                
-                  
-                    <li><a href='./interface/b64_decode.html'>b64_decode</a></li>
-                  
-                
-                  
-                    <li><a href='./interface/b64_decode%7E2.html'>b64_decode</a></li>
-                  
-                
-                  
-                    <li><a href='./proc/b64_decode_i1.html'>b64_decode_I1</a></li>
-                  
-                
-                  
-                    <li><a href='./proc/b64_decode_i1%7E2.html'>b64_decode_I1</a></li>
-                  
-                
-                  
-                    <li><a href='./proc/b64_decode_i1_a.html'>b64_decode_I1_a</a></li>
-                  
-                
-                  
-                    <li><a href='./proc/b64_decode_i1_a%7E2.html'>b64_decode_I1_a</a></li>
-                  
-                
-                  
-                    <li><a href="./lists/procedures.html"><em>All procedures&hellip;</em></a></li>
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-                  
-                
-              </ul>
+                    <li><a href='./proc/basedir.html'>basedir</a></li>
+                    <li><a href='./proc/basename.html'>basename</a></li>
+                    <li><a href='./proc/camelcase.html'>camelcase</a></li>
+                    <li><a href='./proc/capitalize.html'>capitalize</a></li>
+                    <li><a href='./proc/character_concat_string.html'>character_concat_string</a></li>
+                    <li><a href='./proc/character_concat_string_string.html'>character_concat_string_string</a></li>
+                    <li><a href='./proc/character_eq_string.html'>character_eq_string</a></li>
+                    <li><a href='./proc/character_ge_string.html'>character_ge_string</a></li>
+</ul>
           </div>
-          
-          
-          <div class="col-lg-3">
+		  <div class="col-xs-6 col-sm-3">
               <h3>Derived Types</h3>
-              <ul>
-                
-                  
-                    <li><a href='./type/string.html'>string</a></li>
-                  
-                
-              </ul>
+              <ul>                    <li><a href='./type/string.html'>string</a></li>
+</ul>
           </div>
-          
       </div>
-
-    <hr>
+    <hr>    
+    </div> <!-- /container -->
     <footer>
+      <div class="container">
       <div class="row">
-        <div class="col-md-4">&copy; 2016 </div>
-        <div class="col-md-4"><span class="text-center"> StringiFor was developed by Stefano Zaghi</span></div>
-        <div class="col-md-4">
-          <span class="pull-right">
+        <div class="col-xs-6 col-md-6"><p>StringiFor was developed by Stefano Zaghi<br>&copy; 2022 
+</p>
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <p class="text-right">
             Documentation generated by 
-            <a href="https://github.com/cmacmackin/ford">FORD</a>
-            
-          </span>
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+          </p>
         </div>
       </div>
       <br>
+      </div> <!-- /container -->    
     </footer>
-    </div> <!-- /container -->
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -2618,12 +1174,14 @@ The fobos file defines the following modes:
       MathJax.Hub.Config({
         TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
         jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
-        'HTML-CSS': { 
-           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
-        }
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script src="./tipuesearch/tipuesearch_content.js"></script>
+    <script src="./tipuesearch/tipuesearch_set.js"></script>
+    <script src="./tipuesearch/tipuesearch.js"></script>
+    
   </body>
 </html>
