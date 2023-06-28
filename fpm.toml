@@ -20,7 +20,7 @@ rev = "09b95c08a2ee8995d19cf8551c22b783193f6246"
 
 [dependencies.FACE]
 git = "https://github.com/szaghi/FACE"
-rev = "3bdabbc7f24843ddde8b3afd1f17c325e8e215c9"
+rev = "1455c549ae0c1ead96961ca61a73131d8176b6a4"
 
 [dependencies.PENF]
 git = "https://github.com/szaghi/PENF"
