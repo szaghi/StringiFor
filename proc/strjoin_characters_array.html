@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta name="description" content="FStrings Fortran Manipulator">
+      <meta name="description" content="FStrings Fortran Manipulator">
     <meta name="author" content="Stefano Zaghi" >
     <link rel="icon" href="../favicon.png">
 
@@ -14,16 +14,16 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    
-    <script src="../js/jquery-2.1.3.min.js"></script>
-    <script src="../js/svg-pan-zoom.min.js"></script>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+         <script src="../js/jquery-2.1.3.min.js"></script>
+         <script src="../js/svg-pan-zoom.min.js"></script>
 
   </head>
 
@@ -45,33 +45,43 @@
           <ul class="nav navbar-nav">
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
-              data-toggle="dropdown" role="button"
-              aria-haspopup="true"
-     aria-expanded="false">Contents <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="../lists/files.html">Source Files</a></li>
-            <li><a href="../lists/modules.html">Modules</a></li>
-            <li><a href="../lists/procedures.html">Procedures</a></li>
-                   <li><a href="../lists/types.html">Derived Types</a></li>
-            <li><a href="../lists/programs.html">Programs</a></li>
-       
-            </ul>
-        
+                 data-toggle="dropdown" role="button"
+                 aria-haspopup="true"
+                 aria-expanded="false">
+                 Contents <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                    <li><a href="../lists/files.html">Source Files</a></li>
+                  <li><a href="../lists/modules.html">Modules</a></li>
+                  <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/types.html">Derived Types</a></li>
+                  <li><a href="../lists/programs.html">Programs</a></li>
+              </ul>
             </li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/programs.html">Programs</a></li>
+                <li class="visible-xs hidden-sm visible-lg">
+                  <a href="../lists/files.html">Source Files</a>
+                </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/modules.html">Modules</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/types.html">Derived Types</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/programs.html">Programs</a>
+              </li>
           </ul>
-        <form action="../search.html" class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
-        </div>
-<!--
-        <button type="submit" class="btn btn-default">Submit</button>
--->
-        </form>
+            <form action="../search.html" class="navbar-form navbar-right" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+              </div>
+              <!--
+                  <button type="submit" class="btn btn-default">Submit</button>
+                  -->
+            </form>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
@@ -80,52 +90,78 @@
   <div class="row">
     <h1>strjoin_characters_array
       <small>Function</small>
+      
     </h1>
-    <div class="row">
-  <div class="col-lg-12">
-<div class="well well-sm">
-  <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     <li><i class="fa fa-list-ol"></i>
-       <a data-toggle="tooltip"
-    data-placement="bottom" data-html="true"
-    title=" 1.9% of total for procedures.">39 statements</a>
-     </li> 
-    <li><i class="fa fa-code"></i><a href="../src/stringifor_string_t.F90"> Source File</a></li>
-  </ul>
-  <ol class="breadcrumb in-well text-right">
-     <li><a href='../sourcefile/stringifor_string_t.f90.html'>stringifor_string_t.F90</a></li>
-     <li><a href='../module/stringifor_string_t.html'>stringifor_string_t</a></li>
-     <li class="active">strjoin_characters_array</li>
-  </ol>
-</div>
-</div>
-</div>
-<script>
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
+      <div class="row" id="info-bar">
+    <div class="col-lg-12">
+      <div class="well well-sm">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+          <li id="statements"><i class="fa fa-list-ol"></i>
+            <a data-toggle="tooltip"
+               data-placement="bottom" data-html="true"
+               title=" 1.9% of total for procedures.">39 statements</a>
+          </li>
+
+            <li id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/stringifor_string_t.F90"> Source File</a>
+            </li>
+        </ul>
+        <ol class="breadcrumb in-well text-right">
+              <li><a href='../sourcefile/stringifor_string_t.f90.html'>stringifor_string_t.F90</a></li>
+              <li><a href='../module/stringifor_string_t.html'>stringifor_string_t</a></li>
+          <li class="active">strjoin_characters_array</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
 
   </div>
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    <div id="sidebar">
-  <h3>Contents</h3>
- 
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/strjoin_characters_array.html#src">strjoin_characters_array</a>
-  </div>
-</div>
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/strjoin_characters_array.html#src">strjoin_characters_array</a>
+      </div>
+    </div>
 
-</div>
+
+  </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>private pure function strjoin_characters_array(array, sep, is_trim, is_col) result(join)</h2>
+    <h2>private pure function strjoin_characters_array(array, sep, is_trim, is_col) result(join)  
+</h2>
     
 
     <p>Return a string that is a join of columns or rows of an array of characters.</p>
@@ -187,39 +223,90 @@
 
 <p>all items of character array have equal lengths</p>
 
-    <h3>Arguments</h3>
-      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-array~6"></span>character(kind=CK,len=*),</td>
-<td>intent(in)</td>
-  <td></td>  <td></td><td>::</td>
-  <td><strong>array</strong>(1:,1:)</td><td><p>Array to be joined.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-sep~9"></span>character(kind=CK,len=*),</td>
-<td>intent(in),</td>
-  <td>optional</td>  <td></td><td>::</td>
-  <td><strong>sep</strong></td><td><p>Separator.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-is_trim~2"></span>logical,</td>
-<td>intent(in),</td>
-  <td>optional</td>  <td></td><td>::</td>
-  <td><strong>is_trim</strong></td><td><p>Flag to setup trim character or not</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-is_col~2"></span>logical,</td>
-<td>intent(in),</td>
-  <td>optional</td>  <td></td><td>::</td>
-  <td><strong>is_col</strong></td><td><p>Direction: &lsquo;columns&rsquo; if .true. or &lsquo;rows&rsquo; if .false.</p></td>
-</tr>
-</tbody>
-</table>
+    <h3>Type Bound</h3>
+    <p><a href='../type/string.html'>string</a></p>
 
-   <h3>Return Value <small><span class="anchor" id="variable-join~7"></span>type(<a href='../type/string.html'>string</a>),allocatable,(:)</small></h3>
-    <p>The join of array.</p>
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-array~6"></span>
+              character(kind=CK, len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>array</strong>(1:,1:)</td>
+            <td>
+                <p>Array to be joined.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-sep~9"></span>
+              character(kind=CK, len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>sep</strong></td>
+            <td>
+                <p>Separator.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-is_trim~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>is_trim</strong></td>
+            <td>
+                <p>Flag to setup trim character or not</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-is_col~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>is_col</strong></td>
+            <td>
+                <p>Direction: &lsquo;columns&rsquo; if .true. or &lsquo;rows&rsquo; if .false.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-join~6"></span>
+          type(<a href='../type/string.html'>string</a>), allocatable, (:)
+        </small>
+      </h3>
+      <p>The join of array.</p>
     <br>
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -232,37 +319,63 @@
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: proc~~strjoin_characters_array~~CallsGraph Pages: 1 -->
-<svg id="procstrjoin_characters_arrayCallsGraph" width="294pt" height="32pt"
- viewBox="0.00 0.00 294.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~strjoin_characters_array~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<svg id="procstrjoin_characters_arrayCallsGraph" width="641pt" height="31pt"
+ viewBox="0.00 0.00 641.00 30.98" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~strjoin_characters_array~~CallsGraph" class="graph" transform="scale(1.03 1.03) rotate(0) translate(4 28)">
 <title>proc~~strjoin_characters_array~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 290,-28 290,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 658,-28 658,4 -4,4"/>
 <!-- proc~strjoin_characters_array -->
 <g id="proc~~strjoin_characters_array~~CallsGraph_node1" class="node">
 <title>proc~strjoin_characters_array</title>
-<polygon fill="none" stroke="black" points="142,-24 0,-24 0,0 142,0 142,-24"/>
-<text text-anchor="middle" x="71" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">strjoin_characters_array</text>
+<polygon fill="none" stroke="black" points="281,-24 0,-24 0,0 281,0 281,-24"/>
+<text text-anchor="middle" x="140.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor_string_t::string%strjoin_characters_array</text>
 </g>
 <!-- proc~strjoin_characters -->
 <g id="proc~~strjoin_characters_array~~CallsGraph_node2" class="node">
 <title>proc~strjoin_characters</title>
-<g id="a_proc~~strjoin_characters_array~~CallsGraph_node2"><a xlink:href=".././proc/strjoin_characters.html" xlink:title="strjoin_characters">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="286,-24 178,-24 178,0 286,0 286,-24"/>
-<text text-anchor="middle" x="232" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strjoin_characters</text>
+<g id="a_proc~~strjoin_characters_array~~CallsGraph_node2"><a xlink:href=".././proc/strjoin_characters.html" xlink:title="stringifor_string_t::string%strjoin_characters">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="564,-24 317,-24 317,0 564,0 564,-24"/>
+<text text-anchor="middle" x="440.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::string%strjoin_characters</text>
 </a>
 </g>
 </g>
 <!-- proc~strjoin_characters_array&#45;&gt;proc~strjoin_characters -->
 <g id="proc~~strjoin_characters_array~~CallsGraph_edge1" class="edge">
 <title>proc~strjoin_characters_array&#45;&gt;proc~strjoin_characters</title>
-<path fill="none" stroke="#000000" d="M142.2,-12C150.72,-12 159.38,-12 167.79,-12"/>
-<polygon fill="#000000" stroke="#000000" points="167.89,-15.5 177.89,-12 167.89,-8.5 167.89,-15.5"/>
+<path fill="none" stroke="#000000" d="M281.34,-12C289.72,-12 298.15,-12 306.5,-12"/>
+<polygon fill="#000000" stroke="#000000" points="306.66,-15.5 316.66,-12 306.66,-8.5 306.66,-15.5"/>
+</g>
+<!-- raw -->
+<g id="proc~~strjoin_characters_array~~CallsGraph_node3" class="node">
+<title>raw</title>
+<polygon fill="#777777" stroke="#777777" points="654,-24 600,-24 600,0 654,0 654,-24"/>
+<text text-anchor="middle" x="627" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">raw</text>
+</g>
+<!-- proc~strjoin_characters&#45;&gt;raw -->
+<g id="proc~~strjoin_characters_array~~CallsGraph_edge2" class="edge">
+<title>proc~strjoin_characters&#45;&gt;raw</title>
+<path fill="none" stroke="#000000" d="M564.05,-12C573.2,-12 581.91,-12 589.74,-12"/>
+<polygon fill="#000000" stroke="#000000" points="589.85,-15.5 599.85,-12 589.85,-8.5 589.85,-15.5"/>
 </g>
 </g>
 </svg>
-</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
-    <p>Nodes of different colours represent the following: </p>
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+</div>                <script>
+                  var panprocstrjoin_characters_arrayCallsGraph = svgPanZoom('#procstrjoin_characters_arrayCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -312,13 +425,15 @@
 </g>
 </svg>
 
-    
-    <p>Solid arrows point from a procedure to one which it calls. Dashed 
-    arrows point from an interface to procedures which implement that interface.
-    This could include the module procedures in a generic interface or the
-    implementation in a submodule of an interface in a parent module.
-    </p>
-    </div></div></div></div>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="panel panel-default">
@@ -332,37 +447,47 @@
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: proc~~strjoin_characters_array~~CalledByGraph Pages: 1 -->
-<svg id="procstrjoin_characters_arrayCalledByGraph" width="240pt" height="32pt"
- viewBox="0.00 0.00 240.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg id="procstrjoin_characters_arrayCalledByGraph" width="470pt" height="32pt"
+ viewBox="0.00 0.00 470.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="proc~~strjoin_characters_array~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
 <title>proc~~strjoin_characters_array~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 236,-28 236,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 466,-28 466,4 -4,4"/>
 <!-- proc~strjoin_characters_array -->
 <g id="proc~~strjoin_characters_array~~CalledByGraph_node1" class="node">
 <title>proc~strjoin_characters_array</title>
-<polygon fill="none" stroke="black" points="232,-24 90,-24 90,0 232,0 232,-24"/>
-<text text-anchor="middle" x="161" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">strjoin_characters_array</text>
+<polygon fill="none" stroke="black" points="462,-24 181,-24 181,0 462,0 462,-24"/>
+<text text-anchor="middle" x="321.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor_string_t::string%strjoin_characters_array</text>
 </g>
 <!-- interface~strjoin -->
 <g id="proc~~strjoin_characters_array~~CalledByGraph_node2" class="node">
 <title>interface~strjoin</title>
-<g id="a_proc~~strjoin_characters_array~~CalledByGraph_node2"><a xlink:href=".././interface/strjoin.html" xlink:title="strjoin">
-<polygon fill="#a7506f" stroke="#a7506f" points="54,-24 0,-24 0,0 54,0 54,-24"/>
-<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">strjoin</text>
+<g id="a_proc~~strjoin_characters_array~~CalledByGraph_node2"><a xlink:href=".././interface/strjoin.html" xlink:title="stringifor_string_t::strjoin">
+<polygon fill="#a7506f" stroke="#a7506f" points="145,-24 0,-24 0,0 145,0 145,-24"/>
+<text text-anchor="middle" x="72.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::strjoin</text>
 </a>
 </g>
 </g>
 <!-- interface~strjoin&#45;&gt;proc~strjoin_characters_array -->
 <g id="proc~~strjoin_characters_array~~CalledByGraph_edge1" class="edge">
 <title>interface~strjoin&#45;&gt;proc~strjoin_characters_array</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M54.08,-12C61.75,-12 70.57,-12 79.78,-12"/>
-<polygon fill="#000000" stroke="#000000" points="79.89,-15.5 89.89,-12 79.89,-8.5 79.89,-15.5"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M145.27,-12C153.36,-12 161.81,-12 170.44,-12"/>
+<polygon fill="#000000" stroke="#000000" points="170.65,-15.5 180.65,-12 170.65,-8.5 170.65,-15.5"/>
 </g>
 </g>
 </svg>
-</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
-    <p>Nodes of different colours represent the following: </p>
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -412,26 +537,47 @@
 </g>
 </svg>
 
-    
-    <p>Solid arrows point from a procedure to one which it calls. Dashed 
-    arrows point from an interface to procedures which implement that interface.
-    This could include the module procedures in a generic interface or the
-    implementation in a submodule of an interface in a parent module.
-    </p>
-    </div></div></div></div>
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      <h3>Contents</h3>
- 
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/strjoin_characters_array.html#src">strjoin_characters_array</a>
-  </div>
-</div>
+        <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/strjoin_characters_array.html#src">strjoin_characters_array</a>
+      </div>
+    </div>
+
 
     </section>
     <br class="visible-xs visible-sm hidden-md">
@@ -555,50 +701,50 @@
     </div>
   </div>
 
-    <hr>    
+      <hr>
     </div> <!-- /container -->
     <footer>
       <div class="container">
-      <div class="row">
-        <div class="col-xs-6 col-md-6"><p>StringiFor was developed by Stefano Zaghi<br>&copy; 2022 
+        <div class="row">
+          <div class="col-xs-6 col-md-6"><p>StringiFor was developed by Stefano Zaghi<br>&copy; 2023 
 </p>
+          </div>
+          <div class="col-xs-6 col-md-6">
+            <p class="text-right">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
         </div>
-        <div class="col-xs-6 col-md-6">
-          <p class="text-right">
-            Documentation generated by 
-            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-          </p>
-        </div>
-      </div>
-      <br>
-      </div> <!-- /container -->    
+        <br>
+      </div> <!-- /container -->
     </footer>
 
     <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-<!--
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
--->
-    <script src="../js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+         ================================================== -->
+         <!-- Placed at the end of the document so the pages load faster -->
+    <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        -->
+        <script src="../js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../js/ie10-viewport-bug-workaround.js"></script>
 
-    <!-- MathJax JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-      });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-    <script src="../tipuesearch/tipuesearch_content.js"></script>
-    <script src="../tipuesearch/tipuesearch_set.js"></script>
-    <script src="../tipuesearch/tipuesearch.js"></script>
-    
+        <!-- MathJax JavaScript
+             ================================================== -->
+             <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+          });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+          <script src="../tipuesearch/tipuesearch_content.js"></script>
+          <script src="../tipuesearch/tipuesearch_set.js"></script>
+          <script src="../tipuesearch/tipuesearch.js"></script>
+
   </body>
 </html>
