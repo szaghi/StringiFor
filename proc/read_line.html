@@ -1,3 +1,5 @@
+<!-- -*- mode: jinja2 -*- -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,81 +12,56 @@
 
     <title>read_line &ndash; StringiFor</title>
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
       <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-         <script src="../js/jquery-2.1.3.min.js"></script>
-         <script src="../js/svg-pan-zoom.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
   <body>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
           <a class="navbar-brand" href="../index.html">StringiFor </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
-              <a href="#" class="dropdown-toggle"
-                 data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                 Contents <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                    <li><a href="../lists/files.html">Source Files</a></li>
-                  <li><a href="../lists/modules.html">Modules</a></li>
-                  <li><a href="../lists/procedures.html">Procedures</a></li>
-                  <li><a href="../lists/types.html">Derived Types</a></li>
-                  <li><a href="../lists/programs.html">Programs</a></li>
-              </ul>
-            </li>
-                <li class="visible-xs hidden-sm visible-lg">
-                  <a href="../lists/files.html">Source Files</a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
                 </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/modules.html">Modules</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/procedures.html">Procedures</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/types.html">Derived Types</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/programs.html">Programs</a>
-              </li>
-          </ul>
-            <form action="../search.html" class="navbar-form navbar-right" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
               </div>
-              <!--
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  -->
-            </form>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
 
     <div class="container">
   <div class="row">
@@ -92,33 +69,36 @@
       <small>Subroutine</small>
       
     </h1>
-      <div class="row" id="info-bar">
-    <div class="col-lg-12">
-      <div class="well well-sm">
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
 
-          <li id="statements"><i class="fa fa-list-ol"></i>
-            <a data-toggle="tooltip"
-               data-placement="bottom" data-html="true"
-               title=" 1.8% of total for procedures.">37 statements</a>
-          </li>
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 1.8% of total for procedures.">37 statements</a>
+            </li>
 
-            <li id="source-file">
+            <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
               <a href="../src/stringifor_string_t.F90"> Source File</a>
             </li>
         </ul>
-        <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/stringifor_string_t.f90.html'>stringifor_string_t.F90</a></li>
-              <li><a href='../module/stringifor_string_t.html'>stringifor_string_t</a></li>
-          <li class="active">read_line</li>
-        </ol>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t.f90.html'>stringifor_string_t.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/stringifor_string_t.html'>stringifor_string_t</a></li>
+            <li class="breadcrumb-item active" aria-current="page">read_line</li>
+          </ol>
+        </nav>
       </div>
     </div>
   </div>
   <script>
     $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-bs-toggle="tooltip"]').tooltip()
     })
   </script>
 
@@ -147,8 +127,9 @@
   
   
   
-    <div class="panel panel-primary">
-      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
       <div class="list-group">
         <a class="list-group-item" href="../proc/read_line.html#src">read_line</a>
       </div>
@@ -166,52 +147,53 @@
 
     <p>Read line (record) from a connected unit.</p>
 <p>The line is read as an ascii stream read until the eor is reached.</p>
-<p></p><div class="alert alert-info" role="alert"><h4>Note</h4><p>For unformatted read only <code>access='stream'</code> is supported with new_line as line terminator.</p></div>
-<div class="codehilite"><pre><span></span><code><span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span><span class="w"></span>
-<span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="kt">integer</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span><span class="w"></span>
-<span class="w"> </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iomsg</span><span class="w"></span>
-<span class="w"> </span><span class="kt">integer</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">scratch</span><span class="w"></span>
-<span class="w"> </span><span class="kt">integer</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">l</span><span class="w"></span>
-<span class="w"> </span><span class="kt">logical</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39; Hello World!   &#39;</span><span class="w"></span>
-<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;How are you?  &#39;</span><span class="w"></span>
-<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;   All say: &quot;Fine thanks&quot;&#39;</span><span class="w"></span>
-<span class="w"> </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="w"></span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="w"></span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="w"></span>
-<span class="w"> </span><span class="k">rewind</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w"> </span><span class="n">iostat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<p>@note Note
+      For unformatted read only <code>access='stream'</code> is supported with new_line as line terminator.</p>
+<div class="codehilite"><pre><span></span><code><span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span>
+<span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w">      </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="w"> </span><span class="kt">integer</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span>
+<span class="w"> </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iomsg</span>
+<span class="w"> </span><span class="kt">integer</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">scratch</span>
+<span class="w"> </span><span class="kt">integer</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">l</span>
+<span class="w"> </span><span class="kt">logical</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39; Hello World!   &#39;</span>
+<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;How are you?  &#39;</span>
+<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;   All say: &quot;Fine thanks&quot;&#39;</span>
+<span class="w"> </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">)</span>
+<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span>
+<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span>
+<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span>
+<span class="w"> </span><span class="k">rewind</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span>
+<span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w"> </span><span class="n">iostat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="w"> </span><span class="k">do</span>
-<span class="k">   </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">read_line</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">)</span><span class="w"></span>
+<span class="k">   </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">read_line</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">)</span>
 <span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iostat</span><span class="o">/=</span><span class="mf">0.</span><span class="nb">and</span><span class="p">..</span><span class="nb">not</span><span class="p">.</span><span class="nb">is_iostat_eor</span><span class="p">(</span><span class="n">iostat</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">     exit</span>
 <span class="k">   else</span>
-<span class="k">     </span><span class="n">test_passed</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">astring</span><span class="o">==</span><span class="n">line</span><span class="p">(</span><span class="n">l</span><span class="p">))</span><span class="w"></span>
+<span class="k">     </span><span class="n">test_passed</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">astring</span><span class="o">==</span><span class="n">line</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
 <span class="w">   </span><span class="k">endif</span>
 <span class="k"> enddo</span>
-<span class="k"> close</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;UNFORMATTED&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">access</span><span class="o">=</span><span class="s1">&#39;STREAM&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="k">rewind</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
-<span class="w"> </span><span class="n">iostat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="k"> close</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span>
+<span class="w"> </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;UNFORMATTED&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">access</span><span class="o">=</span><span class="s1">&#39;STREAM&#39;</span><span class="p">)</span>
+<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<span class="w"> </span><span class="k">rewind</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span>
+<span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w"> </span><span class="n">iostat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
 <span class="w"> </span><span class="k">do</span>
-<span class="k">   </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">read_line</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;UnfORMatteD&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">   </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">read_line</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;UnfORMatteD&#39;</span><span class="p">)</span>
 <span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iostat</span><span class="o">/=</span><span class="mf">0.</span><span class="nb">and</span><span class="p">..</span><span class="nb">not</span><span class="p">.</span><span class="nb">is_iostat_eor</span><span class="p">(</span><span class="n">iostat</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
 <span class="k">     exit</span>
 <span class="k">   else</span>
-<span class="k">     </span><span class="n">test_passed</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">astring</span><span class="o">==</span><span class="n">line</span><span class="p">(</span><span class="n">l</span><span class="p">))</span><span class="w"></span>
+<span class="k">     </span><span class="n">test_passed</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">astring</span><span class="o">==</span><span class="n">line</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
 <span class="w">   </span><span class="k">endif</span>
 <span class="k"> enddo</span>
-<span class="k"> close</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"></span>
-<span class="w"> </span><span class="k">print</span><span class="w"> </span><span class="s1">&#39;(L1)&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span><span class="w"></span>
+<span class="k"> close</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span>
+<span class="w"> </span><span class="k">print</span><span class="w"> </span><span class="s1">&#39;(L1)&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
 </code></pre></div>
 
     <h3>Type Bound</h3>
@@ -221,16 +203,16 @@
         <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-self~64"></span>
+              <span class="anchor" id="variable-self~35"></span>
               class(<a href='../type/string.html'>string</a>),
             </td>
 <td>intent(inout)</td>
@@ -275,7 +257,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iostat~6"></span>
+              <span class="anchor" id="variable-iostat~11"></span>
               integer,
             </td>
 <td>intent(out),</td>
@@ -290,7 +272,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-iomsg~6"></span>
+              <span class="anchor" id="variable-iomsg~11"></span>
               character(len=*),
             </td>
 <td>intent(inout),</td>
@@ -307,71 +289,71 @@
   </table>
 
     <br>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-  <h3 class="panel-title">Calls</h3>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
   <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: proc~~read_line~~CallsGraph Pages: 1 -->
-<svg id="procread_lineCallsGraph" width="429pt" height="74pt"
- viewBox="0.00 0.00 429.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg id="procread_lineCallsGraph" width="229pt" height="74pt"
+ viewBox="0.00 0.00 229.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="proc~~read_line~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70)">
 <title>proc~~read_line~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 425,-70 425,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 225,-70 225,4 -4,4"/>
 <!-- proc~read_line -->
 <g id="proc~~read_line~~CallsGraph_node1" class="node">
 <title>proc~read_line</title>
-<polygon fill="none" stroke="black" points="201,-45 0,-45 0,-21 201,-21 201,-45"/>
-<text text-anchor="middle" x="100.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor_string_t::string%read_line</text>
+<polygon fill="none" stroke="black" points="101,-45 0,-45 0,-21 101,-21 101,-45"/>
+<text text-anchor="middle" x="50.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">string%read_line</text>
 </g>
 <!-- proc~chars -->
 <g id="proc~~read_line~~CallsGraph_node2" class="node">
 <title>proc~chars</title>
-<g id="a_proc~~read_line~~CallsGraph_node2"><a xlink:href=".././proc/chars.html" xlink:title="stringifor_string_t::string%chars">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="419.5,-66 238.5,-66 238.5,-42 419.5,-42 419.5,-66"/>
-<text text-anchor="middle" x="329" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::string%chars</text>
+<g id="a_proc~~read_line~~CallsGraph_node2"><a xlink:href="../proc/chars.html" xlink:title="string%chars">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="220,-66 138,-66 138,-42 220,-42 220,-66"/>
+<text text-anchor="middle" x="179" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%chars</text>
 </a>
 </g>
 </g>
 <!-- proc~read_line&#45;&gt;proc~chars -->
 <g id="proc~~read_line~~CallsGraph_edge1" class="edge">
 <title>proc~read_line&#45;&gt;proc~chars</title>
-<path fill="none" stroke="#000000" d="M201.18,-42.24C210.14,-43.07 219.23,-43.92 228.2,-44.75"/>
-<polygon fill="#000000" stroke="#000000" points="227.98,-48.24 238.26,-45.68 228.63,-41.27 227.98,-48.24"/>
+<path fill="none" stroke="#000000" d="M101.13,-41.24C109.89,-42.69 119.01,-44.21 127.78,-45.66"/>
+<polygon fill="#000000" stroke="#000000" points="127.44,-49.15 137.88,-47.34 128.59,-42.25 127.44,-49.15"/>
 </g>
 <!-- proc~upper -->
 <g id="proc~~read_line~~CallsGraph_node3" class="node">
 <title>proc~upper</title>
-<g id="a_proc~~read_line~~CallsGraph_node3"><a xlink:href=".././proc/upper.html" xlink:title="stringifor_string_t::string%upper">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="421,-24 237,-24 237,0 421,0 421,-24"/>
-<text text-anchor="middle" x="329" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::string%upper</text>
+<g id="a_proc~~read_line~~CallsGraph_node3"><a xlink:href="../proc/upper.html" xlink:title="string%upper">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="221,-24 137,-24 137,0 221,0 221,-24"/>
+<text text-anchor="middle" x="179" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%upper</text>
 </a>
 </g>
 </g>
 <!-- proc~read_line&#45;&gt;proc~upper -->
 <g id="proc~~read_line~~CallsGraph_edge2" class="edge">
 <title>proc~read_line&#45;&gt;proc~upper</title>
-<path fill="none" stroke="#000000" d="M201.18,-23.76C209.71,-22.97 218.34,-22.17 226.88,-21.38"/>
-<polygon fill="#000000" stroke="#000000" points="227.22,-24.86 236.86,-20.45 226.57,-17.89 227.22,-24.86"/>
+<path fill="none" stroke="#000000" d="M101.13,-24.76C109.5,-23.37 118.2,-21.93 126.61,-20.53"/>
+<polygon fill="#000000" stroke="#000000" points="127.39,-23.95 136.68,-18.86 126.24,-17.04 127.39,-23.95"/>
 </g>
 </g>
 </svg>
-</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                   <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              <div class="modal-body">
+                <div class="modal-body">
 <p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -379,11 +361,11 @@
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: Graph Key Pages: 1 -->
-<svg width="597pt" height="32pt"
- viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
 <title>Graph Key</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
 <g id="node1" class="node">
 <title>Subroutine</title>
@@ -402,23 +384,29 @@
 <polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
 <text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
 </g>
-<!-- Unknown Procedure Type -->
+<!-- Type Bound Procedure -->
 <g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
 <title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
-<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
 </g>
 <!-- Program -->
-<g id="node5" class="node">
+<g id="node6" class="node">
 <title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
-<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
 </g>
 <!-- This Page&#39;s Entity -->
-<g id="node6" class="node">
+<g id="node7" class="node">
 <title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
-<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
 </g>
 </g>
 </svg>
@@ -434,153 +422,324 @@ implementation in a submodule of an interface in a parent module.
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-  <h3 class="panel-title">Called by</h3>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
   <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: proc~~read_line~~CalledByGraph Pages: 1 -->
-<svg id="procread_lineCalledByGraph" width="641pt" height="59pt"
- viewBox="0.00 0.00 641.00 59.15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~read_line~~CalledByGraph" class="graph" transform="scale(1.96 1.96) rotate(0) translate(4 112)">
+<svg id="procread_lineCalledByGraph" width="641pt" height="201pt"
+ viewBox="0.00 0.00 641.00 200.53" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~read_line~~CalledByGraph" class="graph" transform="scale(1.73 1.73) rotate(0) translate(4 342)">
 <title>proc~~read_line~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 1253,-112 1253,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-342 1102,-342 1102,4 -4,4"/>
 <!-- proc~read_line -->
 <g id="proc~~read_line~~CalledByGraph_node1" class="node">
 <title>proc~read_line</title>
-<polygon fill="none" stroke="black" points="1249,-108 1048,-108 1048,-84 1249,-84 1249,-108"/>
-<text text-anchor="middle" x="1148.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor_string_t::string%read_line</text>
+<polygon fill="none" stroke="black" points="1098,-150 997,-150 997,-126 1098,-126 1098,-150"/>
+<text text-anchor="middle" x="1047.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50">string%read_line</text>
+</g>
+<!-- proc~read_lines -->
+<g id="proc~~read_line~~CalledByGraph_node2" class="node">
+<title>proc~read_lines</title>
+<g id="a_proc~~read_line~~CalledByGraph_node2"><a xlink:href="../proc/read_lines.html" xlink:title="read_lines">
+<polygon fill="#d9534f" stroke="#d9534f" points="941.5,-213 874.5,-213 874.5,-189 941.5,-189 941.5,-213"/>
+<text text-anchor="middle" x="908" y="-198.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_lines</text>
+</a>
+</g>
+</g>
+<!-- proc~read_lines&#45;&gt;proc~read_line -->
+<g id="proc~~read_line~~CalledByGraph_edge1" class="edge">
+<title>proc~read_lines&#45;&gt;proc~read_line</title>
+<path fill="none" stroke="#000000" d="M935.51,-188.85C956.91,-179.05 987.23,-165.16 1010.77,-154.37"/>
+<polygon fill="#000000" stroke="#000000" points="1012.44,-157.46 1020.07,-150.11 1009.52,-151.09 1012.44,-157.46"/>
 </g>
 <!-- proc~read_lines~2 -->
-<g id="proc~~read_line~~CalledByGraph_node2" class="node">
+<g id="proc~~read_line~~CalledByGraph_node3" class="node">
 <title>proc~read_lines~2</title>
-<g id="a_proc~~read_line~~CalledByGraph_node2"><a xlink:href=".././proc/read_lines~2.html" xlink:title="stringifor_string_t::string%read_lines">
-<polygon fill="#d9534f" stroke="#d9534f" points="1012,-108 806,-108 806,-84 1012,-84 1012,-108"/>
-<text text-anchor="middle" x="909" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::string%read_lines</text>
+<g id="a_proc~~read_line~~CalledByGraph_node3"><a xlink:href="../proc/read_lines~2.html" xlink:title="string%read_lines">
+<polygon fill="#d9534f" stroke="#d9534f" points="961,-150 855,-150 855,-126 961,-126 961,-150"/>
+<text text-anchor="middle" x="908" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_lines</text>
 </a>
 </g>
 </g>
 <!-- proc~read_lines~2&#45;&gt;proc~read_line -->
-<g id="proc~~read_line~~CalledByGraph_edge1" class="edge">
+<g id="proc~~read_line~~CalledByGraph_edge2" class="edge">
 <title>proc~read_lines~2&#45;&gt;proc~read_line</title>
-<path fill="none" stroke="#000000" d="M1012.1,-96C1020.5,-96 1029.02,-96 1037.47,-96"/>
-<polygon fill="#000000" stroke="#000000" points="1037.75,-99.5 1047.75,-96 1037.75,-92.5 1037.75,-99.5"/>
+<path fill="none" stroke="#000000" d="M961.38,-138C969.68,-138 978.33,-138 986.79,-138"/>
+<polygon fill="#000000" stroke="#000000" points="986.99,-141.5 996.99,-138 986.99,-134.5 986.99,-141.5"/>
+</g>
+<!-- program~volatile_doctest~87 -->
+<g id="proc~~read_line~~CalledByGraph_node4" class="node">
+<title>program~volatile_doctest~87</title>
+<g id="a_proc~~read_line~~CalledByGraph_node4"><a xlink:href="../program/volatile_doctest~87.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="956,-108 860,-108 860,-84 956,-84 956,-108"/>
+<text text-anchor="middle" x="908" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~87&#45;&gt;proc~read_line -->
+<g id="proc~~read_line~~CalledByGraph_edge3" class="edge">
+<title>program~volatile_doctest~87&#45;&gt;proc~read_line</title>
+<path fill="none" stroke="#000000" d="M948.4,-108.04C963.65,-112.69 981.27,-118.07 997.33,-122.98"/>
+<polygon fill="#000000" stroke="#000000" points="996.51,-126.39 1007.09,-125.96 998.55,-119.69 996.51,-126.39"/>
+</g>
+<!-- proc~read_file -->
+<g id="proc~~read_line~~CalledByGraph_node5" class="node">
+<title>proc~read_file</title>
+<g id="a_proc~~read_line~~CalledByGraph_node5"><a xlink:href="../proc/read_file.html" xlink:title="read_file">
+<polygon fill="#d9534f" stroke="#d9534f" points="799,-234 741,-234 741,-210 799,-210 799,-234"/>
+<text text-anchor="middle" x="770" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">read_file</text>
+</a>
+</g>
+</g>
+<!-- proc~read_file&#45;&gt;proc~read_lines -->
+<g id="proc~~read_line~~CalledByGraph_edge4" class="edge">
+<title>proc~read_file&#45;&gt;proc~read_lines</title>
+<path fill="none" stroke="#000000" d="M799.18,-217.65C817.9,-214.76 842.84,-210.91 864.02,-207.64"/>
+<polygon fill="#000000" stroke="#000000" points="864.72,-211.07 874.07,-206.09 863.65,-204.15 864.72,-211.07"/>
 </g>
 <!-- proc~read_file~2 -->
-<g id="proc~~read_line~~CalledByGraph_node3" class="node">
+<g id="proc~~read_line~~CalledByGraph_node6" class="node">
 <title>proc~read_file~2</title>
-<g id="a_proc~~read_line~~CalledByGraph_node3"><a xlink:href=".././proc/read_file~2.html" xlink:title="stringifor_string_t::string%read_file">
-<polygon fill="#d9534f" stroke="#d9534f" points="770,-108 572,-108 572,-84 770,-84 770,-108"/>
-<text text-anchor="middle" x="671" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::string%read_file</text>
+<g id="a_proc~~read_line~~CalledByGraph_node6"><a xlink:href="../proc/read_file~2.html" xlink:title="string%read_file">
+<polygon fill="#d9534f" stroke="#d9534f" points="819,-150 721,-150 721,-126 819,-126 819,-150"/>
+<text text-anchor="middle" x="770" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_file</text>
 </a>
 </g>
 </g>
 <!-- proc~read_file~2&#45;&gt;proc~read_lines~2 -->
-<g id="proc~~read_line~~CalledByGraph_edge2" class="edge">
+<g id="proc~~read_line~~CalledByGraph_edge5" class="edge">
 <title>proc~read_file~2&#45;&gt;proc~read_lines~2</title>
-<path fill="none" stroke="#000000" d="M770.03,-96C778.5,-96 787.11,-96 795.67,-96"/>
-<polygon fill="#000000" stroke="#000000" points="795.7,-99.5 805.7,-96 795.7,-92.5 795.7,-99.5"/>
+<path fill="none" stroke="#000000" d="M819.33,-138C827.47,-138 836.03,-138 844.47,-138"/>
+<polygon fill="#000000" stroke="#000000" points="844.67,-141.5 854.67,-138 844.67,-134.5 844.67,-141.5"/>
+</g>
+<!-- program~volatile_doctest~15 -->
+<g id="proc~~read_line~~CalledByGraph_node7" class="node">
+<title>program~volatile_doctest~15</title>
+<g id="a_proc~~read_line~~CalledByGraph_node7"><a xlink:href="../program/volatile_doctest~15.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="818,-108 722,-108 722,-84 818,-84 818,-108"/>
+<text text-anchor="middle" x="770" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~15&#45;&gt;proc~read_lines~2 -->
+<g id="proc~~read_line~~CalledByGraph_edge6" class="edge">
+<title>program~volatile_doctest~15&#45;&gt;proc~read_lines~2</title>
+<path fill="none" stroke="#000000" d="M809.97,-108.04C825.05,-112.69 842.48,-118.07 858.36,-122.98"/>
+<polygon fill="#000000" stroke="#000000" points="857.43,-126.36 868.02,-125.96 859.5,-119.67 857.43,-126.36"/>
 </g>
 <!-- proc~glob_string -->
-<g id="proc~~read_line~~CalledByGraph_node4" class="node">
+<g id="proc~~read_line~~CalledByGraph_node8" class="node">
 <title>proc~glob_string</title>
-<g id="a_proc~~read_line~~CalledByGraph_node4"><a xlink:href=".././proc/glob_string.html" xlink:title="stringifor_string_t::string%glob_string">
-<polygon fill="#d9534f" stroke="#d9534f" points="525.5,-108 314.5,-108 314.5,-84 525.5,-84 525.5,-108"/>
-<text text-anchor="middle" x="420" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::string%glob_string</text>
+<g id="a_proc~~read_line~~CalledByGraph_node8"><a xlink:href="../proc/glob_string.html" xlink:title="string%glob_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="649.5,-234 538.5,-234 538.5,-210 649.5,-210 649.5,-234"/>
+<text text-anchor="middle" x="594" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%glob_string</text>
 </a>
 </g>
 </g>
 <!-- proc~glob_string&#45;&gt;proc~read_file~2 -->
-<g id="proc~~read_line~~CalledByGraph_edge3" class="edge">
+<g id="proc~~read_line~~CalledByGraph_edge8" class="edge">
 <title>proc~glob_string&#45;&gt;proc~read_file~2</title>
-<path fill="none" stroke="#000000" d="M525.52,-96C537.47,-96 549.68,-96 561.69,-96"/>
-<polygon fill="#000000" stroke="#000000" points="561.72,-99.5 571.71,-96 561.71,-92.5 561.72,-99.5"/>
+<path fill="none" stroke="#000000" d="M649.52,-213.1C661.53,-210.1 673.95,-206.15 685,-201 708.92,-189.85 732.65,-171.16 748.75,-157.03"/>
+<polygon fill="#000000" stroke="#000000" points="751.34,-159.41 756.44,-150.12 746.66,-154.2 751.34,-159.41"/>
+</g>
+<!-- program~stringifor_test_csv_naive_parser -->
+<g id="proc~~read_line~~CalledByGraph_node9" class="node">
+<title>program~stringifor_test_csv_naive_parser</title>
+<g id="a_proc~~read_line~~CalledByGraph_node9"><a xlink:href="../program/stringifor_test_csv_naive_parser.html" xlink:title="stringifor_test_csv_naive_parser">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="685,-192 503,-192 503,-168 685,-168 685,-192"/>
+<text text-anchor="middle" x="594" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_test_csv_naive_parser</text>
+</a>
+</g>
+</g>
+<!-- program~stringifor_test_csv_naive_parser&#45;&gt;proc~read_file~2 -->
+<g id="proc~~read_line~~CalledByGraph_edge9" class="edge">
+<title>program~stringifor_test_csv_naive_parser&#45;&gt;proc~read_file~2</title>
+<path fill="none" stroke="#000000" d="M647.38,-167.92C659.73,-165.04 672.84,-161.94 685,-159 693.6,-156.92 702.68,-154.69 711.58,-152.48"/>
+<polygon fill="#000000" stroke="#000000" points="712.64,-155.83 721.5,-150.01 710.95,-149.03 712.64,-155.83"/>
+</g>
+<!-- program~stringifor_test_parse_large_csv -->
+<g id="proc~~read_line~~CalledByGraph_node10" class="node">
+<title>program~stringifor_test_parse_large_csv</title>
+<g id="a_proc~~read_line~~CalledByGraph_node10"><a xlink:href="../program/stringifor_test_parse_large_csv.html" xlink:title="stringifor_test_parse_large_csv">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="682,-150 506,-150 506,-126 682,-126 682,-150"/>
+<text text-anchor="middle" x="594" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_test_parse_large_csv</text>
+</a>
+</g>
+</g>
+<!-- program~stringifor_test_parse_large_csv&#45;&gt;proc~read_file~2 -->
+<g id="proc~~read_line~~CalledByGraph_edge10" class="edge">
+<title>program~stringifor_test_parse_large_csv&#45;&gt;proc~read_file~2</title>
+<path fill="none" stroke="#000000" d="M682,-138C691.75,-138 701.51,-138 710.77,-138"/>
+<polygon fill="#000000" stroke="#000000" points="710.99,-141.5 720.99,-138 710.99,-134.5 710.99,-141.5"/>
+</g>
+<!-- program~volatile_doctest~107 -->
+<g id="proc~~read_line~~CalledByGraph_node11" class="node">
+<title>program~volatile_doctest~107</title>
+<g id="a_proc~~read_line~~CalledByGraph_node11"><a xlink:href="../program/volatile_doctest~107.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="642,-108 546,-108 546,-84 642,-84 642,-108"/>
+<text text-anchor="middle" x="594" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~107&#45;&gt;proc~read_file~2 -->
+<g id="proc~~read_line~~CalledByGraph_edge11" class="edge">
+<title>program~volatile_doctest~107&#45;&gt;proc~read_file~2</title>
+<path fill="none" stroke="#000000" d="M642.21,-106.87C656.01,-110.09 671.12,-113.65 685,-117 693.6,-119.08 702.68,-121.31 711.58,-123.52"/>
+<polygon fill="#000000" stroke="#000000" points="710.95,-126.97 721.5,-125.99 712.64,-120.17 710.95,-126.97"/>
+</g>
+<!-- program~volatile_doctest~17 -->
+<g id="proc~~read_line~~CalledByGraph_node12" class="node">
+<title>program~volatile_doctest~17</title>
+<g id="a_proc~~read_line~~CalledByGraph_node12"><a xlink:href="../program/volatile_doctest~17.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="642,-66 546,-66 546,-42 642,-42 642,-66"/>
+<text text-anchor="middle" x="594" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~17&#45;&gt;proc~read_file~2 -->
+<g id="proc~~read_line~~CalledByGraph_edge12" class="edge">
+<title>program~volatile_doctest~17&#45;&gt;proc~read_file~2</title>
+<path fill="none" stroke="#000000" d="M642.02,-59.18C656.55,-62.26 672.11,-67.17 685,-75 706.01,-87.76 701.24,-102.37 721,-117 722.84,-118.36 724.78,-119.66 726.79,-120.89"/>
+<polygon fill="#000000" stroke="#000000" points="725.44,-124.14 735.89,-125.88 728.8,-118 725.44,-124.14"/>
+</g>
+<!-- program~volatile_doctest~44 -->
+<g id="proc~~read_line~~CalledByGraph_node13" class="node">
+<title>program~volatile_doctest~44</title>
+<g id="a_proc~~read_line~~CalledByGraph_node13"><a xlink:href="../program/volatile_doctest~44.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="642,-24 546,-24 546,0 642,0 642,-24"/>
+<text text-anchor="middle" x="594" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~44&#45;&gt;proc~read_file~2 -->
+<g id="proc~~read_line~~CalledByGraph_edge13" class="edge">
+<title>program~volatile_doctest~44&#45;&gt;proc~read_file~2</title>
+<path fill="none" stroke="#000000" d="M642.22,-14.67C657.26,-17.57 673.07,-23 685,-33 716.13,-59.09 692.39,-88.17 721,-117 722.08,-118.09 723.23,-119.13 724.43,-120.11"/>
+<polygon fill="#000000" stroke="#000000" points="722.73,-123.19 732.97,-125.92 726.67,-117.4 722.73,-123.19"/>
+</g>
+<!-- program~volatile_doctest~54 -->
+<g id="proc~~read_line~~CalledByGraph_node14" class="node">
+<title>program~volatile_doctest~54</title>
+<g id="a_proc~~read_line~~CalledByGraph_node14"><a xlink:href="../program/volatile_doctest~54.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="642,-276 546,-276 546,-252 642,-252 642,-276"/>
+<text text-anchor="middle" x="594" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~54&#45;&gt;proc~read_file -->
+<g id="proc~~read_line~~CalledByGraph_edge7" class="edge">
+<title>program~volatile_doctest~54&#45;&gt;proc~read_file</title>
+<path fill="none" stroke="#000000" d="M642.21,-253.13C656.01,-249.91 671.12,-246.35 685,-243 699.93,-239.39 716.33,-235.32 730.64,-231.72"/>
+<polygon fill="#000000" stroke="#000000" points="731.8,-235.04 740.64,-229.21 730.09,-228.25 731.8,-235.04"/>
 </g>
 <!-- interface~glob -->
-<g id="proc~~read_line~~CalledByGraph_node5" class="node">
+<g id="proc~~read_line~~CalledByGraph_node15" class="node">
 <title>interface~glob</title>
-<g id="a_proc~~read_line~~CalledByGraph_node5"><a xlink:href=".././interface/glob.html" xlink:title="stringifor_string_t::glob">
-<polygon fill="#a7506f" stroke="#a7506f" points="268,-66 132,-66 132,-42 268,-42 268,-66"/>
-<text text-anchor="middle" x="200" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::glob</text>
+<g id="a_proc~~read_line~~CalledByGraph_node15"><a xlink:href="../interface/glob.html" xlink:title="glob">
+<polygon fill="#a7506f" stroke="#a7506f" points="186,-234 132,-234 132,-210 186,-210 186,-234"/>
+<text text-anchor="middle" x="159" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">glob</text>
 </a>
 </g>
 </g>
 <!-- interface~glob&#45;&gt;proc~glob_string -->
-<g id="proc~~read_line~~CalledByGraph_edge4" class="edge">
+<g id="proc~~read_line~~CalledByGraph_edge15" class="edge">
 <title>interface~glob&#45;&gt;proc~glob_string</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M258.97,-66.04C273.65,-69.02 289.4,-72.18 304,-75 316.19,-77.35 329.11,-79.78 341.73,-82.11"/>
-<polygon fill="#000000" stroke="#000000" points="341.29,-85.59 351.76,-83.96 342.56,-78.71 341.29,-85.59"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M186.24,-221.48C197.28,-221.29 210.27,-221.09 222,-221 329.34,-220.13 454.16,-220.82 528.21,-221.4"/>
+<polygon fill="#000000" stroke="#000000" points="528.28,-224.9 538.31,-221.48 528.34,-217.9 528.28,-224.9"/>
 </g>
 <!-- proc~glob_character -->
-<g id="proc~~read_line~~CalledByGraph_node6" class="node">
+<g id="proc~~read_line~~CalledByGraph_node17" class="node">
 <title>proc~glob_character</title>
-<g id="a_proc~~read_line~~CalledByGraph_node6"><a xlink:href=".././proc/glob_character.html" xlink:title="stringifor_string_t::string%glob_character">
-<polygon fill="#d9534f" stroke="#d9534f" points="536,-66 304,-66 304,-42 536,-42 536,-66"/>
-<text text-anchor="middle" x="420" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t::string%glob_character</text>
+<g id="a_proc~~read_line~~CalledByGraph_node17"><a xlink:href="../proc/glob_character.html" xlink:title="string%glob_character">
+<polygon fill="#d9534f" stroke="#d9534f" points="355,-254 222,-254 222,-230 355,-230 355,-254"/>
+<text text-anchor="middle" x="288.5" y="-239.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%glob_character</text>
 </a>
 </g>
 </g>
 <!-- interface~glob&#45;&gt;proc~glob_character -->
-<g id="proc~~read_line~~CalledByGraph_edge9" class="edge">
+<g id="proc~~read_line~~CalledByGraph_edge21" class="edge">
 <title>interface~glob&#45;&gt;proc~glob_character</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M268.19,-47.71C276.37,-47.52 284.92,-47.39 293.62,-47.32"/>
-<polygon fill="#000000" stroke="#000000" points="293.9,-50.82 303.88,-47.26 293.86,-43.82 293.9,-50.82"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M186.11,-226.1C193.81,-227.3 202.66,-228.69 211.85,-230.13"/>
+<polygon fill="#000000" stroke="#000000" points="211.5,-233.62 221.92,-231.71 212.58,-226.71 211.5,-233.62"/>
 </g>
-<!-- proc~glob_character&#45;&gt;interface~glob -->
-<g id="proc~~read_line~~CalledByGraph_edge5" class="edge">
-<title>proc~glob_character&#45;&gt;interface~glob</title>
-<path fill="none" stroke="#000000" d="M303.88,-60.74C295.2,-60.71 286.58,-60.63 278.22,-60.49"/>
-<polygon fill="#000000" stroke="#000000" points="278.25,-56.99 268.19,-60.29 278.11,-63.99 278.25,-56.99"/>
-</g>
-<!-- program~volatile_doctest~16 -->
-<g id="proc~~read_line~~CalledByGraph_node7" class="node">
-<title>program~volatile_doctest~16</title>
-<g id="a_proc~~read_line~~CalledByGraph_node7"><a xlink:href=".././program/volatile_doctest~16.html" xlink:title="volatile_doctest">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="96,-108 0,-108 0,-84 96,-84 96,-108"/>
-<text text-anchor="middle" x="48" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+<!-- none~glob -->
+<g id="proc~~read_line~~CalledByGraph_node16" class="node">
+<title>none~glob</title>
+<g id="a_proc~~read_line~~CalledByGraph_node16"><a xlink:href="../type/string.html#boundprocedure-glob" xlink:title="string%glob">
+<polygon fill="#a7506f" stroke="#a7506f" points="467,-254 391,-254 391,-230 467,-230 467,-254"/>
+<text text-anchor="middle" x="429" y="-239.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%glob</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~16&#45;&gt;interface~glob -->
-<g id="proc~~read_line~~CalledByGraph_edge6" class="edge">
-<title>program~volatile_doctest~16&#45;&gt;interface~glob</title>
-<path fill="none" stroke="#000000" d="M91.98,-83.96C108.93,-79.22 128.56,-73.72 146.35,-68.74"/>
-<polygon fill="#000000" stroke="#000000" points="147.32,-72.1 156.01,-66.04 145.44,-65.36 147.32,-72.1"/>
+<!-- none~glob&#45;&gt;proc~glob_string -->
+<g id="proc~~read_line~~CalledByGraph_edge14" class="edge">
+<title>none~glob&#45;&gt;proc~glob_string</title>
+<path fill="none" stroke="#000000" d="M467.4,-237.41C485.49,-235.19 507.73,-232.46 528.45,-229.92"/>
+<polygon fill="#000000" stroke="#000000" points="528.97,-233.38 538.47,-228.69 528.12,-226.43 528.97,-233.38"/>
 </g>
-<!-- program~volatile_doctest~69 -->
-<g id="proc~~read_line~~CalledByGraph_node8" class="node">
-<title>program~volatile_doctest~69</title>
-<g id="a_proc~~read_line~~CalledByGraph_node8"><a xlink:href=".././program/volatile_doctest~69.html" xlink:title="volatile_doctest">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="96,-66 0,-66 0,-42 96,-42 96,-66"/>
-<text text-anchor="middle" x="48" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+<!-- none~glob&#45;&gt;proc~glob_character -->
+<g id="proc~~read_line~~CalledByGraph_edge20" class="edge">
+<title>none~glob&#45;&gt;proc~glob_character</title>
+<path fill="none" stroke="#000000" d="M390.92,-248.06C382.89,-248.43 374.11,-248.65 365.2,-248.72"/>
+<polygon fill="#000000" stroke="#000000" points="365.09,-245.22 355.1,-248.74 365.11,-252.22 365.09,-245.22"/>
+</g>
+<!-- proc~glob_character&#45;&gt;none~glob -->
+<g id="proc~~read_line~~CalledByGraph_edge17" class="edge">
+<title>proc~glob_character&#45;&gt;none~glob</title>
+<path fill="none" stroke="#000000" d="M355.1,-235.26C363.75,-235.22 372.48,-235.32 380.74,-235.56"/>
+<polygon fill="#000000" stroke="#000000" points="380.79,-239.07 390.92,-235.94 381.06,-232.07 380.79,-239.07"/>
+</g>
+<!-- program~volatile_doctest~100 -->
+<g id="proc~~read_line~~CalledByGraph_node18" class="node">
+<title>program~volatile_doctest~100</title>
+<g id="a_proc~~read_line~~CalledByGraph_node18"><a xlink:href="../program/volatile_doctest~100.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="96,-234 0,-234 0,-210 96,-210 96,-234"/>
+<text text-anchor="middle" x="48" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~69&#45;&gt;interface~glob -->
-<g id="proc~~read_line~~CalledByGraph_edge7" class="edge">
-<title>program~volatile_doctest~69&#45;&gt;interface~glob</title>
-<path fill="none" stroke="#000000" d="M96.05,-54C104.2,-54 112.87,-54 121.58,-54"/>
-<polygon fill="#000000" stroke="#000000" points="121.79,-57.5 131.79,-54 121.79,-50.5 121.79,-57.5"/>
+<!-- program~volatile_doctest~100&#45;&gt;interface~glob -->
+<g id="proc~~read_line~~CalledByGraph_edge16" class="edge">
+<title>program~volatile_doctest~100&#45;&gt;interface~glob</title>
+<path fill="none" stroke="#000000" d="M96.18,-222C104.66,-222 113.38,-222 121.5,-222"/>
+<polygon fill="#000000" stroke="#000000" points="121.76,-225.5 131.76,-222 121.76,-218.5 121.76,-225.5"/>
 </g>
-<!-- program~volatile_doctest~80 -->
-<g id="proc~~read_line~~CalledByGraph_node9" class="node">
-<title>program~volatile_doctest~80</title>
-<g id="a_proc~~read_line~~CalledByGraph_node9"><a xlink:href=".././program/volatile_doctest~80.html" xlink:title="volatile_doctest">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="96,-24 0,-24 0,0 96,0 96,-24"/>
-<text text-anchor="middle" x="48" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+<!-- program~volatile_doctest~103 -->
+<g id="proc~~read_line~~CalledByGraph_node19" class="node">
+<title>program~volatile_doctest~103</title>
+<g id="a_proc~~read_line~~CalledByGraph_node19"><a xlink:href="../program/volatile_doctest~103.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="336.5,-338 240.5,-338 240.5,-314 336.5,-314 336.5,-338"/>
+<text text-anchor="middle" x="288.5" y="-323.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~80&#45;&gt;interface~glob -->
-<g id="proc~~read_line~~CalledByGraph_edge8" class="edge">
-<title>program~volatile_doctest~80&#45;&gt;interface~glob</title>
-<path fill="none" stroke="#000000" d="M91.98,-24.04C108.93,-28.78 128.56,-34.28 146.35,-39.26"/>
-<polygon fill="#000000" stroke="#000000" points="145.44,-42.64 156.01,-41.96 147.32,-35.9 145.44,-42.64"/>
+<!-- program~volatile_doctest~103&#45;&gt;none~glob -->
+<g id="proc~~read_line~~CalledByGraph_edge18" class="edge">
+<title>program~volatile_doctest~103&#45;&gt;none~glob</title>
+<path fill="none" stroke="#000000" d="M335.25,-313.95C342.06,-311.42 348.85,-308.45 355,-305 375.7,-293.39 395.86,-275.32 409.73,-261.51"/>
+<polygon fill="#000000" stroke="#000000" points="412.25,-263.93 416.75,-254.34 407.25,-259.03 412.25,-263.93"/>
+</g>
+<!-- program~volatile_doctest~82 -->
+<g id="proc~~read_line~~CalledByGraph_node20" class="node">
+<title>program~volatile_doctest~82</title>
+<g id="a_proc~~read_line~~CalledByGraph_node20"><a xlink:href="../program/volatile_doctest~82.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="336.5,-296 240.5,-296 240.5,-272 336.5,-272 336.5,-296"/>
+<text text-anchor="middle" x="288.5" y="-281.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~82&#45;&gt;none~glob -->
+<g id="proc~~read_line~~CalledByGraph_edge19" class="edge">
+<title>program~volatile_doctest~82&#45;&gt;none~glob</title>
+<path fill="none" stroke="#000000" d="M329.19,-271.96C345.36,-267.06 364.18,-261.35 381.03,-256.24"/>
+<polygon fill="#000000" stroke="#000000" points="382.13,-259.57 390.68,-253.32 380.1,-252.87 382.13,-259.57"/>
 </g>
 </g>
 </svg>
@@ -588,17 +747,17 @@ implementation in a submodule of an interface in a parent module.
                   var panprocread_lineCalledByGraph = svgPanZoom('#procread_lineCalledByGraph',
                     {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
                   );
-                </script>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                   <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              <div class="modal-body">
+                <div class="modal-body">
 <p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -606,11 +765,11 @@ implementation in a submodule of an interface in a parent module.
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: Graph Key Pages: 1 -->
-<svg width="597pt" height="32pt"
- viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
 <title>Graph Key</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
 <g id="node1" class="node">
 <title>Subroutine</title>
@@ -629,23 +788,29 @@ implementation in a submodule of an interface in a parent module.
 <polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
 <text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
 </g>
-<!-- Unknown Procedure Type -->
+<!-- Type Bound Procedure -->
 <g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
 <title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
-<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
 </g>
 <!-- Program -->
-<g id="node5" class="node">
+<g id="node6" class="node">
 <title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
-<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
 </g>
 <!-- This Page&#39;s Entity -->
-<g id="node6" class="node">
+<g id="node7" class="node">
 <title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
-<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
 </g>
 </g>
 </svg>
@@ -663,50 +828,19 @@ implementation in a submodule of an interface in a parent module.
     </div>
     <br>
 
-    <section class="visible-xs visible-sm hidden-md">
-        <h3>Contents</h3>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    <div class="panel panel-primary">
-      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../proc/read_line.html#src">read_line</a>
-      </div>
-    </div>
-
-
-    </section>
-    <br class="visible-xs visible-sm hidden-md">
-
 
     
     
 
     
     
+
 
 
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">read_line</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="p">)</span><span class="w"></span>
+    <div class="hl codehilite"><pre><span></span><span class="w">   </span><span class="k">subroutine </span><span class="n">read_line</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="p">)</span>
 <span class="w">   </span><span class="c">!&lt; Read line (record) from a connected unit.</span>
 <span class="w">   </span><span class="c">!&lt;</span>
 <span class="w">   </span><span class="c">!&lt; The line is read as an ascii stream read until the eor is reached.</span>
@@ -772,29 +906,29 @@ implementation in a submodule of an interface in a parent module.
 <span class="w">   </span><span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="w">    </span><span class="c">!&lt; Line storage.</span>
 <span class="w">   </span><span class="kt">character</span><span class="p">(</span><span class="nb">kind</span><span class="o">=</span><span class="n">CK</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">ch</span><span class="w">      </span><span class="c">!&lt; Character storage.</span>
 
-<span class="w">   </span><span class="n">form_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;FORMATTED&#39;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">form</span><span class="p">))</span><span class="w"> </span><span class="n">form_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">form</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">form_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">form_</span><span class="p">%</span><span class="n">upper</span><span class="p">()</span><span class="w"></span>
-<span class="w">   </span><span class="n">iomsg_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">repeat</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iomsg</span><span class="p">))</span><span class="w"> </span><span class="n">iomsg_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iomsg</span><span class="w"></span>
-<span class="w">   </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
-<span class="w">   </span><span class="k">select case</span><span class="p">(</span><span class="n">form_</span><span class="p">%</span><span class="n">chars</span><span class="p">())</span><span class="w"></span>
-<span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;FORMATTED&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">form_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;FORMATTED&#39;</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">form</span><span class="p">))</span><span class="w"> </span><span class="n">form_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">form</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">form_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">form_</span><span class="p">%</span><span class="n">upper</span><span class="p">()</span>
+<span class="w">   </span><span class="n">iomsg_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">repeat</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iomsg</span><span class="p">))</span><span class="w"> </span><span class="n">iomsg_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iomsg</span>
+<span class="w">   </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span>
+<span class="w">   </span><span class="k">select case</span><span class="p">(</span><span class="n">form_</span><span class="p">%</span><span class="n">chars</span><span class="p">())</span>
+<span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;FORMATTED&#39;</span><span class="p">)</span>
 <span class="w">      </span><span class="k">do</span>
-<span class="k">         read</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">advance</span><span class="o">=</span><span class="s1">&#39;no&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat_</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg_</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k">end</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">eor</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">ch</span><span class="w"></span>
-<span class="w">         </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="o">//</span><span class="n">ch</span><span class="w"></span>
+<span class="k">         read</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">advance</span><span class="o">=</span><span class="s1">&#39;no&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat_</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg_</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k">end</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">eor</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">ch</span>
+<span class="w">         </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="o">//</span><span class="n">ch</span>
 <span class="w">      </span><span class="k">enddo</span>
-<span class="k">   case</span><span class="p">(</span><span class="s1">&#39;UNFORMATTED&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">   case</span><span class="p">(</span><span class="s1">&#39;UNFORMATTED&#39;</span><span class="p">)</span>
 <span class="w">      </span><span class="k">do</span>
-<span class="k">         read</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat_</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg_</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k">end</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">ch</span><span class="w"></span>
+<span class="k">         read</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat_</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg_</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k">end</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">ch</span>
 <span class="w">         </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="o">==</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
-<span class="k">            </span><span class="n">iostat_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iostat_eor</span><span class="w"></span>
+<span class="k">            </span><span class="n">iostat_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iostat_eor</span>
 <span class="w">            </span><span class="k">exit</span>
 <span class="k">         endif</span>
-<span class="k">         </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="o">//</span><span class="n">ch</span><span class="w"></span>
+<span class="k">         </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="o">//</span><span class="n">ch</span>
 <span class="w">      </span><span class="k">enddo</span>
 <span class="k">   endselect</span>
-<span class="k">   </span><span class="mi">10</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="o">/=</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
-<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iostat</span><span class="p">))</span><span class="w"> </span><span class="n">iostat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iostat_</span><span class="w"></span>
-<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iomsg</span><span class="p">))</span><span class="w"> </span><span class="n">iomsg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iomsg_</span><span class="w"></span>
-<span class="w">   </span><span class="k">endsubroutine </span><span class="n">read_line</span><span class="w"></span>
+<span class="k">   </span><span class="mi">10</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="o">/=</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">self</span><span class="p">%</span><span class="n">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iostat</span><span class="p">))</span><span class="w"> </span><span class="n">iostat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iostat_</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">iomsg</span><span class="p">))</span><span class="w"> </span><span class="n">iomsg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iomsg_</span>
+<span class="w">   </span><span class="k">endsubroutine </span><span class="n">read_line</span>
 </pre></div>
 
     </section>
@@ -807,12 +941,15 @@ implementation in a submodule of an interface in a parent module.
     </div> <!-- /container -->
     <footer>
       <div class="container">
-        <div class="row">
-          <div class="col-xs-6 col-md-6"><p>StringiFor was developed by Stefano Zaghi<br>&copy; 2023 
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              StringiFor
+ was developed by Stefano Zaghi<br>              &copy; 2024 
 </p>
           </div>
-          <div class="col-xs-6 col-md-6">
-            <p class="text-right">
+          <div class="col">
+            <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
             </p>
@@ -822,17 +959,12 @@ implementation in a submodule of an interface in a parent module.
       </div> <!-- /container -->
     </footer>
 
-    <!-- Bootstrap core JavaScript
-         ================================================== -->
-         <!-- Placed at the end of the document so the pages load faster -->
-    <!--
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        -->
-        <script src="../js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="../js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
 
-        <!-- MathJax JavaScript
+    <!-- MathJax JavaScript
              ================================================== -->
              <!-- Placed at the end of the document so the pages load faster -->
         <script type="text/x-mathjax-config">

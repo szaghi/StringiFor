@@ -1,3 +1,5 @@
+<!-- -*- mode: jinja2 -*- -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,113 +12,91 @@
 
     <title>stringifor_test_parse_large_csv &ndash; StringiFor</title>
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
       <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-         <script src="../js/jquery-2.1.3.min.js"></script>
-         <script src="../js/svg-pan-zoom.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
   <body>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
           <a class="navbar-brand" href="../index.html">StringiFor </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
-              <a href="#" class="dropdown-toggle"
-                 data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                 Contents <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                    <li><a href="../lists/files.html">Source Files</a></li>
-                  <li><a href="../lists/modules.html">Modules</a></li>
-                  <li><a href="../lists/procedures.html">Procedures</a></li>
-                  <li><a href="../lists/types.html">Derived Types</a></li>
-                  <li><a href="../lists/programs.html">Programs</a></li>
-              </ul>
-            </li>
-                <li class="visible-xs hidden-sm visible-lg">
-                  <a href="../lists/files.html">Source Files</a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
                 </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/modules.html">Modules</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/procedures.html">Procedures</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/types.html">Derived Types</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/programs.html">Programs</a>
-              </li>
-          </ul>
-            <form action="../search.html" class="navbar-form navbar-right" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/programs.html">Programs</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
               </div>
-              <!--
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  -->
-            </form>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
 
     <div class="container">
   <div class="row">
     <h1>stringifor_test_parse_large_csv      <small>Program</small>
       
     </h1>
-      <div class="row" id="info-bar">
-    <div class="col-lg-12">
-      <div class="well well-sm">
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
 
-          <li id="statements"><i class="fa fa-list-ol"></i>
-            <a data-toggle="tooltip"
-               data-placement="bottom" data-html="true"
-               title=" 2.2% of total for programs.">35 statements</a>
-          </li>
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 2.2% of total for programs.">35 statements</a>
+            </li>
 
-            <li id="source-file">
+            <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
               <a href="../src/stringifor_test_parse_large_csv.f90"> Source File</a>
             </li>
         </ul>
-        <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/stringifor_test_parse_large_csv.f90.html'>stringifor_test_parse_large_csv.f90</a></li>
-          <li class="active">stringifor_test_parse_large_csv</li>
-        </ol>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_test_parse_large_csv.f90.html'>stringifor_test_parse_large_csv.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">stringifor_test_parse_large_csv</li>
+          </ol>
+        </nav>
       </div>
     </div>
   </div>
   <script>
     $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-bs-toggle="tooltip"]').tooltip()
     })
   </script>
 
@@ -127,23 +107,22 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#vars-0">Variables</a>
-        </h3>
-      </div>
-      <div id="vars-0" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-csv~2">csv</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-rows~2">rows</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-columns~2">columns</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-cells~2">cells</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-rows_number~2">rows_number</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-columns_number~2">columns_number</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-c~14">c</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-r~3">r</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-test_passed~2">test_passed</a>
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-csv">csv</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-rows">rows</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-columns">columns</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-cells">cells</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-rows_number">rows_number</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-columns_number">columns_number</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-c">c</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-r">r</a>
+            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-test_passed~18">test_passed</a>
         </div>
       </div>
     </div>
@@ -165,8 +144,9 @@
   
   
   
-    <div class="panel panel-primary">
-      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
       <div class="list-group">
         <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#src">stringifor_test_parse_large_csv</a>
       </div>
@@ -178,18 +158,17 @@
     </div>
     
     <div class="col-md-9" id='text'>
-        <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Uses</h3>
-      </div>
-      <ul class="list-group">
-          <li class="list-group-item">
-            <ul class="list-inline">
-                <li><a href='../module/stringifor.html'>stringifor</a></li>
-            </ul>
-          </li>
-          <li class="list-group-item">
-            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='../module/stringifor.html'>stringifor</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -209,7 +188,7 @@
 <!-- module~stringifor -->
 <g id="program~~stringifor_test_parse_large_csv~~UsesGraph_node2" class="node">
 <title>module~stringifor</title>
-<g id="a_program~~stringifor_test_parse_large_csv~~UsesGraph_node2"><a xlink:href=".././module/stringifor.html" xlink:title="stringifor">
+<g id="a_program~~stringifor_test_parse_large_csv~~UsesGraph_node2"><a xlink:href="../module/stringifor.html" xlink:title="stringifor">
 <polygon fill="#337ab7" stroke="#337ab7" points="332,-128 271,-128 271,-104 332,-104 332,-128"/>
 <text text-anchor="middle" x="301.5" y="-113.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor</text>
 </a>
@@ -224,7 +203,7 @@
 <!-- module~stringifor_string_t -->
 <g id="program~~stringifor_test_parse_large_csv~~UsesGraph_node3" class="node">
 <title>module~stringifor_string_t</title>
-<g id="a_program~~stringifor_test_parse_large_csv~~UsesGraph_node3"><a xlink:href=".././module/stringifor_string_t.html" xlink:title="stringifor_string_t">
+<g id="a_program~~stringifor_test_parse_large_csv~~UsesGraph_node3"><a xlink:href="../module/stringifor_string_t.html" xlink:title="stringifor_string_t">
 <polygon fill="#337ab7" stroke="#337ab7" points="235,-108 130,-108 130,-84 235,-84 235,-108"/>
 <text text-anchor="middle" x="182.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor_string_t</text>
 </a>
@@ -281,8 +260,11 @@
 <!-- iso_fortran_env -->
 <g id="program~~stringifor_test_parse_large_csv~~UsesGraph_node7" class="node">
 <title>iso_fortran_env</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~UsesGraph_node7"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
 <polygon fill="#337ab7" stroke="#337ab7" points="94,-24 0,-24 0,0 94,0 94,-24"/>
 <text text-anchor="middle" x="47" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
 </g>
 <!-- module~stringifor_string_t&#45;&gt;iso_fortran_env -->
 <g id="program~~stringifor_test_parse_large_csv~~UsesGraph_edge6" class="edge">
@@ -292,17 +274,17 @@
 </g>
 </g>
 </svg>
-</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                   <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              <div class="modal-body">
+                <div class="modal-body">
 <p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -362,113 +344,310 @@ modules which it uses.
             </div>
           </div>
         </div>
-          </li>
-      </ul>
+            </li>
+        </ul>
+      </div>
     </div>
 
     <p>StringiFor <code>csv_naive_parser</code> test.</p>
     <br>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-  <h3 class="panel-title">Calls</h3>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
   <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: program~~stringifor_test_parse_large_csv~~CallsGraph Pages: 1 -->
-<svg id="programstringifor_test_parse_large_csvCallsGraph" width="582pt" height="83pt"
- viewBox="0.00 0.00 582.00 83.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="program~~stringifor_test_parse_large_csv~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 79)">
+<svg id="programstringifor_test_parse_large_csvCallsGraph" width="641pt" height="204pt"
+ viewBox="0.00 0.00 641.00 204.04" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph" class="graph" transform="scale(1.56 1.56) rotate(0) translate(4 314)">
 <title>program~~stringifor_test_parse_large_csv~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-79 578,-79 578,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-314 995,-314 995,4 -4,4"/>
 <!-- program~stringifor_test_parse_large_csv -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node1" class="node">
 <title>program~stringifor_test_parse_large_csv</title>
-<polygon fill="none" stroke="black" points="176,-45 0,-45 0,-21 176,-21 176,-45"/>
-<text text-anchor="middle" x="88" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor_test_parse_large_csv</text>
+<polygon fill="none" stroke="black" points="176,-153 0,-153 0,-129 176,-129 176,-153"/>
+<text text-anchor="middle" x="88" y="-138.6" font-family="Helvetica,sans-Serif" font-size="10.50">stringifor_test_parse_large_csv</text>
 </g>
-<!-- proc~read_file -->
+<!-- none~join -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node2" class="node">
-<title>proc~read_file</title>
-<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node2"><a xlink:href=".././proc/read_file.html" xlink:title="stringifor::read_file">
-<polygon fill="#d9534f" stroke="#d9534f" points="326,-45 212,-45 212,-21 326,-21 326,-45"/>
-<text text-anchor="middle" x="269" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor::read_file</text>
+<title>none~join</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node2"><a xlink:href="../type/string.html#boundprocedure-join" xlink:title="string%join">
+<polygon fill="#a7506f" stroke="#a7506f" points="310.5,-268 238.5,-268 238.5,-244 310.5,-244 310.5,-268"/>
+<text text-anchor="middle" x="274.5" y="-253.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%join</text>
 </a>
 </g>
 </g>
-<!-- program~stringifor_test_parse_large_csv&#45;&gt;proc~read_file -->
+<!-- program~stringifor_test_parse_large_csv&#45;&gt;none~join -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge1" class="edge">
-<title>program~stringifor_test_parse_large_csv&#45;&gt;proc~read_file</title>
-<path fill="none" stroke="#000000" d="M176.14,-33C184.74,-33 193.36,-33 201.7,-33"/>
-<polygon fill="#000000" stroke="#000000" points="201.7,-36.5 211.7,-33 201.7,-29.5 201.7,-36.5"/>
+<title>program~stringifor_test_parse_large_csv&#45;&gt;none~join</title>
+<path fill="none" stroke="#000000" d="M108.4,-153.09C141.2,-173.54 207.75,-215.02 245.58,-238.59"/>
+<polygon fill="#000000" stroke="#000000" points="243.75,-241.58 254.09,-243.9 247.45,-235.64 243.75,-241.58"/>
 </g>
-<!-- chars -->
+<!-- proc~read_file~2 -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node3" class="node">
-<title>chars</title>
-<polygon fill="#777777" stroke="#777777" points="574,-75 520,-75 520,-51 574,-51 574,-75"/>
-<text text-anchor="middle" x="547" y="-60.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">chars</text>
-</g>
-<!-- proc~read_file&#45;&gt;chars -->
-<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge2" class="edge">
-<title>proc~read_file&#45;&gt;chars</title>
-<path fill="none" stroke="#000000" d="M315.57,-45.06C330.29,-48.51 346.74,-51.9 362,-54 412.9,-61 472.37,-62.76 509.62,-63.1"/>
-<polygon fill="#000000" stroke="#000000" points="509.95,-66.6 519.97,-63.16 509.99,-59.6 509.95,-66.6"/>
-</g>
-<!-- proc~read_lines -->
-<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node4" class="node">
-<title>proc~read_lines</title>
-<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node4"><a xlink:href=".././proc/read_lines.html" xlink:title="stringifor::read_lines">
-<polygon fill="#d9534f" stroke="#d9534f" points="484,-45 362,-45 362,-21 484,-21 484,-45"/>
-<text text-anchor="middle" x="423" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stringifor::read_lines</text>
+<title>proc~read_file~2</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node3"><a xlink:href="../proc/read_file~2.html" xlink:title="string%read_file">
+<polygon fill="#d9534f" stroke="#d9534f" points="323.5,-178 225.5,-178 225.5,-154 323.5,-154 323.5,-178"/>
+<text text-anchor="middle" x="274.5" y="-163.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_file</text>
 </a>
 </g>
 </g>
-<!-- proc~read_file&#45;&gt;proc~read_lines -->
+<!-- program~stringifor_test_parse_large_csv&#45;&gt;proc~read_file~2 -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge2" class="edge">
+<title>program~stringifor_test_parse_large_csv&#45;&gt;proc~read_file~2</title>
+<path fill="none" stroke="#000000" d="M176.12,-152.8C189.38,-154.6 202.79,-156.42 215.24,-158.11"/>
+<polygon fill="#000000" stroke="#000000" points="215.07,-161.61 225.45,-159.49 216.01,-154.68 215.07,-161.61"/>
+</g>
+<!-- proc~split -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node4" class="node">
+<title>proc~split</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node4"><a xlink:href="../proc/split.html" xlink:title="string%split">
+<polygon fill="#d9534f" stroke="#d9534f" points="477,-108 403,-108 403,-84 477,-84 477,-108"/>
+<text text-anchor="middle" x="440" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%split</text>
+</a>
+</g>
+</g>
+<!-- program~stringifor_test_parse_large_csv&#45;&gt;proc~split -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge3" class="edge">
-<title>proc~read_file&#45;&gt;proc~read_lines</title>
-<path fill="none" stroke="#000000" d="M326.17,-33C334.56,-33 343.29,-33 351.92,-33"/>
-<polygon fill="#000000" stroke="#000000" points="351.98,-36.5 361.98,-33 351.98,-29.5 351.98,-36.5"/>
+<title>program~stringifor_test_parse_large_csv&#45;&gt;proc~split</title>
+<path fill="none" stroke="#000000" d="M176.42,-129.76C244.89,-120.96 337.48,-109.05 392.44,-101.99"/>
+<polygon fill="#000000" stroke="#000000" points="393.11,-105.43 402.59,-100.68 392.22,-98.49 393.11,-105.43"/>
 </g>
-<!-- upper -->
+<!-- proc~split_chunked -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node5" class="node">
-<title>upper</title>
-<polygon fill="#777777" stroke="#777777" points="574,-24 520,-24 520,0 574,0 574,-24"/>
-<text text-anchor="middle" x="547" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upper</text>
+<title>proc~split_chunked</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node5"><a xlink:href="../proc/split_chunked.html" xlink:title="string%split_chunked">
+<polygon fill="#d9534f" stroke="#d9534f" points="337,-72 212,-72 212,-48 337,-48 337,-72"/>
+<text text-anchor="middle" x="274.5" y="-57.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%split_chunked</text>
+</a>
 </g>
-<!-- proc~read_file&#45;&gt;upper -->
+</g>
+<!-- program~stringifor_test_parse_large_csv&#45;&gt;proc~split_chunked -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge4" class="edge">
-<title>proc~read_file&#45;&gt;upper</title>
-<path fill="none" stroke="#000000" d="M313.64,-20.93C328.82,-17.3 346.05,-13.8 362,-12 412.99,-6.25 472.44,-7.72 509.66,-9.61"/>
-<polygon fill="#000000" stroke="#000000" points="509.82,-13.12 520,-10.17 510.2,-6.13 509.82,-13.12"/>
+<title>program~stringifor_test_parse_large_csv&#45;&gt;proc~split_chunked</title>
+<path fill="none" stroke="#000000" d="M116.62,-128.87C148.51,-114.88 201.09,-91.79 236.49,-76.25"/>
+<polygon fill="#000000" stroke="#000000" points="238.24,-79.3 245.99,-72.08 235.43,-72.89 238.24,-79.3"/>
 </g>
-<!-- proc~read_lines&#45;&gt;chars -->
+<!-- proc~join_characters -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node8" class="node">
+<title>proc~join_characters</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node8"><a xlink:href="../proc/join_characters.html" xlink:title="string%join_characters">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="507,-310 373,-310 373,-286 507,-286 507,-310"/>
+<text text-anchor="middle" x="440" y="-295.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%join_characters</text>
+</a>
+</g>
+</g>
+<!-- none~join&#45;&gt;proc~join_characters -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge5" class="edge">
-<title>proc~read_lines&#45;&gt;chars</title>
-<path fill="none" stroke="#000000" d="M472.92,-45.03C485.33,-48.08 498.43,-51.3 510.06,-54.16"/>
-<polygon fill="#000000" stroke="#000000" points="509.3,-57.58 519.85,-56.57 510.97,-50.78 509.3,-57.58"/>
+<title>none~join&#45;&gt;proc~join_characters</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M310.57,-265.01C331.43,-270.37 358.38,-277.29 382.2,-283.41"/>
+<polygon fill="#000000" stroke="#000000" points="381.63,-286.88 392.19,-285.98 383.38,-280.1 381.63,-286.88"/>
 </g>
-<!-- proc~read_lines&#45;&gt;upper -->
+<!-- proc~join_strings -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node9" class="node">
+<title>proc~join_strings</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node9"><a xlink:href="../proc/join_strings.html" xlink:title="string%join_strings">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="496,-268 384,-268 384,-244 496,-244 496,-268"/>
+<text text-anchor="middle" x="440" y="-253.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%join_strings</text>
+</a>
+</g>
+</g>
+<!-- none~join&#45;&gt;proc~join_strings -->
 <g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge6" class="edge">
-<title>proc~read_lines&#45;&gt;upper</title>
-<path fill="none" stroke="#000000" d="M484.29,-22.62C492.97,-21.13 501.67,-19.63 509.69,-18.25"/>
-<polygon fill="#000000" stroke="#000000" points="510.51,-21.66 519.77,-16.51 509.32,-14.76 510.51,-21.66"/>
+<title>none~join&#45;&gt;proc~join_strings</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M310.57,-256C328.96,-256 352.09,-256 373.63,-256"/>
+<polygon fill="#000000" stroke="#000000" points="373.72,-259.5 383.72,-256 373.72,-252.5 373.72,-259.5"/>
+</g>
+<!-- proc~chars -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node6" class="node">
+<title>proc~chars</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node6"><a xlink:href="../proc/chars.html" xlink:title="string%chars">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="767,-218 685,-218 685,-194 767,-194 767,-218"/>
+<text text-anchor="middle" x="726" y="-203.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%chars</text>
+</a>
+</g>
+</g>
+<!-- proc~read_file~2&#45;&gt;proc~chars -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge7" class="edge">
+<title>proc~read_file~2&#45;&gt;proc~chars</title>
+<path fill="none" stroke="#000000" d="M305.69,-178.04C324.68,-184.99 349.88,-193.11 373,-197 479.22,-214.87 605.98,-212.41 674.68,-209.13"/>
+<polygon fill="#000000" stroke="#000000" points="674.98,-212.62 684.79,-208.62 674.63,-205.63 674.98,-212.62"/>
+</g>
+<!-- proc~read_lines~2 -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node11" class="node">
+<title>proc~read_lines~2</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node11"><a xlink:href="../proc/read_lines~2.html" xlink:title="string%read_lines">
+<polygon fill="#d9534f" stroke="#d9534f" points="493,-188 387,-188 387,-164 493,-164 493,-188"/>
+<text text-anchor="middle" x="440" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_lines</text>
+</a>
+</g>
+</g>
+<!-- proc~read_file~2&#45;&gt;proc~read_lines~2 -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge8" class="edge">
+<title>proc~read_file~2&#45;&gt;proc~read_lines~2</title>
+<path fill="none" stroke="#000000" d="M323.67,-168.95C340.29,-169.96 359.14,-171.12 376.72,-172.19"/>
+<polygon fill="#000000" stroke="#000000" points="376.7,-175.7 386.9,-172.81 377.13,-168.71 376.7,-175.7"/>
+</g>
+<!-- proc~upper -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node14" class="node">
+<title>proc~upper</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node14"><a xlink:href="../proc/upper.html" xlink:title="string%upper">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="768,-167 684,-167 684,-143 768,-143 768,-167"/>
+<text text-anchor="middle" x="726" y="-152.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%upper</text>
+</a>
+</g>
+</g>
+<!-- proc~read_file~2&#45;&gt;proc~upper -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge9" class="edge">
+<title>proc~read_file~2&#45;&gt;proc~upper</title>
+<path fill="none" stroke="#000000" d="M323.51,-159.5C339.25,-157.66 356.84,-155.91 373,-155 479.79,-149 605.08,-151.2 673.67,-153.2"/>
+<polygon fill="#000000" stroke="#000000" points="673.67,-156.7 683.77,-153.5 673.88,-149.7 673.67,-156.7"/>
+</g>
+<!-- proc~partition -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node10" class="node">
+<title>proc~partition</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node10"><a xlink:href="../proc/partition.html" xlink:title="string%partition">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="642,-108 545,-108 545,-84 642,-84 642,-108"/>
+<text text-anchor="middle" x="593.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%partition</text>
+</a>
+</g>
+</g>
+<!-- proc~split&#45;&gt;proc~partition -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge10" class="edge">
+<title>proc~split&#45;&gt;proc~partition</title>
+<path fill="none" stroke="#000000" d="M477.29,-96C494.43,-96 515.31,-96 534.56,-96"/>
+<polygon fill="#000000" stroke="#000000" points="534.76,-99.5 544.76,-96 534.76,-92.5 534.76,-99.5"/>
+</g>
+<!-- proc~unique -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node13" class="node">
+<title>proc~unique</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node13"><a xlink:href="../proc/unique.html" xlink:title="string%unique">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="638,-66 549,-66 549,-42 638,-42 638,-66"/>
+<text text-anchor="middle" x="593.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%unique</text>
+</a>
+</g>
+</g>
+<!-- proc~split&#45;&gt;proc~unique -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge11" class="edge">
+<title>proc~split&#45;&gt;proc~unique</title>
+<path fill="none" stroke="#000000" d="M477.29,-85.94C495.79,-80.81 518.66,-74.47 539.13,-68.8"/>
+<polygon fill="#000000" stroke="#000000" points="540.26,-72.12 548.96,-66.07 538.39,-65.37 540.26,-72.12"/>
+</g>
+<!-- proc~split_chunked&#45;&gt;proc~split -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge13" class="edge">
+<title>proc~split_chunked&#45;&gt;proc~split</title>
+<path fill="none" stroke="#000000" d="M330.4,-72.09C350.62,-76.54 373.31,-81.54 392.7,-85.81"/>
+<polygon fill="#000000" stroke="#000000" points="391.99,-89.23 402.51,-87.97 393.5,-82.4 391.99,-89.23"/>
+</g>
+<!-- proc~end_with -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node7" class="node">
+<title>proc~end_with</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node7"><a xlink:href="../proc/end_with.html" xlink:title="string%end_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="490,-66 390,-66 390,-42 490,-42 490,-66"/>
+<text text-anchor="middle" x="440" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%end_with</text>
+</a>
+</g>
+</g>
+<!-- proc~split_chunked&#45;&gt;proc~end_with -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge12" class="edge">
+<title>proc~split_chunked&#45;&gt;proc~end_with</title>
+<path fill="none" stroke="#000000" d="M337.31,-57.73C351.15,-57.22 365.8,-56.69 379.53,-56.18"/>
+<polygon fill="#000000" stroke="#000000" points="379.97,-59.67 389.83,-55.8 379.71,-52.67 379.97,-59.67"/>
+</g>
+<!-- proc~start_with -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node12" class="node">
+<title>proc~start_with</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node12"><a xlink:href="../proc/start_with.html" xlink:title="string%start_with">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="491.5,-24 388.5,-24 388.5,0 491.5,0 491.5,-24"/>
+<text text-anchor="middle" x="440" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%start_with</text>
+</a>
+</g>
+</g>
+<!-- proc~split_chunked&#45;&gt;proc~start_with -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge14" class="edge">
+<title>proc~split_chunked&#45;&gt;proc~start_with</title>
+<path fill="none" stroke="#000000" d="M316.76,-47.89C338.53,-41.5 365.42,-33.6 388.44,-26.84"/>
+<polygon fill="#000000" stroke="#000000" points="389.43,-30.2 398.04,-24.03 387.46,-23.48 389.43,-30.2"/>
+</g>
+<!-- proc~read_line -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node15" class="node">
+<title>proc~read_line</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node15"><a xlink:href="../proc/read_line.html" xlink:title="string%read_line">
+<polygon fill="#d9534f" stroke="#d9534f" points="644,-188 543,-188 543,-164 644,-164 644,-188"/>
+<text text-anchor="middle" x="593.5" y="-173.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_line</text>
+</a>
+</g>
+</g>
+<!-- proc~read_lines~2&#45;&gt;proc~read_line -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge15" class="edge">
+<title>proc~read_lines~2&#45;&gt;proc~read_line</title>
+<path fill="none" stroke="#000000" d="M493.14,-176C505.83,-176 519.52,-176 532.54,-176"/>
+<polygon fill="#000000" stroke="#000000" points="532.82,-179.5 542.82,-176 532.82,-172.5 532.82,-179.5"/>
+</g>
+<!-- proc~replace -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node16" class="node">
+<title>proc~replace</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node16"><a xlink:href="../proc/replace.html" xlink:title="string%replace">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="772,-66 680,-66 680,-42 772,-42 772,-66"/>
+<text text-anchor="middle" x="726" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%replace</text>
+</a>
+</g>
+</g>
+<!-- proc~unique&#45;&gt;proc~replace -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge16" class="edge">
+<title>proc~unique&#45;&gt;proc~replace</title>
+<path fill="none" stroke="#000000" d="M638.32,-54C648.31,-54 659.07,-54 669.48,-54"/>
+<polygon fill="#000000" stroke="#000000" points="669.74,-57.5 679.74,-54 669.74,-50.5 669.74,-57.5"/>
+</g>
+<!-- proc~read_line&#45;&gt;proc~chars -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge17" class="edge">
+<title>proc~read_line&#45;&gt;proc~chars</title>
+<path fill="none" stroke="#000000" d="M644.21,-187.43C654.26,-189.74 664.83,-192.17 674.89,-194.48"/>
+<polygon fill="#000000" stroke="#000000" points="674.21,-197.92 684.74,-196.75 675.78,-191.09 674.21,-197.92"/>
+</g>
+<!-- proc~read_line&#45;&gt;proc~upper -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge18" class="edge">
+<title>proc~read_line&#45;&gt;proc~upper</title>
+<path fill="none" stroke="#000000" d="M644.21,-168C653.94,-166.44 664.16,-164.79 673.93,-163.22"/>
+<polygon fill="#000000" stroke="#000000" points="674.6,-166.66 683.91,-161.61 673.49,-159.74 674.6,-166.66"/>
+</g>
+<!-- proc~replace_one_occurrence -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_node17" class="node">
+<title>proc~replace_one_occurrence</title>
+<g id="a_program~~stringifor_test_parse_large_csv~~CallsGraph_node17"><a xlink:href="../proc/replace_one_occurrence.html" xlink:title="string%replace_one_occurrence">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="991,-66 808,-66 808,-42 991,-42 991,-66"/>
+<text text-anchor="middle" x="899.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%replace_one_occurrence</text>
+</a>
+</g>
+</g>
+<!-- proc~replace&#45;&gt;proc~replace_one_occurrence -->
+<g id="program~~stringifor_test_parse_large_csv~~CallsGraph_edge19" class="edge">
+<title>proc~replace&#45;&gt;proc~replace_one_occurrence</title>
+<path fill="none" stroke="#000000" d="M772.06,-54C780.14,-54 788.84,-54 797.76,-54"/>
+<polygon fill="#000000" stroke="#000000" points="797.92,-57.5 807.92,-54 797.92,-50.5 797.92,-57.5"/>
 </g>
 </g>
 </svg>
-</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+</div>                <script>
+                  var panprogramstringifor_test_parse_large_csvCallsGraph = svgPanZoom('#programstringifor_test_parse_large_csvCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                   <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              <div class="modal-body">
+                <div class="modal-body">
 <p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -476,11 +655,11 @@ modules which it uses.
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: Graph Key Pages: 1 -->
-<svg width="597pt" height="32pt"
- viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
 <title>Graph Key</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
 <g id="node1" class="node">
 <title>Subroutine</title>
@@ -499,23 +678,29 @@ modules which it uses.
 <polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
 <text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
 </g>
-<!-- Unknown Procedure Type -->
+<!-- Type Bound Procedure -->
 <g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
 <title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
-<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
 </g>
 <!-- Program -->
-<g id="node5" class="node">
+<g id="node6" class="node">
 <title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
-<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
 </g>
 <!-- This Page&#39;s Entity -->
-<g id="node6" class="node">
+<g id="node7" class="node">
 <title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
-<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
 </g>
 </g>
 </svg>
@@ -532,74 +717,22 @@ implementation in a submodule of an interface in a parent module.
       </div>
     </div>
 <br>
-     <section class="visible-xs visible-sm hidden-md">
-         <h3>Contents</h3>
-  
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#vars-1">Variables</a>
-        </h3>
-      </div>
-      <div id="vars-1" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-csv~2">csv</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-rows~2">rows</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-columns~2">columns</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-cells~2">cells</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-rows_number~2">rows_number</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-columns_number~2">columns_number</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-c~14">c</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-r~3">r</a>
-            <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#variable-test_passed~2">test_passed</a>
-        </div>
-      </div>
-    </div>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    <div class="panel panel-primary">
-      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-      <div class="list-group">
-        <a class="list-group-item" href="../program/stringifor_test_parse_large_csv.html#src">stringifor_test_parse_large_csv</a>
-      </div>
-    </div>
-
-
-     </section>
-     <br class="visible-xs visible-sm hidden-md">
-
 
     <section>
     <h2>Variables</h2>
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-<th></th><th>Initial</th>        <th></th>
+        <th scope="col">Type</th>
+        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-csv~2"></span>
+              <span class="anchor" id="variable-csv"></span>
               type(<a href='../type/string.html'>string</a>)
             </td>
             <td>
@@ -615,7 +748,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rows~2"></span>
+              <span class="anchor" id="variable-rows"></span>
               type(<a href='../type/string.html'>string</a>),
             </td>
             <td>
@@ -631,7 +764,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-columns~2"></span>
+              <span class="anchor" id="variable-columns"></span>
               type(<a href='../type/string.html'>string</a>),
             </td>
             <td>
@@ -647,7 +780,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-cells~2"></span>
+              <span class="anchor" id="variable-cells"></span>
               type(<a href='../type/string.html'>string</a>),
             </td>
             <td>
@@ -663,7 +796,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-rows_number~2"></span>
+              <span class="anchor" id="variable-rows_number"></span>
               integer
             </td>
             <td>
@@ -679,7 +812,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-columns_number~2"></span>
+              <span class="anchor" id="variable-columns_number"></span>
               integer
             </td>
             <td>
@@ -695,7 +828,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-c~14"></span>
+              <span class="anchor" id="variable-c"></span>
               integer
             </td>
             <td>
@@ -711,7 +844,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-r~3"></span>
+              <span class="anchor" id="variable-r"></span>
               integer
             </td>
             <td>
@@ -727,7 +860,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-test_passed~2"></span>
+              <span class="anchor" id="variable-test_passed~18"></span>
               logical
             </td>
             <td>
@@ -754,11 +887,12 @@ implementation in a submodule of an interface in a parent module.
 
 
     
+
     <section>
     <h2 id="src">Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">stringifor_test_parse_large_csv</span><span class="w"></span>
+    <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">stringifor_test_parse_large_csv</span>
 <span class="c">!&lt; StringiFor `csv_naive_parser` test.</span>
-<span class="k">use </span><span class="n">stringifor</span><span class="w"></span>
+<span class="k">use </span><span class="n">stringifor</span>
 
 <span class="k">implicit none</span>
 <span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w">                  </span><span class="kd">::</span><span class="w"> </span><span class="n">csv</span><span class="w">            </span><span class="c">!&lt; The CSV file as a single stream.</span>
@@ -770,9 +904,9 @@ implementation in a submodule of an interface in a parent module.
 <span class="kt">integer</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="w">           </span><span class="c">!&lt; Counter.</span>
 <span class="kt">logical</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c">!&lt; List of passed tests.</span>
 
-<span class="n">test_passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
+<span class="n">test_passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
 
-<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">read_file</span><span class="p">(</span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;src/tests/stringifor/stringifor_test_parse_large_csv.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">is_fast</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="w"></span>
+<span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">read_file</span><span class="p">(</span><span class="k">file</span><span class="o">=</span><span class="s1">&#39;src/tests/stringifor/stringifor_test_parse_large_csv.csv&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">is_fast</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
 <span class="k">call </span><span class="n">csv</span><span class="p">%</span><span class="n">split_chunked</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">chunks</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="c">! get the CSV file rows</span>
 <span class="n">rows_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">                                   </span><span class="c">! get the CSV file rows number</span>
 <span class="n">columns_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rows</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="nb">count</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">                           </span><span class="c">! get the CSV file columns number</span>
@@ -780,25 +914,25 @@ implementation in a submodule of an interface in a parent module.
 <span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">rows_number</span><span class="w">                                               </span><span class="c">! parse all cells</span>
 <span class="w">  </span><span class="k">call </span><span class="n">rows</span><span class="p">(</span><span class="n">r</span><span class="p">)%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="w">                     </span><span class="c">! get current columns</span>
 <span class="w">  </span><span class="n">cells</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">columns_number</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">columns</span><span class="w">                            </span><span class="c">! save current columns into cells</span>
-<span class="k">enddo</span><span class="w"></span>
+<span class="k">enddo</span>
 
 <span class="c">! now you can do whatever with your parsed data</span>
 <span class="c">! print the table in markdown syntax</span>
-<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;A markdown-formatted table&#39;</span><span class="w"></span>
-<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
-<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span><span class="w"></span>
-<span class="k">do </span><span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">columns_number</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;A markdown-formatted table&#39;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="k">do </span><span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">columns_number</span>
 <span class="w">   </span><span class="n">columns</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;----&#39;</span><span class="w"> </span><span class="c">! re-use columns for printing separators</span>
 <span class="k">enddo</span>
-<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span><span class="w"></span>
-<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">rows_number</span><span class="w"></span>
-<span class="w">  </span><span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span><span class="w"> </span><span class="n">r</span><span class="p">),</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
+<span class="k">do </span><span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">rows_number</span>
+<span class="w">  </span><span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="o">//</span><span class="n">csv</span><span class="p">%</span><span class="n">join</span><span class="p">(</span><span class="k">array</span><span class="o">=</span><span class="n">cells</span><span class="p">(:,</span><span class="w"> </span><span class="n">r</span><span class="p">),</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;|&#39;</span>
 <span class="k">enddo</span>
-<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span>
 
-<span class="n">test_passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"></span>
-<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A,L1)&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span><span class="w"></span>
-<span class="k">endprogram </span><span class="n">stringifor_test_parse_large_csv</span><span class="w"></span>
+<span class="n">test_passed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="k">print</span><span class="w"> </span><span class="s2">&quot;(A,L1)&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;Are all tests passed? &#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
+<span class="k">endprogram </span><span class="n">stringifor_test_parse_large_csv</span>
 </pre></div>
 
     </section>
@@ -810,12 +944,15 @@ implementation in a submodule of an interface in a parent module.
     </div> <!-- /container -->
     <footer>
       <div class="container">
-        <div class="row">
-          <div class="col-xs-6 col-md-6"><p>StringiFor was developed by Stefano Zaghi<br>&copy; 2023 
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              StringiFor
+ was developed by Stefano Zaghi<br>              &copy; 2024 
 </p>
           </div>
-          <div class="col-xs-6 col-md-6">
-            <p class="text-right">
+          <div class="col">
+            <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
             </p>
@@ -825,17 +962,12 @@ implementation in a submodule of an interface in a parent module.
       </div> <!-- /container -->
     </footer>
 
-    <!-- Bootstrap core JavaScript
-         ================================================== -->
-         <!-- Placed at the end of the document so the pages load faster -->
-    <!--
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        -->
-        <script src="../js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="../js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
 
-        <!-- MathJax JavaScript
+    <!-- MathJax JavaScript
              ================================================== -->
              <!-- Placed at the end of the document so the pages load faster -->
         <script type="text/x-mathjax-config">
