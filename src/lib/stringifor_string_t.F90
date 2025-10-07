@@ -4228,7 +4228,7 @@ contains
    !< If the closing delimiter is followed by end of record, then we return end of record.
    !<
    !< @note This does not need a doctest, it being tested by [[string::read_formatted]].
-   class(string),             intent(out)   :: dtv       !< The string.
+   class(string),             intent(inout) :: dtv       !< The string.
    integer,                   intent(in)    :: unit      !< Logical unit.
    character(kind=CK, len=1), intent(in)    :: delim     !< String delimiter.
    integer,                   intent(out)   :: iostat    !< IO status code.
