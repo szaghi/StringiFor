@@ -12,14 +12,29 @@
 
     <title>unique &ndash; StringiFor</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -97,9 +112,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -285,7 +302,7 @@
 <!-- Title: Graph Key Pages: 1 -->
 <svg width="641pt" height="28pt"
  viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
 <title>Graph Key</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
@@ -357,7 +374,7 @@ implementation in a submodule of an interface in a parent module.
 <!-- Title: proc~~unique~~CalledByGraph Pages: 1 -->
 <svg id="procuniqueCalledByGraph" width="641pt" height="374pt"
  viewBox="0.00 0.00 641.00 373.61" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~unique~~CalledByGraph" class="graph" transform="scale(1.64 1.64) rotate(0) translate(4 608)">
+<g id="proc~~unique~~CalledByGraph" class="graph" transform="scale(0.61 0.61) rotate(0) translate(4 608)">
 <title>proc~~unique~~CalledByGraph</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-608 1046,-608 1046,4 -4,4"/>
 <!-- proc~unique -->
@@ -381,18 +398,18 @@ implementation in a submodule of an interface in a parent module.
 <path fill="none" stroke="#000000" d="M906.25,-255.98C917.54,-254.11 930.25,-252 942.49,-249.97"/>
 <polygon fill="#000000" stroke="#000000" points="943.32,-253.38 952.61,-248.29 942.17,-246.47 943.32,-253.38"/>
 </g>
-<!-- program~volatile_doctest~41 -->
+<!-- program~volatile_doctest~57 -->
 <g id="proc~~unique~~CalledByGraph_node3" class="node">
-<title>program~volatile_doctest~41</title>
-<g id="a_proc~~unique~~CalledByGraph_node3"><a xlink:href="../program/volatile_doctest~41.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~57</title>
+<g id="a_proc~~unique~~CalledByGraph_node3"><a xlink:href="../program/volatile_doctest~57.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="917,-232 821,-232 821,-208 917,-208 917,-232"/>
 <text text-anchor="middle" x="869" y="-217.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~41&#45;&gt;proc~unique -->
+<!-- program~volatile_doctest~57&#45;&gt;proc~unique -->
 <g id="proc~~unique~~CalledByGraph_edge2" class="edge">
-<title>program~volatile_doctest~41&#45;&gt;proc~unique</title>
+<title>program~volatile_doctest~57&#45;&gt;proc~unique</title>
 <path fill="none" stroke="#000000" d="M917.1,-227.82C925.49,-229.21 934.27,-230.67 942.82,-232.09"/>
 <polygon fill="#000000" stroke="#000000" points="942.27,-235.54 952.71,-233.73 943.41,-228.64 942.27,-235.54"/>
 </g>
@@ -471,18 +488,18 @@ implementation in a submodule of an interface in a parent module.
 <path fill="none" stroke="#000000" d="M744.57,-290.54C768.95,-284.9 798.14,-278.15 822.01,-272.63"/>
 <polygon fill="#000000" stroke="#000000" points="822.93,-276.01 831.89,-270.35 821.36,-269.19 822.93,-276.01"/>
 </g>
-<!-- proc~write_lines~2 -->
+<!-- proc~write_lines -->
 <g id="proc~~unique~~CalledByGraph_node9" class="node">
-<title>proc~write_lines~2</title>
-<g id="a_proc~~unique~~CalledByGraph_node9"><a xlink:href="../proc/write_lines~2.html" xlink:title="string%write_lines">
+<title>proc~write_lines</title>
+<g id="a_proc~~unique~~CalledByGraph_node9"><a xlink:href="../proc/write_lines.html" xlink:title="string%write_lines">
 <polygon fill="#d9534f" stroke="#d9534f" points="748.5,-234 639.5,-234 639.5,-210 748.5,-210 748.5,-234"/>
 <text text-anchor="middle" x="694" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%write_lines</text>
 </a>
 </g>
 </g>
-<!-- proc~write_lines~2&#45;&gt;proc~split -->
+<!-- proc~write_lines&#45;&gt;proc~split -->
 <g id="proc~~unique~~CalledByGraph_edge8" class="edge">
-<title>proc~write_lines~2&#45;&gt;proc~split</title>
+<title>proc~write_lines&#45;&gt;proc~split</title>
 <path fill="none" stroke="#000000" d="M746.91,-234C770.75,-239.51 798.79,-246 821.88,-251.34"/>
 <polygon fill="#000000" stroke="#000000" points="821.24,-254.78 831.77,-253.62 822.82,-247.96 821.24,-254.78"/>
 </g>
@@ -522,95 +539,95 @@ implementation in a submodule of an interface in a parent module.
 <path fill="none" stroke="#000000" d="M541.04,-373.96C566.33,-368.98 595.83,-363.16 622.07,-357.99"/>
 <polygon fill="#000000" stroke="#000000" points="622.82,-361.41 631.95,-356.04 621.47,-354.54 622.82,-361.41"/>
 </g>
-<!-- program~volatile_doctest~107 -->
+<!-- program~volatile_doctest~104 -->
 <g id="proc~~unique~~CalledByGraph_node12" class="node">
-<title>program~volatile_doctest~107</title>
-<g id="a_proc~~unique~~CalledByGraph_node12"><a xlink:href="../program/volatile_doctest~107.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~104</title>
+<g id="a_proc~~unique~~CalledByGraph_node12"><a xlink:href="../program/volatile_doctest~104.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="742,-150 646,-150 646,-126 742,-126 742,-150"/>
 <text text-anchor="middle" x="694" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~107&#45;&gt;proc~split -->
+<!-- program~volatile_doctest~104&#45;&gt;proc~split -->
 <g id="proc~~unique~~CalledByGraph_edge11" class="edge">
-<title>program~volatile_doctest~107&#45;&gt;proc~split</title>
+<title>program~volatile_doctest~104&#45;&gt;proc~split</title>
 <path fill="none" stroke="#000000" d="M742.17,-140.73C757.21,-143.63 773.03,-149.06 785,-159 815.62,-184.43 792.95,-212.76 821,-241 822.06,-242.07 823.19,-243.09 824.37,-244.06"/>
 <polygon fill="#000000" stroke="#000000" points="822.52,-247.04 832.74,-249.8 826.48,-241.26 822.52,-247.04"/>
 </g>
-<!-- program~volatile_doctest~15 -->
+<!-- program~volatile_doctest~106 -->
 <g id="proc~~unique~~CalledByGraph_node13" class="node">
-<title>program~volatile_doctest~15</title>
-<g id="a_proc~~unique~~CalledByGraph_node13"><a xlink:href="../program/volatile_doctest~15.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~106</title>
+<g id="a_proc~~unique~~CalledByGraph_node13"><a xlink:href="../program/volatile_doctest~106.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="742,-108 646,-108 646,-84 742,-84 742,-108"/>
 <text text-anchor="middle" x="694" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~15&#45;&gt;proc~split -->
+<!-- program~volatile_doctest~106&#45;&gt;proc~split -->
 <g id="proc~~unique~~CalledByGraph_edge12" class="edge">
-<title>program~volatile_doctest~15&#45;&gt;proc~split</title>
+<title>program~volatile_doctest~106&#45;&gt;proc~split</title>
 <path fill="none" stroke="#000000" d="M742.02,-97.68C757.4,-100.45 773.47,-106.07 785,-117 826.65,-156.48 783.31,-197.73 821,-241 821.86,-241.99 822.77,-242.93 823.73,-243.83"/>
 <polygon fill="#000000" stroke="#000000" points="821.75,-246.71 831.84,-249.92 825.95,-241.12 821.75,-246.71"/>
 </g>
-<!-- program~volatile_doctest~17 -->
+<!-- program~volatile_doctest~31 -->
 <g id="proc~~unique~~CalledByGraph_node14" class="node">
-<title>program~volatile_doctest~17</title>
-<g id="a_proc~~unique~~CalledByGraph_node14"><a xlink:href="../program/volatile_doctest~17.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~31</title>
+<g id="a_proc~~unique~~CalledByGraph_node14"><a xlink:href="../program/volatile_doctest~31.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="742,-66 646,-66 646,-42 742,-42 742,-66"/>
 <text text-anchor="middle" x="694" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~17&#45;&gt;proc~split -->
+<!-- program~volatile_doctest~31&#45;&gt;proc~split -->
 <g id="proc~~unique~~CalledByGraph_edge13" class="edge">
-<title>program~volatile_doctest~17&#45;&gt;proc~split</title>
+<title>program~volatile_doctest~31&#45;&gt;proc~split</title>
 <path fill="none" stroke="#000000" d="M742.46,-55.24C757.87,-57.98 773.86,-63.68 785,-75 837.96,-128.8 773.41,-182.4 821,-241 821.82,-242.01 822.71,-242.98 823.64,-243.9"/>
 <polygon fill="#000000" stroke="#000000" points="821.57,-246.73 831.61,-250.12 825.88,-241.21 821.57,-246.73"/>
 </g>
-<!-- program~volatile_doctest~23 -->
+<!-- program~volatile_doctest~43 -->
 <g id="proc~~unique~~CalledByGraph_node15" class="node">
-<title>program~volatile_doctest~23</title>
-<g id="a_proc~~unique~~CalledByGraph_node15"><a xlink:href="../program/volatile_doctest~23.html" xlink:title="volatile_doctest">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="742,-24 646,-24 646,0 742,0 742,-24"/>
-<text text-anchor="middle" x="694" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
-</a>
-</g>
-</g>
-<!-- program~volatile_doctest~23&#45;&gt;proc~split -->
-<g id="proc~~unique~~CalledByGraph_edge14" class="edge">
-<title>program~volatile_doctest~23&#45;&gt;proc~split</title>
-<path fill="none" stroke="#000000" d="M742.26,-12.89C757.85,-15.57 773.99,-21.33 785,-33 849.39,-101.23 763.4,-166.94 821,-241 821.93,-242.19 822.93,-243.32 824.01,-244.38"/>
-<polygon fill="#000000" stroke="#000000" points="821.88,-247.16 831.93,-250.52 826.17,-241.63 821.88,-247.16"/>
-</g>
-<!-- program~volatile_doctest~44 -->
-<g id="proc~~unique~~CalledByGraph_node16" class="node">
-<title>program~volatile_doctest~44</title>
-<g id="a_proc~~unique~~CalledByGraph_node16"><a xlink:href="../program/volatile_doctest~44.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~43</title>
+<g id="a_proc~~unique~~CalledByGraph_node15"><a xlink:href="../program/volatile_doctest~43.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="336.5,-254 240.5,-254 240.5,-230 336.5,-230 336.5,-254"/>
 <text text-anchor="middle" x="288.5" y="-239.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~44&#45;&gt;proc~split -->
-<g id="proc~~unique~~CalledByGraph_edge15" class="edge">
-<title>program~volatile_doctest~44&#45;&gt;proc~split</title>
+<!-- program~volatile_doctest~43&#45;&gt;proc~split -->
+<g id="proc~~unique~~CalledByGraph_edge14" class="edge">
+<title>program~volatile_doctest~43&#45;&gt;proc~split</title>
 <path fill="none" stroke="#000000" d="M336.84,-243.64C445.87,-247.41 713.6,-256.66 821.66,-260.4"/>
 <polygon fill="#000000" stroke="#000000" points="821.79,-263.9 831.91,-260.75 822.04,-256.91 821.79,-263.9"/>
 </g>
-<!-- proc~write_file~2 -->
+<!-- proc~write_file -->
 <g id="proc~~unique~~CalledByGraph_node19" class="node">
-<title>proc~write_file~2</title>
-<g id="a_proc~~unique~~CalledByGraph_node19"><a xlink:href="../proc/write_file~2.html" xlink:title="string%write_file">
+<title>proc~write_file</title>
+<g id="a_proc~~unique~~CalledByGraph_node19"><a xlink:href="../proc/write_file.html" xlink:title="string%write_file">
 <polygon fill="#d9534f" stroke="#d9534f" points="529,-234 429,-234 429,-210 529,-210 529,-234"/>
 <text text-anchor="middle" x="479" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%write_file</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~44&#45;&gt;proc~write_file~2 -->
+<!-- program~volatile_doctest~43&#45;&gt;proc~write_file -->
 <g id="proc~~unique~~CalledByGraph_edge28" class="edge">
-<title>program~volatile_doctest~44&#45;&gt;proc~write_file~2</title>
+<title>program~volatile_doctest~43&#45;&gt;proc~write_file</title>
 <path fill="none" stroke="#000000" d="M336.58,-237C361.42,-234.37 392.14,-231.11 418.6,-228.3"/>
 <polygon fill="#000000" stroke="#000000" points="419.32,-231.75 428.89,-227.21 418.58,-224.79 419.32,-231.75"/>
+</g>
+<!-- program~volatile_doctest~88 -->
+<g id="proc~~unique~~CalledByGraph_node16" class="node">
+<title>program~volatile_doctest~88</title>
+<g id="a_proc~~unique~~CalledByGraph_node16"><a xlink:href="../program/volatile_doctest~88.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="742,-24 646,-24 646,0 742,0 742,-24"/>
+<text text-anchor="middle" x="694" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~88&#45;&gt;proc~split -->
+<g id="proc~~unique~~CalledByGraph_edge15" class="edge">
+<title>program~volatile_doctest~88&#45;&gt;proc~split</title>
+<path fill="none" stroke="#000000" d="M742.26,-12.89C757.85,-15.57 773.99,-21.33 785,-33 849.39,-101.23 763.4,-166.94 821,-241 821.93,-242.19 822.93,-243.32 824.01,-244.38"/>
+<polygon fill="#000000" stroke="#000000" points="821.88,-247.16 831.93,-250.52 826.17,-241.63 821.88,-247.16"/>
 </g>
 <!-- interface~glob -->
 <g id="proc~~unique~~CalledByGraph_node17" class="node">
@@ -663,71 +680,71 @@ implementation in a submodule of an interface in a parent module.
 <path fill="none" stroke="#000000" d="M440.84,-513.5C419.3,-514.59 391.38,-514.96 365.39,-514.63"/>
 <polygon fill="#000000" stroke="#000000" points="365.22,-511.13 355.16,-514.47 365.1,-518.13 365.22,-511.13"/>
 </g>
-<!-- proc~write_file~2&#45;&gt;proc~write_lines~2 -->
+<!-- proc~write_file&#45;&gt;proc~write_lines -->
 <g id="proc~~unique~~CalledByGraph_edge23" class="edge">
-<title>proc~write_file~2&#45;&gt;proc~write_lines~2</title>
+<title>proc~write_file&#45;&gt;proc~write_lines</title>
 <path fill="none" stroke="#000000" d="M529.13,-222C558.84,-222 597.05,-222 629.09,-222"/>
 <polygon fill="#000000" stroke="#000000" points="629.26,-225.5 639.26,-222 629.26,-218.5 629.26,-225.5"/>
 </g>
-<!-- program~volatile_doctest~18 -->
+<!-- program~volatile_doctest~20 -->
 <g id="proc~~unique~~CalledByGraph_node20" class="node">
-<title>program~volatile_doctest~18</title>
-<g id="a_proc~~unique~~CalledByGraph_node20"><a xlink:href="../program/volatile_doctest~18.html" xlink:title="volatile_doctest">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-562 431,-562 431,-538 527,-538 527,-562"/>
-<text text-anchor="middle" x="479" y="-547.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
-</a>
-</g>
-</g>
-<!-- program~volatile_doctest~18&#45;&gt;proc~camelcase -->
-<g id="proc~~unique~~CalledByGraph_edge16" class="edge">
-<title>program~volatile_doctest~18&#45;&gt;proc~camelcase</title>
-<path fill="none" stroke="#000000" d="M527.01,-545.59C556.86,-542.78 595.88,-539.12 628.6,-536.05"/>
-<polygon fill="#000000" stroke="#000000" points="629.35,-539.49 638.97,-535.07 628.69,-532.52 629.35,-539.49"/>
-</g>
-<!-- program~volatile_doctest~2 -->
-<g id="proc~~unique~~CalledByGraph_node21" class="node">
-<title>program~volatile_doctest~2</title>
-<g id="a_proc~~unique~~CalledByGraph_node21"><a xlink:href="../program/volatile_doctest~2.html" xlink:title="volatile_doctest">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-314 431,-314 431,-290 527,-290 527,-314"/>
-<text text-anchor="middle" x="479" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
-</a>
-</g>
-</g>
-<!-- program~volatile_doctest~2&#45;&gt;proc~startcase -->
-<g id="proc~~unique~~CalledByGraph_edge22" class="edge">
-<title>program~volatile_doctest~2&#45;&gt;proc~startcase</title>
-<path fill="none" stroke="#000000" d="M527.01,-302C558.21,-302 599.43,-302 633,-302"/>
-<polygon fill="#000000" stroke="#000000" points="633.15,-305.5 643.15,-302 633.15,-298.5 633.15,-305.5"/>
-</g>
-<!-- program~volatile_doctest~75 -->
-<g id="proc~~unique~~CalledByGraph_node22" class="node">
-<title>program~volatile_doctest~75</title>
-<g id="a_proc~~unique~~CalledByGraph_node22"><a xlink:href="../program/volatile_doctest~75.html" xlink:title="volatile_doctest">
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-356 431,-356 431,-332 527,-332 527,-356"/>
-<text text-anchor="middle" x="479" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
-</a>
-</g>
-</g>
-<!-- program~volatile_doctest~75&#45;&gt;proc~split_chunked -->
-<g id="proc~~unique~~CalledByGraph_edge21" class="edge">
-<title>program~volatile_doctest~75&#45;&gt;proc~split_chunked</title>
-<path fill="none" stroke="#000000" d="M527.01,-344C554.52,-344 589.84,-344 620.82,-344"/>
-<polygon fill="#000000" stroke="#000000" points="621.15,-347.5 631.15,-344 621.15,-340.5 621.15,-347.5"/>
-</g>
-<!-- program~volatile_doctest~98 -->
-<g id="proc~~unique~~CalledByGraph_node23" class="node">
-<title>program~volatile_doctest~98</title>
-<g id="a_proc~~unique~~CalledByGraph_node23"><a xlink:href="../program/volatile_doctest~98.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~20</title>
+<g id="a_proc~~unique~~CalledByGraph_node20"><a xlink:href="../program/volatile_doctest~20.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-440 431,-440 431,-416 527,-416 527,-440"/>
 <text text-anchor="middle" x="479" y="-425.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~98&#45;&gt;proc~snakecase -->
+<!-- program~volatile_doctest~20&#45;&gt;proc~snakecase -->
 <g id="proc~~unique~~CalledByGraph_edge19" class="edge">
-<title>program~volatile_doctest~98&#45;&gt;proc~snakecase</title>
+<title>program~volatile_doctest~20&#45;&gt;proc~snakecase</title>
 <path fill="none" stroke="#000000" d="M527.01,-427.56C556.97,-427.28 596.17,-426.91 628.96,-426.6"/>
 <polygon fill="#000000" stroke="#000000" points="629.39,-430.1 639.36,-426.5 629.33,-423.1 629.39,-430.1"/>
+</g>
+<!-- program~volatile_doctest~25 -->
+<g id="proc~~unique~~CalledByGraph_node21" class="node">
+<title>program~volatile_doctest~25</title>
+<g id="a_proc~~unique~~CalledByGraph_node21"><a xlink:href="../program/volatile_doctest~25.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-314 431,-314 431,-290 527,-290 527,-314"/>
+<text text-anchor="middle" x="479" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~25&#45;&gt;proc~startcase -->
+<g id="proc~~unique~~CalledByGraph_edge22" class="edge">
+<title>program~volatile_doctest~25&#45;&gt;proc~startcase</title>
+<path fill="none" stroke="#000000" d="M527.01,-302C558.21,-302 599.43,-302 633,-302"/>
+<polygon fill="#000000" stroke="#000000" points="633.15,-305.5 643.15,-302 633.15,-298.5 633.15,-305.5"/>
+</g>
+<!-- program~volatile_doctest~72 -->
+<g id="proc~~unique~~CalledByGraph_node22" class="node">
+<title>program~volatile_doctest~72</title>
+<g id="a_proc~~unique~~CalledByGraph_node22"><a xlink:href="../program/volatile_doctest~72.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-356 431,-356 431,-332 527,-332 527,-356"/>
+<text text-anchor="middle" x="479" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~72&#45;&gt;proc~split_chunked -->
+<g id="proc~~unique~~CalledByGraph_edge21" class="edge">
+<title>program~volatile_doctest~72&#45;&gt;proc~split_chunked</title>
+<path fill="none" stroke="#000000" d="M527.01,-344C554.52,-344 589.84,-344 620.82,-344"/>
+<polygon fill="#000000" stroke="#000000" points="621.15,-347.5 631.15,-344 621.15,-340.5 621.15,-347.5"/>
+</g>
+<!-- program~volatile_doctest~87 -->
+<g id="proc~~unique~~CalledByGraph_node23" class="node">
+<title>program~volatile_doctest~87</title>
+<g id="a_proc~~unique~~CalledByGraph_node23"><a xlink:href="../program/volatile_doctest~87.html" xlink:title="volatile_doctest">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="527,-562 431,-562 431,-538 527,-538 527,-562"/>
+<text text-anchor="middle" x="479" y="-547.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
+</a>
+</g>
+</g>
+<!-- program~volatile_doctest~87&#45;&gt;proc~camelcase -->
+<g id="proc~~unique~~CalledByGraph_edge16" class="edge">
+<title>program~volatile_doctest~87&#45;&gt;proc~camelcase</title>
+<path fill="none" stroke="#000000" d="M527.01,-545.59C556.86,-542.78 595.88,-539.12 628.6,-536.05"/>
+<polygon fill="#000000" stroke="#000000" points="629.35,-539.49 638.97,-535.07 628.69,-532.52 629.35,-539.49"/>
 </g>
 <!-- proc~glob_character&#45;&gt;none~glob -->
 <g id="proc~~unique~~CalledByGraph_edge25" class="edge">
@@ -735,48 +752,48 @@ implementation in a submodule of an interface in a parent module.
 <path fill="none" stroke="#000000" d="M355.16,-501.53C380.04,-501.03 407.85,-501.2 430.72,-502.06"/>
 <polygon fill="#000000" stroke="#000000" points="430.7,-505.56 440.84,-502.5 431,-498.57 430.7,-505.56"/>
 </g>
-<!-- program~volatile_doctest~100 -->
+<!-- program~volatile_doctest~12 -->
 <g id="proc~~unique~~CalledByGraph_node25" class="node">
-<title>program~volatile_doctest~100</title>
-<g id="a_proc~~unique~~CalledByGraph_node25"><a xlink:href="../program/volatile_doctest~100.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~12</title>
+<g id="a_proc~~unique~~CalledByGraph_node25"><a xlink:href="../program/volatile_doctest~12.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="96,-500 0,-500 0,-476 96,-476 96,-500"/>
 <text text-anchor="middle" x="48" y="-485.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~100&#45;&gt;interface~glob -->
+<!-- program~volatile_doctest~12&#45;&gt;interface~glob -->
 <g id="proc~~unique~~CalledByGraph_edge24" class="edge">
-<title>program~volatile_doctest~100&#45;&gt;interface~glob</title>
+<title>program~volatile_doctest~12&#45;&gt;interface~glob</title>
 <path fill="none" stroke="#000000" d="M96.18,-488C104.66,-488 113.38,-488 121.5,-488"/>
 <polygon fill="#000000" stroke="#000000" points="121.76,-491.5 131.76,-488 121.76,-484.5 121.76,-491.5"/>
 </g>
-<!-- program~volatile_doctest~103 -->
+<!-- program~volatile_doctest~14 -->
 <g id="proc~~unique~~CalledByGraph_node26" class="node">
-<title>program~volatile_doctest~103</title>
-<g id="a_proc~~unique~~CalledByGraph_node26"><a xlink:href="../program/volatile_doctest~103.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~14</title>
+<g id="a_proc~~unique~~CalledByGraph_node26"><a xlink:href="../program/volatile_doctest~14.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="336.5,-604 240.5,-604 240.5,-580 336.5,-580 336.5,-604"/>
 <text text-anchor="middle" x="288.5" y="-589.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~103&#45;&gt;none~glob -->
+<!-- program~volatile_doctest~14&#45;&gt;none~glob -->
 <g id="proc~~unique~~CalledByGraph_edge26" class="edge">
-<title>program~volatile_doctest~103&#45;&gt;none~glob</title>
+<title>program~volatile_doctest~14&#45;&gt;none~glob</title>
 <path fill="none" stroke="#000000" d="M336.77,-580.35C343.16,-577.79 349.43,-574.7 355,-571 375.48,-557.4 370.03,-541.84 391,-529 402.93,-521.69 417.23,-516.93 430.76,-513.82"/>
 <polygon fill="#000000" stroke="#000000" points="431.81,-517.18 440.9,-511.75 430.41,-510.32 431.81,-517.18"/>
 </g>
-<!-- program~volatile_doctest~82 -->
+<!-- program~volatile_doctest~54 -->
 <g id="proc~~unique~~CalledByGraph_node27" class="node">
-<title>program~volatile_doctest~82</title>
-<g id="a_proc~~unique~~CalledByGraph_node27"><a xlink:href="../program/volatile_doctest~82.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~54</title>
+<g id="a_proc~~unique~~CalledByGraph_node27"><a xlink:href="../program/volatile_doctest~54.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="336.5,-562 240.5,-562 240.5,-538 336.5,-538 336.5,-562"/>
 <text text-anchor="middle" x="288.5" y="-547.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~82&#45;&gt;none~glob -->
+<!-- program~volatile_doctest~54&#45;&gt;none~glob -->
 <g id="proc~~unique~~CalledByGraph_edge27" class="edge">
-<title>program~volatile_doctest~82&#45;&gt;none~glob</title>
+<title>program~volatile_doctest~54&#45;&gt;none~glob</title>
 <path fill="none" stroke="#000000" d="M336.58,-539.51C365.45,-533.08 402.29,-524.87 431.12,-518.44"/>
 <polygon fill="#000000" stroke="#000000" points="431.96,-521.84 440.96,-516.25 430.44,-515.01 431.96,-521.84"/>
 </g>
@@ -806,7 +823,7 @@ implementation in a submodule of an interface in a parent module.
 <!-- Title: Graph Key Pages: 1 -->
 <svg width="641pt" height="28pt"
  viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
 <title>Graph Key</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
@@ -933,7 +950,7 @@ implementation in a submodule of an interface in a parent module.
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2024 
+ was developed by Stefano Zaghi<br>              &copy; 2025 
 </p>
           </div>
           <div class="col">
@@ -946,27 +963,5 @@ implementation in a submodule of an interface in a parent module.
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

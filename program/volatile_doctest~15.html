@@ -12,14 +12,29 @@
 
     <title>volatile_doctest &ndash; StringiFor</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -75,19 +90,19 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 2.4% of total for programs.">37 statements</a>
+                 title=" 0.7% of total for programs.">11 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/stringifor_string_t-doctest-45.f90"> Source File</a>
+              <a href="../src/stringifor_string_t-doctest-33.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-45.f90.html'>stringifor_string_t-doctest-45.f90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-33.f90.html'>stringifor_string_t-doctest-33.f90</a></li>
             <li class="breadcrumb-item active" aria-current="page">volatile_doctest</li>
           </ol>
         </nav>
@@ -95,9 +110,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -114,14 +131,8 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-astring~11">astring</a>
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-strings">strings</a>
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-line">line</a>
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-iostat">iostat</a>
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-iomsg">iomsg</a>
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-scratch">scratch</a>
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-l">l</a>
-            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-test_passed~15">test_passed</a>
+            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-astring~13">astring</a>
+            <a class="list-group-item" href="../program/volatile_doctest~15.html#variable-test_passed~13">test_passed</a>
         </div>
       </div>
     </div>
@@ -340,165 +351,35 @@ modules which it uses.
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: program~~volatile_doctest~15~~CallsGraph Pages: 1 -->
-<svg id="programvolatile_doctest15CallsGraph" width="641pt" height="137pt"
- viewBox="0.00 0.00 641.00 136.98" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="program~~volatile_doctest~15~~CallsGraph" class="graph" transform="scale(1.14 1.14) rotate(0) translate(4 152)">
+<svg id="programvolatile_doctest15CallsGraph" width="205pt" height="32pt"
+ viewBox="0.00 0.00 205.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="program~~volatile_doctest~15~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
 <title>program~~volatile_doctest~15~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-152 726,-152 726,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 201,-28 201,4 -4,4"/>
 <!-- program~volatile_doctest~15 -->
 <g id="program~~volatile_doctest~15~~CallsGraph_node1" class="node">
 <title>program~volatile_doctest~15</title>
-<polygon fill="none" stroke="black" points="96,-108 0,-108 0,-84 96,-84 96,-108"/>
-<text text-anchor="middle" x="48" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50">volatile_doctest</text>
+<polygon fill="none" stroke="black" points="96,-24 0,-24 0,0 96,0 96,-24"/>
+<text text-anchor="middle" x="48" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">volatile_doctest</text>
 </g>
-<!-- proc~chars -->
+<!-- proc~fill -->
 <g id="program~~volatile_doctest~15~~CallsGraph_node2" class="node">
-<title>proc~chars</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node2"><a xlink:href="../proc/chars.html" xlink:title="string%chars">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="498,-148 416,-148 416,-124 498,-124 498,-148"/>
-<text text-anchor="middle" x="457" y="-133.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%chars</text>
+<title>proc~fill</title>
+<g id="a_program~~volatile_doctest~15~~CallsGraph_node2"><a xlink:href="../proc/fill.html" xlink:title="string%fill">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="197,-24 132,-24 132,0 197,0 197,-24"/>
+<text text-anchor="middle" x="164.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%fill</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~15&#45;&gt;proc~chars -->
+<!-- program~volatile_doctest~15&#45;&gt;proc~fill -->
 <g id="program~~volatile_doctest~15~~CallsGraph_edge1" class="edge">
-<title>program~volatile_doctest~15&#45;&gt;proc~chars</title>
-<path fill="none" stroke="#000000" d="M90.06,-108.02C103.33,-111.47 118.19,-114.87 132,-117 228.01,-131.82 341.65,-135.3 405.63,-135.99"/>
-<polygon fill="#000000" stroke="#000000" points="405.81,-139.49 415.84,-136.08 405.87,-132.49 405.81,-139.49"/>
-</g>
-<!-- proc~read_lines~2 -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node3" class="node">
-<title>proc~read_lines~2</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node3"><a xlink:href="../proc/read_lines~2.html" xlink:title="string%read_lines">
-<polygon fill="#d9534f" stroke="#d9534f" points="238,-108 132,-108 132,-84 238,-84 238,-108"/>
-<text text-anchor="middle" x="185" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_lines</text>
-</a>
-</g>
-</g>
-<!-- program~volatile_doctest~15&#45;&gt;proc~read_lines~2 -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge2" class="edge">
-<title>program~volatile_doctest~15&#45;&gt;proc~read_lines~2</title>
-<path fill="none" stroke="#000000" d="M96.22,-96C104.52,-96 113.28,-96 121.92,-96"/>
-<polygon fill="#000000" stroke="#000000" points="121.97,-99.5 131.97,-96 121.97,-92.5 121.97,-99.5"/>
-</g>
-<!-- proc~split -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node4" class="node">
-<title>proc~split</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node4"><a xlink:href="../proc/split.html" xlink:title="string%split">
-<polygon fill="#d9534f" stroke="#d9534f" points="222,-66 148,-66 148,-42 222,-42 222,-66"/>
-<text text-anchor="middle" x="185" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%split</text>
-</a>
-</g>
-</g>
-<!-- program~volatile_doctest~15&#45;&gt;proc~split -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge3" class="edge">
-<title>program~volatile_doctest~15&#45;&gt;proc~split</title>
-<path fill="none" stroke="#000000" d="M87.69,-83.96C103.3,-79.11 121.45,-73.46 137.75,-68.39"/>
-<polygon fill="#000000" stroke="#000000" points="139.12,-71.63 147.63,-65.32 137.04,-64.94 139.12,-71.63"/>
-</g>
-<!-- proc~read_line -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node6" class="node">
-<title>proc~read_line</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node6"><a xlink:href="../proc/read_line.html" xlink:title="string%read_line">
-<polygon fill="#d9534f" stroke="#d9534f" points="375,-108 274,-108 274,-84 375,-84 375,-108"/>
-<text text-anchor="middle" x="324.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_line</text>
-</a>
-</g>
-</g>
-<!-- proc~read_lines~2&#45;&gt;proc~read_line -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge4" class="edge">
-<title>proc~read_lines~2&#45;&gt;proc~read_line</title>
-<path fill="none" stroke="#000000" d="M238.38,-96C246.68,-96 255.33,-96 263.79,-96"/>
-<polygon fill="#000000" stroke="#000000" points="263.99,-99.5 273.99,-96 263.99,-92.5 263.99,-99.5"/>
-</g>
-<!-- proc~partition -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node5" class="node">
-<title>proc~partition</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node5"><a xlink:href="../proc/partition.html" xlink:title="string%partition">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="373,-66 276,-66 276,-42 373,-42 373,-66"/>
-<text text-anchor="middle" x="324.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%partition</text>
-</a>
-</g>
-</g>
-<!-- proc~split&#45;&gt;proc~partition -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge5" class="edge">
-<title>proc~split&#45;&gt;proc~partition</title>
-<path fill="none" stroke="#000000" d="M222.13,-54C235.51,-54 251.04,-54 265.86,-54"/>
-<polygon fill="#000000" stroke="#000000" points="265.97,-57.5 275.97,-54 265.97,-50.5 265.97,-57.5"/>
-</g>
-<!-- proc~unique -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node7" class="node">
-<title>proc~unique</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node7"><a xlink:href="../proc/unique.html" xlink:title="string%unique">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="369,-24 280,-24 280,0 369,0 369,-24"/>
-<text text-anchor="middle" x="324.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%unique</text>
-</a>
-</g>
-</g>
-<!-- proc~split&#45;&gt;proc~unique -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge6" class="edge">
-<title>proc~split&#45;&gt;proc~unique</title>
-<path fill="none" stroke="#000000" d="M222.13,-42.96C237.96,-38.13 256.79,-32.38 273.9,-27.15"/>
-<polygon fill="#000000" stroke="#000000" points="275.21,-30.41 283.75,-24.14 273.16,-23.72 275.21,-30.41"/>
-</g>
-<!-- proc~read_line&#45;&gt;proc~chars -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge7" class="edge">
-<title>proc~read_line&#45;&gt;proc~chars</title>
-<path fill="none" stroke="#000000" d="M364.65,-108C377.82,-112.04 392.69,-116.6 406.55,-120.84"/>
-<polygon fill="#000000" stroke="#000000" points="405.84,-124.28 416.42,-123.87 407.89,-117.59 405.84,-124.28"/>
-</g>
-<!-- proc~upper -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node9" class="node">
-<title>proc~upper</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node9"><a xlink:href="../proc/upper.html" xlink:title="string%upper">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="499,-106 415,-106 415,-82 499,-82 499,-106"/>
-<text text-anchor="middle" x="457" y="-91.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%upper</text>
-</a>
-</g>
-</g>
-<!-- proc~read_line&#45;&gt;proc~upper -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge8" class="edge">
-<title>proc~read_line&#45;&gt;proc~upper</title>
-<path fill="none" stroke="#000000" d="M375.21,-95.24C384.84,-95.09 394.94,-94.94 404.62,-94.79"/>
-<polygon fill="#000000" stroke="#000000" points="404.97,-98.28 414.91,-94.63 404.86,-91.28 404.97,-98.28"/>
-</g>
-<!-- proc~replace -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node8" class="node">
-<title>proc~replace</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node8"><a xlink:href="../proc/replace.html" xlink:title="string%replace">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="503,-24 411,-24 411,0 503,0 503,-24"/>
-<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%replace</text>
-</a>
-</g>
-</g>
-<!-- proc~unique&#45;&gt;proc~replace -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge9" class="edge">
-<title>proc~unique&#45;&gt;proc~replace</title>
-<path fill="none" stroke="#000000" d="M369.32,-12C379.31,-12 390.07,-12 400.48,-12"/>
-<polygon fill="#000000" stroke="#000000" points="400.74,-15.5 410.74,-12 400.74,-8.5 400.74,-15.5"/>
-</g>
-<!-- proc~replace_one_occurrence -->
-<g id="program~~volatile_doctest~15~~CallsGraph_node10" class="node">
-<title>proc~replace_one_occurrence</title>
-<g id="a_program~~volatile_doctest~15~~CallsGraph_node10"><a xlink:href="../proc/replace_one_occurrence.html" xlink:title="string%replace_one_occurrence">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="722,-24 539,-24 539,0 722,0 722,-24"/>
-<text text-anchor="middle" x="630.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%replace_one_occurrence</text>
-</a>
-</g>
-</g>
-<!-- proc~replace&#45;&gt;proc~replace_one_occurrence -->
-<g id="program~~volatile_doctest~15~~CallsGraph_edge10" class="edge">
-<title>proc~replace&#45;&gt;proc~replace_one_occurrence</title>
-<path fill="none" stroke="#000000" d="M503.06,-12C511.14,-12 519.84,-12 528.76,-12"/>
-<polygon fill="#000000" stroke="#000000" points="528.92,-15.5 538.92,-12 528.92,-8.5 528.92,-15.5"/>
+<title>program~volatile_doctest~15&#45;&gt;proc~fill</title>
+<path fill="none" stroke="#000000" d="M96.23,-12C104.64,-12 113.34,-12 121.58,-12"/>
+<polygon fill="#000000" stroke="#000000" points="121.72,-15.5 131.72,-12 121.72,-8.5 121.72,-15.5"/>
 </g>
 </g>
 </svg>
-</div>                <script>
-                  var panprogramvolatile_doctest15CallsGraph = svgPanZoom('#programvolatile_doctest15CallsGraph',
-                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
-                  );
-                </script>          <div>
+</div>          <div>
             <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
           </div>
           <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
@@ -518,7 +399,7 @@ modules which it uses.
 <!-- Title: Graph Key Pages: 1 -->
 <svg width="641pt" height="28pt"
  viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
 <title>Graph Key</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
@@ -593,7 +474,7 @@ implementation in a submodule of an interface in a parent module.
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-astring~11"></span>
+              <span class="anchor" id="variable-astring~13"></span>
               type(<a href='../type/string.html'>string</a>)
             </td>
             <td>
@@ -609,110 +490,14 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-strings"></span>
-              type(<a href='../type/string.html'>string</a>),
-            </td>
-            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>strings</strong>(:)</td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-line"></span>
-              type(<a href='../type/string.html'>string</a>)
-            </td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>line</strong>(3)</td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-iostat"></span>
-              integer
-            </td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>iostat</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-iomsg"></span>
-              character(len=99)
-            </td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>iomsg</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-scratch"></span>
-              integer
-            </td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>scratch</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-l"></span>
-              integer
-            </td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>l</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-test_passed~15"></span>
+              <span class="anchor" id="variable-test_passed~13"></span>
               logical
             </td>
             <td>
               
             </td>
             <td>::</td>
-            <td><strong>test_passed</strong>(8)</td>
+            <td><strong>test_passed</strong>(4)</td>
                 <td></td>
                 <td></td>
             <td>
@@ -738,39 +523,12 @@ implementation in a submodule of an interface in a parent module.
     <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">volatile_doctest</span>
 <span class="k">use </span><span class="n">stringifor_string_t</span>
 <span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span>
-<span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">strings</span><span class="p">(:)</span>
-<span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="w"> </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iostat</span>
-<span class="w"> </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iomsg</span>
-<span class="w"> </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">scratch</span>
-<span class="w"> </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">l</span>
-<span class="w"> </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-
-<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39; Hello World!   &#39;</span>
-<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;How are you?  &#39;</span>
-<span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;   All say: &quot;Fine thanks&quot;&#39;</span>
-<span class="w"> </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">)</span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;(A)&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span>
-<span class="w"> </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">read_lines</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">)</span>
-<span class="w"> </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">strings</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">==</span><span class="n">size</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-<span class="w"> </span><span class="k">do </span><span class="n">l</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">strings</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">==</span><span class="n">line</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
-<span class="w"> </span><span class="k">enddo</span>
-<span class="k"> close</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span>
-<span class="w"> </span><span class="k">open</span><span class="p">(</span><span class="n">newunit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;SCRATCH&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;UNFORMATTED&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">access</span><span class="o">=</span><span class="s1">&#39;STREAM&#39;</span><span class="p">)</span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">2</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="w"> </span><span class="k">write</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span><span class="w"> </span><span class="n">line</span><span class="p">(</span><span class="mi">3</span><span class="p">)%</span><span class="n">chars</span><span class="p">()</span><span class="o">//</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
-<span class="w"> </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">read_lines</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="n">scratch</span><span class="p">,</span><span class="w"> </span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;unformatted&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">iostat</span><span class="o">=</span><span class="n">iostat</span><span class="p">,</span><span class="w"> </span><span class="n">iomsg</span><span class="o">=</span><span class="n">iomsg</span><span class="p">)</span>
-<span class="w"> </span><span class="k">call </span><span class="n">astring</span><span class="p">%</span><span class="n">split</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">strings</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="nb">new_line</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">==</span><span class="n">size</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-<span class="w"> </span><span class="k">do </span><span class="n">l</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span><span class="w"> </span><span class="nb">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">strings</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">==</span><span class="n">line</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
-<span class="w"> </span><span class="k">enddo</span>
-<span class="k"> close</span><span class="p">(</span><span class="n">scratch</span><span class="p">)</span>
+<span class="w"> </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;this is string example....wow!!!&#39;</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">fill</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;00000000this is string example....wow!!!&#39;</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">fill</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;000000000000000000this is string example....wow!!!&#39;</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">fill</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;this is string example....wow!!!000000000000000000&#39;</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">astring</span><span class="p">%</span><span class="n">fill</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="n">filling_char</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span><span class="o">//</span><span class="s1">&#39;&#39;</span><span class="o">==</span><span class="s1">&#39;********this is string example....wow!!!&#39;</span>
 <span class="w"> </span><span class="k">print</span><span class="w"> </span><span class="s1">&#39;(L1)&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
 <span class="k">endprogram </span><span class="n">volatile_doctest</span>
 </pre></div>
@@ -788,7 +546,7 @@ implementation in a submodule of an interface in a parent module.
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2024 
+ was developed by Stefano Zaghi<br>              &copy; 2025 
 </p>
           </div>
           <div class="col">
@@ -801,27 +559,5 @@ implementation in a submodule of an interface in a parent module.
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

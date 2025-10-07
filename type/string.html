@@ -12,14 +12,29 @@
 
     <title>string &ndash; StringiFor </title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -97,9 +112,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -354,13 +371,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Adjustl replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Adjustl replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sadjustl.html'>sadjustl</a>(self) result(adjusted)  
 </h3>
     
@@ -402,8 +419,8 @@
     </h4>
     <p>Adjusted string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -417,13 +434,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Adjustr replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Adjustr replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sadjustr.html'>sadjustr</a>(self) result(adjusted)  
 </h3>
     
@@ -465,8 +482,8 @@
     </h4>
     <p>Adjusted string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -480,13 +497,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Count replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Count replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/scount.html'>scount</a>(self, substring, ignore_isolated) result(No)  
 </h3>
     
@@ -558,8 +575,8 @@
     </h4>
     <p>Number of occurrences.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -573,13 +590,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Index replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Index replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sindex_string_string.html'>sindex_string_string</a>(self, substring, back) result(i)  
 </h3>
     
@@ -653,9 +670,9 @@
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sindex_string_character.html'>sindex_string_character</a>(self, substring, back) result(i)  
 </h3>
     
@@ -729,8 +746,8 @@
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -744,13 +761,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Len replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Len replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/slen.html'>slen</a>(self) result(l)  
 </h3>
     
@@ -792,8 +809,8 @@
     </h4>
     <p>String length.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -807,13 +824,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Len_trim replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Len_trim replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/slen_trim.html'>slen_trim</a>(self) result(l)  
 </h3>
     
@@ -855,8 +872,8 @@
     </h4>
     <p>String length.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -870,13 +887,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Repeat replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Repeat replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/srepeat_string_string.html'>srepeat_string_string</a>(self, ncopies) result(repeated)  
 </h3>
     
@@ -933,9 +950,9 @@
     </h4>
     <p>Repeated string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/srepeat_character_string.html'>srepeat_character_string</a>(rstring, ncopies) result(repeated)  
 </h3>
     
@@ -992,8 +1009,8 @@
     </h4>
     <p>Repeated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1007,13 +1024,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Scan replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Scan replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sscan_string_string.html'>sscan_string_string</a>(self, set, back) result(i)  
 </h3>
     
@@ -1085,9 +1102,9 @@
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sscan_string_character.html'>sscan_string_character</a>(self, set, back) result(i)  
 </h3>
     
@@ -1159,8 +1176,8 @@
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1174,13 +1191,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Trim replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Trim replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/strim.html'>strim</a>(self) result(trimmed)  
 </h3>
     
@@ -1222,8 +1239,8 @@
     </h4>
     <p>Trimmed string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1237,13 +1254,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Verify replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Verify replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sverify_string_string.html'>sverify_string_string</a>(self, set, back) result(i)  
 </h3>
     
@@ -1316,9 +1333,9 @@
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sverify_string_character.html'>sverify_string_character</a>(self, set, back) result(i)  
 </h3>
     
@@ -1391,8 +1408,8 @@
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1406,13 +1423,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return the base directory name of a string containing a file name.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return the base directory name of a string containing a file name.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/basedir.html'>basedir</a>(self, sep)  
 </h3>
     
@@ -1469,8 +1486,8 @@
     </h4>
     <p>Base directory name.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1484,13 +1501,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return the base file name of a string containing a file name.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return the base file name of a string containing a file name.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/basename.html'>basename</a>(self, sep, extension, strip_last_extension)  
 </h3>
     
@@ -1577,8 +1594,8 @@
     </h4>
     <p>Base file name.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1592,13 +1609,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with all words capitalized without spaces.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with all words capitalized without spaces.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/camelcase.html'>camelcase</a>(self, sep)  
 </h3>
     
@@ -1655,8 +1672,8 @@
     </h4>
     <p>Camel case string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1670,13 +1687,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with its first character capitalized and the rest lowercased.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with its first character capitalized and the rest lowercased.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/capitalize.html'>capitalize</a>(self) result(capitalized)  
 </h3>
     
@@ -1718,8 +1735,8 @@
     </h4>
     <p>Upper case string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1733,13 +1750,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return the raw characters data.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return the raw characters data.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/chars.html'>chars</a>(self) result(raw)  
 </h3>
     
@@ -1781,8 +1798,8 @@
     </h4>
     <p>Raw characters data.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1796,13 +1813,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Colorize and stylize strings.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Colorize and stylize strings.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/colorize_str.html'>colorize_str</a>(self, color_fg, color_bg, style) result(colorized)  
 </h3>
     
@@ -1889,8 +1906,8 @@
     </h4>
     <p>Colorized string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1904,13 +1921,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Decode string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Decode string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/decode.html'>decode</a>(self, codec) result(decoded)  
 </h3>
     
@@ -1967,8 +1984,8 @@
     </h4>
     <p>Decoded string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -1982,13 +1999,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Encode string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Encode string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/encode.html'>encode</a>(self, codec) result(encoded)  
 </h3>
     
@@ -2045,8 +2062,8 @@
     </h4>
     <p>Encoded string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2060,13 +2077,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Escape backslashes (or custom escape character).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Escape backslashes (or custom escape character).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/escape.html'>escape</a>(self, to_escape, esc) result(escaped)  
 </h3>
     
@@ -2138,8 +2155,8 @@
     </h4>
     <p>Escaped string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2153,13 +2170,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return the extension of a string containing a file name.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return the extension of a string containing a file name.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/extension.html'>extension</a>(self)  
 </h3>
     
@@ -2201,8 +2218,8 @@
     </h4>
     <p>Extension file name.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2216,13 +2233,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Pad string on the left (or right) with zeros (or other char) to fill width.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Pad string on the left (or right) with zeros (or other char) to fill width.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/fill.html'>fill</a>(self, width, right, filling_char) result(filled)  
 </h3>
     
@@ -2309,8 +2326,8 @@
     </h4>
     <p>Filled string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2324,13 +2341,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Free dynamic memory.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Free dynamic memory.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental subroutine <a href='../proc/free.html'>free</a>(self)  
 </h3>
     
@@ -2367,8 +2384,8 @@
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2382,13 +2399,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Glob search, finds all the pathnames matching a given pattern.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Glob search, finds all the pathnames matching a given pattern.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/glob_character.html'>glob_character</a>(self, pattern, list)  
 </h3>
     
@@ -2455,9 +2472,9 @@
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/glob_string.html'>glob_string</a>(self, pattern, list)  
 </h3>
     
@@ -2524,8 +2541,8 @@
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2539,13 +2556,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Insert substring into string at a specified position.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Insert substring into string at a specified position.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/insert_string.html'>insert_string</a>(self, substring, pos) result(inserted)  
 </h3>
     
@@ -2617,9 +2634,9 @@
     </h4>
     <p>Inserted string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/insert_character.html'>insert_character</a>(self, substring, pos) result(inserted)  
 </h3>
     
@@ -2691,8 +2708,8 @@
     </h4>
     <p>Inserted string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2706,13 +2723,13 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string that is a join of an array of strings or characters.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string that is a join of an array of strings or characters.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/join_strings.html'>join_strings</a>(self, array, sep) result(join)  
 </h3>
     
@@ -2784,9 +2801,9 @@
     </h4>
     <p>The join of array.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/join_characters.html'>join_characters</a>(self, array, sep) result(join)  
 </h3>
     
@@ -2858,8 +2875,8 @@
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -2873,14 +2890,14 @@
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string that is a join of an array of strings or characters;
+        <div class="card-body">
+          
+          <p>Return a string that is a join of an array of strings or characters;
 Return join 1D string array of an 2D array of strings or characters in columns or rows.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_strings.html'>strjoin_strings</a>(array, sep) result(join)  
 </h3>
     
@@ -2937,9 +2954,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_characters.html'>strjoin_characters</a>(array, sep, is_trim) result(join)  
 </h3>
     
@@ -3011,9 +3028,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_strings_array.html'>strjoin_strings_array</a>(array, sep, is_col) result(join)  
 </h3>
     
@@ -3085,9 +3102,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_characters_array.html'>strjoin_characters_array</a>(array, sep, is_trim, is_col) result(join)  
 </h3>
     
@@ -3174,8 +3191,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3189,13 +3206,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with all lowercase characters.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with all lowercase characters.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/lower.html'>lower</a>(self)  
 </h3>
     
@@ -3237,8 +3254,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Upper case string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3252,13 +3269,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Split string at separator and return the 3 parts (before, the separator and after).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Split string at separator and return the 3 parts (before, the separator and after).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/partition.html'>partition</a>(self, sep) result(partitions)  
 </h3>
     
@@ -3315,8 +3332,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>after the separator.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3330,18 +3347,18 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Read a file a single string stream.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
-    private  subroutine <a href='../proc/read_file~2.html'>read_file</a>(self, file, is_fast, form, iostat, iomsg)  
+        <div class="card-body">
+          
+          <p>Read a file a single string stream.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/read_file.html'>read_file</a>(self, file, is_fast, form, iostat, iomsg)  
 </h3>
     
 
-  <p>Read a file as a single string stream.</p><a href="../proc/read_file~2.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Read a file as a single string stream.</p><a href="../proc/read_file.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -3448,8 +3465,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3463,13 +3480,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Read line (record) from a connected unit.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Read line (record) from a connected unit.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_line.html'>read_line</a>(self, unit, form, iostat, iomsg)  
 </h3>
     
@@ -3566,8 +3583,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3581,18 +3598,18 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Read (all) lines (records) from a connected unit as a single ascii stream.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
-    private  subroutine <a href='../proc/read_lines~2.html'>read_lines</a>(self, unit, form, iostat, iomsg)  
+        <div class="card-body">
+          
+          <p>Read (all) lines (records) from a connected unit as a single ascii stream.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/read_lines.html'>read_lines</a>(self, unit, form, iostat, iomsg)  
 </h3>
     
 
-  <p>Read (all) lines (records) from a connected unit as a single ascii stream.</p><a href="../proc/read_lines~2.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Read (all) lines (records) from a connected unit as a single ascii stream.</p><a href="../proc/read_lines.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -3684,8 +3701,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3699,13 +3716,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with all occurrences of substring old replaced by new.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with all occurrences of substring old replaced by new.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/replace.html'>replace</a>(self, old, new, count) result(replaced)  
 </h3>
     
@@ -3792,8 +3809,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The string with old replaced by new.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3807,13 +3824,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a reversed string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a reversed string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/reverse.html'>reverse</a>(self) result(reversed)  
 </h3>
     
@@ -3855,8 +3872,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The reversed string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -3870,13 +3887,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Search for <em>tagged</em> record into string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Search for <em>tagged</em> record into string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  function <a href='../proc/search.html'>search</a>(self, tag_start, tag_end, in_string, in_character, istart, iend) result(tag)  
 </h3>
     
@@ -4008,8 +4025,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>First tag found.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4023,13 +4040,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return the raw characters data sliced.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return the raw characters data sliced.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/slice.html'>slice</a>(self, istart, iend) result(raw)  
 </h3>
     
@@ -4101,8 +4118,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Raw characters data.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4116,13 +4133,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with all words lowercase separated by &ldquo;_&rdquo;.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with all words lowercase separated by &ldquo;_&rdquo;.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/snakecase.html'>snakecase</a>(self, sep)  
 </h3>
     
@@ -4179,8 +4196,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Snake case string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4194,13 +4211,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a list of substring in the string, using sep as the delimiter string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a list of substring in the string, using sep as the delimiter string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/split.html'>split</a>(self, tokens, sep, max_tokens)  
 </h3>
     
@@ -4282,8 +4299,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4297,13 +4314,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a list of substring in the string, using sep as the delimiter string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a list of substring in the string, using sep as the delimiter string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/split_chunked.html'>split_chunked</a>(self, tokens, chunks, sep)  
 </h3>
     
@@ -4385,8 +4402,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4400,13 +4417,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with all words capitalized, e.g. title case.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with all words capitalized, e.g. title case.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/startcase.html'>startcase</a>(self, sep)  
 </h3>
     
@@ -4463,8 +4480,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Start case string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4478,13 +4495,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with the leading and trailing characters removed.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with the leading and trailing characters removed.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/strip.html'>strip</a>(self, remove_nulls)  
 </h3>
     
@@ -4541,8 +4558,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The stripped string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4556,13 +4573,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with uppercase chars converted to lowercase and vice versa.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with uppercase chars converted to lowercase and vice versa.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/swapcase.html'>swapcase</a>(self)  
 </h3>
     
@@ -4604,8 +4621,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Upper case string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4619,13 +4636,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a safe temporary name suitable for temporary file or directories.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a safe temporary name suitable for temporary file or directories.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  function <a href='../proc/tempname.html'>tempname</a>(self, is_file, prefix, path)  
 </h3>
     
@@ -4712,8 +4729,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Safe (unique) temporary name.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -4727,13 +4744,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to number.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to number.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i1p.html'>to_integer_I1P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -4790,9 +4807,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i2p.html'>to_integer_I2P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -4849,9 +4866,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i4p.html'>to_integer_I4P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -4908,9 +4925,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i8p.html'>to_integer_I8P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -4967,9 +4984,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_real_r8p.html'>to_real_R8P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -5026,9 +5043,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_real_r4p.html'>to_real_R4P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -5085,8 +5102,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5100,13 +5117,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Unescape double backslashes (or custom escaped character).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Unescape double backslashes (or custom escaped character).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/unescape.html'>unescape</a>(self, to_unescape, unesc) result(unescaped)  
 </h3>
     
@@ -5178,8 +5195,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Escaped string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5193,13 +5210,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Reduce to one (unique) multiple occurrences of a substring into a string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Reduce to one (unique) multiple occurrences of a substring into a string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/unique.html'>unique</a>(self, substring) result(uniq)  
 </h3>
     
@@ -5256,8 +5273,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>String parsed.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5271,13 +5288,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return a string with all uppercase characters.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return a string with all uppercase characters.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/upper.html'>upper</a>(self)  
 </h3>
     
@@ -5319,8 +5336,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Upper case string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5334,18 +5351,18 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Write a single string stream into file.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
-    private  subroutine <a href='../proc/write_file~2.html'>write_file</a>(self, file, form, iostat, iomsg)  
+        <div class="card-body">
+          
+          <p>Write a single string stream into file.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/write_file.html'>write_file</a>(self, file, form, iostat, iomsg)  
 </h3>
     
 
-  <p>Write a single string stream into file.</p><a href="../proc/write_file~2.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Write a single string stream into file.</p><a href="../proc/write_file.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -5437,8 +5454,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5452,13 +5469,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Write line (record) to a connected unit.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Write line (record) to a connected unit.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/write_line.html'>write_line</a>(self, unit, form, iostat, iomsg)  
 </h3>
     
@@ -5555,8 +5572,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5570,18 +5587,18 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Write lines (records) to a connected unit.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
-    private  subroutine <a href='../proc/write_lines~2.html'>write_lines</a>(self, unit, form, iostat, iomsg)  
+        <div class="card-body">
+          
+          <p>Write lines (records) to a connected unit.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/write_lines.html'>write_lines</a>(self, unit, form, iostat, iomsg)  
 </h3>
     
 
-  <p>Write lines (records) to a connected unit.</p><a href="../proc/write_lines~2.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Write lines (records) to a connected unit.</p><a href="../proc/write_lines.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -5673,8 +5690,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5688,13 +5705,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if a string ends with a specified suffix.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if a string ends with a specified suffix.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/end_with.html'>end_with</a>(self, suffix, start, end, ignore_null_eof)  
 </h3>
     
@@ -5796,8 +5813,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5811,13 +5828,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if the string is allocated.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if the string is allocated.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/is_allocated.html'>is_allocated</a>(self)  
 </h3>
     
@@ -5859,8 +5876,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5874,13 +5891,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if all characters in the string are digits.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if all characters in the string are digits.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/is_digit.html'>is_digit</a>(self)  
 </h3>
     
@@ -5922,8 +5939,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -5937,13 +5954,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if the string contains an integer.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if the string contains an integer.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/is_integer.html'>is_integer</a>(self, allow_spaces)  
 </h3>
     
@@ -6000,8 +6017,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -6015,13 +6032,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if all characters in the string are lowercase.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if all characters in the string are lowercase.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/is_lower.html'>is_lower</a>(self)  
 </h3>
     
@@ -6063,8 +6080,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -6078,13 +6095,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if the string contains a number (real or integer).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if the string contains a number (real or integer).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/is_number.html'>is_number</a>(self, allow_spaces)  
 </h3>
     
@@ -6141,8 +6158,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -6156,13 +6173,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if the string contains an real.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if the string contains an real.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/is_real.html'>is_real</a>(self, allow_spaces)  
 </h3>
     
@@ -6219,8 +6236,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -6234,13 +6251,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if all characters in the string are uppercase.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if all characters in the string are uppercase.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/is_upper.html'>is_upper</a>(self)  
 </h3>
     
@@ -6282,8 +6299,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -6297,13 +6314,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return true if a string starts with a specified prefix.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return true if a string starts with a specified prefix.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/start_with.html'>start_with</a>(self, prefix, start, end)  
 </h3>
     
@@ -6390,8 +6407,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the test.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -6405,13 +6422,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_string.html'>string_assign_string</a>(lhs, rhs)  
 </h3>
     
@@ -6463,9 +6480,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_character.html'>string_assign_character</a>(lhs, rhs)  
 </h3>
     
@@ -6517,9 +6534,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i1p.html'>string_assign_integer_I1P</a>(lhs, rhs)  
 </h3>
     
@@ -6571,9 +6588,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i2p.html'>string_assign_integer_I2P</a>(lhs, rhs)  
 </h3>
     
@@ -6625,9 +6642,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i4p.html'>string_assign_integer_I4P</a>(lhs, rhs)  
 </h3>
     
@@ -6679,9 +6696,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i8p.html'>string_assign_integer_I8P</a>(lhs, rhs)  
 </h3>
     
@@ -6733,9 +6750,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_real_r8p.html'>string_assign_real_R8P</a>(lhs, rhs)  
 </h3>
     
@@ -6787,9 +6804,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_real_r4p.html'>string_assign_real_R4P</a>(lhs, rhs)  
 </h3>
     
@@ -6841,8 +6858,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -6856,13 +6873,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/string_concat_string.html'>string_concat_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -6919,9 +6936,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/string_concat_character.html'>string_concat_character</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -6978,9 +6995,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/character_concat_string.html'>character_concat_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -7037,8 +7054,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -7052,13 +7069,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation operator (string output) overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation operator (string output) overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_concat_string_string.html'>string_concat_string_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -7115,9 +7132,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_concat_character_string.html'>string_concat_character_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -7174,9 +7191,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_concat_string_string.html'>character_concat_string_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -7233,8 +7250,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -7248,13 +7265,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Equal operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Equal operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_eq_string.html'>string_eq_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7311,9 +7328,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_eq_character.html'>string_eq_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7370,9 +7387,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_eq_string.html'>character_eq_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7429,8 +7446,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -7444,13 +7461,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Not equal operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Not equal operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ne_string.html'>string_ne_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7507,9 +7524,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ne_character.html'>string_ne_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7566,9 +7583,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_ne_string.html'>character_ne_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7625,8 +7642,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -7640,13 +7657,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower than operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower than operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_lt_string.html'>string_lt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7703,9 +7720,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_lt_character.html'>string_lt_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7762,9 +7779,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_lt_string.html'>character_lt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7821,8 +7838,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -7836,13 +7853,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower equal than operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower equal than operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_le_string.html'>string_le_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7899,9 +7916,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_le_character.html'>string_le_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -7958,9 +7975,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_le_string.html'>character_le_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -8017,8 +8034,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8032,13 +8049,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater equal than operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater equal than operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ge_string.html'>string_ge_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -8095,9 +8112,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ge_character.html'>string_ge_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -8154,9 +8171,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_ge_string.html'>character_ge_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -8213,8 +8230,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8228,13 +8245,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater than operator overloading.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater than operator overloading.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_gt_string.html'>string_gt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -8291,9 +8308,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_gt_character.html'>string_gt_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -8350,9 +8367,9 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-        <li class="list-group-item">
-                  <h3>
+          </li>
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_gt_string.html'>character_gt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -8409,8 +8426,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8424,13 +8441,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Formatted input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Formatted input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_formatted.html'>read_formatted</a>(dtv, unit, iotype, v_list, iostat, iomsg)  
 </h3>
     
@@ -8542,8 +8559,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8557,13 +8574,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Formatted output.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Formatted output.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/write_formatted.html'>write_formatted</a>(dtv, unit, iotype, v_list, iostat, iomsg)  
 </h3>
     
@@ -8675,8 +8692,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8690,13 +8707,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Unformatted input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Unformatted input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_unformatted.html'>read_unformatted</a>(dtv, unit, iostat, iomsg)  
 </h3>
     
@@ -8778,8 +8795,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8793,13 +8810,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Unformatted output.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Unformatted output.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/write_unformatted.html'>write_unformatted</a>(dtv, unit, iostat, iomsg)  
 </h3>
     
@@ -8881,8 +8898,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8896,13 +8913,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Index replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Index replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sindex_string_string.html'>sindex_string_string</a>(self, substring, back) result(i)  
 </h3>
     
@@ -8976,8 +8993,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -8991,13 +9008,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Index replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Index replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sindex_string_character.html'>sindex_string_character</a>(self, substring, back) result(i)  
 </h3>
     
@@ -9071,8 +9088,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9086,13 +9103,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Repeat replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Repeat replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/srepeat_string_string.html'>srepeat_string_string</a>(self, ncopies) result(repeated)  
 </h3>
     
@@ -9149,8 +9166,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Repeated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9164,13 +9181,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Repeat replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Repeat replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/srepeat_character_string.html'>srepeat_character_string</a>(rstring, ncopies) result(repeated)  
 </h3>
     
@@ -9227,8 +9244,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Repeated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9242,13 +9259,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Scan replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Scan replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sscan_string_string.html'>sscan_string_string</a>(self, set, back) result(i)  
 </h3>
     
@@ -9320,8 +9337,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9335,13 +9352,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Scan replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Scan replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sscan_string_character.html'>sscan_string_character</a>(self, set, back) result(i)  
 </h3>
     
@@ -9413,8 +9430,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9428,13 +9445,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Verify replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Verify replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sverify_string_string.html'>sverify_string_string</a>(self, set, back) result(i)  
 </h3>
     
@@ -9507,8 +9524,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9522,13 +9539,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Verify replacement.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Verify replacement.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/sverify_string_character.html'>sverify_string_character</a>(self, set, back) result(i)  
 </h3>
     
@@ -9601,8 +9618,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Result of the search.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9616,13 +9633,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Colorize and stylize strings.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Colorize and stylize strings.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/colorize_str.html'>colorize_str</a>(self, color_fg, color_bg, style) result(colorized)  
 </h3>
     
@@ -9709,8 +9726,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Colorized string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9724,13 +9741,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Glob search (character output).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Glob search (character output).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/glob_character.html'>glob_character</a>(self, pattern, list)  
 </h3>
     
@@ -9797,8 +9814,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9812,13 +9829,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Glob search (string output).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Glob search (string output).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/glob_string.html'>glob_string</a>(self, pattern, list)  
 </h3>
     
@@ -9885,8 +9902,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9900,13 +9917,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Insert substring into string at a specified position.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Insert substring into string at a specified position.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/insert_string.html'>insert_string</a>(self, substring, pos) result(inserted)  
 </h3>
     
@@ -9978,8 +9995,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Inserted string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -9993,13 +10010,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Insert substring into string at a specified position.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Insert substring into string at a specified position.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/insert_character.html'>insert_character</a>(self, substring, pos) result(inserted)  
 </h3>
     
@@ -10071,8 +10088,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Inserted string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10086,13 +10103,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return join string of an array of strings.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return join string of an array of strings.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/join_strings.html'>join_strings</a>(self, array, sep) result(join)  
 </h3>
     
@@ -10164,8 +10181,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10179,13 +10196,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return join string of an array of characters.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return join string of an array of characters.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/join_characters.html'>join_characters</a>(self, array, sep) result(join)  
 </h3>
     
@@ -10257,8 +10274,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10272,13 +10289,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return join string of an array of strings.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return join string of an array of strings.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_strings.html'>strjoin_strings</a>(array, sep) result(join)  
 </h3>
     
@@ -10335,8 +10352,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10350,13 +10367,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return join string of an array of strings.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return join string of an array of strings.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_characters.html'>strjoin_characters</a>(array, sep, is_trim) result(join)  
 </h3>
     
@@ -10428,8 +10445,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10443,13 +10460,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return join 1D string array of an 2D array of strings in columns or rows.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return join 1D string array of an 2D array of strings in columns or rows.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_strings_array.html'>strjoin_strings_array</a>(array, sep, is_col) result(join)  
 </h3>
     
@@ -10521,8 +10538,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10536,13 +10553,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Return join 1D string array of an 2D array of characters in columns or rows.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Return join 1D string array of an 2D array of characters in columns or rows.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/strjoin_characters_array.html'>strjoin_characters_array</a>(array, sep, is_trim, is_col) result(join)  
 </h3>
     
@@ -10629,8 +10646,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The join of array.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10644,13 +10661,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to integer.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to integer.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i1p.html'>to_integer_I1P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -10707,8 +10724,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10722,13 +10739,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to integer.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to integer.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i2p.html'>to_integer_I2P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -10785,8 +10802,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10800,13 +10817,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to integer.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to integer.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i4p.html'>to_integer_I4P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -10863,8 +10880,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10878,13 +10895,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to integer.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to integer.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_integer_i8p.html'>to_integer_I8P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -10941,8 +10958,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -10956,13 +10973,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to real.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to real.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_real_r4p.html'>to_real_R4P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -11019,8 +11036,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11034,13 +11051,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to real.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to real.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_real_r8p.html'>to_real_R8P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -11097,8 +11114,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11112,13 +11129,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Cast string to real.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Cast string to real.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/to_real_r16p.html'>to_real_R16P</a>(self, kind) result(to_number)  
 </h3>
     
@@ -11175,8 +11192,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>The number into the string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11190,13 +11207,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from string input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from string input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_string.html'>string_assign_string</a>(lhs, rhs)  
 </h3>
     
@@ -11248,8 +11265,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11263,13 +11280,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from character input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from character input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_character.html'>string_assign_character</a>(lhs, rhs)  
 </h3>
     
@@ -11321,8 +11338,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11336,13 +11353,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from integer input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from integer input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i1p.html'>string_assign_integer_I1P</a>(lhs, rhs)  
 </h3>
     
@@ -11394,8 +11411,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11409,13 +11426,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from integer input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from integer input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i2p.html'>string_assign_integer_I2P</a>(lhs, rhs)  
 </h3>
     
@@ -11467,8 +11484,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11482,13 +11499,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from integer input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from integer input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i4p.html'>string_assign_integer_I4P</a>(lhs, rhs)  
 </h3>
     
@@ -11540,8 +11557,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11555,13 +11572,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from integer input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from integer input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_integer_i8p.html'>string_assign_integer_I8P</a>(lhs, rhs)  
 </h3>
     
@@ -11613,8 +11630,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11628,13 +11645,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from real input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from real input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_real_r4p.html'>string_assign_real_R4P</a>(lhs, rhs)  
 </h3>
     
@@ -11686,8 +11703,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11701,13 +11718,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from real input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from real input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_real_r8p.html'>string_assign_real_R8P</a>(lhs, rhs)  
 </h3>
     
@@ -11759,8 +11776,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11774,13 +11791,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Assignment operator from real input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Assignment operator from real input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure subroutine <a href='../proc/string_assign_real_r16p.html'>string_assign_real_R16P</a>(lhs, rhs)  
 </h3>
     
@@ -11832,8 +11849,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11847,13 +11864,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation with string.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation with string.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/string_concat_string.html'>string_concat_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -11910,8 +11927,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -11925,13 +11942,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation with character.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation with character.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/string_concat_character.html'>string_concat_character</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -11988,8 +12005,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12003,13 +12020,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation with character (inverted).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation with character (inverted).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private pure function <a href='../proc/character_concat_string.html'>character_concat_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -12066,8 +12083,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12081,13 +12098,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation with string (string output).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation with string (string output).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_concat_string_string.html'>string_concat_string_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -12144,8 +12161,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12159,13 +12176,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation with character (string output).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation with character (string output).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_concat_character_string.html'>string_concat_character_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -12222,8 +12239,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12237,13 +12254,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Concatenation with character (inverted, string output).</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Concatenation with character (inverted, string output).</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_concat_string_string.html'>character_concat_string_string</a>(lhs, rhs) result(concat)  
 </h3>
     
@@ -12300,8 +12317,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Concatenated string.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12315,13 +12332,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Equal to string logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Equal to string logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_eq_string.html'>string_eq_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12378,8 +12395,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12393,13 +12410,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Equal to character logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Equal to character logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_eq_character.html'>string_eq_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12456,8 +12473,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12471,13 +12488,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Equal to character (inverted) logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Equal to character (inverted) logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_eq_string.html'>character_eq_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12534,8 +12551,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12549,13 +12566,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Not equal to string logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Not equal to string logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ne_string.html'>string_ne_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12612,8 +12629,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12627,13 +12644,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Not equal to character logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Not equal to character logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ne_character.html'>string_ne_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12690,8 +12707,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12705,13 +12722,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Not equal to character (inverted) logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Not equal to character (inverted) logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_ne_string.html'>character_ne_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12768,8 +12785,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12783,13 +12800,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower than to string logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower than to string logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_lt_string.html'>string_lt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12846,8 +12863,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12861,13 +12878,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower than to character logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower than to character logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_lt_character.html'>string_lt_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -12924,8 +12941,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -12939,13 +12956,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower than to character (inverted) logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower than to character (inverted) logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_lt_string.html'>character_lt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13002,8 +13019,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13017,13 +13034,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower equal than to string logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower equal than to string logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_le_string.html'>string_le_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13080,8 +13097,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13095,13 +13112,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower equal than to character logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower equal than to character logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_le_character.html'>string_le_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13158,8 +13175,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13173,13 +13190,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Lower equal than to character (inverted) logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Lower equal than to character (inverted) logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_le_string.html'>character_le_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13236,8 +13253,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13251,13 +13268,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater equal than to string logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater equal than to string logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ge_string.html'>string_ge_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13314,8 +13331,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13329,13 +13346,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater equal than to character logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater equal than to character logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_ge_character.html'>string_ge_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13392,8 +13409,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13407,13 +13424,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater equal than to character (inverted) logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater equal than to character (inverted) logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_ge_string.html'>character_ge_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13470,8 +13487,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13485,13 +13502,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater than to string logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater than to string logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_gt_string.html'>string_gt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13548,8 +13565,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13563,13 +13580,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater than to character logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater than to character logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/string_gt_character.html'>string_gt_character</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13626,8 +13643,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13641,13 +13658,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Greater than to character (inverted) logical operator.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Greater than to character (inverted) logical operator.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/character_gt_string.html'>character_gt_string</a>(lhs, rhs) result(is_it)  
 </h3>
     
@@ -13704,8 +13721,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
     </h4>
     <p>Opreator test result.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13719,13 +13736,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Formatted input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Formatted input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_formatted.html'>read_formatted</a>(dtv, unit, iotype, v_list, iostat, iomsg)  
 </h3>
     
@@ -13837,8 +13854,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13852,13 +13869,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Read a delimited input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Read a delimited input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_delimited.html'>read_delimited</a>(dtv, unit, delim, iostat, iomsg)  
 </h3>
     
@@ -13881,7 +13898,7 @@ Return join 1D string array of an 2D array of strings or characters in columns o
               <span class="anchor" ></span>
               class(<a href='string.html'>string</a>),
             </td>
-<td>intent(out)</td>
+<td>intent(inout)</td>
               <td></td>            <td>
               
             </td>
@@ -13955,8 +13972,8 @@ Return join 1D string array of an 2D array of strings or characters in columns o
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -13970,13 +13987,13 @@ Return join 1D string array of an 2D array of strings or characters in columns o
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Read an undelimited input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Read an undelimited input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_undelimited.html'>read_undelimited</a>(dtv, unit, terminators, iostat, iomsg)  
 </h3>
     
@@ -14074,8 +14091,8 @@ Blanks in this string are meaningful.</p>
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -14089,13 +14106,13 @@ Blanks in this string are meaningful.</p>
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Read an undelimited list directed input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Read an undelimited list directed input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_undelimited_listdirected.html'>read_undelimited_listdirected</a>(dtv, unit, iostat, iomsg)  
 </h3>
     
@@ -14177,8 +14194,8 @@ Blanks in this string are meaningful.</p>
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -14192,13 +14209,13 @@ Blanks in this string are meaningful.</p>
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Formatted output.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Formatted output.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/write_formatted.html'>write_formatted</a>(dtv, unit, iotype, v_list, iostat, iomsg)  
 </h3>
     
@@ -14310,8 +14327,8 @@ Blanks in this string are meaningful.</p>
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -14325,13 +14342,13 @@ Blanks in this string are meaningful.</p>
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Unformatted input.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Unformatted input.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/read_unformatted.html'>read_unformatted</a>(dtv, unit, iostat, iomsg)  
 </h3>
     
@@ -14413,8 +14430,8 @@ Blanks in this string are meaningful.</p>
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -14428,13 +14445,13 @@ Blanks in this string are meaningful.</p>
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Unformatted output.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Unformatted output.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private  subroutine <a href='../proc/write_unformatted.html'>write_unformatted</a>(dtv, unit, iostat, iomsg)  
 </h3>
     
@@ -14516,8 +14533,8 @@ Blanks in this string are meaningful.</p>
   </table>
 
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -14531,13 +14548,13 @@ Blanks in this string are meaningful.</p>
         
       </h3>
     </div>
-      <div class="card-body">
-        
-        <p>Replace the first occurrence of substring old by new.</p>
-      </div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
+        <div class="card-body">
+          
+          <p>Replace the first occurrence of substring old by new.</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
     private elemental function <a href='../proc/replace_one_occurrence.html'>replace_one_occurrence</a>(self, old, new) result(replaced)  
 </h3>
     
@@ -14609,8 +14626,8 @@ Blanks in this string are meaningful.</p>
     </h4>
     <p>The string with old replaced by new.</p>
 
-        </li>
-    </ul>
+          </li>
+      </ul>
   </div>
 
           </div>
@@ -14845,7 +14862,7 @@ Blanks in this string are meaningful.</p>
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2024 
+ was developed by Stefano Zaghi<br>              &copy; 2025 
 </p>
           </div>
           <div class="col">
@@ -14858,27 +14875,5 @@ Blanks in this string are meaningful.</p>
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

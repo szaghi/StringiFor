@@ -12,14 +12,29 @@
 
     <title>stringifor_test_csv_naive_parser &ndash; StringiFor</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -95,9 +110,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -118,14 +135,14 @@
             <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-rows~2">rows</a>
             <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-columns~2">columns</a>
             <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-cells~2">cells</a>
-            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-lines~5">lines</a>
+            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-lines~3">lines</a>
             <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-most_expensive">most_expensive</a>
             <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-highest_cost">highest_cost</a>
             <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-rows_number~2">rows_number</a>
             <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-columns_number~2">columns_number</a>
-            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-c~2">c</a>
-            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-r~2">r</a>
-            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-test_passed~84">test_passed</a>
+            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-c~14">c</a>
+            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-r~3">r</a>
+            <a class="list-group-item" href="../program/stringifor_test_csv_naive_parser.html#variable-test_passed~57">test_passed</a>
         </div>
       </div>
     </div>
@@ -368,7 +385,7 @@ modules which it uses.
 <!-- Title: program~~stringifor_test_csv_naive_parser~~CallsGraph Pages: 1 -->
 <svg id="programstringifor_test_csv_naive_parserCallsGraph" width="641pt" height="479pt"
  viewBox="0.00 0.00 641.00 478.71" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="program~~stringifor_test_csv_naive_parser~~CallsGraph" class="graph" transform="scale(1.35 1.35) rotate(0) translate(4 642)">
+<g id="program~~stringifor_test_csv_naive_parser~~CallsGraph" class="graph" transform="scale(0.74 0.74) rotate(0) translate(4 642)">
 <title>program~~stringifor_test_csv_naive_parser~~CallsGraph</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-642 861,-642 861,4 -4,4"/>
 <!-- program~stringifor_test_csv_naive_parser -->
@@ -407,18 +424,18 @@ modules which it uses.
 <path fill="none" stroke="#000000" d="M105.24,-264.06C136.18,-292.26 213.48,-362.68 250.96,-396.83"/>
 <polygon fill="#000000" stroke="#000000" points="249,-399.78 258.74,-403.92 253.71,-394.6 249,-399.78"/>
 </g>
-<!-- proc~read_file~2 -->
+<!-- proc~read_file -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_node4" class="node">
-<title>proc~read_file~2</title>
-<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node4"><a xlink:href="../proc/read_file~2.html" xlink:title="string%read_file">
+<title>proc~read_file</title>
+<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node4"><a xlink:href="../proc/read_file.html" xlink:title="string%read_file">
 <polygon fill="#d9534f" stroke="#d9534f" points="322,-264 224,-264 224,-240 322,-240 322,-264"/>
 <text text-anchor="middle" x="273" y="-249.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_file</text>
 </a>
 </g>
 </g>
-<!-- program~stringifor_test_csv_naive_parser&#45;&gt;proc~read_file~2 -->
+<!-- program~stringifor_test_csv_naive_parser&#45;&gt;proc~read_file -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge3" class="edge">
-<title>program~stringifor_test_csv_naive_parser&#45;&gt;proc~read_file~2</title>
+<title>program~stringifor_test_csv_naive_parser&#45;&gt;proc~read_file</title>
 <path fill="none" stroke="#000000" d="M182.26,-252C192.94,-252 203.61,-252 213.68,-252"/>
 <polygon fill="#000000" stroke="#000000" points="213.92,-255.5 223.92,-252 213.92,-248.5 213.92,-255.5"/>
 </g>
@@ -437,18 +454,18 @@ modules which it uses.
 <path fill="none" stroke="#000000" d="M102.99,-239.91C133.12,-206.77 217.23,-114.25 254.19,-73.59"/>
 <polygon fill="#000000" stroke="#000000" points="256.79,-75.93 260.93,-66.18 251.61,-71.23 256.79,-75.93"/>
 </g>
-<!-- proc~write_file -->
+<!-- proc~write_file~2 -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_node6" class="node">
-<title>proc~write_file</title>
-<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node6"><a xlink:href="../proc/write_file.html" xlink:title="write_file">
+<title>proc~write_file~2</title>
+<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node6"><a xlink:href="../proc/write_file~2.html" xlink:title="write_file">
 <polygon fill="#d9534f" stroke="#d9534f" points="303.5,-185 242.5,-185 242.5,-161 303.5,-161 303.5,-185"/>
 <text text-anchor="middle" x="273" y="-170.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_file</text>
 </a>
 </g>
 </g>
-<!-- program~stringifor_test_csv_naive_parser&#45;&gt;proc~write_file -->
+<!-- program~stringifor_test_csv_naive_parser&#45;&gt;proc~write_file~2 -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge5" class="edge">
-<title>program~stringifor_test_csv_naive_parser&#45;&gt;proc~write_file</title>
+<title>program~stringifor_test_csv_naive_parser&#45;&gt;proc~write_file~2</title>
 <path fill="none" stroke="#000000" d="M119.73,-239.83C150.74,-226.22 201.09,-204.12 235.33,-189.09"/>
 <polygon fill="#000000" stroke="#000000" points="236.78,-192.28 244.53,-185.05 233.97,-185.87 236.78,-192.28"/>
 </g>
@@ -581,24 +598,24 @@ modules which it uses.
 </a>
 </g>
 </g>
-<!-- proc~read_file~2&#45;&gt;proc~chars -->
+<!-- proc~read_file&#45;&gt;proc~chars -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge14" class="edge">
-<title>proc~read_file~2&#45;&gt;proc~chars</title>
+<title>proc~read_file&#45;&gt;proc~chars</title>
 <path fill="none" stroke="#000000" d="M322.45,-240.1C335.87,-236.97 350.47,-233.71 364,-231 489.28,-205.93 637.89,-182.78 714.02,-171.39"/>
 <polygon fill="#000000" stroke="#000000" points="714.89,-174.8 724.27,-169.87 713.86,-167.88 714.89,-174.8"/>
 </g>
-<!-- proc~read_lines~2 -->
+<!-- proc~read_lines -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_node11" class="node">
-<title>proc~read_lines~2</title>
-<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node11"><a xlink:href="../proc/read_lines~2.html" xlink:title="string%read_lines">
+<title>proc~read_lines</title>
+<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node11"><a xlink:href="../proc/read_lines.html" xlink:title="string%read_lines">
 <polygon fill="#d9534f" stroke="#d9534f" points="484,-264 378,-264 378,-240 484,-240 484,-264"/>
 <text text-anchor="middle" x="431" y="-249.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_lines</text>
 </a>
 </g>
 </g>
-<!-- proc~read_file~2&#45;&gt;proc~read_lines~2 -->
+<!-- proc~read_file&#45;&gt;proc~read_lines -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge15" class="edge">
-<title>proc~read_file~2&#45;&gt;proc~read_lines~2</title>
+<title>proc~read_file&#45;&gt;proc~read_lines</title>
 <path fill="none" stroke="#000000" d="M322.08,-252C336.41,-252 352.33,-252 367.44,-252"/>
 <polygon fill="#000000" stroke="#000000" points="367.74,-255.5 377.74,-252 367.74,-248.5 367.74,-255.5"/>
 </g>
@@ -611,9 +628,9 @@ modules which it uses.
 </a>
 </g>
 </g>
-<!-- proc~read_file~2&#45;&gt;proc~upper -->
+<!-- proc~read_file&#45;&gt;proc~upper -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge16" class="edge">
-<title>proc~read_file~2&#45;&gt;proc~upper</title>
+<title>proc~read_file&#45;&gt;proc~upper</title>
 <path fill="none" stroke="#000000" d="M316.68,-264.07C331.53,-267.7 348.38,-271.2 364,-273 484.98,-286.93 518.45,-296.19 638,-273 671.8,-266.44 708.02,-250.88 733.01,-238.66"/>
 <polygon fill="#000000" stroke="#000000" points="734.62,-241.76 742,-234.16 731.49,-235.5 734.62,-241.76"/>
 </g>
@@ -647,30 +664,30 @@ modules which it uses.
 <path fill="none" stroke="#000000" d="M310.18,-44.26C329.85,-38.96 354.56,-32.31 376.42,-26.43"/>
 <polygon fill="#000000" stroke="#000000" points="377.49,-29.76 386.23,-23.78 375.67,-23 377.49,-29.76"/>
 </g>
-<!-- proc~write_file&#45;&gt;proc~chars -->
+<!-- proc~write_file~2&#45;&gt;proc~chars -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge19" class="edge">
-<title>proc~write_file&#45;&gt;proc~chars</title>
+<title>proc~write_file~2&#45;&gt;proc~chars</title>
 <path fill="none" stroke="#000000" d="M303.88,-167.59C321.34,-164.7 343.84,-161.45 364,-160 489.69,-150.97 638.13,-156.73 714.12,-160.86"/>
 <polygon fill="#000000" stroke="#000000" points="714.18,-164.37 724.36,-161.44 714.57,-157.38 714.18,-164.37"/>
 </g>
-<!-- proc~write_file&#45;&gt;proc~upper -->
+<!-- proc~write_file~2&#45;&gt;proc~upper -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge20" class="edge">
-<title>proc~write_file&#45;&gt;proc~upper</title>
+<title>proc~write_file~2&#45;&gt;proc~upper</title>
 <path fill="none" stroke="#000000" d="M303.58,-175.95C384.58,-184.05 610.74,-206.64 713.06,-216.86"/>
 <polygon fill="#000000" stroke="#000000" points="712.86,-220.36 723.16,-217.87 713.55,-213.39 712.86,-220.36"/>
 </g>
-<!-- proc~write_lines -->
+<!-- proc~write_lines~2 -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_node20" class="node">
-<title>proc~write_lines</title>
-<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node20"><a xlink:href="../proc/write_lines.html" xlink:title="write_lines">
+<title>proc~write_lines~2</title>
+<g id="a_program~~stringifor_test_csv_naive_parser~~CallsGraph_node20"><a xlink:href="../proc/write_lines~2.html" xlink:title="write_lines">
 <polygon fill="#d9534f" stroke="#d9534f" points="465.5,-108 396.5,-108 396.5,-84 465.5,-84 465.5,-108"/>
 <text text-anchor="middle" x="431" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">write_lines</text>
 </a>
 </g>
 </g>
-<!-- proc~write_file&#45;&gt;proc~write_lines -->
+<!-- proc~write_file~2&#45;&gt;proc~write_lines~2 -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge21" class="edge">
-<title>proc~write_file&#45;&gt;proc~write_lines</title>
+<title>proc~write_file~2&#45;&gt;proc~write_lines~2</title>
 <path fill="none" stroke="#000000" d="M293.59,-160.84C311.54,-149.95 339.04,-133.92 364,-122 371.43,-118.45 379.47,-114.99 387.31,-111.8"/>
 <polygon fill="#000000" stroke="#000000" points="388.71,-115.01 396.71,-108.07 386.13,-108.51 388.71,-115.01"/>
 </g>
@@ -683,9 +700,9 @@ modules which it uses.
 </a>
 </g>
 </g>
-<!-- proc~read_lines~2&#45;&gt;proc~read_line -->
+<!-- proc~read_lines&#45;&gt;proc~read_line -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge22" class="edge">
-<title>proc~read_lines~2&#45;&gt;proc~read_line</title>
+<title>proc~read_lines&#45;&gt;proc~read_line</title>
 <path fill="none" stroke="#000000" d="M484.23,-252C497.4,-252 511.65,-252 525.17,-252"/>
 <polygon fill="#000000" stroke="#000000" points="525.33,-255.5 535.33,-252 525.33,-248.5 525.33,-255.5"/>
 </g>
@@ -767,9 +784,9 @@ modules which it uses.
 </a>
 </g>
 </g>
-<!-- proc~write_lines&#45;&gt;proc~write_line -->
+<!-- proc~write_lines~2&#45;&gt;proc~write_line -->
 <g id="program~~stringifor_test_csv_naive_parser~~CallsGraph_edge30" class="edge">
-<title>proc~write_lines&#45;&gt;proc~write_line</title>
+<title>proc~write_lines~2&#45;&gt;proc~write_line</title>
 <path fill="none" stroke="#000000" d="M465.58,-96C482.73,-96 504.14,-96 524.08,-96"/>
 <polygon fill="#000000" stroke="#000000" points="524.34,-99.5 534.34,-96 524.34,-92.5 524.34,-99.5"/>
 </g>
@@ -853,7 +870,7 @@ modules which it uses.
 <!-- Title: Graph Key Pages: 1 -->
 <svg width="641pt" height="28pt"
  viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
 <title>Graph Key</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
@@ -992,7 +1009,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-lines~5"></span>
+              <span class="anchor" id="variable-lines~3"></span>
               type(<a href='../type/string.html'>string</a>)
             </td>
             <td>
@@ -1072,7 +1089,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-c~2"></span>
+              <span class="anchor" id="variable-c~14"></span>
               integer
             </td>
             <td>
@@ -1088,7 +1105,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-r~2"></span>
+              <span class="anchor" id="variable-r~3"></span>
               integer
             </td>
             <td>
@@ -1104,7 +1121,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-test_passed~84"></span>
+              <span class="anchor" id="variable-test_passed~57"></span>
               logical
             </td>
             <td>
@@ -1221,7 +1238,7 @@ implementation in a submodule of an interface in a parent module.
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2024 
+ was developed by Stefano Zaghi<br>              &copy; 2025 
 </p>
           </div>
           <div class="col">
@@ -1234,27 +1251,5 @@ implementation in a submodule of an interface in a parent module.
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

@@ -12,14 +12,29 @@
 
     <title>glob &ndash; StringiFor</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -97,9 +112,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -201,7 +218,7 @@
 <!-- Title: interface~~glob~~CallsGraph Pages: 1 -->
 <svg id="interfaceglobCallsGraph" width="641pt" height="141pt"
  viewBox="0.00 0.00 641.00 141.19" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="interface~~glob~~CallsGraph" class="graph" transform="scale(1.77 1.77) rotate(0) translate(4 246)">
+<g id="interface~~glob~~CallsGraph" class="graph" transform="scale(0.56 0.56) rotate(0) translate(4 246)">
 <title>interface~~glob~~CallsGraph</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-246 1131,-246 1131,4 -4,4"/>
 <!-- interface~glob -->
@@ -270,18 +287,18 @@
 <path fill="none" stroke="#000000" d="M223.19,-42.97C277.38,-37.04 356.31,-30 425.5,-30 425.5,-30 425.5,-30 719,-30 813.33,-30 922.4,-46.95 984.43,-58.21"/>
 <polygon fill="#000000" stroke="#000000" points="983.88,-61.67 994.35,-60.03 985.14,-54.78 983.88,-61.67"/>
 </g>
-<!-- proc~read_file~2 -->
+<!-- proc~read_file -->
 <g id="interface~~glob~~CallsGraph_node6" class="node">
-<title>proc~read_file~2</title>
-<g id="a_interface~~glob~~CallsGraph_node6"><a xlink:href="../proc/read_file~2.html" xlink:title="string%read_file">
+<title>proc~read_file</title>
+<g id="a_interface~~glob~~CallsGraph_node6"><a xlink:href="../proc/read_file.html" xlink:title="string%read_file">
 <polygon fill="#d9534f" stroke="#d9534f" points="622.5,-99 524.5,-99 524.5,-75 622.5,-75 622.5,-99"/>
 <text text-anchor="middle" x="573.5" y="-84.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_file</text>
 </a>
 </g>
 </g>
-<!-- proc~glob_string&#45;&gt;proc~read_file~2 -->
+<!-- proc~glob_string&#45;&gt;proc~read_file -->
 <g id="interface~~glob~~CallsGraph_edge5" class="edge">
-<title>proc~glob_string&#45;&gt;proc~read_file~2</title>
+<title>proc~glob_string&#45;&gt;proc~read_file</title>
 <path fill="none" stroke="#000000" d="M482.32,-87C492.66,-87 503.52,-87 513.98,-87"/>
 <polygon fill="#000000" stroke="#000000" points="514.26,-90.5 524.26,-87 514.26,-83.5 514.26,-90.5"/>
 </g>
@@ -327,24 +344,24 @@
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M335.22,-74.96C343.34,-76.05 352.15,-77.22 360.99,-78.4"/>
 <polygon fill="#000000" stroke="#000000" points="360.56,-81.87 370.94,-79.72 361.49,-74.93 360.56,-81.87"/>
 </g>
-<!-- proc~read_file~2&#45;&gt;proc~chars -->
+<!-- proc~read_file&#45;&gt;proc~chars -->
 <g id="interface~~glob~~CallsGraph_edge10" class="edge">
-<title>proc~read_file~2&#45;&gt;proc~chars</title>
+<title>proc~read_file&#45;&gt;proc~chars</title>
 <path fill="none" stroke="#000000" d="M622.86,-85C710.61,-81.38 895.23,-73.75 984.31,-70.07"/>
 <polygon fill="#000000" stroke="#000000" points="984.58,-73.56 994.43,-69.65 984.3,-66.57 984.58,-73.56"/>
 </g>
-<!-- proc~read_lines~2 -->
+<!-- proc~read_lines -->
 <g id="interface~~glob~~CallsGraph_node10" class="node">
-<title>proc~read_lines~2</title>
-<g id="a_interface~~glob~~CallsGraph_node10"><a xlink:href="../proc/read_lines~2.html" xlink:title="string%read_lines">
+<title>proc~read_lines</title>
+<g id="a_interface~~glob~~CallsGraph_node10"><a xlink:href="../proc/read_lines.html" xlink:title="string%read_lines">
 <polygon fill="#d9534f" stroke="#d9534f" points="771,-120 665,-120 665,-96 771,-96 771,-120"/>
 <text text-anchor="middle" x="718" y="-105.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string%read_lines</text>
 </a>
 </g>
 </g>
-<!-- proc~read_file~2&#45;&gt;proc~read_lines~2 -->
+<!-- proc~read_file&#45;&gt;proc~read_lines -->
 <g id="interface~~glob~~CallsGraph_edge11" class="edge">
-<title>proc~read_file~2&#45;&gt;proc~read_lines~2</title>
+<title>proc~read_file&#45;&gt;proc~read_lines</title>
 <path fill="none" stroke="#000000" d="M622.74,-94.11C633.02,-95.62 644.02,-97.24 654.74,-98.82"/>
 <polygon fill="#000000" stroke="#000000" points="654.5,-102.33 664.9,-100.32 655.52,-95.4 654.5,-102.33"/>
 </g>
@@ -357,9 +374,9 @@
 </a>
 </g>
 </g>
-<!-- proc~read_file~2&#45;&gt;proc~upper -->
+<!-- proc~read_file&#45;&gt;proc~upper -->
 <g id="interface~~glob~~CallsGraph_edge12" class="edge">
-<title>proc~read_file~2&#45;&gt;proc~upper</title>
+<title>proc~read_file&#45;&gt;proc~upper</title>
 <path fill="none" stroke="#000000" d="M608.29,-99.05C615.23,-101.79 622.42,-104.84 629,-108 645.7,-116.02 647.12,-124.17 665,-129 775.23,-158.8 910.8,-146.68 983.19,-136.52"/>
 <polygon fill="#000000" stroke="#000000" points="984.01,-139.94 993.4,-135.04 983,-133.01 984.01,-139.94"/>
 </g>
@@ -402,9 +419,9 @@
 </a>
 </g>
 </g>
-<!-- proc~read_lines~2&#45;&gt;proc~read_line -->
+<!-- proc~read_lines&#45;&gt;proc~read_line -->
 <g id="interface~~glob~~CallsGraph_edge15" class="edge">
-<title>proc~read_lines~2&#45;&gt;proc~read_line</title>
+<title>proc~read_lines&#45;&gt;proc~read_line</title>
 <path fill="none" stroke="#000000" d="M771.38,-108C779.68,-108 788.33,-108 796.79,-108"/>
 <polygon fill="#000000" stroke="#000000" points="796.99,-111.5 806.99,-108 796.99,-104.5 796.99,-111.5"/>
 </g>
@@ -476,7 +493,7 @@
 <!-- Title: Graph Key Pages: 1 -->
 <svg width="641pt" height="28pt"
  viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
 <title>Graph Key</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
@@ -557,18 +574,18 @@ implementation in a submodule of an interface in a parent module.
 <polygon fill="none" stroke="black" points="186,-24 132,-24 132,0 186,0 186,-24"/>
 <text text-anchor="middle" x="159" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">glob</text>
 </g>
-<!-- program~volatile_doctest~100 -->
+<!-- program~volatile_doctest~12 -->
 <g id="interface~~glob~~CalledByGraph_node2" class="node">
-<title>program~volatile_doctest~100</title>
-<g id="a_interface~~glob~~CalledByGraph_node2"><a xlink:href="../program/volatile_doctest~100.html" xlink:title="volatile_doctest">
+<title>program~volatile_doctest~12</title>
+<g id="a_interface~~glob~~CalledByGraph_node2"><a xlink:href="../program/volatile_doctest~12.html" xlink:title="volatile_doctest">
 <polygon fill="#f0ad4e" stroke="#f0ad4e" points="96,-24 0,-24 0,0 96,0 96,-24"/>
 <text text-anchor="middle" x="48" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">volatile_doctest</text>
 </a>
 </g>
 </g>
-<!-- program~volatile_doctest~100&#45;&gt;interface~glob -->
+<!-- program~volatile_doctest~12&#45;&gt;interface~glob -->
 <g id="interface~~glob~~CalledByGraph_edge1" class="edge">
-<title>program~volatile_doctest~100&#45;&gt;interface~glob</title>
+<title>program~volatile_doctest~12&#45;&gt;interface~glob</title>
 <path fill="none" stroke="#000000" d="M96.18,-12C104.66,-12 113.38,-12 121.5,-12"/>
 <polygon fill="#000000" stroke="#000000" points="121.76,-15.5 131.76,-12 121.76,-8.5 121.76,-15.5"/>
 </g>
@@ -594,7 +611,7 @@ implementation in a submodule of an interface in a parent module.
 <!-- Title: Graph Key Pages: 1 -->
 <svg width="641pt" height="28pt"
  viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.16 1.16) rotate(0) translate(4 28)">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
 <title>Graph Key</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
 <!-- Subroutine -->
@@ -807,7 +824,7 @@ implementation in a submodule of an interface in a parent module.
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2024 
+ was developed by Stefano Zaghi<br>              &copy; 2025 
 </p>
           </div>
           <div class="col">
@@ -820,27 +837,5 @@ implementation in a submodule of an interface in a parent module.
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>
