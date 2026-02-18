@@ -1,4 +1,9 @@
 # Changelog
+## [v1.1.6](https://github.com/szaghi/FLAP/tree/v1.1.6) (2026-02-18)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.5...v1.1.6)
+### Bug fixes
+- Correct project name casing to StringiFor throughout ([`0815b10`](https://github.com/szaghi/FLAP/commit/0815b10dba925771a5f1936cecfd924e43802080))
+
 ## [v1.1.5](https://github.com/szaghi/FLAP/tree/v1.1.5) (2026-02-18)
 [Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.4...v1.1.5)
 ### Bug fixes
