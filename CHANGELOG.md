@@ -1,4 +1,9 @@
 # Changelog
+## [v1.1.7](https://github.com/szaghi/FLAP/tree/v1.1.7) (2026-02-18)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.6...v1.1.7)
+### CI/CD
+- Add standalone docs deploy workflow ([`6f07ca3`](https://github.com/szaghi/FLAP/commit/6f07ca3698b695d894e3712a56c7f99d8b84e740))
+
 ## [v1.1.6](https://github.com/szaghi/FLAP/tree/v1.1.6) (2026-02-18)
 [Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.5...v1.1.6)
 ### Bug fixes
