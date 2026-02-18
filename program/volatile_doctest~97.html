@@ -90,19 +90,19 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 1.0% of total for programs.">16 statements</a>
+                 title=" 0.8% of total for programs.">13 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/stringifor_string_t-doctest-103.f90"> Source File</a>
+              <a href="../src/stringifor_string_t-doctest-100.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-103.f90.html'>stringifor_string_t-doctest-103.f90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-100.f90.html'>stringifor_string_t-doctest-100.f90</a></li>
             <li class="breadcrumb-item active" aria-current="page">volatile_doctest</li>
           </ol>
         </nav>
@@ -395,7 +395,7 @@ modules which it uses.
               
             </td>
             <td>::</td>
-            <td><strong>test_passed</strong>(3)</td>
+            <td><strong>test_passed</strong>(2)</td>
                 <td></td>
                 <td></td>
             <td>
@@ -422,16 +422,13 @@ modules which it uses.
 <span class="k">use </span><span class="n">stringifor_string_t</span>
 <span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span>
 <span class="w"> </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="w"> </span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">acharacter</span>
-<span class="w"> </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="w"> </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;one&#39;</span>
 <span class="w"> </span><span class="n">acharacter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">acharacter</span><span class="o">&lt;=</span><span class="n">astring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.)</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">acharacter</span><span class="o">&lt;</span><span class="n">astring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.)</span>
 <span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
 <span class="w"> </span><span class="n">acharacter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;one&#39;</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">acharacter</span><span class="o">&lt;=</span><span class="n">astring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">false</span><span class="p">.)</span>
-<span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
-<span class="w"> </span><span class="n">acharacter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">acharacter</span><span class="o">&lt;=</span><span class="n">astring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.)</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">acharacter</span><span class="o">&lt;</span><span class="n">astring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">false</span><span class="p">.)</span>
 <span class="w"> </span><span class="k">print</span><span class="w"> </span><span class="s1">&#39;(L1)&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
 <span class="k">endprogram </span><span class="n">volatile_doctest</span>
 </pre></div>
@@ -449,7 +446,7 @@ modules which it uses.
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2025 
+ was developed by Stefano Zaghi<br>              &copy; 2026 
 </p>
           </div>
           <div class="col">

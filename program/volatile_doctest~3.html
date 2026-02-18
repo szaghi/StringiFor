@@ -90,19 +90,19 @@
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title=" 0.6% of total for programs.">9 statements</a>
+                 title=" 0.8% of total for programs.">13 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/stringifor_string_t-doctest-13.f90"> Source File</a>
+              <a href="../src/stringifor_string_t-doctest-107.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-13.f90.html'>stringifor_string_t-doctest-13.f90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-107.f90.html'>stringifor_string_t-doctest-107.f90</a></li>
             <li class="breadcrumb-item active" aria-current="page">volatile_doctest</li>
           </ol>
         </nav>
@@ -131,7 +131,8 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/volatile_doctest~3.html#variable-string1~2">string1</a>
+            <a class="list-group-item" href="../program/volatile_doctest~3.html#variable-astring~3">astring</a>
+            <a class="list-group-item" href="../program/volatile_doctest~3.html#variable-anotherstring">anotherstring</a>
             <a class="list-group-item" href="../program/volatile_doctest~3.html#variable-test_passed~3">test_passed</a>
         </div>
       </div>
@@ -355,14 +356,30 @@ modules which it uses.
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-string1~2"></span>
+              <span class="anchor" id="variable-astring~3"></span>
               type(<a href='../type/string.html'>string</a>)
             </td>
             <td>
               
             </td>
             <td>::</td>
-            <td><strong>string1</strong></td>
+            <td><strong>astring</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-anotherstring"></span>
+              type(<a href='../type/string.html'>string</a>)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>anotherstring</strong></td>
                 <td></td>
                 <td></td>
             <td>
@@ -403,11 +420,15 @@ modules which it uses.
     <h2 id="src">Source Code</h2>
     <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">volatile_doctest</span>
 <span class="k">use </span><span class="n">stringifor_string_t</span>
-<span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">string1</span>
+<span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">astring</span>
+<span class="w"> </span><span class="k">type</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">anotherstring</span>
 <span class="w"> </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="w"> </span><span class="n">string1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hello World Hello!&#39;</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">string1</span><span class="p">%</span><span class="nb">index</span><span class="p">(</span><span class="n">substring</span><span class="o">=</span><span class="s1">&#39;llo&#39;</span><span class="p">)</span><span class="o">==</span><span class="nb">index</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;Hello World Hello!&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">substring</span><span class="o">=</span><span class="s1">&#39;llo&#39;</span><span class="p">)</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">string1</span><span class="p">%</span><span class="nb">index</span><span class="p">(</span><span class="n">substring</span><span class="o">=</span><span class="s1">&#39;llo&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span><span class="o">==</span><span class="nb">index</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="s1">&#39;Hello World Hello!&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">substring</span><span class="o">=</span><span class="s1">&#39;llo&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">back</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;one&#39;</span>
+<span class="w"> </span><span class="n">anotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">astring</span><span class="o">&gt;</span><span class="n">anotherstring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.)</span>
+<span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
+<span class="w"> </span><span class="n">anotherstring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;one&#39;</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">astring</span><span class="o">&gt;</span><span class="n">anotherstring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">false</span><span class="p">.)</span>
 <span class="w"> </span><span class="k">print</span><span class="w"> </span><span class="s1">&#39;(L1)&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
 <span class="k">endprogram </span><span class="n">volatile_doctest</span>
 </pre></div>
@@ -425,7 +446,7 @@ modules which it uses.
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2025 
+ was developed by Stefano Zaghi<br>              &copy; 2026 
 </p>
           </div>
           <div class="col">

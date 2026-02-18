@@ -95,14 +95,14 @@
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/stringifor_string_t-doctest-109.f90"> Source File</a>
+              <a href="../src/stringifor_string_t-doctest-108.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-109.f90.html'>stringifor_string_t-doctest-109.f90</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/stringifor_string_t-doctest-108.f90.html'>stringifor_string_t-doctest-108.f90</a></li>
             <li class="breadcrumb-item active" aria-current="page">volatile_doctest</li>
           </ol>
         </nav>
@@ -131,9 +131,9 @@
       </a>
       <div id="vars-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../program/volatile_doctest~13.html#variable-astring~11">astring</a>
-            <a class="list-group-item" href="../program/volatile_doctest~13.html#variable-acharacter~3">acharacter</a>
-            <a class="list-group-item" href="../program/volatile_doctest~13.html#variable-test_passed~11">test_passed</a>
+            <a class="list-group-item" href="../program/volatile_doctest~13.html#variable-astring~12">astring</a>
+            <a class="list-group-item" href="../program/volatile_doctest~13.html#variable-acharacter">acharacter</a>
+            <a class="list-group-item" href="../program/volatile_doctest~13.html#variable-test_passed~10">test_passed</a>
         </div>
       </div>
     </div>
@@ -356,7 +356,7 @@ modules which it uses.
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-astring~11"></span>
+              <span class="anchor" id="variable-astring~12"></span>
               type(<a href='../type/string.html'>string</a>)
             </td>
             <td>
@@ -372,7 +372,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-acharacter~3"></span>
+              <span class="anchor" id="variable-acharacter"></span>
               character(len=:),
             </td>
             <td>
@@ -388,7 +388,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-test_passed~11"></span>
+              <span class="anchor" id="variable-test_passed~10"></span>
               logical
             </td>
             <td>
@@ -425,10 +425,10 @@ modules which it uses.
 <span class="w"> </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;one&#39;</span>
 <span class="w"> </span><span class="n">acharacter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">acharacter</span><span class="o">&gt;</span><span class="n">astring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">false</span><span class="p">.)</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">astring</span><span class="o">&gt;</span><span class="n">acharacter</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.)</span>
 <span class="w"> </span><span class="n">astring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ONE&#39;</span>
 <span class="w"> </span><span class="n">acharacter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;one&#39;</span>
-<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">acharacter</span><span class="o">&gt;</span><span class="n">astring</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">true</span><span class="p">.)</span>
+<span class="w"> </span><span class="n">test_passed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">astring</span><span class="o">&gt;</span><span class="n">acharacter</span><span class="p">).</span><span class="n">eqv</span><span class="p">..</span><span class="n">false</span><span class="p">.)</span>
 <span class="w"> </span><span class="k">print</span><span class="w"> </span><span class="s1">&#39;(L1)&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">all</span><span class="p">(</span><span class="n">test_passed</span><span class="p">)</span>
 <span class="k">endprogram </span><span class="n">volatile_doctest</span>
 </pre></div>
@@ -446,7 +446,7 @@ modules which it uses.
           <div class="col">
             <p>
               StringiFor
- was developed by Stefano Zaghi<br>              &copy; 2025 
+ was developed by Stefano Zaghi<br>              &copy; 2026 
 </p>
           </div>
           <div class="col">
