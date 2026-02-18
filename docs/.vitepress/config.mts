@@ -2,8 +2,8 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 import apiSidebar from '../api/_sidebar.json'
 
 export default withMermaid({
-  title: 'STRINGIFOR Documentation',
-  base: '/STRINGIFOR/',
+  title: 'StringiFor Documentation',
+  base: '/StringiFor/',
   markdown: {
     math: true,
     languages: ['fortran-free-form', 'fortran-fixed-form'],

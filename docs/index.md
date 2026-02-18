@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: STRINGIFOR
+  name: StringiFor
   text: Strings Fortran Manipulator
   tagline: A pure Fortran 2003+ library providing an OOP string type with Python-like methods.
   actions:

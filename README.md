@@ -21,7 +21,7 @@
 - Encoding: Base64 `encode`/`decode`, ANSI terminal `colorize`
 - OOP/TDD designed — almost all methods are `elemental` or `pure`
 
-**[Documentation](https://szaghi.github.io/STRINGIFOR/)** | **[API Reference](https://szaghi.github.io/STRINGIFOR/api/)**
+**[Documentation](https://szaghi.github.io/StringiFor/)** | **[API Reference](https://szaghi.github.io/StringiFor/api/)**
 
 ---
 
@@ -29,7 +29,7 @@
 
 - Stefano Zaghi — [@szaghi](https://github.com/szaghi)
 
-Contributions are welcome — see the [Contributing](https://szaghi.github.io/STRINGIFOR/guide/contributing) page.
+Contributions are welcome — see the [Contributing](https://szaghi.github.io/StringiFor/guide/contributing) page.
 
 ## Copyrights
 
