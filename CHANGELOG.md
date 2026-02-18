@@ -1,7 +1,11 @@
 # Changelog
-## [Unreleased]
+## [v1.1.5](https://github.com/szaghi/FLAP/tree/v1.1.5) (2026-02-18)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.4...v1.1.5)
 ### Bug fixes
 - Fix GNU gfortran issue with recursive procedure ([`82727d6`](https://github.com/szaghi/FLAP/commit/82727d6c001f2ac5d1f591592958ad9764eec496))
+
+### Documentation
+- Add VitePress site, rework CI/CD, and refactor README ([`1678f05`](https://github.com/szaghi/FLAP/commit/1678f0554974158323da267dcaa329e6722fcc88))
 
 ### Miscellaneous
 - Remove FPM install test ([`d5ad17e`](https://github.com/szaghi/FLAP/commit/d5ad17e0cb8bf3f8a7adb4a71c2761879bf0c8bb))
