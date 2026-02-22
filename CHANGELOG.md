@@ -1,4 +1,9 @@
 # Changelog
+## [v1.1.8](https://github.com/szaghi/FLAP/tree/v1.1.8) (2026-02-22)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.7...v1.1.8)
+### Miscellaneous
+- Update BeFoR64 submodule ([`ba5a992`](https://github.com/szaghi/FLAP/commit/ba5a992ce82ef6e9f9a6dd59c5a7ac786d70cbad))
+
 ## [v1.1.7](https://github.com/szaghi/FLAP/tree/v1.1.7) (2026-02-18)
 [Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.6...v1.1.7)
 ### CI/CD
