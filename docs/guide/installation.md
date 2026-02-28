@@ -6,17 +6,23 @@ A Fortran 2003+ compliant compiler is required. GNU gfortran ≥ 9.2.0 and Intel
 
 ## Download
 
-StringiFor uses **git submodules** for its dependencies. Clone recursively:
+Clone the repository:
 
 ```bash
 git clone https://github.com/szaghi/StringiFor
 cd StringiFor
-git submodule update --init
+```
+
+Dependencies are declared in the `fobos` file and fetched automatically by FoBiS into `src/third_party/`:
+
+```bash
+FoBiS.py fetch           # fetch and build all dependencies
+FoBiS.py fetch --update  # re-fetch and rebuild
 ```
 
 ### Third-Party Dependencies
 
-The submodules live under `src/third_party/`:
+Dependencies are fetched into `src/third_party/`:
 
 | Library | Purpose |
 |---------|---------|

@@ -14,16 +14,15 @@ jobs:
 
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        submodules: 'true'
 
     - name: Setup build environment
       uses: ./.github/actions/setup-build-env
       with:
         extra-pip-packages: formal-ford2vitepress
 
-    - name: Check formal version
-      run: formal --version
+    - name: Fetch dependencies
+      if: hashFiles('**/.deps_config.ini') != ''
+      run: FoBiS.py fetch
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -32,14 +31,23 @@ jobs:
 
     # ── Tests & coverage ────────────────────────────────────────────────────
     - name: Run tests with coverage
-      run: FoBiS.py rule -ex makecoverage
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+      id: cov
+      uses: ./.github/actions/run-coverage
 
     # ── Documentation ────────────────────────────────────────────────────────
+    - name: Write coverage badge JSON
+      env:
+        PCT: ${{ steps.cov.outputs.pct }}
+      run: |
+        if awk "BEGIN{exit !($PCT >= 90)}"; then C=brightgreen
+        elif awk "BEGIN{exit !($PCT >= 80)}"; then C=green
+        elif awk "BEGIN{exit !($PCT >= 70)}"; then C=yellowgreen
+        elif awk "BEGIN{exit !($PCT >= 60)}"; then C=yellow
+        else C=red; fi
+        mkdir -p docs/public
+        printf '{"schemaVersion":1,"label":"coverage","message":"%s%%","color":"%s"}\n' \
+          "$PCT" "$C" > docs/public/coverage.json
+
     - name: Build documentation
       run: |
         formal generate --mirror-sources --diagrams --project docs/ford.md --output docs/api

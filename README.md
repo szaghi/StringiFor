@@ -1,27 +1,19 @@
 # StringiFor
 
-**Strings Fortran Manipulator** — a pure Fortran 2003+ library providing an OOP `string` type with Python-like methods for modern Fortran projects.
+>#### Strings Fortran Manipulator with steroids
+>a pure Fortran 2003+ library providing an OOP `string` type with Python-like methods for modern Fortran projects.
 
-[![CI](https://github.com/szaghi/StringiFor/actions/workflows/ci.yml/badge.svg)](https://github.com/szaghi/StringiFor/actions)
-[![Coverage](https://img.shields.io/codecov/c/github/szaghi/StringiFor.svg)](https://app.codecov.io/gh/szaghi/StringiFor)
-[![GitHub tag](https://img.shields.io/github/tag/szaghi/StringiFor.svg)](https://github.com/szaghi/StringiFor/releases)
+[![GitHub tag](https://img.shields.io/github/v/tag/szaghi/StringiFor)](https://github.com/szaghi/StringiFor/tags)
+[![GitHub issues](https://img.shields.io/github/issues/szaghi/StringiFor)](https://github.com/szaghi/StringiFor/issues)
+[![CI](https://github.com/szaghi/StringiFor/actions/workflows/ci.yml/badge.svg)](https://github.com/szaghi/StringiFor/actions/workflows/ci.yml)
+[![coverage](https://img.shields.io/endpoint?url=https://szaghi.github.io/StringiFor/coverage.json)](https://github.com/szaghi/StringiFor/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-GPLv3%20%7C%20BSD%20%7C%20MIT-blue.svg)](#copyrights)
 
----
+| 🔤 **Rich String API**<br>`upper`, `lower`, `camelcase`, `snakecase`, `split`, `join`, `replace`, `search`, `unique` — Python-like methods on modern Fortran strings | 🔢 **Number Casting**<br>Assign any [PENF](https://github.com/szaghi/PENF) integer or real kind directly to a `string`; cast back with `to_number(kind=...)` at compile-time | 📁 **File & Path I/O**<br>`read_file`, `write_file`, `read_line`, `write_line`, `basedir`, `basename`, `extension`, `glob` — batteries included | 🎨 **Encoding & Color**<br>Base64 `encode`/`decode` via BeFoR64; ANSI terminal `colorize` via FACE |
+|:---:|:---:|:---:|:---:|
+| ⚡ **Pure & Elemental**<br>Almost all methods are `pure` or `elemental` — thread-safe, no side effects | 🔗 **Seamless Interop**<br>Overloaded `=`, `//`, and comparison operators — `string` is a drop-in for standard `character` | 🔓 **Multi-licensed**<br>GPL v3 · BSD 2/3-Clause · MIT | 📦 **Multiple build systems**<br>fpm, FoBiS, CMake, Make |
 
-## Features
-
-- Single `string` type — seamlessly interchangeable with standard `character` via overloaded `//`, `=`, and comparison operators
-- Case conversion: `upper`, `lower`, `camelcase`, `snakecase`, `startcase`, `swapcase`, `capitalize`
-- Splitting and joining: `split`, `partition`, `join`, `strjoin`
-- Search and replace: `replace`, `search`, `index`, `count`, `unique`
-- Number casting: assign any PENF integer/real to a `string`; cast back with `to_number(kind=...)`
-- File I/O: `read_file`, `write_file`, `read_line`, `write_line`
-- Path utilities: `basedir`, `basename`, `extension`, `glob`
-- Encoding: Base64 `encode`/`decode`, ANSI terminal `colorize`
-- OOP/TDD designed — almost all methods are `elemental` or `pure`
-
-**[Documentation](https://szaghi.github.io/StringiFor/)** | **[API Reference](https://szaghi.github.io/StringiFor/api/)**
+For full documentations (guide, tutorial, examples, etc...) see the [StringiFor website](https://szaghi.github.io/StringiFor/).
 
 ---
 
@@ -63,32 +55,59 @@ print "(L1)", s%is_real()       ! T
 
 ## Install
 
-### fpm (recommended)
+### FoBiS
+
+**Standalone** — clone, fetch dependencies, and build:
+
+```bash
+git clone https://github.com/szaghi/StringiFor && cd StringiFor
+FoBiS.py fetch                                    # fetch PENF, FACE, BeFoR64
+FoBiS.py build -mode stringifor-static-gnu        # build static library
+```
+
+Or install directly in one command:
+
+```bash
+FoBiS.py install szaghi/StringiFor -mode static-gnu
+FoBiS.py install szaghi/StringiFor -mode static-gnu --prefix /path/to/prefix
+```
+
+**As a project dependency** — declare StringiFor in your `fobos` and run `fetch`:
+
+```ini
+[dependencies]
+deps_dir = src/third_party
+StringiFor   = https://github.com/szaghi/StringiFor
+```
+
+```bash
+FoBiS.py fetch           # fetch and build
+FoBiS.py fetch --update  # re-fetch and rebuild
+```
+
+### fpm
 
 Add to your `fpm.toml`:
 
 ```toml
 [dependencies]
-StringiFor = { git = "https://github.com/szaghi/StringiFor.git" }
+StringiFor = { git = "https://github.com/szaghi/StringiFor" }
 ```
 
-Then:
-
-```sh
+```bash
 fpm build
 fpm test
 ```
 
-### Clone and build
+### CMake
 
-```sh
-git clone https://github.com/szaghi/StringiFor
-cd StringiFor
-git submodule update --init
+```bash
+cmake -B build && cmake --build build
 ```
 
-| Tool | Command |
-|------|---------|
-| fpm | `fpm build` |
-| FoBiS.py | `FoBiS.py build -mode stringifor-static-gnu` |
-| GNU Make | `make` |
+### Makefile
+
+```bash
+make              # static library
+make TESTS=yes    # build and run tests
+```

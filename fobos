@@ -1,3 +1,18 @@
+[project]
+name       = StringiFor
+version    = VERSION
+summary    = Strings Fortran Manipulator with steroids
+repository = https://github.com/szaghi/StringiFor
+website    = https://szaghi.github.io/StringiFor
+email      = stefano.zaghi@gmail.it
+authors    = Stefano Zaghi
+
+[dependencies]
+deps_dir = src/third_party
+BeFoR64  = https://github.com/szaghi/BeFoR64
+FACE     = https://github.com/szaghi/FACE
+PENF     = https://github.com/szaghi/PENF
+
 [modes]
 modes = tests-gnu tests-gnu-debug
         tests-intel tests-intel-debug

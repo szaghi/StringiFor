@@ -20,7 +20,7 @@ is welcome. The project follows a KISS (Keep It Simple and Stupid) philosophy.
    ```bash
    git checkout -b fix/master/my_contribution master
    ```
-3. Test your changes with `fpm test` or `FoBiS.py build -mode tests-gnu && bash scripts/run_tests.sh`
+3. Test your changes with `FoBiS.py build -f src/tests/fobos && bash scripts/run_tests.sh`
 4. Check for unnecessary whitespace: `git diff --check`
 5. Submit a pull request with a clear commit message
 
@@ -98,5 +98,5 @@ scripts/bump.sh v2.1.0  # explicit version
 Pushing the tag triggers the GitHub Actions release workflow, which automatically:
 - Runs the full test suite and uploads coverage to Codecov
 - Builds this documentation site and deploys it to GitHub Pages
-- Packages a versioned tarball `PENF-vX.Y.Z.tar.gz`
+- Packages a versioned tarball `StringiFor-vX.Y.Z.tar.gz`
 - Publishes a GitHub release with the changelog section as release notes
