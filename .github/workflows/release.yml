@@ -15,51 +15,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup build environment
-      uses: ./.github/actions/setup-build-env
-      with:
-        extra-pip-packages: formal-ford2vitepress
-
-    - name: Fetch dependencies
-      if: hashFiles('**/.deps_config.ini') != ''
-      run: FoBiS.py fetch
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-
-    # ── Tests & coverage ────────────────────────────────────────────────────
-    - name: Run tests with coverage
-      id: cov
-      uses: ./.github/actions/run-coverage
-
-    # ── Documentation ────────────────────────────────────────────────────────
-    - name: Write coverage badge JSON
-      env:
-        PCT: ${{ steps.cov.outputs.pct }}
-      run: |
-        if awk "BEGIN{exit !($PCT >= 90)}"; then C=brightgreen
-        elif awk "BEGIN{exit !($PCT >= 80)}"; then C=green
-        elif awk "BEGIN{exit !($PCT >= 70)}"; then C=yellowgreen
-        elif awk "BEGIN{exit !($PCT >= 60)}"; then C=yellow
-        else C=red; fi
-        mkdir -p docs/public
-        printf '{"schemaVersion":1,"label":"coverage","message":"%s%%","color":"%s"}\n' \
-          "$PCT" "$C" > docs/public/coverage.json
-
-    - name: Build documentation
-      run: |
-        formal generate --mirror-sources --diagrams --project docs/ford.md --output docs/api
-        cd docs && npm ci && npm run docs:build
-
-    - name: Deploy docs to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages
-        folder: docs/.vitepress/dist
-
-    # ── Release artefact ─────────────────────────────────────────────────────
     - name: Build release tarball
       run: |
         REPO_NAME="${GITHUB_REPOSITORY##*/}"
@@ -73,7 +28,6 @@ jobs:
           *
         echo "TARBALL=${REPO_NAME}-${VERSION}.tar.gz" >> $GITHUB_ENV
 
-    # ── Release notes from CHANGELOG.md ─────────────────────────────────────
     - name: Extract release notes from CHANGELOG.md
       run: |
         python3 - "${{ github.ref_name }}" CHANGELOG.md > release_notes.md <<'PYEOF'
@@ -86,7 +40,6 @@ jobs:
         print(match.group(1).strip() if match else f"Release {tag}\n\nSee CHANGELOG.md for details.")
         PYEOF
 
-    # ── Publish GitHub release ───────────────────────────────────────────────
     - name: Publish GitHub release
       uses: softprops/action-gh-release@v2
       with:
