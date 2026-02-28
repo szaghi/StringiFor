@@ -1,4 +1,9 @@
 # Changelog
+## [v1.1.9](https://github.com/szaghi/FLAP/tree/v1.1.9) (2026-02-28)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.8...v1.1.9)
+### Build system
+- Migrate deps from git submodules to FoBiS fetch ([`acd441f`](https://github.com/szaghi/FLAP/commit/acd441f28d196e2b757f63368376bb4cd2bf02d8))
+
 ## [v1.1.8](https://github.com/szaghi/FLAP/tree/v1.1.8) (2026-02-22)
 [Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.7...v1.1.8)
 ### Miscellaneous
