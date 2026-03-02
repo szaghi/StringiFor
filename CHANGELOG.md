@@ -1,4 +1,9 @@
 # Changelog
+## [v1.1.11](https://github.com/szaghi/FLAP/tree/v1.1.11) (2026-03-02)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.10...v1.1.11)
+### CI/CD
+- Integrate coverage analysis into docs build workflow ([`fb84722`](https://github.com/szaghi/FLAP/commit/fb847228ae2d8bb0f01f6e3168862f019c433c08))
+
 ## [v1.1.10](https://github.com/szaghi/FLAP/tree/v1.1.10) (2026-02-28)
 [Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.9...v1.1.10)
 ### CI/CD
