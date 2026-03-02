@@ -1,4 +1,9 @@
 # Changelog
+## [v1.1.13](https://github.com/szaghi/FLAP/tree/v1.1.13) (2026-03-02)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.12...v1.1.13)
+### Build system
+- Extract gcov computation into dedicated script ([`4585586`](https://github.com/szaghi/FLAP/commit/4585586b2ce2cb32febf8cb586679bfbd0dc8a5e))
+
 ## [v1.1.12](https://github.com/szaghi/FLAP/tree/v1.1.12) (2026-03-02)
 [Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.11...v1.1.12)
 ### CI/CD
