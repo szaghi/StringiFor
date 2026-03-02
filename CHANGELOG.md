@@ -1,4 +1,9 @@
 # Changelog
+## [v1.1.12](https://github.com/szaghi/FLAP/tree/v1.1.12) (2026-03-02)
+[Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.11...v1.1.12)
+### CI/CD
+- Overhaul install script and coverage action ([`b0cb205`](https://github.com/szaghi/FLAP/commit/b0cb2051a752b1d36693e37bc2114df9b92a7a61))
+
 ## [v1.1.11](https://github.com/szaghi/FLAP/tree/v1.1.11) (2026-03-02)
 [Full Changelog](https://github.com/szaghi/FLAP/compare/v1.1.10...v1.1.11)
 ### CI/CD
