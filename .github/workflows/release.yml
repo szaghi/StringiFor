@@ -5,6 +5,7 @@ on:
     tags: ["v[0-9]+.[0-9]+.[0-9]+"]
 
 jobs:
+
   release:
     runs-on: ubuntu-latest
     permissions:
@@ -15,6 +16,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # ── Release artefact ─────────────────────────────────────────────────────
     - name: Build release tarball
       run: |
         REPO_NAME="${GITHUB_REPOSITORY##*/}"
@@ -28,6 +30,7 @@ jobs:
           *
         echo "TARBALL=${REPO_NAME}-${VERSION}.tar.gz" >> $GITHUB_ENV
 
+    # ── Release notes from CHANGELOG.md ─────────────────────────────────────
     - name: Extract release notes from CHANGELOG.md
       run: |
         python3 - "${{ github.ref_name }}" CHANGELOG.md > release_notes.md <<'PYEOF'
@@ -40,6 +43,7 @@ jobs:
         print(match.group(1).strip() if match else f"Release {tag}\n\nSee CHANGELOG.md for details.")
         PYEOF
 
+    # ── Publish GitHub release ───────────────────────────────────────────────
     - name: Publish GitHub release
       uses: softprops/action-gh-release@v2
       with:

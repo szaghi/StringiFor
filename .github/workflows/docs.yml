@@ -22,14 +22,13 @@ concurrency:
 jobs:
 
   build:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
 
     steps:
 
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        submodules: 'true'
 
     - name: Setup build environment
       uses: ./.github/actions/setup-build-env
@@ -47,13 +46,7 @@ jobs:
 
     - name: Run coverage analysis
       id: cov
-      uses: ./.github/actions/run-coverage
-
-    - name: Write coverage data for docs
-      shell: bash
-      run: |
-        mkdir -p docs/public
-        printf '{"pct":"%s"}\n' "${{ steps.cov.outputs.pct }}" > docs/public/coverage.json
+      uses: ./.github/actions/run-coverage-analysis
 
     - name: Build documentation
       env:

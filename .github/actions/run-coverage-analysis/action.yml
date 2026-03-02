@@ -12,17 +12,12 @@ runs:
 
     - name: Run tests with coverage
       shell: bash
-      run: FoBiS.py rule -ex makecoverage
+      run: FoBiS.py rule -ex makecoverage-analysis
 
-    - name: Extract coverage
+    - name: Read coverage result
       id: cov
       shell: bash
       run: |
-        PCT=$(set +o pipefail
-              find . -name '*.gcda' | xargs -r gcov 2>/dev/null | \
-                awk '/^Lines executed:/{
-                  match($0, /([0-9.]+)% of ([0-9]+)/, a)
-                  total += a[2]; covered += a[1]/100 * a[2]
-                } END { if (total>0) printf "%.1f", covered/total*100; else print "0.0" }')
+        PCT=$(jq -r '.pct' docs/public/coverage.json)
         echo "pct=${PCT}" >> "$GITHUB_OUTPUT"
         echo "## Test coverage: ${PCT}%" >> "$GITHUB_STEP_SUMMARY"

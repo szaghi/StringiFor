@@ -26,4 +26,4 @@ jobs:
 
     - name: Run tests with coverage
       id: cov
-      uses: ./.github/actions/run-coverage
+      uses: ./.github/actions/run-coverage-analysis
