@@ -41,7 +41,23 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Fetch dependencies
+      if: hashFiles('**/.deps_config.ini') != ''
+      run: FoBiS.py fetch
+
+    - name: Run coverage analysis
+      id: cov
+      uses: ./.github/actions/run-coverage
+
+    - name: Write coverage data for docs
+      shell: bash
+      run: |
+        mkdir -p docs/public
+        printf '{"pct":"%s"}\n' "${{ steps.cov.outputs.pct }}" > docs/public/coverage.json
+
     - name: Build documentation
+      env:
+        COVERAGE_PCT: ${{ steps.cov.outputs.pct }}
       run: |
         formal generate --mirror-sources --diagrams --project docs/ford.md --output docs/api
         cd docs && npm ci && npm run docs:build
