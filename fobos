@@ -174,7 +174,7 @@ rule = tar --xform="s%^%StringiFor/%" -czf StringiFor.tar.gz *
 
 [rule-makecoverage]
 help   = Perform coverage analysis
-rule_1 = FoBiS.py doctests -mode tests-gnu-debug -coverage --exclude_from_doctests penf.F90 penf_b_size.F90 penf_stringify.F90 befor64_pack_data_m.F90 befor64.F90 -keep_volatile_doctests -doctests_preprocessor fpp
+rule_1 = FoBiS.py doctests -mode tests-gnu-debug -coverage --exclude_from_doctests penf.F90 --exclude_from_doctests penf_b_size.F90 --exclude_from_doctests penf_stringify.F90 --exclude_from_doctests befor64_pack_data_m.F90 --exclude_from_doctests befor64.F90 -keep_volatile_doctests -doctests_preprocessor fpp
 rule_2 = rm -f exe/obj/befor64* exe/obj/face* exe/obj/penf*
 rule_3 = ./scripts/compute-coverage.sh
 
