@@ -1,7 +1,8 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(9)
+ type(string) :: decoded
+ logical :: test_passed(11)
  astring = 'SG93IGFyZSB5b3U/'
  test_passed(1) = astring%decode(codec='base64')//''=='How are you?'
  astring = 'SGVsbG8gV29ybGQ='
@@ -20,5 +21,10 @@ use stringifor_string_t
  test_passed(8) = len(astring%decode(codec='base64')//'')==0
  astring = ''
  test_passed(9) = len(astring%decode(codec='base64')//'')==0
+ astring = 'SGVsbG8gV29ybGQ='
+ decoded = astring%decode(codec='BASE64')
+ test_passed(10) = decoded%is_allocated().and.decoded=='Hello World'
+ decoded = astring%decode(codec='rot13')
+ test_passed(11) = .not.decoded%is_allocated()
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

@@ -1189,9 +1189,12 @@ contains
    !< can be omitted), the eventual leading/trailing white spaces and null characters of the decoded data are preserved. An
    !< invalid code, namely one with a length that cannot be produced by an encoding, is decoded to a null string.
    !<
+   !< @note An unknown codec gives a not allocated string, to be checked by means of `is_allocated`.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(9)
+   !< type(string) :: decoded
+   !< logical      :: test_passed(11)
    !< astring = 'SG93IGFyZSB5b3U/'
    !< test_passed(1) = astring%decode(codec='base64')//''=='How are you?'
    !< astring = 'SGVsbG8gV29ybGQ='
@@ -1210,6 +1213,11 @@ contains
    !< test_passed(8) = len(astring%decode(codec='base64')//'')==0
    !< astring = ''
    !< test_passed(9) = len(astring%decode(codec='base64')//'')==0
+   !< astring = 'SGVsbG8gV29ybGQ='
+   !< decoded = astring%decode(codec='BASE64')
+   !< test_passed(10) = decoded%is_allocated().and.decoded=='Hello World'
+   !< decoded = astring%decode(codec='rot13')
+   !< test_passed(11) = .not.decoded%is_allocated()
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -1235,8 +1243,6 @@ contains
        else
          decoded%raw = ''
        endif
-     case default
-       decoded = self%strip(remove_nulls=.true.)
      endselect
    endif
    endfunction decode
@@ -1246,19 +1252,29 @@ contains
    !<
    !< @note Only BASE64 codec is currently available.
    !<
+   !< @note An unknown codec gives a not allocated string, to be checked by means of `is_allocated`.
+   !<
    !<```fortran
    !< type(string) :: astring
+   !< type(string) :: encoded
+   !< logical      :: test_passed(3)
    !< astring = 'How are you?'
-   !< print '(L1)', astring%encode(codec='base64')//''=='SG93IGFyZSB5b3U/'
+   !< test_passed(1) = astring%encode(codec='base64')//''=='SG93IGFyZSB5b3U/'
+   !< encoded = astring%encode(codec='BASE64')
+   !< test_passed(2) = encoded%is_allocated().and.encoded=='SG93IGFyZSB5b3U/'
+   !< encoded = astring%encode(codec='rot13')
+   !< test_passed(3) = .not.encoded%is_allocated()
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in) :: self    !< The string.
    character(kind=CK, len=*), intent(in) :: codec   !< Encoding codec.
    type(string)                          :: encoded !< Encoded string.
+   type(string)                          :: codec_u !< Encoding codec in upper case string.
 
    if (allocated(self%raw)) then
-     encoded = codec
-     select case(encoded%upper()//'')
+     codec_u = codec
+     select case(codec_u%upper()//'')
      case('BASE64')
        call b64_encode(s=self%raw, code=encoded%raw)
      endselect
@@ -4107,17 +4123,24 @@ contains
    !<```fortran
    !< type(string) :: astring
    !< type(string) :: anotherstring
-   !< logical      :: test_passed(1)
+   !< type(string) :: notallocated
+   !< logical      :: test_passed(2)
    !< astring = 'hello'
    !< anotherstring = astring
    !< test_passed(1) = astring%chars()==anotherstring%chars()
+   !< anotherstring = notallocated
+   !< test_passed(2) = .not.anotherstring%is_allocated()
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(inout) :: lhs !< Left hand side.
    type(string),  intent(in)    :: rhs !< Right hand side.
 
-   if (allocated(rhs%raw)) lhs%raw = rhs%raw
+   if (allocated(rhs%raw)) then
+     lhs%raw = rhs%raw
+   elseif (allocated(lhs%raw)) then
+     deallocate(lhs%raw)
+   endif
    endsubroutine string_assign_string
 
    pure subroutine string_assign_character(lhs, rhs)

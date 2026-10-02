@@ -37,8 +37,8 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `capitalize()` | First character upper, rest lower |
 | `colorize([color_fg][, color_bg][, style])` | ANSI terminal colorization via FACE; returns `character` |
 | `common_prefix(other)` / `common_prefix(array)` | Longest common prefix shared with another string/character, or with all elements of a string array |
-| `decode(codec)` | Decode; `codec='base64'` is the only codec available |
-| `encode(codec)` | Encode; `codec='base64'` is the only codec available |
+| `decode(codec)` | Decode; `codec='base64'` is the only codec available, an unknown one gives a not allocated string |
+| `encode(codec)` | Encode; `codec='base64'` is the only codec available, an unknown one gives a not allocated string |
 | `escape(to_escape[, esc])` | Escape the character `to_escape` with a backslash (or with `esc`) |
 | `fill(width[, right][, filling_char])` | Pad with zeros (or custom char) to reach width |
 | `hex([bits][, uppercase])` | Hexadecimal representation of the integer held by the string (two's complement on `bits` bits, default 64) |

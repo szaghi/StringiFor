@@ -101,6 +101,9 @@ has, starting with `prefix`. The name changes at each call: the example prints o
 `encode(codec)` and `decode(codec)` take the name of the codec; `base64` is the only one available. The decoded string
 has exactly the encoded length: its blanks are preserved, and the padding of the code can be omitted.
 
+The name of the codec is not case sensitive. With an unknown codec the result is a not allocated string: check it with
+`is_allocated()`.
+
 ## Colours for the terminal
 
 <<< @/examples/snippets/colors.f90
