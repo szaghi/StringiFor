@@ -1,15 +1,31 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: strings(3)
- logical :: test_passed(3)
- astring = 'Hello WorLD!'
- strings = astring%partition(sep='lo Wo')
- test_passed(1) = (strings(1)//''=='Hel'.and.strings(2)//''=='lo Wo'.and.strings(3)//''=='rLD!')
- strings = astring%partition(sep='Hello')
- test_passed(2) = (strings(1)//''==''.and.strings(2)//''=='Hello'.and.strings(3)//''==' WorLD!')
- astring = 'Hello WorLD!'
- strings = astring%partition()
- test_passed(3) = (strings(1)//''=='Hello'.and.strings(2)//''==' '.and.strings(3)//''=='WorLD!')
- print '(L1)', all(test_passed)
+ type(string), allocatable :: alist_str(:)
+ integer, parameter :: Nf=5
+ character(14) :: files(1:Nf)
+ integer :: file_unit
+ integer :: f
+ integer :: ff
+ logical :: test_passed
+
+ do f=1, Nf
+ files(f) = astring%tempname(prefix='foo-')
+ open(newunit=file_unit, file=files(f))
+ write(file_unit, *)f
+ close(unit=file_unit)
+ enddo
+ call astring%glob(pattern='foo-*', list=alist_str)
+ do f=1, Nf
+ open(newunit=file_unit, file=files(f))
+ close(unit=file_unit, status='delete')
+ enddo
+ test_passed = .false.
+ outer_str: do f=1, size(alist_str, dim=1)
+ do ff=1, Nf
+ test_passed = alist_str(f) == files(ff)
+ if (test_passed) cycle outer_str
+ enddo
+ enddo outer_str
+ print '(L1)', test_passed
 endprogram volatile_doctest

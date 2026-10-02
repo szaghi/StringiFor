@@ -1,7 +1,24 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- astring = 'this is string example....wow!!!'
- call astring%free
- print '(L1)', astring%is_allocated().eqv..false.
+ logical :: test_passed(9)
+ astring = 'SG93IGFyZSB5b3U/'
+ test_passed(1) = astring%decode(codec='base64')//''=='How are you?'
+ astring = 'SGVsbG8gV29ybGQ='
+ test_passed(2) = astring%decode(codec='base64')//''=='Hello World'
+ astring = 'aGVsbG8gd29ybGQhIQ=='
+ test_passed(3) = astring%decode(codec='base64')//''=='hello world!!'
+ astring = 'SGVsbG8gV29ybGQ'
+ test_passed(4) = astring%decode(codec='base64')//''=='Hello World'
+ astring = '  spaces kept  '
+ astring = astring%encode(codec='base64')
+ test_passed(5) = astring%decode(codec='base64')//''=='  spaces kept  '
+ test_passed(6) = len(astring%decode(codec='base64')//'')==15
+ astring = 'YQ=='
+ test_passed(7) = astring%decode(codec='base64')//''=='a'
+ astring = 'YWJjZ'
+ test_passed(8) = len(astring%decode(codec='base64')//'')==0
+ astring = ''
+ test_passed(9) = len(astring%decode(codec='base64')//'')==0
+ print '(L1)', all(test_passed)
 endprogram volatile_doctest

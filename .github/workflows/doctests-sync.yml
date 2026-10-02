@@ -1,0 +1,47 @@
+name: Doctests sync
+
+# Project-owned workflow (not managed by `fobis scaffold`): the doctests are extracted from the library sources and
+# run; their tracked copies in src/tests, built by make and CMake, must match what the sources contain.
+
+on:
+  push:
+    branches: ["**"]
+    tags-ignore: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  doctests-sync:
+    name: doctests sync / gfortran-14
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup build environment
+      uses: ./.github/actions/setup-build-env
+      with:
+        gcc-version: '14'
+
+    - name: Fetch dependencies
+      run: fobis fetch
+
+    - name: Extract and run the doctests
+      run: bash scripts/sync_doctests.sh
+
+    - name: Check the tracked copies of the doctests
+      run: |
+        git add --intent-to-add src/tests
+        git diff --exit-code -- src/tests || {
+          echo "::error::src/tests is out of date: run 'bash scripts/sync_doctests.sh' and commit the result"
+          exit 1
+        }
+
+    - name: Build and run the tracked tests with make
+      run: |
+        rm -rf exe
+        make TESTS=yes
+        bash scripts/run_tests.sh

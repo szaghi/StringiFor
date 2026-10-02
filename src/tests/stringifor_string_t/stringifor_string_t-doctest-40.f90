@@ -1,29 +1,30 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- character(5) :: characters(3)
- logical :: test_passed(6)
- characters(1) = 'one'
- characters(2) = 'two'
- characters(3) = 'three'
- test_passed(1) = (astring%join(array=characters)//''==characters(1)//characters(2)//characters(3))
- test_passed(2) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(2)//'-'//characters(3))
- characters(1) = ''
- characters(2) = 'two'
- characters(3) = 'three'
- test_passed(3) = (astring%join(array=characters, sep='-')//''==characters(2)//'-'//characters(3))
- characters(1) = 'one'
- characters(2) = 'two'
- characters(3) = ''
- test_passed(4) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(2))
- characters(1) = 'one'
- characters(2) = ''
- characters(3) = 'three'
- test_passed(5) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(3))
- characters(1) = 'one'
- characters(2) = 'two'
- characters(3) = 'three'
- astring = '_'
- test_passed(6) = (astring%join(array=characters)//''==characters(1)//'_'//characters(2)//'_'//characters(3))
- print '(L1)', all(test_passed)
+ character(len=:), allocatable :: alist_chr(:)
+ integer, parameter :: Nf=5
+ character(14) :: files(1:Nf)
+ integer :: file_unit
+ integer :: f
+ integer :: ff
+ logical :: test_passed
+ do f=1, Nf
+ files(f) = astring%tempname(prefix='foo-')
+ open(newunit=file_unit, file=files(f))
+ write(file_unit, *)f
+ close(unit=file_unit)
+ enddo
+ call astring%glob(pattern='foo-*', list=alist_chr)
+ do f=1, Nf
+ open(newunit=file_unit, file=files(f))
+ close(unit=file_unit, status='delete')
+ enddo
+ test_passed = .false.
+ outer_chr: do f=1, size(alist_chr, dim=1)
+ do ff=1, Nf
+ test_passed = alist_chr(f) == files(ff)
+ if (test_passed) cycle outer_chr
+ enddo
+ enddo outer_chr
+ print '(L1)', test_passed
 endprogram volatile_doctest

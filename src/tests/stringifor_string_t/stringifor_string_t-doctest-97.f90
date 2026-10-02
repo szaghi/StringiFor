@@ -1,13 +1,9 @@
 program volatile_doctest
 use stringifor_string_t
+ use penf
  type(string) :: astring
- character(len=:), allocatable :: acharacter
- logical :: test_passed(2)
- astring = '  one '
- acharacter = 'three'
- test_passed(1) = ((acharacter/=astring).eqv..true.)
- astring = 'the same '
- acharacter = 'the same '
- test_passed(2) = ((acharacter/=astring).eqv..false.)
+ logical :: test_passed(1)
+ astring = 127_I4P
+ test_passed(1) = astring%to_number(kind=1_I4P)==127_I4P
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

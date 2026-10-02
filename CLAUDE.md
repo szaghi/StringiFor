@@ -74,8 +74,11 @@ Doctests gotchas:
 - `--preproc " -DPENF_R16P"` needs the **leading space** inside the quotes: without it FoBiS mangles the value into
   `--DPENF-R16P`. Without the define the `to_real_R16P` doctest does not compile and the whole run aborts with exit 1.
 - Changing `--preproc` does not trigger a rebuild: remove `exe/obj` and `exe/mod` first, or stale objects are reused.
-- The extracted doctests are kept in `exe/doctests-src/`. The tracked copies under `src/tests/` are stale (they predate
-  several methods) and are what a plain `fobis build` compiles.
+- The extracted doctests are kept in `exe/doctests-src/`. The tracked copies under `src/tests/` are what a plain
+  `fobis build`, CMake and `make TESTS=yes` compile (the makefile and CMake pick up every program in `src/tests/*/`,
+  there is no list to maintain): after adding or changing a doctest, regenerate them with
+  `bash scripts/sync_doctests.sh` and commit the result. The `Doctests sync` workflow
+  (`.github/workflows/doctests-sync.yml`, project-owned) fails if they differ from what the sources contain.
 
 ## Doctest Format (TDD)
 
