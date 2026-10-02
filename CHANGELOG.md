@@ -4,6 +4,23 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.0] — 2026-10-02
+### Added
+- **string_t**: Add six string methods from the issue #3 wishlist
+
+
+### Documentation
+- Rebuild README and site on compiled examples, fix I/O bugs
+
+
+### Fixed
+- **string_t**: Prevent out-of-bounds on blank and null strings
+
+- **fobos**: Repair makecoverage rule and adopt double-dash fobis CLI
+
+- **string_t**: Correct is_real and base64 decode, extend slice/strip
+
+
 ## [1.2.0] — 2026-10-02
 ### Fixed
 - **docs**: Untrack package-lock and pin esbuild for lock-free vite build
