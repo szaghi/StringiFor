@@ -926,8 +926,12 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(2)
    !< astring = 'caMeL caSe var'
-   !< print '(L1)', astring%camelcase()//''=='CamelCaseVar'
+   !< test_passed(1) = astring%camelcase()//''=='CamelCaseVar'
+   !< astring = '   '
+   !< test_passed(2) = astring%camelcase()//''==''
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self      !< The string.
@@ -947,8 +951,12 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(2)
    !< astring = 'say all Hello WorLD!'
-   !< print '(L1)', astring%capitalize()//''=='Say all hello world!'
+   !< test_passed(1) = astring%capitalize()//''=='Say all hello world!'
+   !< astring = ''
+   !< test_passed(2) = astring%capitalize()//''==''
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in) :: self        !< The string.
@@ -957,8 +965,10 @@ contains
 
    if (allocated(self%raw)) then
      capitalized = self%lower()
-     c = index(LOWER_ALPHABET, capitalized%raw(1:1))
-     if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
+     if (len(capitalized%raw)>0) then
+       c = index(LOWER_ALPHABET, capitalized%raw(1:1))
+       if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
+     endif
    endif
    endfunction capitalize
 
@@ -1610,6 +1620,7 @@ contains
    endif
    if (present(sep)) sep_ = sep
    join = ''
+   if (size(array, dim=1)==0) return
    do a=2, size(array, dim=1)
       if (allocated(array(a)%raw)) join%raw = join%raw//sep_//array(a)%raw
    enddo
@@ -1669,6 +1680,7 @@ contains
    endif
    if (present(sep)) sep_ = sep
    join = ''
+   if (size(array, dim=1)==0) return
    do a=2, size(array, dim=1)
       if (array(a)/='') join%raw = join%raw//sep_//array(a)
    enddo
@@ -1716,6 +1728,7 @@ contains
    sep_ = ''
    if (present(sep)) sep_ = sep
    join = ''
+   if (size(array, dim=1)==0) return
    do a=2, size(array, dim=1)
       if (allocated(array(a)%raw))join%raw = join%raw//sep_//array(a)%raw
    enddo
@@ -1793,6 +1806,7 @@ contains
    if (present(sep)) sep_ = sep
    is_trim_ = .true. ; if (present(is_trim)) is_trim_ = is_trim
    join = ''
+   if (size(array, dim=1)==0) return
 
    if (is_trim_) then
        do a=2, size(array, dim=1)
@@ -2678,9 +2692,11 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(1)
+   !< logical      :: test_passed(2)
    !< astring = 'the Quick Brown fox Jumps over the Lazy Dog.'
    !< test_passed(1) = astring%snakecase()//''=='the_quick_brown_fox_jumps_over_the_lazy_dog.'
+   !< astring = '   '
+   !< test_passed(2) = astring%snakecase()//''==''
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -2892,9 +2908,11 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(1)
+   !< logical      :: test_passed(2)
    !< astring = 'the Quick Brown fox Jumps over the Lazy Dog.'
    !< test_passed(1) = astring%startcase()//''=='The Quick Brown Fox Jumps Over The Lazy Dog.'
+   !< astring = '   '
+   !< test_passed(2) = astring%startcase()//''==''
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
