@@ -113,7 +113,7 @@ Module-level `glob` and `strjoin` procedures are also exposed publicly.
 ### Preprocessor Flags
 
 The source files use `.F90` extension (preprocessed Fortran). Relevant flags:
-- `-Dr16p` / `_R16P` — enables 16-byte real (`R16P`) support
+- `-DPENF_R16P` — enables 16-byte real (`R16P`) support
 - `_NVF` — disables `I2P` (2-byte integer) for NVIDIA Fortran compatibility
 
 ## Fortran Coding Style

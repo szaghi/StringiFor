@@ -92,7 +92,7 @@ type :: string
 #endif
                              to_integer_I4P,&
                              to_integer_I8P,&
-#if defined _R16P
+#if defined PENF_R16P
                              to_real_R16P,  &
 #endif
                              to_real_R8P,   &
@@ -120,7 +120,7 @@ type :: string
                                 string_assign_integer_I2P, &
                                 string_assign_integer_I4P, &
                                 string_assign_integer_I8P, &
-#if defined _R16P
+#if defined PENF_R16P
                                 string_assign_real_R16P,   &
 #endif
                                 string_assign_real_R8P,    &
