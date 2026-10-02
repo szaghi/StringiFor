@@ -1,7 +1,7 @@
 # StringiFor
 
 >#### Strings Fortran Manipulator with steroids
->a pure Fortran 2003+ library providing an OOP `string` type with Python-like methods for modern Fortran projects.
+>a pure Fortran 2008+ library providing an OOP `string` type with Python-like methods for modern Fortran projects.
 
 [![GitHub tag](https://img.shields.io/github/v/tag/szaghi/StringiFor)](https://github.com/szaghi/StringiFor/tags)
 [![GitHub issues](https://img.shields.io/github/issues/szaghi/StringiFor)](https://github.com/szaghi/StringiFor/issues)
@@ -9,7 +9,7 @@
 [![coverage](https://img.shields.io/endpoint?url=https://szaghi.github.io/StringiFor/coverage.json)](https://github.com/szaghi/StringiFor/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-GPLv3%20%7C%20BSD%20%7C%20MIT-blue.svg)](#copyrights)
 
-| 🔤 **Rich String API**<br>`upper`, `lower`, `camelcase`, `snakecase`, `split`, `join`, `replace`, `search`, `unique` — Python-like methods on modern Fortran strings | 🔢 **Number Casting**<br>Assign any [PENF](https://github.com/szaghi/PENF) integer or real kind directly to a `string`; cast back with `to_number(kind=...)` at compile-time | 📁 **File & Path I/O**<br>`read_file`, `write_file`, `read_line`, `write_line`, `basedir`, `basename`, `extension`, `glob` — batteries included | 🎨 **Encoding & Color**<br>Base64 `encode`/`decode` via BeFoR64; ANSI terminal `colorize` via FACE |
+| 🔤 **Rich String API**<br>`upper`, `lower`, `camelcase`, `snakecase`, `split`, `join`, `replace`, `search`, `slice`, `strip`, `justify`, `compare_version` — Python-like methods on modern Fortran strings | 🔢 **Number Casting**<br>Assign any [PENF](https://github.com/szaghi/PENF) integer or real kind directly to a `string`; cast back with `to_number(kind=...)`; hexadecimal representation with `hex` | 📁 **File & Path I/O**<br>`read_file`, `write_file`, `read_line`, `write_line`, `basedir`, `basename`, `extension`, `glob` — batteries included | 🎨 **Encoding & Color**<br>Base64 `encode`/`decode` via BeFoR64; ANSI terminal `colorize` via FACE |
 |:---:|:---:|:---:|:---:|
 | ⚡ **Pure & Elemental**<br>Almost all methods are `pure` or `elemental` — thread-safe, no side effects | 🔗 **Seamless Interop**<br>Overloaded `=`, `//`, and comparison operators — `string` is a drop-in for standard `character` | 🔓 **Multi-licensed**<br>GPL v3 · BSD 2/3-Clause · MIT | 📦 **Multiple build systems**<br>fpm, FoBiS, CMake, Make |
 
@@ -47,7 +47,7 @@ print "(A)", s%replace(old='World', new='Fortran')//''  ! Hello, Fortran!
 print "(A)", s%camelcase()//''  ! Hello,World!
 
 s = 3.14159_R8P
-print "(A)", s//''              ! +3.14159000000000E+00
+print "(A)", s//''              ! +0.31415899999999999E+001
 print "(L1)", s%is_real()       ! T
 ```
 
@@ -96,7 +96,6 @@ StringiFor = { git = "https://github.com/szaghi/StringiFor" }
 
 ```bash
 fpm build
-fpm test
 ```
 
 ### CMake
@@ -109,5 +108,5 @@ cmake -B build && cmake --build build
 
 ```bash
 make              # static library
-make TESTS=yes    # build and run tests
+make TESTS=yes    # build the tests suite
 ```

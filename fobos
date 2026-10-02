@@ -4,7 +4,7 @@ version    = VERSION
 summary    = Strings Fortran Manipulator with steroids
 repository = https://github.com/szaghi/StringiFor
 website    = https://szaghi.github.io/StringiFor
-email      = stefano.zaghi@gmail.it
+email      = stefano.zaghi@gmail.com
 authors    = Stefano Zaghi
 
 [dependencies]

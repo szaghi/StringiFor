@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-A Fortran 2003+ compliant compiler is required. GNU gfortran ≥ 9.2.0 and Intel Fortran ≥ 19.0.4 are known to work.
+A Fortran 2008+ compliant compiler is required. GNU gfortran ≥ 9.2.0 and Intel Fortran ≥ 19.0.4 are known to work.
 
 ## Download
 
@@ -39,12 +39,15 @@ Dependencies are fetched into `src/third_party/`:
 StringiFor.git = "https://github.com/szaghi/StringiFor"
 ```
 
-To build StringiFor itself and run its tests:
+To build StringiFor itself:
 
 ```bash
 fpm build
-fpm test
 ```
+
+::: info
+The test suite is not wired into fpm: run it with FoBiS, as described below.
+:::
 
 ## Build with FoBiS (primary development tool)
 
@@ -92,6 +95,34 @@ fobis build --mode tests-intel-debug
 ```bash
 fobis build --lmodes
 ```
+
+### Install in one command
+
+FoBiS can clone, build and install the library without a manual checkout:
+
+```bash
+fobis install szaghi/StringiFor --mode stringifor-static-gnu
+fobis install szaghi/StringiFor --mode stringifor-static-gnu --prefix /path/to/prefix
+```
+
+### Use as a dependency of your FoBiS project
+
+Declare StringiFor in the `fobos` file of your project and run `fobis fetch`:
+
+```ini
+[dependencies]
+deps_dir   = src/third_party
+StringiFor = https://github.com/szaghi/StringiFor
+```
+
+## Build with CMake
+
+```bash
+cmake -B build
+cmake --build build
+```
+
+When StringiFor is the top-level project the tests are built too; disable them with `-DBUILD_TESTING=OFF`.
 
 ## Build with GNU Make
 

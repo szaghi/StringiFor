@@ -26,55 +26,60 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 
 | Method | Description |
 |--------|-------------|
-| `adjustl()` | Left-adjust (remove leading spaces) |
-| `adjustr()` | Right-adjust (remove trailing spaces) |
-| `camelcase()` | All words capitalized, spaces removed |
+| `adjustl()` | Left-adjust (move leading spaces to the end) |
+| `adjustr()` | Right-adjust (move trailing spaces to the beginning) |
+| `camelcase([sep])` | All words capitalized, separators removed |
 | `capitalize()` | First character upper, rest lower |
-| `colorize(color, style)` | ANSI terminal colorization via FACE |
+| `colorize([color_fg][, color_bg][, style])` | ANSI terminal colorization via FACE; returns `character` |
 | `common_prefix(other)` / `common_prefix(array)` | Longest common prefix shared with another string/character, or with all elements of a string array |
-| `decode()` | Base64 decode |
-| `encode()` | Base64 encode |
-| `escape([escape_char])` | Escape backslashes (or custom character) |
-| `fill(width[, right][, fill_char])` | Pad with zeros (or custom char) to reach width |
+| `decode(codec)` | Decode; `codec='base64'` is the only codec available |
+| `encode(codec)` | Encode; `codec='base64'` is the only codec available |
+| `escape(to_escape[, esc])` | Escape the character `to_escape` with a backslash (or with `esc`) |
+| `fill(width[, right][, filling_char])` | Pad with zeros (or custom char) to reach width |
 | `hex([bits][, uppercase])` | Hexadecimal representation of the integer held by the string (two's complement on `bits` bits, default 64) |
 | `insert(substring, pos)` | Insert substring at given position |
-| `join(array[, sep])` | Join an array of strings with receiver as default separator |
+| `join(array[, sep])` | Join an array of strings or characters with receiver as default separator |
 | `justify(width)` | Pack the words into fully justified lines; returns `string(:)` |
 | `lower()` | All characters lowercase |
-| `partition(sep)` | Split at sep; return `string(3)` = [before, sep, after] |
-| `replace(old, new)` | Replace all occurrences of `old` with `new` |
+| `partition([sep])` | Split at the first sep (default space); return `string(3)` = [before, sep, after] |
+| `repeat(ncopies)` | Concatenate `ncopies` copies of the string |
+| `replace(old, new[, count])` | Replace all (or the first `count`) occurrences of `old` with `new` |
 | `reverse()` | Reverse character order |
 | `reverse_words([sep])` | Reverse the order of the words |
-| `slice([first][, last][, stride])` | Substring by index range |
-| `snakecase()` | Words lowercase, joined by `_` |
-| `split(tokens, sep)` | Tokenize into allocatable array |
-| `split_chunked(tokens, sep, n)` | Tokenize into fixed-size chunks |
-| `startcase()` | Title case — each word capitalized |
-| `strip([remove])` | Remove leading/trailing characters |
+| `slice([first][, last][, stride])` | Section `first:last:stride`, bounds clamped into the string; returns `character` |
+| `snakecase([sep])` | Words lowercase, joined by `_` |
+| `split(tokens[, sep][, max_tokens])` | Tokenize into allocatable array (subroutine) |
+| `split_chunked(tokens, chunks[, sep])` | Tokenize in chunks of `chunks` tokens, memory-efficient (subroutine) |
+| `startcase([sep])` | Title case — each word capitalized |
+| `strip([remove_nulls][, remove])` | Remove leading/trailing spaces, or the characters of the set `remove` |
 | `swapcase()` | Swap upper↔lower case |
-| `unescape([escape_char])` | Unescape doubled backslashes |
-| `unique(substring)` | Collapse repeated occurrences of substring to one |
+| `trim()` | Remove trailing spaces |
+| `unescape(to_unescape[, unesc])` | Remove the backslash escaping the character `to_unescape` |
+| `unique([substring])` | Collapse repeated occurrences of substring (default space) to one |
 | `upper()` | All characters uppercase |
 
 ## Inquiry Methods
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `chars([first][, last])` | `character(:)` | Raw character data, optionally sliced |
-| `end_with(suffix)` | `logical` | True if string ends with suffix |
+| `chars()` | `character(:)` | Raw character data (null if not allocated) |
+| `compare_version(other[, sep])` | `integer` | Field-by-field version comparison: `-1`, `0` or `1` |
+| `count(substring[, ignore_isolated])` | `integer` | Number of non-overlapping occurrences |
+| `end_with(suffix[, start][, end][, ignore_null_eof])` | `logical` | True if string ends with suffix |
+| `index(substring[, back])` | `integer` | Position of substring (like `INDEX`) |
 | `is_allocated()` | `logical` | True if `raw` member is allocated |
 | `is_digit()` | `logical` | True if all characters are digits |
-| `is_integer()` | `logical` | True if string represents an integer |
+| `is_integer([allow_spaces])` | `logical` | True if string represents an integer |
 | `is_lower()` | `logical` | True if all characters are lowercase |
-| `is_number()` | `logical` | True if string represents an integer or real |
-| `is_real()` | `logical` | True if string represents a real number |
+| `is_number([allow_spaces])` | `logical` | True if string represents an integer or real |
+| `is_real([allow_spaces])` | `logical` | True if string represents a real: a decimal point or an exponent is required, an integer is not a real |
 | `is_upper()` | `logical` | True if all characters are uppercase |
 | `len()` | `integer` | Total length (like `LEN`) |
-| `len_trim()` | `integer` | Length without trailing spaces |
-| `start_with(prefix)` | `logical` | True if string starts with prefix |
-| `count(substring)` | `integer` | Number of non-overlapping occurrences |
-| `compare_version(other[, sep])` | `integer` | Field-by-field version comparison: `-1`, `0` or `1` |
 | `len_last_word([sep])` | `integer` | Length of the last word, trailing separators ignored |
+| `len_trim()` | `integer` | Length without trailing spaces |
+| `scan(set[, back])` | `integer` | Position of the first character belonging to `set` (like `SCAN`) |
+| `start_with(prefix[, start][, end])` | `logical` | True if string starts with prefix |
+| `verify(set[, back])` | `integer` | Position of the first character not belonging to `set` (like `VERIFY`) |
 
 ## Number Casting
 
@@ -92,11 +97,14 @@ x = s%to_number(kind=1._R8P)
 n = s%to_number(kind=0_I4P)
 ```
 
+A cast to a real kind accepts both real and integer strings; a cast to an integer kind requires an integer string. If the
+string does not hold a suitable number the result is undefined: check with `is_number` / `is_integer` first.
+
 ## File I/O Methods (type-bound)
 
 | Method | Description |
 |--------|-------------|
-| `read_file(file[, form][, iostat][, iomsg])` | Read entire file into this string |
+| `read_file(file[, is_fast][, form][, iostat][, iomsg])` | Read entire file into this string |
 | `read_line(unit[, form][, iostat][, iomsg])` | Read one line from connected unit |
 | `read_lines(unit[, form][, iostat][, iomsg])` | Read all lines from connected unit |
 | `write_file(file[, form][, iostat][, iomsg])` | Write this string to file |
@@ -118,26 +126,26 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 
 | Method | Description |
 |--------|-------------|
-| `basedir()` | Directory component of a path |
-| `basename([extension][, strip_last_extension])` | File name component, optionally stripped |
+| `basedir([sep])` | Directory component of a path |
+| `basename([sep][, extension][, strip_last_extension])` | File name component, optionally stripped |
 | `extension()` | File extension (with leading dot) |
-| `glob(matches[, pattern])` | Glob pattern matching |
-| `search(tag_start, tag_end)` | Find first region delimited by tags |
-| `tempname([prefix])` | Generate a unique temporary file/directory name |
+| `glob(pattern, list)` | Pathnames matching a shell pattern; `list` is a `string` or `character` allocatable array (subroutine, Unix only) |
+| `search(tag_start, tag_end[, in_string][, in_character][, istart][, iend])` | Find first region delimited by tags |
+| `tempname([is_file][, prefix][, path])` | Generate a unique temporary file/directory name |
 
 ## Miscellaneous
 
 | Method | Description |
 |--------|-------------|
 | `free()` | Deallocate `raw` member |
-| `strjoin(array, sep)` | Join 1D or 2D arrays with separator |
+| `strjoin(array[, sep][, is_trim][, is_col])` | Join 1D or 2D arrays with separator; `is_trim` applies to character arrays, `is_col` to 2D ones |
 
 ## Module-Level Procedures
 
 | Procedure | Description |
 |-----------|-------------|
-| `glob(pattern, list)` | Glob search returning matching paths |
-| `strjoin(array, sep)` | Join arrays of strings or characters |
+| `glob(self, pattern, list)` | Glob search returning matching paths; `self` is a `string` |
+| `strjoin(array[, sep][, is_trim][, is_col])` | Join arrays of strings or characters |
 | `read_file`, `read_lines` | File reading subroutines |
 | `write_file`, `write_lines` | File writing subroutines |
 
@@ -159,7 +167,10 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 
 Re-exported from PENF for convenience:
 
-`I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P` (R16P requires `-Dr16p` preprocessor flag)
+`I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P`
+
+- `R16P` support (assignment and `to_number`) requires the `-DPENF_R16P` preprocessor flag.
+- `I2P` support is disabled when the `_NVF` macro is defined (NVIDIA Fortran compatibility).
 
 ## Character Kind Constant
 

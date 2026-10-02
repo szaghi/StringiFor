@@ -14,7 +14,11 @@ StringiFor integrates with [PENF](https://github.com/szaghi/PENF) (Portable Envi
 | `I8P` | integer | 8 |
 | `R4P` | real | 4 |
 | `R8P` | real | 8 |
-| `R16P` | real | 16 (optional, requires `-Dr16p`) |
+| `R16P` | real | 16 (optional, requires the `-DPENF_R16P` preprocessor flag) |
+
+::: info
+`I2P` support is disabled when the `_NVF` macro is defined (NVIDIA Fortran compatibility).
+:::
 
 ## Assigning Numbers to Strings
 
@@ -28,19 +32,21 @@ type(string) :: s
 s = 127_I1P
 print "(A)", s//''   ! +127
 
-s = -32768_I2P
-print "(A)", s//''   ! -32768
+s = -32767_I2P
+print "(A)", s//''   ! -32767
 
 s = 1000000_I4P
 print "(A)", s//''   ! +1000000
 
 ! Real assignment
 s = 3.021e6_R4P
-print "(A)", s//''   ! +0.302100E+07
+print "(A)", s//''   ! +0.302100000E+07
 
 s = -1.23456789_R8P
-print "(A)", s//''   ! -1.23456789000000E+00
+print "(A)", s//''   ! -0.12345678899999999E+001
 ```
+
+Reals are written with all the significant digits of their kind, so the nearest representable value is what you get.
 
 ## Inquiring String Content
 
@@ -56,7 +62,7 @@ print "(L1)", s%is_integer()   ! F
 s = '42'
 print "(L1)", s%is_number()    ! T
 print "(L1)", s%is_integer()   ! T
-print "(L1)", s%is_real()      ! F
+print "(L1)", s%is_real()      ! F  (a real needs a decimal point or an exponent)
 
 s = 'hello'
 print "(L1)", s%is_number()    ! F
@@ -117,7 +123,7 @@ integer(I4P) :: n
 s = "2.718281828"
 x = s%to_number(kind=1._R8P)
 s = x                           ! re-assign the number back to a string
-print "(A)", s//''              ! +2.71828182800000E+00
+print "(A)", s//''              ! +0.27182818279999998E+001
 
 ! Parse and compare
 s = "100"

@@ -30,7 +30,7 @@ title: Features
 
 - Assign any PENF integer or real kind directly to a `string` via overloaded `assignment(=)`
 - Hexadecimal representation of an integer string with `hex`
-- Cast back with `to_number(kind=...)` — supports all PENF kinds: `I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P`
+- Cast back with `to_number(kind=...)` — supports all PENF kinds: `I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P` (the latter requires the `-DPENF_R16P` preprocessor flag)
 - Inquiry methods: `is_number`, `is_integer`, `is_real`, `is_digit`
 
 ## File and Path Utilities
@@ -62,7 +62,6 @@ Generic interfaces that accept `type(string)` in place of `character`:
 |----------|----------------|--------|
 | GNU gfortran | ≥ 9.2.0 | Full support |
 | Intel `ifort` / `ifx` | ≥ 19.0.4 | Full support |
+| NVIDIA `nvfortran` | — | Builds with the `_NVF` macro defined, which disables the `I2P` kind; not regularly tested |
 | IBM XL | — | Not tested |
-| g95 | — | Not tested |
 | NAG | — | Not tested |
-| PGI | — | Not tested |

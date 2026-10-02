@@ -1182,25 +1182,59 @@ contains
    !<
    !< @note Only BASE64 codec is currently available.
    !<
+   !< @note The decoded string has exactly the length encoded into the code: the padding characters `=` are honored (and they
+   !< can be omitted), the eventual leading/trailing white spaces and null characters of the decoded data are preserved. An
+   !< invalid code, namely one with a length that cannot be produced by an encoding, is decoded to a null string.
+   !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(9)
    !< astring = 'SG93IGFyZSB5b3U/'
-   !< print '(L1)', astring%decode(codec='base64')//''=='How are you?'
+   !< test_passed(1) = astring%decode(codec='base64')//''=='How are you?'
+   !< astring = 'SGVsbG8gV29ybGQ='
+   !< test_passed(2) = astring%decode(codec='base64')//''=='Hello World'
+   !< astring = 'aGVsbG8gd29ybGQhIQ=='
+   !< test_passed(3) = astring%decode(codec='base64')//''=='hello world!!'
+   !< astring = 'SGVsbG8gV29ybGQ'
+   !< test_passed(4) = astring%decode(codec='base64')//''=='Hello World'
+   !< astring = '  spaces kept  '
+   !< astring = astring%encode(codec='base64')
+   !< test_passed(5) = astring%decode(codec='base64')//''=='  spaces kept  '
+   !< test_passed(6) = len(astring%decode(codec='base64')//'')==15
+   !< astring = 'YQ=='
+   !< test_passed(7) = astring%decode(codec='base64')//''=='a'
+   !< astring = 'YWJjZ'
+   !< test_passed(8) = len(astring%decode(codec='base64')//'')==0
+   !< astring = ''
+   !< test_passed(9) = len(astring%decode(codec='base64')//'')==0
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string),             intent(in) :: self    !< The string.
-   character(kind=CK, len=*), intent(in) :: codec   !< Encoding codec.
-   type(string)                          :: decoded !< Decoded string.
-   type(string)                          :: codec_u !< Encoding codec in upper case string.
+   class(string),             intent(in)  :: self    !< The string.
+   character(kind=CK, len=*), intent(in)  :: codec   !< Encoding codec.
+   type(string)                           :: decoded !< Decoded string.
+   type(string)                           :: codec_u !< Encoding codec in upper case string.
+   character(kind=CK, len=:), allocatable :: code    !< Code to be decoded, padded to a multiple of 4 characters.
+   integer                                :: pads    !< Number of padding characters.
+   integer                                :: length  !< Length of the decoded string.
 
    if (allocated(self%raw)) then
-     decoded = self
      codec_u = codec
      select case(codec_u%upper()//'')
      case('BASE64')
-       call b64_decode(code=self%raw, s=decoded%raw)
+       code = trim(self%raw)
+       if (mod(len(code), 4)>0) code = code//repeat('=', 4-mod(len(code), 4))
+       pads = len(code) - verify(code, '=', back=.true.)
+       length = (len(code)/4)*3 - pads
+       if (length>0.and.pads<=2) then
+         allocate(character(kind=CK, len=length) :: decoded%raw)
+         call b64_decode(code=code, s=decoded%raw)
+       else
+         decoded%raw = ''
+       endif
+     case default
+       decoded = self%strip(remove_nulls=.true.)
      endselect
-     decoded = decoded%strip(remove_nulls=.true.)
    endif
    endfunction decode
 
@@ -2664,8 +2698,16 @@ contains
    if (present(iend)) iend = iend_
    endfunction search
 
-   pure function slice(self, istart, iend) result(raw)
+   pure function slice(self, first, last, stride, istart, iend) result(raw)
    !< Return the raw characters data sliced.
+   !<
+   !< The slice is `first:last:stride`, like a Fortran array section, both bounds being included. All the arguments are optional:
+   !< `stride` defaults to 1, `first` and `last` default to the string bounds, namely `1:len` for a positive stride and `len:1`
+   !< for a negative one. The bounds are clamped into the string ones, thus a slice never goes out of bounds: it is null if the
+   !< clamped section is empty, if `stride` is zero or if the string is not allocated.
+   !<
+   !< @note `istart` and `iend` are deprecated aliases of `first` and `last`, kept for backward compatibility of keyword calls:
+   !< they are ignored if `first` and `last` are passed.
    !<
    !<```fortran
    !< type(string) :: astring
@@ -2673,16 +2715,73 @@ contains
    !< print "(A)", astring%slice(11,25)
    !<```
    !=> Brown fox Jumps <<<
-   class(string), intent(in)              :: self   !< The string.
-   integer,       intent(in)              :: istart !< Slice start index.
-   integer,       intent(in)              :: iend   !< Slice end   index.
-   character(kind=CK, len=:), allocatable :: raw    !< Raw characters data.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(12)
+   !< astring = 'Hello World'
+   !< test_passed(1) = astring%slice(first=1, last=5)=='Hello'
+   !< test_passed(2) = astring%slice(first=7)=='World'
+   !< test_passed(3) = astring%slice(last=5)=='Hello'
+   !< test_passed(4) = astring%slice()=='Hello World'
+   !< test_passed(5) = astring%slice(stride=2)=='HloWrd'
+   !< test_passed(6) = astring%slice(stride=-1)=='dlroW olleH'
+   !< test_passed(7) = astring%slice(first=5, last=1, stride=-2)=='olH'
+   !< test_passed(8) = astring%slice(first=-3, last=100)=='Hello World'
+   !< test_passed(9) = len(astring%slice(first=7, last=5))==0
+   !< test_passed(10) = len(astring%slice(stride=0))==0
+   !< test_passed(11) = astring%slice(istart=1, iend=5)=='Hello'
+   !< call astring%free
+   !< test_passed(12) = len(astring%slice(first=1, last=5))==0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)              :: self    !< The string.
+   integer,       intent(in), optional    :: first   !< Slice first index, default 1 (len for negative stride).
+   integer,       intent(in), optional    :: last    !< Slice last index, default len (1 for negative stride).
+   integer,       intent(in), optional    :: stride  !< Slice stride, default 1.
+   integer,       intent(in), optional    :: istart  !< Deprecated alias of first.
+   integer,       intent(in), optional    :: iend    !< Deprecated alias of last.
+   character(kind=CK, len=:), allocatable :: raw     !< Raw characters data.
+   integer                                :: first_  !< Slice first index, local variable.
+   integer                                :: last_   !< Slice last index, local variable.
+   integer                                :: stride_ !< Slice stride, local variable.
+   integer                                :: length  !< Length of the slice.
+   integer                                :: c       !< Character counter.
 
-   if (allocated(self%raw)) then
-      raw = self%raw(istart:iend)
-   else
-      raw = ''
+   stride_ = 1 ; if (present(stride)) stride_ = stride
+   if (allocated(self%raw).and.stride_/=0) then
+      if (stride_>0) then
+         first_ = 1
+         last_ = len(self%raw)
+      else
+         first_ = len(self%raw)
+         last_ = 1
+      endif
+      if (present(istart)) first_ = istart
+      if (present(iend)) last_ = iend
+      if (present(first)) first_ = first
+      if (present(last)) last_ = last
+      if (stride_>0) then
+         first_ = max(first_, 1)
+         last_ = min(last_, len(self%raw))
+      else
+         first_ = min(first_, len(self%raw))
+         last_ = max(last_, 1)
+      endif
+      length = max(0, (last_ - first_ + stride_)/stride_)
+      if (length>0) then
+         if (stride_==1) then
+            raw = self%raw(first_:last_)
+         else
+            allocate(character(kind=CK, len=length) :: raw)
+            do c=1, length
+               raw(c:c) = self%raw(first_+(c-1)*stride_:first_+(c-1)*stride_)
+            enddo
+         endif
+      endif
    endif
+   if (.not.allocated(raw)) raw = ''
    endfunction slice
 
    elemental function snakecase(self, sep)
@@ -2930,30 +3029,59 @@ contains
    endif
    endfunction startcase
 
-   elemental function strip(self, remove_nulls)
+   elemental function strip(self, remove_nulls, remove)
    !< Return a copy of the string with the leading and trailing characters removed.
    !<
-   !< @note Multiple subsequent separators are collapsed to one occurence.
+   !< By default the leading and trailing spaces are removed. If `remove` is passed, it is the set of characters to be removed:
+   !< all the leading and trailing characters of the string belonging to the set are removed, in any order they occur.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(1)
+   !< logical      :: test_passed(8)
    !< astring = '  Hello World!   '
    !< test_passed(1) = astring%strip()//''=='Hello World!'
+   !< astring = '   hello   '
+   !< test_passed(2) = astring%strip(remove=' h')//''=='ello'
+   !< astring = 'xxyHello Worldyx'
+   !< test_passed(3) = astring%strip(remove='xy')//''=='Hello World'
+   !< test_passed(4) = astring%strip(remove='')//''=='xxyHello Worldyx'
+   !< astring = 'xyxy'
+   !< test_passed(5) = astring%strip(remove='xy')//''==''
+   !< astring = '  ab'//char(0)//char(0)
+   !< test_passed(6) = astring%strip(remove_nulls=.true.)//''=='ab'
+   !< astring = ''
+   !< test_passed(7) = astring%strip(remove=' ')//''==''
+   !< astring = '--a-b--'
+   !< test_passed(8) = astring%strip(remove='-')//''=='a-b'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string), intent(in)           :: self         !< The string.
-   logical,       intent(in), optional :: remove_nulls !< Remove null characters at the end.
-   type(string)                        :: strip        !< The stripped string.
-   integer                             :: c            !< Counter.
+   class(string),             intent(in)           :: self         !< The string.
+   logical,                   intent(in), optional :: remove_nulls !< Remove null characters at the end.
+   character(kind=CK, len=*), intent(in), optional :: remove       !< Set of characters to be removed, default space.
+   type(string)                                    :: strip        !< The stripped string.
+   integer                                         :: c            !< Counter.
+   integer                                         :: first        !< First character not to be removed.
+   integer                                         :: last         !< Last character not to be removed.
 
    if (allocated(self%raw)) then
-      strip = self%adjustl()
-      strip = strip%trim()
+      if (present(remove)) then
+         first = verify(self%raw, remove)
+         last = verify(self%raw, remove, back=.true.)
+         if (len(remove)==0) then
+            strip%raw = self%raw
+         elseif (first>0) then
+            strip%raw = self%raw(first:last)
+         else
+            strip%raw = ''
+         endif
+      else
+         strip = self%adjustl()
+         strip = strip%trim()
+      endif
       if (present(remove_nulls)) then
          if (remove_nulls) then
-            c = index(self%raw, char(0))
+            c = index(strip%raw, char(0))
             if (c>0) strip%raw = strip%raw(1:c-1)
          endif
       endif
@@ -3170,7 +3298,7 @@ contains
    real(R4P)                 :: to_number !< The number into the string.
 
    if (allocated(self%raw)) then
-     if (self%is_real()) read(self%raw, *) to_number
+     if (self%is_number()) read(self%raw, *) to_number
    endif
    endfunction to_real_R4P
 
@@ -3193,7 +3321,7 @@ contains
    real(R8P)                 :: to_number !< The number into the string.
 
    if (allocated(self%raw)) then
-     if (self%is_real()) read(self%raw, *) to_number
+     if (self%is_number()) read(self%raw, *) to_number
    endif
    endfunction to_real_R8P
 
@@ -3216,7 +3344,7 @@ contains
    real(R16P)                :: to_number !< The number into the string.
 
    if (allocated(self%raw)) then
-     if (self%is_real()) read(self%raw, *) to_number
+     if (self%is_number()) read(self%raw, *) to_number
    endif
    endfunction to_real_R16P
 
@@ -3703,7 +3831,11 @@ contains
    elemental function is_real(self, allow_spaces)
    !< Return true if the string contains a real.
    !<
-   !< The regular expression is `\s*[\+\-]?\d*(|\.?\d*([deDE][\+\-]?\d+)?)\s*`. The parse algorithm is done in stages:
+   !< A real must have a decimal point or an exponent (or both): a string containing an integer, e.g. `42`, is not a real, see
+   !< [[string:is_integer]] and [[string:is_number]].
+   !<
+   !< The regular expression is `\s*[\+\-]?\d*(\.\d*([deDE][\+\-]?\d+)?|[deDE][\+\-]?\d+)\s*`. The parse algorithm is done in
+   !< stages:
    !<
    !< | S0  | S1      | S2  | S3  | S4  | S5     | S6      | S7  | S8  |
    !< |-----|---------|-----|-----|-----|--------|---------|-----|-----|
@@ -3713,14 +3845,16 @@ contains
    !<
    !< | S0 | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 |
    !< |----|----|----|----|----|----|----|----|----|
-   !  |  F |  F |  T |  T |  T |  F |  F |  T |  T |
+   !< |  F |  F |  F |  T |  T |  F |  F |  T |  T |
+   !<
+   !< The exit on S8 is true only if a decimal point or an exponent has been parsed.
    !<
    !< @note This implementation is courtesy of
    !< [tomedunn](https://github.com/tomedunn/fortran-string-utility-module/blob/master/src/string_utility_module.f90#L614)
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(6)
+   !< logical      :: test_passed(12)
    !< astring = '   -1212112.d0 '
    !< test_passed(1) = astring%is_real().eqv..true.
    !< astring = '   -1212112.d0'
@@ -3733,6 +3867,18 @@ contains
    !< test_passed(5) = astring%is_real().eqv..true.
    !< astring = ' -2.01 E13 '
    !< test_passed(6) = astring%is_real().eqv..false.
+   !< astring = '42'
+   !< test_passed(7) = astring%is_real().eqv..false.
+   !< astring = ' -42  '
+   !< test_passed(8) = astring%is_real().eqv..false.
+   !< astring = '42.'
+   !< test_passed(9) = astring%is_real().eqv..true.
+   !< astring = '.5'
+   !< test_passed(10) = astring%is_real().eqv..true.
+   !< astring = '2e20'
+   !< test_passed(11) = astring%is_real().eqv..true.
+   !< call astring%free
+   !< test_passed(12) = astring%is_real().eqv..false.
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -3741,14 +3887,17 @@ contains
    logical                             :: is_real           !< Result of the test.
    logical                             :: allow_spaces_     !< Allow leading-trailing spaces, local variable.
    logical                             :: has_leading_digit !< Check the presence of leading digits.
+   logical                             :: has_real_marker   !< Check the presence of decimal point or exponent.
    integer                             :: stage             !< Stages counter.
    integer                             :: c                 !< Character counter.
 
+   is_real = .false.
+   stage = 0
+   has_leading_digit = .false.
+   has_real_marker = .false.
    if (allocated(self%raw)) then
       allow_spaces_ = .true. ; if (present(allow_spaces)) allow_spaces_ = allow_spaces
-      stage = 0
       is_real = .true.
-      has_leading_digit = .false.
       do c=1, len(self%raw)
          select case(self%raw(c:c))
          case(SPACE, TAB)
@@ -3787,6 +3936,7 @@ contains
             select case(stage)
             case(0:2)
                stage = 3
+               has_real_marker = .true.
             case default
                is_real = .false.
             endselect
@@ -3794,6 +3944,7 @@ contains
             select case(stage)
             case(2:4)
                stage = 5
+               has_real_marker = .true.
             case default
                is_real = .false.
             endselect
@@ -3805,10 +3956,12 @@ contains
    endif
    if (is_real) then
       select case(stage)
-      case(2, 4, 7, 8)
+      case(4, 7)
          is_real = .true.
       case(3)
          is_real = has_leading_digit
+      case(8)
+         is_real = has_real_marker
       case default
          is_real = .false.
       endselect

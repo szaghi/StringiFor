@@ -23,9 +23,9 @@ print "(A)", s%capitalize()//'' ! Hello world  (first char up, rest down)
 ```fortran
 s = ' a StraNgE caSe var'
 
-print "(A)", s%camelcase()//''  !  AStrangeCaseVar
-print "(A)", s%snakecase()//''  !  a_strange_case_var
-print "(A)", s%startcase()//''  !  A Strange Case Var
+print "(A)", s%camelcase()//''  ! AStrangeCaseVar
+print "(A)", s%snakecase()//''  ! a_strange_case_var
+print "(A)", s%startcase()//''  ! A Strange Case Var
 ```
 
 ## Searching and Testing
@@ -77,7 +77,7 @@ print "(A)", s%unique(substring=' ')//''  ! aabbcc hello world
 s = '42'
 print "(A)", s%fill(width=6)//''             ! 000042  (left-pad with zeros)
 print "(A)", s%fill(width=6, right=.true.)//'' ! 420000
-print "(A)", s%fill(width=6, fill_char='*')//'' ! ****42
+print "(A)", s%fill(width=6, filling_char='*')//'' ! ****42
 ```
 
 ### Insert
@@ -95,21 +95,30 @@ print "(A)", s%strip()//''                   ! hello
 print "(A)", s%strip(remove=' h')//''        ! ello
 ```
 
+`remove` is a set of characters: every leading and trailing character belonging to the set is removed. Without it only
+spaces are stripped.
+
 ### Escape / Unescape
 
 ```fortran
 s = 'path\to\file'
-print "(A)", s%escape()//''    ! path\\to\\file
-print "(A)", s%unescape()//''  ! path\to\file
+s = s%escape(to_escape='\')
+print "(A)", s//''                            ! path\\to\\file
+print "(A)", s%unescape(to_unescape='\')//''  ! path\to\file
 ```
+
+The character to (un)escape is mandatory; the escaping character defaults to the backslash and can be changed with `esc`.
 
 ### Encode / Decode (Base64)
 
 ```fortran
-s = 'Hello World'
-print "(A)", s%encode()//''   ! SGVsbG8gV29ybGQ=
-print "(A)", s%decode()//''   ! (decodes a Base64 string)
+s = 'How are you?'
+s = s%encode(codec='base64')
+print "(A)", s//''                         ! SG93IGFyZSB5b3U/
+print "(A)", s%decode(codec='base64')//''  ! How are you?
 ```
+
+The `codec` argument is mandatory; `base64` is the only codec available.
 
 ### Justify — pack words into fully justified lines
 
@@ -208,9 +217,14 @@ print "(A)", s%join(words, sep=', ')//'' ! one, two, three
 
 ```fortran
 s = 'Hello World'
-print "(A)", s%slice(first=1, last=5)//''  ! Hello
-print "(A)", s%slice(first=7)//''          ! World
+print "(A)", s%slice(first=1, last=5)  ! Hello
+print "(A)", s%slice(first=7)          ! World
+print "(A)", s%slice(stride=2)         ! HloWrd
+print "(A)", s%slice(stride=-1)        ! dlroW olleH
 ```
+
+`slice` returns a standard `character`. All its arguments are optional and the bounds are clamped into the string, so a
+slice never goes out of bounds.
 
 ## Searching Tagged Records
 
@@ -250,7 +264,7 @@ These generic interfaces accept `string` arguments in place of standard `charact
 ```fortran
 type(string) :: s
 s = '  hello  '
-print "(A)", trim(s)//''         ! hello
-print "(I0)", len_trim(s)        ! 5
-print "(I0)", index(s, 'ell')    ! 3
+print "(A)", trim(s)//''         ! '  hello' (only trailing spaces are removed)
+print "(I0)", len_trim(s)        ! 7
+print "(I0)", index(s, 'ell')    ! 4
 ```

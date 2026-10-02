@@ -4,7 +4,7 @@ title: About StringiFor
 
 # About StringiFor
 
-**StringiFor** (Strings Fortran Manipulator) is a pure Fortran 2003+ library that provides a powerful, OOP-designed `string` type as a drop-in replacement for standard Fortran character variables.
+**StringiFor** (Strings Fortran Manipulator) is a pure Fortran 2008+ library that provides a powerful, OOP-designed `string` type as a drop-in replacement for standard Fortran character variables.
 
 Modern Fortran (2003+) improved character handling considerably with allocatable deferred-length character variables, but Fortran still lacks built-in methods for common string operations — uppercase/lowercase conversion, tokenization, path manipulation, number casting, and more. StringiFor fills that gap.
 

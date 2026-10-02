@@ -4,7 +4,7 @@ src_dir: ../src
 exclude_dir: ../src/third_party
 output_dir: html/publish/
 project_github: https://github.com/szaghi/StringiFor
-summary: FStrings Fortran Manipulator
+summary: Strings Fortran Manipulator
 author: Stefano Zaghi
 github: https://github.com/szaghi
 email: stefano.zaghi@gmail.com

@@ -45,15 +45,20 @@ Only the **first** matching region is returned. This is useful for simple markup
 
 ```fortran
 use stringifor
-type(string)              :: pattern
+type(string)              :: s
 type(string), allocatable :: matches(:)
 
-pattern = '*.f90'
-call pattern%glob(matches)
+call s%glob(pattern='*.f90', list=matches)
 
-! or use the module-level procedure
-call glob(pattern='src/**/*.F90', list=matches)
+! or use the module-level procedure, that takes the string as first argument
+call glob(self=s, pattern='src/lib/*.F90', list=matches)
 ```
+
+`list` can also be a deferred-length `character` array. The pattern follows the rules of the Unix shell.
+
+::: warning
+`glob` relies on the `ls` shell command: it works only on Unix/GNU Linux systems.
+:::
 
 ## Naive CSV Parser
 
@@ -103,7 +108,7 @@ end do
 print "(A)", 'Most expensive: ' // most_expensive
 ```
 
-The `csv.csv` file used above looks like:
+The `cars.csv` file used above looks like:
 
 ```
 Year, Make, Model, Description, Price
@@ -125,8 +130,11 @@ use stringifor
 type(string) :: s
 
 s = 'Warning!'
-print "(A)", s%colorize(color='yellow', style='bold')//''
+print "(A)", s%colorize(color_fg='yellow', style='bold_on')
 ```
+
+`colorize` returns a standard `character`; `color_fg`, `color_bg` and `style` are all optional and take the names defined
+by [FACE](https://github.com/szaghi/FACE).
 
 ## Joining 2D Arrays (strjoin)
 

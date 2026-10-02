@@ -72,15 +72,14 @@ print "(A)", my_string//''
 
 ### Notes on slice notation
 
-Standard slice notation (`s(2:5)`) cannot be applied to a derived type. StringiFor provides the `slice` method and the `chars([first][, last])` method as equivalents:
+Standard slice notation (`s(2:5)`) cannot be applied to a derived type. StringiFor provides the `slice` method as equivalent, while `chars()` returns the whole content as a standard `character`:
 
 ```fortran
 ! Standard character
 print "(A)", s(2:5)
 
-! StringiFor equivalents
-print "(A)", my_string%slice(first=2, last=5)//''
-print "(A)", my_string%chars(2, 5)
+! StringiFor equivalent
+print "(A)", my_string%slice(first=2, last=5)
 ```
 
 ## StringiFor's Distinctive Features
@@ -98,6 +97,6 @@ Beyond solving the same issues as `aniso_varying_string`, StringiFor adds:
 
 ## References
 
-<a name="ref1"></a>[1] Clive Page, *[Improved String-handling in Fortran](http://www.fortran.bcs.org/2015/suggestion_string_handling.pdf)*, October 2015.
+<a name="ref1"></a>[1] Clive Page, *[Improved String-handling in Fortran](https://fortran.bcs.org/2015/suggestion_string_handling.pdf)*, October 2015.
 
 [2] Ian Harvey, *[aniso_varying_string](http://www.megms.com.au/aniso_varying_string.htm)*, 2016.
