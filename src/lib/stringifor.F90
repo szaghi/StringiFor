@@ -122,6 +122,7 @@ contains
    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
    iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
    rewind(unit)
+   ch = new_line('a')
    select case(form_%chars())
    case('FORMATTED')
       l = 0
@@ -137,13 +138,15 @@ contains
       enddo
    endselect
    10 rewind(unit)
+   if (form_%chars()=='UNFORMATTED'.and.ch/=new_line('a')) l = l + 1 ! last line without line terminator
+   iostat_ = 0
    if (l>0) then
       allocate(lines(1:l))
       l = 1
       iostat_ = 0
       do
          call lines(l)%read_line(unit=unit, form=form, iostat=iostat_, iomsg=iomsg_)
-         if ((iostat_/=0.and..not.is_iostat_eor(iostat_)).or.(l>=size(lines, dim=1))) then
+         if (iostat_/=0.or.l>=size(lines, dim=1)) then
             exit
          endif
          l = l + 1

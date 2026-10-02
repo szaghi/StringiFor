@@ -1,6 +1,11 @@
-# API Reference
+---
+title: Methods Summary
+---
 
-Complete listing of all `string` type-bound procedures and module-level interfaces provided by `use stringifor`.
+# Methods Summary
+
+Every type-bound procedure of `string` and every procedure of the module, with its arguments (the optional ones in
+brackets). The pages of the reference explain them with examples; the [API](/api/) documents the source.
 
 ## Fortran Built-in Replacements
 
@@ -39,7 +44,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `hex([bits][, uppercase])` | Hexadecimal representation of the integer held by the string (two's complement on `bits` bits, default 64) |
 | `insert(substring, pos)` | Insert substring at given position |
 | `join(array[, sep])` | Join an array of strings or characters with receiver as default separator |
-| `justify(width)` | Pack the words into fully justified lines; returns `string(:)` |
+| `justify(lines, width)` | Pack the words into fully justified lines (subroutine, allocates `lines`) |
 | `lower()` | All characters lowercase |
 | `partition([sep])` | Split at the first sep (default space); return `string(3)` = [before, sep, after] |
 | `repeat(ncopies)` | Concatenate `ncopies` copies of the string |

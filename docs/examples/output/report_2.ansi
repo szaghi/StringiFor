@@ -1,0 +1,10 @@
+$ report
+[   year,   make , model,price   ]
+[year,   make , model,price]
+[year,make,model,price]
+[YEAR,MAKE,MODEL,PRICE]
+A Small City Car
+a_small_city_car
+ASmallCityCar
+A small city car
+[sold]

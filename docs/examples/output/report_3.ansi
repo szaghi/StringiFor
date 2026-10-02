@@ -1,0 +1,12 @@
+$ report
+5 cells
+1: [1999]
+2: [Chevy]
+3: [Venture]
+4: [4900.50]
+5: [extended edition]
+| 1999 | Chevy | Venture | 4900.50 | extended edition |
+Chevy-Venture
+year: 1999
+rest: Chevy, Venture, 4900.50, extended edition
+commas: 4

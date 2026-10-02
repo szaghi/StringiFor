@@ -1,270 +1,159 @@
+---
+title: String Manipulation
+---
+
 # String Manipulation
 
-All methods are type-bound procedures on the `string` type. Unless stated otherwise they return a new `string` (or standard `character` via `//''`) and do not modify the receiver.
+All the methods are type-bound procedures of `string`. Unless stated otherwise they return a new `string` and they do
+not change the one they are called on.
 
-```fortran
-use stringifor
-type(string) :: s
-```
+## Case conversion
 
-## Case Conversion
+<<< @/examples/snippets/letter_case.f90
 
-```fortran
-s = 'Hello World'
+<<< @/examples/output/letter_case.ansi{ansi}
 
-print "(A)", s%upper()//''      ! HELLO WORLD
-print "(A)", s%lower()//''      ! hello world
-print "(A)", s%swapcase()//''   ! hELLO wORLD
-print "(A)", s%capitalize()//'' ! Hello world  (first char up, rest down)
-```
+The word-level styles split the string in words, at the blanks or at `sep`:
 
-### Word-level case styles
+<<< @/examples/snippets/wordcase.f90
 
-```fortran
-s = ' a StraNgE caSe var'
+<<< @/examples/output/wordcase.ansi{ansi}
 
-print "(A)", s%camelcase()//''  ! AStrangeCaseVar
-print "(A)", s%snakecase()//''  ! a_strange_case_var
-print "(A)", s%startcase()//''  ! A Strange Case Var
-```
+| Method | Result |
+|---|---|
+| `upper()`, `lower()`, `swapcase()` | every letter changed |
+| `capitalize()` | first character upper case, the rest lower case |
+| `startcase([sep])` | every word capitalized |
+| `camelcase([sep])` | every word capitalized, separators removed |
+| `snakecase([sep])` | every word lower case, joined by `_` |
+| `is_upper()`, `is_lower()` | true if every character is an upper (lower) case letter |
 
-## Searching and Testing
+## Cleaning and replacing
 
-```fortran
-s = 'Hello World'
+<<< @/examples/snippets/strip.f90
 
-print "(L1)", s%start_with('Hello')   ! T
-print "(L1)", s%end_with('World')     ! T
-print "(L1)", s%is_lower()            ! F
-print "(L1)", s%is_upper()            ! F
-print "(L1)", s%is_digit()            ! F
+<<< @/examples/output/strip.ansi{ansi}
 
-! count occurrences of a substring
-print "(I0)", s%count('l')            ! 3
-```
+`strip([remove_nulls][, remove])` removes the blanks at both ends; with `remove`, a set of characters, it removes every
+leading and trailing character belonging to the set. `remove_nulls=.true.` cuts the string at its first null character.
 
-## Replacing and Modifying
+<<< @/examples/snippets/replace.f90
 
-```fortran
-s = 'Hello World'
-print "(A)", s%replace(old='World', new='People')//''  ! Hello People
-```
+<<< @/examples/output/replace.ansi{ansi}
 
-### Reverse
+| Method | Result |
+|---|---|
+| `replace(old, new[, count])` | every occurrence of `old` replaced by `new`, or the first `count` ones |
+| `unique([substring])` | every run of `substring` (default a blank) collapsed to one occurrence |
+| `insert(substring, pos)` | `substring` inserted at position `pos` |
+| `escape(to_escape[, esc])` | the character `to_escape` preceded by a backslash, or by `esc` |
+| `unescape(to_unescape[, unesc])` | the backslash before `to_unescape` removed, or replaced by `unesc` |
 
-```fortran
-s = '0123456789'
-print "(A)", s%reverse()//''   ! 9876543210
-```
+<<< @/examples/snippets/escape.f90
 
-### Reverse words
+<<< @/examples/output/escape.ansi{ansi}
 
-```fortran
-s = '  the sky   is blue '
-print "(A)", s%reverse_words()//''   ! blue is sky the
-```
+## Splitting and joining
 
-### Unique — collapse repeated substrings
+<<< @/examples/snippets/split_words.f90
 
-```fortran
-s = 'aabbcc  hello   world'
-print "(A)", s%unique(substring=' ')//''  ! aabbcc hello world
-```
+<<< @/examples/output/split_words.ansi{ansi}
 
-### Fill / pad
+`split(tokens[, sep][, max_tokens])` is a subroutine: it allocates `tokens`. Repeated separators count as one and the
+separators at the ends are ignored; `max_tokens` is the number of splits, the last token keeps the rest.
+`split_chunked(tokens, chunks[, sep])` gives the same tokens splitting in chunks of `chunks` tokens, to use less memory
+on very long strings.
 
-```fortran
-s = '42'
-print "(A)", s%fill(width=6)//''             ! 000042  (left-pad with zeros)
-print "(A)", s%fill(width=6, right=.true.)//'' ! 420000
-print "(A)", s%fill(width=6, filling_char='*')//'' ! ****42
-```
+<<< @/examples/snippets/partition.f90
 
-### Insert
+<<< @/examples/output/partition.ansi{ansi}
 
-```fortran
-s = 'Helo'
-print "(A)", s%insert(substring='l', pos=3)//''  ! Hello
-```
+`partition([sep])` splits once, at the first separator, into three strings.
 
-### Strip (trim leading/trailing characters)
+<<< @/examples/snippets/join_strings.f90
 
-```fortran
-s = '   hello   '
-print "(A)", s%strip()//''                   ! hello
-print "(A)", s%strip(remove=' h')//''        ! ello
-```
+<<< @/examples/output/join_strings.ansi{ansi}
 
-`remove` is a set of characters: every leading and trailing character belonging to the set is removed. Without it only
-spaces are stripped.
+`join(array[, sep])` joins an array of strings or of characters; the separator is `sep`, or the string itself. Elements
+not allocated, or empty characters, are skipped. `strjoin(array[, sep][, is_trim][, is_col])` is the same as a function
+of the module, with no separator string; `is_trim=.false.` keeps the trailing blanks of the characters.
 
-### Escape / Unescape
+`strjoin` also joins a 2D array, by columns or by rows:
 
-```fortran
-s = 'path\to\file'
-s = s%escape(to_escape='\')
-print "(A)", s//''                            ! path\\to\\file
-print "(A)", s%unescape(to_unescape='\')//''  ! path\to\file
-```
+<<< @/examples/snippets/strjoin2d.f90
 
-The character to (un)escape is mandatory; the escaping character defaults to the backslash and can be changed with `esc`.
+<<< @/examples/output/strjoin2d.ansi{ansi}
 
-### Encode / Decode (Base64)
+## Slicing and reversing
 
-```fortran
-s = 'How are you?'
-s = s%encode(codec='base64')
-print "(A)", s//''                         ! SG93IGFyZSB5b3U/
-print "(A)", s%decode(codec='base64')//''  ! How are you?
-```
+<<< @/examples/snippets/slice.f90
 
-The `codec` argument is mandatory; `base64` is the only codec available.
+<<< @/examples/output/slice.ansi{ansi}
 
-### Justify — pack words into fully justified lines
+`slice([first][, last][, stride])` returns the section `first:last:stride` as a `character`. `stride` defaults to 1,
+`first` and `last` to the bounds of the string (`1` and `len`, or `len` and `1` when the stride is negative). The bounds
+are clamped into the string: a slice never goes out of bounds, and it is empty when the section is.
 
-```fortran
-type(string), allocatable :: lines(:)
+<<< @/examples/snippets/reverse.f90
 
-s = 'This is an example of text justification.'
-lines = s%justify(width=16)
-! lines(1) = 'This    is    an'
-! lines(2) = 'example  of text'
-! lines(3) = 'justification.  '
-```
+<<< @/examples/output/reverse.ansi{ansi}
 
-The last line and single-word lines are left-justified and padded with trailing blanks. A word longer than `width` is not
-broken: it stays alone on a line longer than `width`.
+## Searching
 
-### Length of the last word
+<<< @/examples/snippets/search.f90
 
-```fortran
-s = '   fly me   to   the moon  '
-print "(I0)", s%len_last_word()   ! 4
-```
+<<< @/examples/output/search.ansi{ansi}
+
+| Method | Result |
+|---|---|
+| `start_with(prefix[, start][, end])`, `end_with(suffix[, start][, end][, ignore_null_eof])` | true if the string, or its part `start:end`, starts (ends) with it |
+| `count(substring[, ignore_isolated])` | number of non-overlapping occurrences |
+| `index(substring[, back])`, `scan(set[, back])`, `verify(set[, back])` | like the intrinsics |
+
+`search` returns the first text enclosed by two tags, tags included:
+
+<<< @/examples/snippets/tags.f90
+
+<<< @/examples/output/tags.ansi{ansi}
+
+`search(tag_start, tag_end[, in_string][, in_character][, istart][, iend])` searches the string itself, or the one
+passed as `in_string` or `in_character`; `istart` and `iend` return where the text starts and ends.
+
+## Padding and layout
+
+<<< @/examples/snippets/pad.f90
+
+<<< @/examples/output/pad.ansi{ansi}
+
+`fill(width[, right][, filling_char])` pads to `width` characters, on the left unless `right=.true.`, with zeros unless
+`filling_char` is passed. A string already as wide as `width`, or wider, is returned unchanged.
+
+<<< @/examples/snippets/justify.f90
+
+<<< @/examples/output/justify.ansi{ansi}
+
+`justify(lines, width)` is a subroutine: it allocates `lines`. The words are packed greedily and the blanks spread
+between them, the leftmost gaps taking the extra ones; the last line and the lines of one word are left-justified and
+padded. A word longer than `width` is not broken. `len_last_word([sep])` is the length of the last word, trailing
+separators ignored.
 
 ## Comparing
 
-### Longest common prefix
+<<< @/examples/snippets/prefix.f90
 
-```fortran
-type(string) :: files(3)
+<<< @/examples/output/prefix.ansi{ansi}
 
-files(1) = 'src/lib/stringifor.F90'
-files(2) = 'src/lib/stringifor_string_t.F90'
-files(3) = 'src/tests/stringifor/stringifor-doctest-1.f90'
-s = files(1)%common_prefix(files(2))        ! src/lib/stringifor
-s = files(1)%common_prefix(array=files)     ! src/
-```
+`common_prefix(other)` takes a string or a character; `common_prefix(array)` an array of strings, and returns what the
+string and all its elements start with.
 
-### Version numbers
+<<< @/examples/snippets/version.f90
 
-`compare_version` returns `-1`, `0` or `1`. Fields made only of digits are compared as integers of any size, the others
-lexically; missing fields count as zero.
+<<< @/examples/output/version.ansi{ansi}
 
-```fortran
-s = '1.2.0'
-print "(I0)", s%compare_version('1.10')    ! -1
-print "(I0)", s%compare_version('1.2')     ! 0
-print "(I0)", s%compare_version('1.1.9')   ! 1
-```
+`compare_version(other[, sep])` returns -1, 0 or 1. The versions are compared field by field (the fields separated by
+`.`, or by `sep`): two fields made of digits only are compared as integers of any size, the others as text; missing
+fields count as zero.
 
 ::: warning
 The comparison is not semantic-versioning aware: `1.0.0-rc1` compares greater than `1.0.0`.
 :::
-
-## Splitting and Joining
-
-### Split
-
-```fortran
-type(string), allocatable :: tokens(:)
-
-s = 'one two three'
-call s%split(tokens=tokens, sep=' ')
-! tokens(1)='one', tokens(2)='two', tokens(3)='three'
-```
-
-### Partition — split at the first occurrence of a separator
-
-```fortran
-type(string) :: parts(3)
-
-s = 'Hello World'
-parts = s%partition(sep='lo Wo')
-! parts(1) = 'Hel'   (before sep)
-! parts(2) = 'lo Wo' (the sep itself)
-! parts(3) = 'rld'   (after sep)
-```
-
-### Join
-
-```fortran
-type(string) :: words(3)
-
-words(1) = 'one'
-words(2) = 'two'
-words(3) = 'three'
-
-! join using the receiver as separator
-s = '-'
-print "(A)", s%join(words)//''          ! one-two-three
-
-! join with an explicit sep argument
-print "(A)", s%join(words, sep=', ')//'' ! one, two, three
-```
-
-## Slicing
-
-```fortran
-s = 'Hello World'
-print "(A)", s%slice(first=1, last=5)  ! Hello
-print "(A)", s%slice(first=7)          ! World
-print "(A)", s%slice(stride=2)         ! HloWrd
-print "(A)", s%slice(stride=-1)        ! dlroW olleH
-```
-
-`slice` returns a standard `character`. All its arguments are optional and the bounds are clamped into the string, so a
-slice never goes out of bounds.
-
-## Searching Tagged Records
-
-Useful for extracting content between markup-style delimiters:
-
-```fortran
-s = '<test> <first> hello </first> <first> not first </first> </test>'
-print "(A)", s%search(tag_start='<first>', tag_end='</first>')//''
-! <first> hello </first>
-```
-
-## Temporary Names
-
-```fortran
-type(string) :: tmp
-
-tmp = s%tempname(prefix='my_prefix_')
-! returns a unique safe name for a temporary file or directory
-```
-
-## Operators
-
-| Operator | Result type | Description |
-|----------|-------------|-------------|
-| `//` | `character` | Concatenation; enables seamless use with Fortran intrinsics |
-| `.cat.` | `string` | Concatenation returning a `string` |
-| `==`, `/=` | `logical` | Equality / inequality |
-| `<`, `<=`, `>=`, `>` | `logical` | Lexicographic comparison |
-| `assignment(=)` | — | Assign from `character`, `string`, or any PENF numeric kind |
-
-## Fortran Built-in Replacements
-
-These generic interfaces accept `string` arguments in place of standard `character`:
-
-`adjustl`, `adjustr`, `count`, `index`, `len_trim`, `repeat`, `scan`, `trim`, `verify`
-
-```fortran
-type(string) :: s
-s = '  hello  '
-print "(A)", trim(s)//''         ! '  hello' (only trailing spaces are removed)
-print "(I0)", len_trim(s)        ! 7
-print "(I0)", index(s, 'ell')    ! 4
-```

@@ -47,3 +47,7 @@ docs/node_modules/
 docs/package-lock.json
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+
+# docs examples scratch and library builds
+build/
+lib/

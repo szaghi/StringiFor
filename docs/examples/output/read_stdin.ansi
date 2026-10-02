@@ -1,0 +1,2 @@
+$ echo '"two words" three' | read_stdin
+[two words] [three]

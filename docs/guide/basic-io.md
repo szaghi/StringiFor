@@ -1,119 +1,94 @@
-# Basic I/O
+---
+title: Strings and I/O
+---
 
-The `string` type integrates with Fortran's I/O system through defined write/read type-bound procedures and operator overloading.
+# Strings and I/O
 
-## Importing
+## The type
 
 ```fortran
 use stringifor
-```
-
-This brings in the `string` type and all overloaded operators and built-in replacements.
-
-## Assigning and Printing
-
-The simplest way to create a `string` is by assigning a character literal:
-
-```fortran
 type(string) :: s
-
-s = 'Hello World'
 ```
 
-There are three equivalent ways to print it:
+A `string` has one component, `raw`, an allocatable character of deferred length and of kind `CK` (the default character
+kind). It is allocated by the first assignment and it takes the length of what is assigned:
 
-```fortran
-! 1. chars() returns a standard character variable
-print "(A)", s%chars()
+<<< @/examples/snippets/allocation.f90
 
-! 2. Defined I/O (requires GFortran >= 7.1 for DT descriptor)
-print "(DT)", s
+<<< @/examples/output/allocation.ansi{ansi}
 
-! 3. Concatenation with '' triggers automatic conversion to character
-print "(A)", s//''
-```
+- `is_allocated()` tells whether the string has been assigned; `len()` is 0 for a string not allocated.
+- `free` deallocates it.
+- Most methods called on a string not allocated return a string not allocated (or zero, or false).
+
+## Assignment, concatenation, comparison
+
+<<< @/examples/snippets/operators.f90
+
+<<< @/examples/output/operators.ansi{ansi}
+
+| Operator | Operands | Result |
+|---|---|---|
+| `=` | a string from a string, a character, an integer or a real of any kind | — |
+| `//` | string and string, string and character, character and string | `character` |
+| `.cat.` | the same | `string` |
+| `==`, `/=`, `<`, `<=`, `>=`, `>` | the same | `logical`, the comparison of the characters |
+
+`//` returns a `character` on purpose: it is what makes a string usable wherever Fortran expects a character.
+
+## Printing
+
+<<< @/examples/snippets/print_string.f90
+
+<<< @/examples/output/print_string.ansi{ansi}
 
 ::: tip
-The `//''` idiom is the most portable and concise way to pass a `string` wherever a `character` is expected. The concatenation operator `//` is overloaded to return a standard `character`, enabling seamless integration with any Fortran procedure expecting a `character` argument.
+The `//''` idiom is the shortest way to pass a string where a `character` is expected, a `print` or the argument of any
+procedure. `chars()` does the same and it is safe on a string not allocated: it returns an empty character.
 :::
 
-## Reading from Standard Input
+The `DT` edit descriptor uses the defined I/O of the type; it requires a compiler that supports defined derived-type
+I/O (gfortran ≥ 7.1).
 
-```fortran
-type(string) :: s
+## Reading
 
-read *, s
-```
+List-directed and formatted reads accept a string. A list-directed read takes one blank-delimited word, or a quoted
+text:
 
-## Reading from a File
+<<< @/examples/snippets/read_stdin.f90
 
-### Line by line
+<<< @/examples/output/read_stdin.ansi{ansi}
 
-```fortran
-type(string) :: line
-integer      :: unit, iostat
+To read from files, a line or a whole file at a time, see [Files and Paths](./advanced).
 
-open(newunit=unit, file='data.txt', status='OLD')
-do
-  call line%read_line(unit=unit, iostat=iostat)
-  if (iostat /= 0) exit
-  ! process line...
-end do
-close(unit)
-```
+## The Fortran intrinsics
 
-### All lines at once
+`adjustl`, `adjustr`, `count`, `index`, `len_trim`, `repeat`, `scan`, `trim` and `verify` are overloaded for strings,
+as functions and as methods:
 
-```fortran
-type(string), allocatable :: lines(:)
+<<< @/examples/snippets/intrinsics.f90
 
-call read_file(file='data.txt', lines=lines)
-! lines(1), lines(2), ... contain each line
-```
+<<< @/examples/output/intrinsics.ansi{ansi}
 
-### Entire file as a single stream
+They behave like the intrinsics: `trim` removes the trailing blanks only, `adjustl` keeps the length. To remove the
+blanks at both ends use [`strip`](./string-manipulation#cleaning-and-replacing).
 
-```fortran
-type(string) :: content
+::: info
+`len` is a method (`s%len()`) but it is not overloaded as a function of the module, to avoid conflicts with the
+intrinsic in some compilers.
+:::
 
-call content%read_file(file='data.txt')
-```
+## Arrays of strings
 
-## Writing to a File
+Each element of an array has its own length, and the methods are elemental: they apply to a whole array.
 
-```fortran
-type(string) :: lines(3)
+<<< @/examples/snippets/arrays.f90
 
-lines(1) = 'First line'
-lines(2) = 'Second line'
-lines(3) = 'Third line'
+<<< @/examples/output/arrays.ansi{ansi}
 
-call write_file(file='output.txt', lines=lines)
-```
-
-## Unformatted (Binary) I/O
-
-Both `read_file` / `write_file` accept an optional `form='unformatted'` argument. Only `access='stream'` with `new_line` as line terminator is supported:
-
-```fortran
-type(string), allocatable :: lines(:)
-
-call read_file(file='data.bin', lines=lines, form='unformatted')
-call write_file(file='data.bin', lines=lines, form='unformatted')
-```
-
-## Checking Allocation
-
-```fortran
-type(string) :: s
-
-if (s%is_allocated()) then
-  print "(A)", s%chars()
-end if
-```
-
-## Freeing Memory
-
-```fortran
-call s%free()
-```
+::: warning
+An array of strings must be allocated before it is assigned as a whole: the assignment of the type is a defined one,
+and it does not allocate its left-hand side. The methods that return several strings (`split`, `justify`, `glob`,
+`read_file`) are subroutines that allocate their result.
+:::

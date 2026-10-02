@@ -1,0 +1,9 @@
+$ report
+3000.00: T T F
+4900.50: T T F
+2500: T F T
+n/a: F
+highest price: 4900.50
+total: +0.10400500000000000E+005
+cars: +3
+year 2001 in hexadecimal: 7d1

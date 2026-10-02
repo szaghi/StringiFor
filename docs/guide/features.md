@@ -4,64 +4,70 @@ title: Features
 
 # Features
 
-## Design Goals
+## One type, one module
 
-| Goal | Description |
-|------|-------------|
-| **Seamless interchangeability** | Works transparently with standard `character` variables via overloaded `//`, `=`, and comparison operators |
-| **Rich built-in methods** | `split`, `replace`, `join`, `basename`, `camelcase`, `to_number`, and many more as type-bound procedures |
-| **Low memory consumption** | Only one `character(kind=CK, len=:), allocatable` member — arrays of strings can hold elements of different lengths |
-| **Safe** | Almost all methods are `elemental` or `pure` |
-| **Robust** | Test-Driven Developed — a comprehensive doctest suite is embedded directly in the source |
+Everything is in the `string` type, exported by the `stringifor` module together with the numeric kinds and a few
+procedures:
 
-## String Manipulation
+```fortran
+use stringifor
+type(string) :: s
 
-- Case conversion: `upper`, `lower`, `swapcase`, `capitalize`, `camelcase`, `snakecase`, `startcase`
-- Search and replace: `replace`, `search`, `index`, `count`, `scan`, `verify`
-- Splitting and joining: `split`, `split_chunked`, `partition`, `join`, `strjoin`
-- Padding and trimming: `fill`, `strip`, `adjustl`, `adjustr`, `trim`
-- Transformation: `reverse`, `reverse_words`, `unique`, `insert`, `slice`, `escape`, `unescape`
-- Text layout: `justify`, `len_last_word`
-- Comparison helpers: `common_prefix`, `compare_version`
-- Encoding: `encode` / `decode` (Base64 via BeFoR64)
-- Terminal output: `colorize` (ANSI styles via FACE)
+s = 'Hello World'            ! assign
+print '(A)', s%upper()//''   ! call a method, get a character with //
+```
 
-## Number Casting
+## Feature map
 
-- Assign any PENF integer or real kind directly to a `string` via overloaded `assignment(=)`
-- Hexadecimal representation of an integer string with `hex`
-- Cast back with `to_number(kind=...)` — supports all PENF kinds: `I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P` (the latter requires the `-DPENF_R16P` preprocessor flag)
-- Inquiry methods: `is_number`, `is_integer`, `is_real`, `is_digit`
+| Area | Features | Where |
+|---|---|---|
+| **The type** | a string of any length; arrays with elements of different lengths; assignment from characters, strings and numbers; `//` (a character) and `.cat.` (a string); `==`, `/=`, `<`, `<=`, `>=`, `>`; defined I/O | [Strings and I/O](./basic-io) |
+| **Intrinsics** | `adjustl`, `adjustr`, `count`, `index`, `len_trim`, `repeat`, `scan`, `trim`, `verify` accept a string | [Strings and I/O](./basic-io#the-fortran-intrinsics) |
+| **Case** | `upper`, `lower`, `swapcase`, `capitalize`, `camelcase`, `snakecase`, `startcase`; `is_upper`, `is_lower` | [String Manipulation](./string-manipulation#case-conversion) |
+| **Cleaning** | `strip` (blanks or a set of characters), `replace`, `unique`, `insert`, `escape`, `unescape` | [String Manipulation](./string-manipulation#cleaning-and-replacing) |
+| **Tokens** | `split`, `split_chunked`, `partition`, `join`, `strjoin` (1D and 2D arrays) | [String Manipulation](./string-manipulation#splitting-and-joining) |
+| **Parts** | `slice` with a stride, `reverse`, `reverse_words`, `start_with`, `end_with`, `count`, `index`, `scan`, `verify`, `search` between tags | [String Manipulation](./string-manipulation#slicing-and-reversing) |
+| **Layout** | `fill`, `justify`, `len_last_word` | [String Manipulation](./string-manipulation#padding-and-layout) |
+| **Comparing** | `common_prefix`, `compare_version` | [String Manipulation](./string-manipulation#comparing) |
+| **Numbers** | assignment from any integer and real kind; `to_number`; `is_number`, `is_integer`, `is_real`, `is_digit`; `hex` | [Numbers](./numbers) |
+| **Files** | `read_file`, `read_lines`, `read_line`, `write_file`, `write_lines`, `write_line`, formatted or unformatted stream | [Files and Paths](./advanced) |
+| **Paths** | `basedir`, `basename`, `extension`, `glob`, `tempname` | [Files and Paths](./advanced#paths) |
+| **Encoding and colours** | base64 `encode` and `decode`; ANSI `colorize` | [Files and Paths](./advanced#encoding) |
 
-## File and Path Utilities
+The [methods summary](./api-reference) lists every method with its arguments.
 
-- Read/write files line-by-line or as streams: `read_file`, `write_file`, `read_line`, `read_lines`, `write_line`, `write_lines`
-- Path components: `basedir`, `basename`, `extension`
-- File-system glob: `glob`
-- Unique temporary names: `tempname`
+## Design goals
 
-## Operators
+| Goal | How |
+|---|---|
+| **Interchangeable with `character`** | overloaded assignment, `//`, comparisons and intrinsics: a string goes wherever a character does |
+| **Low memory consumption** | one allocatable character is the only component: each element of an array is as long as its content |
+| **Safe** | almost every method is `elemental` or `pure`; the methods return new values and leave the string unchanged |
+| **Tested** | every method carries doctests in its source; every example of these pages is compiled and run |
 
-| Operator | Returns | Notes |
-|----------|---------|-------|
-| `=` | — | From `character`, `string`, or any PENF numeric kind |
-| `//` | `character` | Enables seamless use with Fortran intrinsics |
-| `.cat.` | `string` | Concatenation keeping the `string` type |
-| `==`, `/=` | `logical` | Equality / inequality |
-| `<`, `<=`, `>=`, `>` | `logical` | Lexicographic comparison |
+## Module architecture
 
-## Fortran Built-in Replacements
+```mermaid
+flowchart TD
+  sf["stringifor<br/><i>the public module: use stringifor</i>"] --> st["stringifor_string_t<br/>the string type"]
+  sf --> penf["PENF<br/>numeric kinds"]
+  st --> penf
+  st --> face["FACE<br/>ANSI colours"]
+  st --> b64["BeFoR64<br/>base64"]
+```
 
-Generic interfaces that accept `type(string)` in place of `character`:
+Use only the `stringifor` module: it exports the type, the kinds (`I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P`), the
+character kind `CK`, the overloaded intrinsics, and the procedures `read_file`, `read_lines`, `write_file`,
+`write_lines`, `glob` and `strjoin`.
 
-`adjustl` · `adjustr` · `count` · `index` · `len_trim` · `repeat` · `scan` · `trim` · `verify`
+## Compiler support
 
-## Compiler Support
-
-| Compiler | Minimum Version | Status |
-|----------|----------------|--------|
+| Compiler | Minimum version | Status |
+|---|---|---|
 | GNU gfortran | ≥ 9.2.0 | Full support |
 | Intel `ifort` / `ifx` | ≥ 19.0.4 | Full support |
 | NVIDIA `nvfortran` | — | Builds with the `_NVF` macro defined, which disables the `I2P` kind; not regularly tested |
 | IBM XL | — | Not tested |
 | NAG | — | Not tested |
+
+Any feature request is welcome: open an issue on [GitHub](https://github.com/szaghi/StringiFor/issues).

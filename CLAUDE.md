@@ -156,6 +156,10 @@ fobis rule --ex deldoc
 
 The site is built with **VitePress** from `docs/`. The hand-written guide lives in `docs/guide/`; the API pages in `docs/api/` are generated from the inline `!<` doc comments by `formal` (`formal-ford2vitepress`), configured by `docs/ford.md`. New public methods must be added by hand to `docs/guide/api-reference.md` and `docs/guide/features.md`.
 
+The pages are organised like FLAP's (`~/fortran/FLAP`): one linear sidebar in `docs/.vitepress/config.mts` (Start here, Tutorial, Recipes, Reference, Project), the tutorial and the cookbook in `docs/manual/`, the reference in `docs/guide/`.
+
+Every code sample and output of the tutorial, cookbook and reference is generated: the programs in `docs/examples/src` (`!run ID COMMAND` lines declare the runs shown, `!region NAME` ... `!endregion NAME` the parts included alone, `!as NAME` the name its runs call it by, `!image ID` an SVG of a run, `!cast NAME ID ...` an animated SVG of a terminal session) are built and run by `bash scripts/docs_examples.sh`, which rewrites `docs/examples/snippets`, `docs/examples/output` and `docs/examples/images`; pages include them with `<<< @/examples/snippets/NAME.f90` and `<<< @/examples/output/ID.ansi{ansi}`. Never paste an output by hand: add a run, rerun the script and commit the result. The quick start in `README.md` is a copy of `docs/examples/snippets/quickstart.f90`: update it when that program changes. Do not name an example after a shell keyword or a common command (`case`, `split`, `join`).
+
 ## Dependency Setup
 
 After cloning, fetch the dependencies:

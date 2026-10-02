@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="306" height="272" viewBox="0 0 306 272">
+<rect width="306" height="272" rx="8" fill="#282c34"/>
+<circle cx="18" cy="16" r="6" fill="#ff5f56"/><circle cx="38" cy="16" r="6" fill="#ffbd2e"/>
+<circle cx="58" cy="16" r="6" fill="#27c93f"/>
+<text font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14" fill="#dcdfe4" xml:space="preserve">
+<tspan x="18" y="59"><tspan fill="#98c379">$</tspan> report data/cars.csv</tspan>
+<tspan x="18" y="78"><tspan fill="#56b6c2" font-weight="bold">Cars Report</tspan></tspan>
+<tspan x="18" y="97">===========</tspan>
+<tspan x="18" y="116">1997  Ford  E350    ..3000</tspan>
+<tspan x="18" y="135">1999  Chevy Venture ..4901</tspan>
+<tspan x="18" y="154">2001  Fiat  Punto   ..2500</tspan>
+<tspan x="18" y="173"></tspan>
+<tspan x="18" y="192">The cheapest is the Fiat Punto:</tspan>
+<tspan x="18" y="211">  <tspan font-style="italic">a  small  city  car with a low</tspan></tspan>
+<tspan x="18" y="230">  <tspan font-style="italic">fuel    consumption    and   a</tspan></tspan>
+<tspan x="18" y="249">  <tspan font-style="italic">surprisingly large boot       </tspan></tspan>
+</text></svg>

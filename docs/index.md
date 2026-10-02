@@ -4,13 +4,19 @@ layout: home
 hero:
   name: StringiFor
   text: Strings Fortran Manipulator
-  tagline: A pure Fortran 2008+ library providing an OOP string type with Python-like methods.
+  tagline: "A string type for modern Fortran with the methods you miss from Python: split, join, replace, strip, slice, justify, cast to and from numbers, read and write files. One type, one module, pure Fortran 2008."
   actions:
     - theme: brand
-      text: Guide
-      link: /guide/
+      text: Tutorial
+      link: /manual/tutorial/01-first-string
     - theme: alt
-      text: API Reference
+      text: Cookbook
+      link: /manual/cookbook
+    - theme: alt
+      text: Reference
+      link: /guide/features
+    - theme: alt
+      text: API
       link: /api/
     - theme: alt
       text: View on GitHub
@@ -18,37 +24,85 @@ hero:
 
 features:
   - icon: 🔤
-    title: Rich String API
-    details: Split, join, replace, search, camelCase, snakeCase, pad, strip, slice, reverse, justify, version comparison and more — all as type-bound procedures on a single string type.
+    title: A real string type
+    details: "One type holding a string of any length: arrays whose elements have different lengths, no trim() everywhere, no silent truncation."
+    link: /manual/tutorial/01-first-string
+    linkText: A first string
+  - icon: 🔗
+    title: A drop-in for character
+    details: "Assignment, //, the comparison operators and the intrinsics (trim, index, len_trim, repeat, ...) accept a string wherever a character goes."
+    link: /guide/basic-io
+    linkText: Strings and I/O
+  - icon: ✂️
+    title: Split, join, slice
+    details: "split and partition into tokens, join arrays back, slice with a stride, reverse characters or words, replace, strip a set of characters."
+    link: /guide/string-manipulation
+    linkText: String manipulation
+  - icon: 🔠
+    title: Case and layout
+    details: "upper, lower, capitalize, camelCase, snake_case, Start Case; pad to a width, wrap a paragraph in fully justified lines."
+    link: /guide/string-manipulation#case-conversion
+    linkText: Case conversion
   - icon: 🔢
-    title: Seamless Number Casting
-    details: Assign any integer or real (all PENF kinds) directly to a string, cast back with to_number(), or get the hexadecimal representation with hex(). No format strings needed.
+    title: Numbers in, numbers out
+    details: "Assign any integer or real kind to a string, cast back with to_number, ask is_number, is_integer, is_real; hexadecimal representation with hex."
+    link: /guide/numbers
+    linkText: Numbers
   - icon: 📁
-    title: File & Path Utilities
-    details: Read and write files line-by-line or as streams. Manipulate file paths with basedir, basename, and extension methods.
-  - icon: 🛠️
-    title: Multi Build & Install
-    details: Build with FoBiS, fpm, CMake or GNU Make. Install as a static or shared library, or pull in directly as a FoBiS or fpm dependency.
+    title: Files and paths
+    details: "Read a file into an array of lines or one string, write it back, read line by line; basedir, basename, extension, glob, temporary names."
+    link: /guide/advanced
+    linkText: Files and paths
+  - icon: ⚖️
+    title: Comparisons that know more
+    details: "Longest common prefix of many strings, version numbers compared field by field, start_with, end_with, count."
+    link: /guide/string-manipulation#comparing
+    linkText: Comparing
+  - icon: 🎨
+    title: Encoding and colours
+    details: "Base64 encode and decode, escape and unescape, ANSI colours and styles for the terminal."
+    link: /guide/advanced#colours-for-the-terminal
+    linkText: Colours
+  - icon: ⚡
+    title: Elemental by design
+    details: "Almost every method is pure or elemental: apply it to a whole array of strings in one statement, use it in pure procedures."
+    link: /manual/cookbook#a-method-on-every-element-of-an-array
+    linkText: Arrays of strings
   - icon: 🧪
-    title: OOP/TDD Designed
-    details: A single string type with all functionality as type-bound procedures. Every method is covered by embedded doctests — safe, pure, and elemental where possible.
-  - icon: 🆓
-    title: Free & Open Source
-    details: Multi-licensed — GPLv3 for FOSS projects, BSD 2/3-Clause or MIT for commercial use. Fortran 2008+ standard compliant.
+    title: Tested by its own documentation
+    details: "Every method carries doctests in its source; every example of these pages is a program that is compiled and run to produce the output shown."
+    link: /manual/
+    linkText: The examples
+  - icon: 🛠️
+    title: Standard Fortran, any build
+    details: "Fortran 2008, built with FoBiS, fpm, CMake or Make. Three small dependencies, fetched for you."
+    link: /guide/installation
+    linkText: Installation
+  - icon: 🔓
+    title: Multi-licensed
+    details: "GPL v3 for FOSS projects; BSD 2-Clause, BSD 3-Clause or MIT for closed source and commercial ones: pick the license that fits."
+    link: #copyrights
+    linkText: Copyrights
 ---
 
 ## Quick start
 
-A minimal *plate*:
+A real session with a small StringiFor program: every answer is one method of the `string` type.
 
-```fortran
-use stringifor
-type(string) :: s
+<p align="center"><img src="./examples/images/quickstart.svg" alt="a terminal session of a StringiFor program: upper case, snake case, reversed words, justified text, version comparison, hexadecimal, number detection"></p>
 
-s = 'Hello, World!'
-print "(A)", s%upper()//'' ! HELLO, WORLD!
-print "(A)", s%lower()//'' ! hello, world!
-```
+This is the whole program: a `select case` on the command, one method for each answer.
+
+<<< @/examples/snippets/quickstart.f90
+
+## Grows with your program
+
+The same methods take you from a line of text to a report read from a file, cleaned, computed and laid out. This is the
+output of the program that the [tutorial](/manual/tutorial/01-first-string) builds step by step:
+
+<p align="center"><img src="./examples/images/report_6.svg" alt="the report printed by the program of the tutorial"></p>
+
+Learn StringiFor step by step in the [tutorial](/manual/tutorial/01-first-string), find quick answers in the [cookbook](/manual/cookbook), look up every detail in the [reference](/guide/features#feature-map).
 
 ## Authors
 

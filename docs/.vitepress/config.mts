@@ -1,6 +1,55 @@
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import apiSidebar from '../api/_sidebar.json'
 
+// one sidebar for every page but the API, in reading order: the "previous" and "next" links at the bottom of a page
+// follow it, so the documentation reads from the first page to the last
+const docs = [
+  {
+    text: 'Start here',
+    items: [
+      { text: 'Introduction', link: '/guide/' },
+      { text: 'Installation', link: '/guide/installation' },
+    ],
+  },
+  {
+    text: 'Tutorial',
+    items: [
+      { text: 'Overview',                     link: '/manual/' },
+      { text: '1. A first string',            link: '/manual/tutorial/01-first-string' },
+      { text: '2. Cleaning and transforming', link: '/manual/tutorial/02-cleaning' },
+      { text: '3. Splitting and joining',     link: '/manual/tutorial/03-splitting' },
+      { text: '4. Numbers',                   link: '/manual/tutorial/04-numbers' },
+      { text: '5. Files and paths',           link: '/manual/tutorial/05-files' },
+      { text: '6. A polished report',         link: '/manual/tutorial/06-report' },
+    ],
+  },
+  {
+    text: 'Recipes',
+    items: [
+      { text: 'Cookbook', link: '/manual/cookbook' },
+    ],
+  },
+  {
+    text: 'Reference',
+    items: [
+      { text: 'Feature map',         link: '/guide/features' },
+      { text: 'Strings and I/O',     link: '/guide/basic-io' },
+      { text: 'String Manipulation', link: '/guide/string-manipulation' },
+      { text: 'Numbers',             link: '/guide/numbers' },
+      { text: 'Files and Paths',     link: '/guide/advanced' },
+      { text: 'Methods Summary',     link: '/guide/api-reference' },
+    ],
+  },
+  {
+    text: 'Project',
+    items: [
+      { text: 'Comparison',   link: '/guide/comparison' },
+      { text: 'Changelog',    link: '/guide/changelog' },
+      { text: 'Contributing', link: '/guide/contributing' },
+    ],
+  },
+]
+
 export default withMermaid({
   title: 'StringiFor Documentation',
   base: '/StringiFor/',
@@ -19,53 +68,27 @@ export default withMermaid({
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
+      { text: 'Start here', link: '/guide/', activeMatch: '^/guide/(index|installation)' },
+      { text: 'Tutorial', link: '/manual/tutorial/01-first-string', activeMatch: '^/manual/(index|tutorial/)' },
+      { text: 'Cookbook', link: '/manual/cookbook', activeMatch: '^/manual/cookbook' },
       {
-        text: 'Guide',
-        items: [
-          { text: 'About',              link: '/guide/' },
-          { text: 'Features',           link: '/guide/features' },
-          { text: 'Comparison',         link: '/guide/comparison' },
-          { text: 'Installation',       link: '/guide/installation' },
-          { text: 'Basic I/O',          link: '/guide/basic-io' },
-          { text: 'String Manipulation',link: '/guide/string-manipulation' },
-          { text: 'Numbers',            link: '/guide/numbers' },
-          { text: 'Advanced Usage',     link: '/guide/advanced' },
-          { text: 'API Reference',      link: '/guide/api-reference' },
-          { text: 'Contributing',       link: '/guide/contributing' },
-          { text: 'Changelog',          link: '/guide/changelog' },
-        ],
+        text: 'Reference',
+        link: '/guide/features',
+        activeMatch: '^/guide/(features|basic-io|string-manipulation|numbers|advanced|api-reference)',
       },
       { text: 'API', link: '/api/' },
+      {
+        text: 'Project',
+        items: [
+          { text: 'Comparison',   link: '/guide/comparison' },
+          { text: 'Changelog',    link: '/guide/changelog' },
+          { text: 'Contributing', link: '/guide/contributing' },
+        ],
+      },
     ],
     sidebar: {
-      '/guide/': [
-        {
-          text: 'Introduction',
-          items: [
-            { text: 'About',      link: '/guide/' },
-            { text: 'Features',   link: '/guide/features' },
-            { text: 'Comparison', link: '/guide/comparison' },
-          ],
-        },
-        {
-          text: 'Getting Started',
-          items: [
-            { text: 'Installation',        link: '/guide/installation' },
-            { text: 'Basic I/O',           link: '/guide/basic-io' },
-            { text: 'String Manipulation', link: '/guide/string-manipulation' },
-            { text: 'Numbers',             link: '/guide/numbers' },
-            { text: 'Advanced Usage',      link: '/guide/advanced' },
-            { text: 'API Reference',       link: '/guide/api-reference' },
-          ],
-        },
-        {
-          text: 'Project',
-          items: [
-            { text: 'Contributing', link: '/guide/contributing' },
-            { text: 'Changelog',    link: '/guide/changelog' },
-          ],
-        },
-      ],
+      '/guide/': docs,
+      '/manual/': docs,
       '/api/': [
         {
           text: 'API Reference',

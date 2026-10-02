@@ -847,9 +847,11 @@ contains
    elemental function basedir(self, sep)
    !< Return the base directory name of a string containing a file name.
    !<
+   !< @note A file name without a directory has a null base directory.
+   !<
    !<```fortran
    !< type(string) :: string1
-   !< logical      :: test_passed(4)
+   !< logical      :: test_passed(5)
    !< string1 = '/bar/foo.tar.bz2'
    !< test_passed(1) = string1%basedir()//''=='/bar'
    !< string1 = './bar/foo.tar.bz2'
@@ -858,6 +860,8 @@ contains
    !< test_passed(3) = string1%basedir()//''=='bar'
    !< string1 = '\bar\foo.tar.bz2'
    !< test_passed(4) = string1%basedir(sep='\')//''=='\bar'
+   !< string1 = 'foo.tar.bz2'
+   !< test_passed(5) = string1%basedir()//''==''
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -869,9 +873,8 @@ contains
 
    if (allocated(self%raw)) then
      sep_ = UIX_DIR_SEP ; if (present(sep)) sep_ = sep
-     basedir = self
      pos = index(self%raw, sep_, back=.true.)
-     if (pos>0) basedir%raw = self%raw(1:pos-1)
+     basedir%raw = self%raw(1:max(pos-1, 0))
    endif
    endfunction basedir
 
@@ -1317,14 +1320,18 @@ contains
    elemental function fill(self, width, right, filling_char) result(filled)
    !< Pad string on the left (or right) with zeros (or other char) to fill width.
    !<
+   !< @note A string already as wide as (or wider than) `width` is returned unchanged.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(4)
+   !< logical      :: test_passed(6)
    !< astring = 'this is string example....wow!!!'
    !< test_passed(1) = astring%fill(width=40)//''=='00000000this is string example....wow!!!'
    !< test_passed(2) = astring%fill(width=50)//''=='000000000000000000this is string example....wow!!!'
    !< test_passed(3) = astring%fill(width=50, right=.true.)//''=='this is string example....wow!!!000000000000000000'
    !< test_passed(4) = astring%fill(width=40, filling_char='*')//''=='********this is string example....wow!!!'
+   !< test_passed(5) = astring%fill(width=32)//''=='this is string example....wow!!!'
+   !< test_passed(6) = astring%fill(width=5)//''=='this is string example....wow!!!'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -1345,6 +1352,8 @@ contains
          else
             filled%raw = self%raw//repeat(filling_char_, width-len(self%raw))
          endif
+      else
+         filled%raw = self%raw
       endif
    endif
    endfunction fill
@@ -1426,6 +1435,21 @@ contains
    !<
    !< @note Method not portable: works only on Unix/GNU Linux OS.
    !<
+   !< @note If no pathname matches the pattern `list` is allocated with zero size.
+   !<
+   !<```fortran
+   !< type(string)                  :: astring
+   !< type(string),     allocatable :: alist_str(:)
+   !< character(len=:), allocatable :: alist_chr(:)
+   !< logical                       :: test_passed(2)
+   !< call astring%glob(pattern='no-file-has-this-name-*', list=alist_str)
+   !< test_passed(1) = allocated(alist_str).and.size(alist_str, dim=1)==0
+   !< call astring%glob(pattern='no-file-has-this-name-*', list=alist_chr)
+   !< test_passed(2) = allocated(alist_chr).and.size(alist_chr, dim=1)==0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   !<
    !<```fortran
    !< type(string)                  :: astring
    !< type(string),     allocatable :: alist_str(:)
@@ -1465,9 +1489,10 @@ contains
    integer(I4P)                           :: tempunit !< Unit of temporary file.
 
    tempname = self%tempname()
-   call execute_command_line('ls -1 '//trim(adjustl(pattern))//' > '//tempname)
+   call execute_command_line('ls -1 '//trim(adjustl(pattern))//' > '//tempname//' 2> /dev/null')
    call tempfile%read_file(file=tempname)
-   call tempfile%split(sep=new_line('a'), tokens=list)
+   if (tempfile%len_trim()>0) call tempfile%split(sep=new_line('a'), tokens=list)
+   if (.not.allocated(list)) allocate(list(0)) ! no matches
    open(newunit=tempunit, file=tempname)
    close(unit=tempunit, status='delete')
    endsubroutine glob_string
@@ -2038,7 +2063,7 @@ contains
    endif
    endfunction strjoin_characters_array
 
-   pure function justify(self, width) result(lines)
+   pure subroutine justify(self, lines, width)
    !< Return the words of the string packed into fully justified lines of (at least) `width` characters.
    !<
    !< The words (separated by spaces) are greedily packed into lines; the blanks are evenly distributed between the words of each
@@ -2047,34 +2072,37 @@ contains
    !<
    !< @note A word longer than `width` is not broken: it is placed alone into a line longer than `width`.
    !<
-   !< @note If the string is not allocated or it has no words the result has zero size.
+   !< @note If the string is not allocated or it has no words `lines` has zero size.
+   !<
+   !< @note This is a subroutine, like [[string:split]]: a function returning the lines would need an assignment to an
+   !< unallocated array, that is not allowed for a type with a defined assignment.
    !<
    !<```fortran
    !< type(string)              :: astring
    !< type(string), allocatable :: lines(:)
    !< logical                   :: test_passed(9)
    !< astring = 'This is an example of text justification.'
-   !< lines = astring%justify(width=16)
+   !< call astring%justify(lines=lines, width=16)
    !< test_passed(1) = size(lines, dim=1)==3
    !< test_passed(2) = lines(1)//''=='This    is    an'
    !< test_passed(3) = lines(2)//''=='example  of text'
    !< test_passed(4) = lines(3)//''=='justification.  '
    !< astring = '  What must be   acknowledgment shall be '
-   !< lines = astring%justify(width=16)
+   !< call astring%justify(lines=lines, width=16)
    !< test_passed(5) = lines(1)//''=='What   must   be'
    !< test_passed(6) = lines(2)//''=='acknowledgment  '
    !< test_passed(7) = lines(3)//''=='shall be        '
-   !< lines = astring%justify(width=4)
+   !< call astring%justify(lines=lines, width=4)
    !< test_passed(8) = size(lines, dim=1)==6.and.lines(4)//''=='acknowledgment'
    !< astring = '   '
-   !< lines = astring%justify(width=16)
+   !< call astring%justify(lines=lines, width=16)
    !< test_passed(9) = size(lines, dim=1)==0
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string), intent(in)              :: self      !< The string.
-   integer,       intent(in)              :: width     !< Width of the justified lines.
-   type(string), allocatable              :: lines(:)  !< Justified lines.
+   class(string),             intent(in)  :: self      !< The string.
+   type(string), allocatable, intent(out) :: lines(:)  !< Justified lines.
+   integer,                   intent(in)  :: width     !< Width of the justified lines.
    type(string), allocatable              :: words(:)  !< Words of the string.
    type(string), allocatable              :: buffer(:) !< Lines buffer.
    character(kind=CK, len=:), allocatable :: line      !< Current line.
@@ -2128,7 +2156,7 @@ contains
    do g=1, Nl
       lines(g)%raw = buffer(g)%raw
    enddo
-   endfunction justify
+   endsubroutine justify
 
    elemental function len_last_word(self, sep) result(length)
    !< Return the length of the last word of the string.
@@ -2347,7 +2375,47 @@ contains
    !<
    !< The line is read as an ascii stream read until the eor is reached.
    !<
+   !< @note `iostat` is zero when a line has been read, an empty one included: the string is then set to the line. At the end
+   !< of the file `iostat` is the end-of-file code and the string is left unchanged, as it is on an error.
+   !<
    !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< integer      :: iostat
+   !< integer      :: scratch
+   !< integer      :: l
+   !< logical      :: test_passed(6)
+   !< open(newunit=scratch, status='SCRATCH')
+   !< write(scratch, "(A)") 'first'
+   !< write(scratch, "(A)") ''
+   !< write(scratch, "(A)") 'third'
+   !< rewind(scratch)
+   !< astring = 'untouched'
+   !< call astring%read_line(unit=scratch, iostat=iostat)
+   !< test_passed(1) = (iostat==0.and.astring=='first')
+   !< call astring%read_line(unit=scratch, iostat=iostat)
+   !< test_passed(2) = (iostat==0.and.astring%len()==0)
+   !< call astring%read_line(unit=scratch, iostat=iostat)
+   !< test_passed(3) = (iostat==0.and.astring=='third')
+   !< call astring%read_line(unit=scratch, iostat=iostat)
+   !< test_passed(4) = (is_iostat_end(iostat).and.astring=='third')
+   !< close(scratch)
+   !< open(newunit=scratch, status='SCRATCH', form='UNFORMATTED', access='STREAM')
+   !< write(scratch) 'first'//new_line('a')//new_line('a')//'last, not terminated'
+   !< rewind(scratch)
+   !< l = 0
+   !< do
+   !<   call astring%read_line(unit=scratch, iostat=iostat, form='unformatted')
+   !<   if (iostat/=0) exit
+   !<   l = l + 1
+   !< enddo
+   !< test_passed(5) = (l==3.and.astring=='last, not terminated')
+   !< test_passed(6) = is_iostat_end(iostat)
+   !< close(scratch)
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
    !<
    !<```fortran
    !< type(string)      :: astring
@@ -2427,7 +2495,9 @@ contains
          line = line//ch
       enddo
    endselect
-   10 if (line/='') self%raw = line
+   10 if (is_iostat_eor(iostat_)) iostat_ = 0                 ! the end of the record is the regular end of a line
+   if (is_iostat_end(iostat_).and.len(line)>0) iostat_ = 0 ! last line without line terminator
+   if (iostat_==0) self%raw = line
    if (present(iostat)) iostat = iostat_
    if (present(iomsg)) iomsg = iomsg_
    endsubroutine read_line
@@ -2497,11 +2567,8 @@ contains
    do
       line%raw = ''
       call line%read_line(unit=unit, form=form, iostat=iostat_, iomsg=iomsg_)
-      if (iostat_/=0.and..not.is_iostat_eor(iostat_)) then
-         exit
-      elseif (line/='') then
-         lines%raw = lines%raw//line%raw//new_line('a')
-      endif
+      if (iostat_/=0) exit
+      lines%raw = lines%raw//line%raw//new_line('a')
    enddo
    if (lines%raw/='') self%raw = lines%raw
    if (present(iostat)) iostat = iostat_

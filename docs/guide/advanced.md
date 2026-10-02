@@ -1,154 +1,112 @@
-# Advanced Usage
+---
+title: Files and Paths
+---
 
-## OS-Style Path Manipulation
+# Files and Paths
 
-The `string` type has methods for common file-path operations:
+## Reading
+
+<<< @/examples/snippets/readfile.f90
+
+<<< @/examples/output/readfile.ansi{ansi}
+
+| Procedure | What it reads |
+|---|---|
+| `call read_file(file, lines[, form][, iostat][, iomsg])` | a whole file, into an allocatable array with one string for each line |
+| `call read_lines(unit, lines[, form][, iostat][, iomsg])` | the same, from a connected unit |
+| `call s%read_file(file[, is_fast][, form][, iostat][, iomsg])` | a whole file into one string, line ends included |
+| `call s%read_lines(unit[, form][, iostat][, iomsg])` | the same, from a connected unit |
+| `call s%read_line(unit[, form][, iostat][, iomsg])` | one line from a connected unit |
+
+The first two are procedures of the module, the others methods. `is_fast=.true.` reads the file as a stream, in one
+read.
+
+Line by line:
+
+<<< @/examples/snippets/readline.f90
+
+<<< @/examples/output/readline.ansi{ansi}
+
+`iostat` is zero when a line has been read, an empty one included; at the end of the file it is the end-of-file code
+(`is_iostat_end(iostat)` is true) and the string is left unchanged. A last line without a line terminator is read like
+the others.
+
+## Writing
+
+<<< @/examples/snippets/writefile.f90
+
+<<< @/examples/output/writefile-cat.ansi{ansi}
+
+| Procedure | What it writes |
+|---|---|
+| `call write_file(file, lines[, form][, iostat][, iomsg])` | an array of strings, one for each line |
+| `call write_lines(unit, lines[, form][, iostat][, iomsg])` | the same, to a connected unit |
+| `call s%write_file(file[, form][, iostat][, iomsg])` | one string, as it is |
+| `call s%write_line(unit[, form][, iostat][, iomsg])` | one string to a connected unit, as one line |
+| `call s%write_lines(unit[, form][, iostat][, iomsg])` | one string to a connected unit, each of the lines it contains as a line |
+
+## Unformatted files
+
+Every procedure accepts `form='unformatted'`: the file is then read or written as a stream (`access='stream'`), the
+lines separated by the new-line character.
 
 ```fortran
-use stringifor
-type(string) :: s
-
-s = '/bar/foo.tar.bz2'
-
-print "(A)", s%basedir()//''                          ! /bar
-print "(A)", s%basename()//''                         ! foo.tar.bz2
-print "(A)", s%extension()//''                        ! .bz2
-print "(A)", s%basename(extension='.tar')//''         ! foo
-print "(A)", s%basename(strip_last_extension=.true.)//'' ! foo.tar
+call read_file(file='data.bin', lines=lines, form='unformatted')
+call write_file(file='data.bin', lines=lines, form='unformatted')
 ```
 
-| Method | Description |
-|--------|-------------|
-| `basedir()` | Directory part of a path |
-| `basename()` | File name part of a path |
-| `extension()` | File extension (including the dot) |
-| `basename(extension='.ext')` | Base name stripped of the given extension |
-| `basename(strip_last_extension=.true.)` | Base name with the last extension removed |
+## Paths
 
-## XML-Style Tag Search
+<<< @/examples/snippets/paths.f90
 
-`search` finds the first occurrence of content delimited by start/end tags:
+<<< @/examples/output/paths.ansi{ansi}
 
-```fortran
-use stringifor
-type(string) :: s
+| Method | Result |
+|---|---|
+| `basedir([sep])` | the directory of a path |
+| `basename([sep][, extension][, strip_last_extension])` | the file name, optionally without an extension |
+| `extension()` | the last extension, with its dot |
 
-s = '<test> <first> hello </first> <first> not the first </first> </test>'
+`sep` is the separator of the directories, `/` by default. A file name without a directory has an empty `basedir`.
 
-print "(A)", s%search(tag_start='<first>', tag_end='</first>')//''
-! <first> hello </first>
-```
+## Listing files
 
-Only the **first** matching region is returned. This is useful for simple markup extraction without a full XML parser.
+<<< @/examples/snippets/glob.f90
 
-## Glob Pattern Matching
+<<< @/examples/output/glob.ansi{ansi}
 
-```fortran
-use stringifor
-type(string)              :: s
-type(string), allocatable :: matches(:)
-
-call s%glob(pattern='*.f90', list=matches)
-
-! or use the module-level procedure, that takes the string as first argument
-call glob(self=s, pattern='src/lib/*.F90', list=matches)
-```
-
-`list` can also be a deferred-length `character` array. The pattern follows the rules of the Unix shell.
+`glob(pattern, list)` returns the paths matching a pattern, with the rules of the shell; `list` is an allocatable
+array of strings or of deferred-length characters, allocated with zero size when nothing matches. It is also a procedure
+of the module, `call glob(self, pattern, list)`.
 
 ::: warning
-`glob` relies on the `ls` shell command: it works only on Unix/GNU Linux systems.
+`glob` runs the `ls` command: it works on Unix-like systems only.
 :::
 
-## Naive CSV Parser
+## Temporary names
 
-A practical demonstration of combining `read_file`, `split`, `count`, and `to_number`:
+<<< @/examples/snippets/tempname.f90
 
-```fortran
-use stringifor
-implicit none
+<<< @/examples/output/tempname.ansi{ansi}
 
-type(string)              :: csv
-type(string), allocatable :: rows(:)
-type(string), allocatable :: columns(:)
-type(string), allocatable :: cells(:,:)
-type(string)              :: most_expensive
-real(R8P)                 :: highest_cost
-integer                   :: rows_number, columns_number, r
+`tempname([is_file][, prefix][, path])` returns a name that no file (or, with `is_file=.false.`, no directory) of `path`
+has, starting with `prefix`. The name changes at each call: the example prints only what does not.
 
-! Read the entire file into a single string stream, then split into rows
-call csv%read_file(file='cars.csv')
-call csv%split(tokens=rows, sep=new_line('a'))
+## Encoding
 
-rows_number    = size(rows, dim=1)
-columns_number = rows(1)%count(',') + 1
+<<< @/examples/snippets/encode_base64.f90
 
-allocate(cells(1:columns_number, 1:rows_number))
-do r = 1, rows_number
-  call rows(r)%split(tokens=columns, sep=',')
-  cells(1:columns_number, r) = columns
-end do
+<<< @/examples/output/encode_base64.ansi{ansi}
 
-! Print as a Markdown table
-print "(A)", '| ' // csv%join(array=cells(:, 1), sep=' | ') // ' |'
-print "(A)", '|' // repeat('----|', columns_number)
-do r = 2, rows_number
-  print "(A)", '| ' // csv%join(array=cells(:, r), sep=' | ') // ' |'
-end do
+`encode(codec)` and `decode(codec)` take the name of the codec; `base64` is the only one available. The decoded string
+has exactly the encoded length: its blanks are preserved, and the padding of the code can be omitted.
 
-! Find the most expensive car (column 5 = Price)
-most_expensive = 'unknown'
-highest_cost   = -1._R8P
-do r = 2, rows_number
-  if (cells(5, r)%to_number(kind=1._R8P) >= highest_cost) then
-    highest_cost   = cells(5, r)%to_number(kind=1._R8P)
-    most_expensive = csv%join(array=[cells(2, r), cells(3, r)], sep=' ')
-  end if
-end do
-print "(A)", 'Most expensive: ' // most_expensive
-```
+## Colours for the terminal
 
-The `cars.csv` file used above looks like:
+<<< @/examples/snippets/colors.f90
 
-```
-Year, Make, Model, Description, Price
-1997, Ford, E350, ac abs moon, 3000.00
-1999, Chevy, Venture "Extended Edition", , 4900.00
-1999, Chevy, Venture "Extended Edition Very Large", , 5000.00
-```
+<p align="center"><img src="../examples/images/colors.svg" alt="three coloured lines in a terminal"></p>
 
-::: warning
-This is an intentionally naive parser — it does not handle quoted fields containing the delimiter, or escaped quotes. It demonstrates the API rather than production-quality CSV parsing.
-:::
-
-## Colorized Terminal Output
-
-Using the built-in FACE integration:
-
-```fortran
-use stringifor
-type(string) :: s
-
-s = 'Warning!'
-print "(A)", s%colorize(color_fg='yellow', style='bold_on')
-```
-
-`colorize` returns a standard `character`; `color_fg`, `color_bg` and `style` are all optional and take the names defined
-by [FACE](https://github.com/szaghi/FACE).
-
-## Joining 2D Arrays (strjoin)
-
-`strjoin` extends `join` to work on 2D arrays, collapsing either rows or columns:
-
-```fortran
-use stringifor
-type(string) :: grid(3,2)
-type(string) :: row_joined(2)
-
-grid(1,1) = 'a' ; grid(2,1) = 'b' ; grid(3,1) = 'c'
-grid(1,2) = 'd' ; grid(2,2) = 'e' ; grid(3,2) = 'f'
-
-row_joined = strjoin(grid, sep=',')
-! row_joined(1) = 'a,b,c'
-! row_joined(2) = 'd,e,f'
-```
+`colorize([color_fg][, color_bg][, style])` returns a `character`: the string wrapped in the ANSI escape codes of the
+colours and of the style, whose names are the ones of [FACE](https://github.com/szaghi/FACE) (`red`, `green`,
+`yellow_intense`, ...; `bold_on`, `italics_on`, `underline_on`, ...).

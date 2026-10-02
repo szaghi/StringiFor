@@ -1,134 +1,64 @@
+---
+title: Numbers
+---
+
 # Numbers
 
-StringiFor integrates with [PENF](https://github.com/szaghi/PENF) (Portable Environment for Fortran) to provide portable numeric kind parameters and seamless string–number conversion.
+## The kinds
 
-## PENF Kind Parameters
-
-`use stringifor` re-exports all PENF kind parameters:
+`use stringifor` exports the portable kinds of [PENF](https://github.com/szaghi/PENF):
 
 | Parameter | Type | Bytes |
-|-----------|------|-------|
+|---|---|---|
 | `I1P` | integer | 1 |
 | `I2P` | integer | 2 |
 | `I4P` | integer | 4 |
 | `I8P` | integer | 8 |
 | `R4P` | real | 4 |
 | `R8P` | real | 8 |
-| `R16P` | real | 16 (optional, requires the `-DPENF_R16P` preprocessor flag) |
+| `R16P` | real | 16 |
 
-::: info
-`I2P` support is disabled when the `_NVF` macro is defined (NVIDIA Fortran compatibility).
+- `R16P` is supported (in the assignment and in `to_number`) when the library is compiled with the `-DPENF_R16P`
+  preprocessor flag.
+- `I2P` is not supported when the `_NVF` macro is defined (NVIDIA Fortran compatibility).
+
+## Is it a number?
+
+<<< @/examples/snippets/number_check.f90
+
+<<< @/examples/output/number_check.ansi{ansi}
+
+| Method | True if the string is |
+|---|---|
+| `is_integer([allow_spaces])` | an integer, with an optional sign |
+| `is_real([allow_spaces])` | a real: digits with a decimal point or an exponent (or both); an integer is not a real |
+| `is_number([allow_spaces])` | an integer or a real |
+| `is_digit()` | made of digits only |
+
+Leading and trailing blanks are accepted, unless `allow_spaces=.false.`.
+
+## From a string to a number
+
+<<< @/examples/snippets/number_cast.f90
+
+<<< @/examples/output/number_cast.ansi{ansi}
+
+`to_number(kind)` returns the number in the string. The argument selects the kind of the result and nothing else: its
+value is ignored, pass any constant of the wanted kind (`1_I4P`, `1._R8P`). A cast to a real kind accepts a real or an
+integer string, a cast to an integer kind an integer string.
+
+::: warning
+On a string that does not hold a suitable number the result is undefined: check with `is_number` or `is_integer` first.
 :::
 
-## Assigning Numbers to Strings
+## From a number to a string
 
-The `assignment(=)` operator is overloaded for all PENF integer and real kinds:
+<<< @/examples/snippets/number_string.f90
 
-```fortran
-use stringifor
-type(string) :: s
+<<< @/examples/output/number_string.ansi{ansi}
 
-! Integer assignment
-s = 127_I1P
-print "(A)", s//''   ! +127
-
-s = -32767_I2P
-print "(A)", s//''   ! -32767
-
-s = 1000000_I4P
-print "(A)", s//''   ! +1000000
-
-! Real assignment
-s = 3.021e6_R4P
-print "(A)", s//''   ! +0.302100000E+07
-
-s = -1.23456789_R8P
-print "(A)", s//''   ! -0.12345678899999999E+001
-```
-
-Reals are written with all the significant digits of their kind, so the nearest representable value is what you get.
-
-## Inquiring String Content
-
-```fortran
-use stringifor
-type(string) :: s
-
-s = '3.14'
-print "(L1)", s%is_number()    ! T
-print "(L1)", s%is_real()      ! T
-print "(L1)", s%is_integer()   ! F
-
-s = '42'
-print "(L1)", s%is_number()    ! T
-print "(L1)", s%is_integer()   ! T
-print "(L1)", s%is_real()      ! F  (a real needs a decimal point or an exponent)
-
-s = 'hello'
-print "(L1)", s%is_number()    ! F
-print "(L1)", s%is_digit()     ! F
-
-s = '0123'
-print "(L1)", s%is_digit()     ! T  (all characters are digits)
-```
-
-## Casting Strings to Numbers
-
-The `to_number` method casts a string to any PENF numeric kind. The `kind` argument selects the target type:
-
-```fortran
-use stringifor
-type(string) :: s
-
-s = "3.4e9"
-
-if (s%is_real()) then
-  print "(E13.6)", s%to_number(kind=1._R4P)   !  0.340000E+10
-  print "(E20.12)", s%to_number(kind=1._R8P)  !  0.340000000000E+10
-end if
-
-s = "42"
-if (s%is_integer()) then
-  print "(I0)", s%to_number(kind=1_I4P)       ! 42
-end if
-```
-
-::: info
-The `kind` argument is only used to select the return type — its value is ignored. Pass any literal of the target kind (e.g., `1._R8P`, `0_I4P`).
-:::
-
-## Hexadecimal Representation
-
-`hex` returns the hexadecimal representation of the integer held by the string. Negative numbers are in two's complement on
-`bits` bits (default 64); the result is not allocated if the string is not an integer.
-
-```fortran
-s = 26
-print "(A)", s%hex()//''                  ! 1a
-print "(A)", s%hex(uppercase=.true.)//''  ! 1A
-s = -1
-print "(A)", s%hex(bits=32)//''           ! ffffffff
-```
-
-## Complete Example
-
-```fortran
-use stringifor
-implicit none
-type(string) :: s
-real(R8P)    :: x
-integer(I4P) :: n
-
-! String → number → string round-trip
-s = "2.718281828"
-x = s%to_number(kind=1._R8P)
-s = x                           ! re-assign the number back to a string
-print "(A)", s//''              ! +0.27182818279999998E+001
-
-! Parse and compare
-s = "100"
-if (s%is_integer()) then
-  n = s%to_number(kind=1_I4P)
-  if (n > 50) print "(A)", "Greater than 50"
-end if
-```
+- An integer is written with its sign; a real with its sign and all the significant digits of its kind, so the string
+  holds the nearest representable value. For another layout, write the number with a format into a character.
+- `hex([bits][, uppercase])` returns the hexadecimal representation of the integer in the string, or a string not
+  allocated if it is not an integer. A negative number is in two's complement on `bits` bits (default 64); the number
+  is truncated to its lowest `bits` bits.

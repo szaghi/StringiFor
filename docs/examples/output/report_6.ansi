@@ -1,0 +1,11 @@
+$ report data/cars.csv
+[1m[36mCars Report[0m[0m
+===========
+1997  Ford  E350    ..3000
+1999  Chevy Venture ..4901
+2001  Fiat  Punto   ..2500
+
+The cheapest is the Fiat Punto:
+  [3ma  small  city  car with a low[0m
+  [3mfuel    consumption    and   a[0m
+  [3msurprisingly large boot       [0m

@@ -1,0 +1,8 @@
+$ number_check
+string      number integer real digit
+42          T      T      F      T
+-3.14       T      F      T      F
+6.02e23     T      F      T      F
+1.          T      F      T      F
+12 apples   F      F      F      F
+007         T      T      F      T
