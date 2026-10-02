@@ -9,7 +9,10 @@
 # the config file is generatet in the build and install directories
 
 cmake_minimum_required(VERSION 3.13)
-project(StringiFor VERSION 0.9.9 LANGUAGES Fortran)
+# the version is read from the VERSION file (vX.Y.Z), updated by scripts/release.sh
+file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/VERSION" stringifor_version LIMIT_COUNT 1)
+string(REGEX REPLACE "^v" "" stringifor_version "${stringifor_version}")
+project(StringiFor VERSION ${stringifor_version} LANGUAGES Fortran)
 
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
 # seach path for additional cmake modules
@@ -93,4 +96,14 @@ install(FILES ${cmake_files_dir}/${project_config}
 configure_package_config_file(cmake/PackageConfig.cmake.in ${config_build_dir}/${project_config}
     INSTALL_DESTINATION ${config_build_dir}
     INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+# create package version file, for find_package(StringiFor <version>): written into the build tree and installed
+set(project_config_version "${PROJECT_NAME}ConfigVersion.cmake")
+write_basic_package_version_file(${config_build_dir}/${project_config_version}
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+install(FILES ${config_build_dir}/${project_config_version}
+    DESTINATION ${config_install_dir}
 )

@@ -1,4 +1,11 @@
 @PACKAGE_INIT@
 
+# the targets StringiFor links to: PENF first, BeFoR64 links to it too. PENF and FACE install their configuration
+# as <name>-config.cmake with the name in upper case, that CMake does not search for: it is named explicitly
+include(CMakeFindDependencyMacro)
+find_dependency(PENF CONFIGS PENFConfig.cmake penf-config.cmake PENF-config.cmake)
+find_dependency(FACE CONFIGS FACEConfig.cmake face-config.cmake FACE-config.cmake)
+find_dependency(BeFoR64)
+
 include("${CMAKE_CURRENT_LIST_DIR}/@TARGETS_EXPORT_NAME@.cmake")
 check_required_components("@PROJECT_NAME@")
