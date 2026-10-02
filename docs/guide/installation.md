@@ -16,8 +16,8 @@ cd StringiFor
 Dependencies are declared in the `fobos` file and fetched automatically by FoBiS into `src/third_party/`:
 
 ```bash
-FoBiS.py fetch           # fetch and build all dependencies
-FoBiS.py fetch --update  # re-fetch and rebuild
+fobis fetch           # fetch and build all dependencies
+fobis fetch --update  # re-fetch and rebuild
 ```
 
 ### Third-Party Dependencies
@@ -57,7 +57,7 @@ pip install FoBiS.py
 ### Build all tests
 
 ```bash
-FoBiS.py build
+fobis build
 ```
 
 Compiled test executables are placed in `./exe/`.
@@ -66,16 +66,16 @@ Compiled test executables are placed in `./exe/`.
 
 ```bash
 # Static library (GNU gfortran)
-FoBiS.py build -mode stringifor-static-gnu
+fobis build --mode stringifor-static-gnu
 
 # Shared library (GNU gfortran)
-FoBiS.py build -mode stringifor-shared-gnu
+fobis build --mode stringifor-shared-gnu
 
 # Static library (Intel Fortran)
-FoBiS.py build -mode stringifor-static-intel
+fobis build --mode stringifor-static-intel
 
 # Shared library (Intel Fortran)
-FoBiS.py build -mode stringifor-shared-intel
+fobis build --mode stringifor-shared-intel
 ```
 
 The library is placed in `./lib/` (`libstringifor.a` or `libstringifor.so`).
@@ -83,14 +83,14 @@ The library is placed in `./lib/` (`libstringifor.a` or `libstringifor.so`).
 ### Debug builds
 
 ```bash
-FoBiS.py build -mode tests-gnu-debug
-FoBiS.py build -mode tests-intel-debug
+fobis build --mode tests-gnu-debug
+fobis build --mode tests-intel-debug
 ```
 
 ### List all modes
 
 ```bash
-FoBiS.py build -lmodes
+fobis build --lmodes
 ```
 
 ## Build with GNU Make

@@ -8,28 +8,32 @@ StringiFor is a pure Fortran (2003+) library providing an OOP-designed `string` 
 
 ## Build Commands
 
-The primary and officially supported build tool is **FoBiS** (Fortran Building System).
+The primary and officially supported build tool is **FoBiS** (Fortran Building System, CLI binary `fobis`, version 3.8+).
+The legacy single-dash long options (`-mode`, `-lmodes`, `-ex`) are deprecated: FoBiS still translates them to the double-dash forms, but always write the double-dash forms.
 
 ```bash
 # Build all tests (default: tests-gnu mode, output in ./exe/)
-FoBiS.py build
+fobis build
 
 # Build in debug mode
-FoBiS.py build -mode tests-gnu-debug
+fobis build --mode tests-gnu-debug
 
 # Build static library (output: ./lib/libstringifor.a)
-FoBiS.py build -mode stringifor-static-gnu
+fobis build --mode stringifor-static-gnu
 
 # Build shared library (output: ./lib/libstringifor.so)
-FoBiS.py build -mode stringifor-shared-gnu
+fobis build --mode stringifor-shared-gnu
 
 # Intel Fortran variants
-FoBiS.py build -mode tests-intel
-FoBiS.py build -mode stringifor-static-intel
-FoBiS.py build -mode stringifor-shared-intel
+fobis build --mode tests-intel
+fobis build --mode stringifor-static-intel
+fobis build --mode stringifor-shared-intel
 
 # List all available modes
-FoBiS.py build -lmodes
+fobis build --lmodes
+
+# List the rules defined in fobos
+fobis rule --ls
 ```
 
 **Alternative: Fortran Package Manager (fpm)**
@@ -49,18 +53,29 @@ make COMPILER=intel TESTS=yes
 ## Running Tests
 
 ```bash
-# After FoBiS.py build, run all test executables
+# After fobis build, run all test executables
 bash scripts/run_tests.sh
 
 # Run a single test executable directly
 ./exe/<test_name>
 
-# Run doctests with coverage (FoBiS doctest system)
-FoBiS.py doctests -mode tests-gnu-debug -coverage \
-  --exclude_from_doctests penf.F90 penf_b_size.F90 penf_stringify.F90 \
-  befor64_pack_data_m.F90 befor64.F90 -keep_volatile_doctests \
-  -doctests_preprocessor fpp
+# Run the doctests embedded in the sources (FoBiS doctest system)
+fobis doctests --mode tests-gnu-debug --preproc " -DPENF_R16P" \
+  --exclude-from-doctests penf.F90 --exclude-from-doctests penf_b_size.F90 \
+  --exclude-from-doctests penf_stringify.F90 --exclude-from-doctests penf_allocatable_memory.F90 \
+  --exclude-from-doctests befor64_pack_data_m.F90 --exclude-from-doctests befor64.F90 \
+  --keep-volatile-doctests --doctests-preprocessor fpp
+
+# Same, with coverage instrumentation and coverage summary
+fobis rule --ex makecoverage
 ```
+
+Doctests gotchas:
+- `--preproc " -DPENF_R16P"` needs the **leading space** inside the quotes: without it FoBiS mangles the value into
+  `--DPENF-R16P`. Without the define the `to_real_R16P` doctest does not compile and the whole run aborts with exit 1.
+- Changing `--preproc` does not trigger a rebuild: remove `exe/obj` and `exe/mod` first, or stale objects are reused.
+- The extracted doctests are kept in `exe/doctests-src/`. The tracked copies under `src/tests/` are stale (they predate
+  several methods) and are what a plain `fobis build` compiles.
 
 ## Doctest Format (TDD)
 
@@ -77,13 +92,15 @@ Tests are embedded directly in source code as Fortran doctests. The format used 
 
 FoBiS extracts these blocks and compares output against `!=>` lines. Pre-extracted doctests live in `src/tests/stringifor_string_t/` and `src/tests/stringifor/` as `*-doctest-N.f90` / `*-doctest-N.result` pairs.
 
+A method cannot be invoked on a function result in Fortran (`astring%upper()%is_allocated()` does not compile): assign the result to a `string` variable first.
+
 ## Architecture
 
 ### Source Layout
 
 - **`src/lib/stringifor.F90`** — Top-level public module. A thin wrapper that re-exports everything from `stringifor_string_t`, adds PENF numeric kinds (`I1P`–`I8P`, `R4P`–`R16P`), and provides module-level file I/O subroutines (`read_file`, `read_lines`, `write_file`, `write_lines`).
 - **`src/lib/stringifor_string_t.F90`** — Core implementation. Defines the `string` derived type and all its Type Bound Procedures (TBPs). This is where all string methods live.
-- **`src/third_party/`** — Git submodules:
+- **`src/third_party/`** — Dependencies fetched by `fobis fetch` (declared in the `[dependencies]` section of `fobos`, pinned in `src/third_party/fobos.lock`; not git submodules):
   - **PENF** — Portable numeric kind parameters (`I1P`, `R4P`, etc.) and `str()` conversion
   - **FACE** — ANSI color/style terminal output (used by `string%colorize`)
   - **BeFoR64** — Base64 encode/decode (used by `string%encode`/`string%decode`)
@@ -130,18 +147,19 @@ From `CONTRIBUTING.md`:
 ## Documentation
 
 ```bash
-# Build HTML docs with ford
-FoBiS.py rule -ex makedoc
+# Build the docs: API pages with formal, site with VitePress
+fobis rule --ex makedoc
 
 # Clean docs
-FoBiS.py rule -ex deldoc
+fobis rule --ex deldoc
 ```
 
-Docs are generated from inline `!<` doc comments in source files using [ford](https://github.com/cmacmackin/ford). Configuration is in `doc/main_page.md`.
+The site is built with **VitePress** from `docs/`. The hand-written guide lives in `docs/guide/`; the API pages in `docs/api/` are generated from the inline `!<` doc comments by `formal` (`formal-ford2vitepress`), configured by `docs/ford.md`. New public methods must be added by hand to `docs/guide/api-reference.md` and `docs/guide/features.md`.
 
-## Submodule Setup
+## Dependency Setup
 
-After cloning, initialize dependencies:
+After cloning, fetch the dependencies:
 ```bash
-git submodule update --init
+fobis fetch           # fetch and build PENF, FACE, BeFoR64 into src/third_party/
+fobis fetch --update  # re-fetch and rebuild
 ```

@@ -61,15 +61,15 @@ print "(L1)", s%is_real()       ! T
 
 ```bash
 git clone https://github.com/szaghi/StringiFor && cd StringiFor
-FoBiS.py fetch                                    # fetch PENF, FACE, BeFoR64
-FoBiS.py build -mode stringifor-static-gnu        # build static library
+fobis fetch                                    # fetch PENF, FACE, BeFoR64
+fobis build --mode stringifor-static-gnu        # build static library
 ```
 
 Or install directly in one command:
 
 ```bash
-FoBiS.py install szaghi/StringiFor -mode static-gnu
-FoBiS.py install szaghi/StringiFor -mode static-gnu --prefix /path/to/prefix
+fobis install szaghi/StringiFor --mode stringifor-static-gnu
+fobis install szaghi/StringiFor --mode stringifor-static-gnu --prefix /path/to/prefix
 ```
 
 **As a project dependency** — declare StringiFor in your `fobos` and run `fetch`:
@@ -81,8 +81,8 @@ StringiFor   = https://github.com/szaghi/StringiFor
 ```
 
 ```bash
-FoBiS.py fetch           # fetch and build
-FoBiS.py fetch --update  # re-fetch and rebuild
+fobis fetch           # fetch and build
+fobis fetch --update  # re-fetch and rebuild
 ```
 
 ### fpm
