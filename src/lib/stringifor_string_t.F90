@@ -48,6 +48,13 @@ type :: string
     procedure, pass(self) :: chars            !< Return the raw characters data.
     generic               :: colorize => &
                              colorize_str     !< Colorize and stylize strings.
+    generic               :: common_prefix =>         &
+                             common_prefix_string,    &
+                             common_prefix_character, &
+                             common_prefix_strings    !< Return the longest common prefix shared with other string(s).
+    generic               :: compare_version =>        &
+                             compare_version_string,   &
+                             compare_version_character !< Compare two version numbers, return -1, 0 or 1.
     procedure, pass(self) :: decode           !< Decode string.
     procedure, pass(self) :: encode           !< Encode string.
     procedure, pass(self) :: escape           !< Escape backslashes (or custom escape character).
@@ -57,6 +64,7 @@ type :: string
     generic               :: glob =>         &
                              glob_character, &
                              glob_string      !< Glob search, finds all the pathnames matching a given pattern.
+    procedure, pass(self) :: hex              !< Return the hexadecimal representation of the integer into the string.
     generic               :: insert =>      &
                              insert_string, &
                              insert_character !< Insert substring into string at a specified position.
@@ -69,6 +77,8 @@ type :: string
                              strjoin_strings_array, &
                              strjoin_characters_array  !< Return a string that is a join of an array of strings or characters;
                                                        !< Return join 1D string array of an 2D array of strings or characters in columns or rows.
+    procedure, pass(self) :: justify          !< Return the words of the string packed into fully justified lines.
+    procedure, pass(self) :: len_last_word    !< Return the length of the last word of the string.
     procedure, pass(self) :: lower            !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition        !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: read_file        !< Read a file a single string stream.
@@ -76,6 +86,7 @@ type :: string
     procedure, pass(self) :: read_lines       !< Read (all) lines (records) from a connected unit as a single ascii stream.
     procedure, pass(self) :: replace          !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse          !< Return a reversed string.
+    procedure, pass(self) :: reverse_words    !< Return a string with the words order reversed.
     procedure, pass(self) :: search           !< Search for *tagged* record into string.
     procedure, pass(self) :: slice            !< Return the raw characters data sliced.
     procedure, pass(self) :: snakecase        !< Return a string with all words lowercase separated by "_".
@@ -166,6 +177,11 @@ type :: string
     procedure, private, pass(self) :: sverify_string_character !< Verify replacement.
     ! auxiliary methods
     procedure, private, pass(self) :: colorize_str     !< Colorize and stylize strings.
+    procedure, private, pass(self) :: common_prefix_string      !< Longest common prefix shared with a string.
+    procedure, private, pass(self) :: common_prefix_character   !< Longest common prefix shared with a character.
+    procedure, private, pass(self) :: common_prefix_strings     !< Longest common prefix shared with an array of strings.
+    procedure, private, pass(self) :: compare_version_string    !< Compare version number with a string one.
+    procedure, private, pass(self) :: compare_version_character !< Compare version number with a character one.
     procedure, private, pass(self) :: glob_character   !< Glob search (character output).
     procedure, private, pass(self) :: glob_string      !< Glob search (string output).
     procedure, private, pass(self) :: insert_string    !< Insert substring into string at a specified position.
@@ -983,6 +999,174 @@ contains
    colorized = colorize(string=self%chars(), color_fg=color_fg, color_bg=color_bg, style=style)
    endfunction colorize_str
 
+   elemental function common_prefix_string(self, other) result(prefix)
+   !< Return the longest common prefix shared with another string.
+   !<
+   !< @note An unallocated `other` shares only the null prefix.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: anotherstring
+   !< logical      :: test_passed(3)
+   !< astring = 'src/lib/stringifor.F90'
+   !< anotherstring = 'src/lib/stringifor_string_t.F90'
+   !< test_passed(1) = astring%common_prefix(anotherstring)//''=='src/lib/stringifor'
+   !< anotherstring = 'docs/index.md'
+   !< test_passed(2) = astring%common_prefix(anotherstring)//''==''
+   !< call anotherstring%free
+   !< test_passed(3) = astring%common_prefix(anotherstring)//''==''
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self   !< The string.
+   type(string),  intent(in) :: other  !< Other string.
+   type(string)              :: prefix !< Longest common prefix.
+
+   if (allocated(other%raw)) then
+      prefix = self%common_prefix_character(other=other%raw)
+   else
+      prefix = self%common_prefix_character(other='')
+   endif
+   endfunction common_prefix_string
+
+   elemental function common_prefix_character(self, other) result(prefix)
+   !< Return the longest common prefix shared with a character.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: prefix
+   !< logical      :: test_passed(4)
+   !< astring = 'flower'
+   !< test_passed(1) = astring%common_prefix('flow')//''=='flow'
+   !< test_passed(2) = astring%common_prefix('flight')//''=='fl'
+   !< test_passed(3) = astring%common_prefix('dog')//''==''
+   !< call astring%free
+   !< prefix = astring%common_prefix('flow')
+   !< test_passed(4) = prefix%is_allocated().eqv..false.
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in) :: self   !< The string.
+   character(kind=CK, len=*), intent(in) :: other  !< Other string.
+   type(string)                          :: prefix !< Longest common prefix.
+   integer                               :: c      !< Character counter.
+
+   if (allocated(self%raw)) then
+      c = 0
+      do while (c<min(len(self%raw), len(other)))
+         if (self%raw(c+1:c+1)/=other(c+1:c+1)) exit
+         c = c + 1
+      enddo
+      prefix%raw = self%raw(1:c)
+   endif
+   endfunction common_prefix_character
+
+   pure function common_prefix_strings(self, array) result(prefix)
+   !< Return the longest common prefix shared with all the elements of an array of strings.
+   !<
+   !< @note An unallocated element of `array` shares only the null prefix.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: strings(3)
+   !< logical      :: test_passed(3)
+   !< strings(1) = 'flower'
+   !< strings(2) = 'flow'
+   !< strings(3) = 'flight'
+   !< astring = strings(1)%common_prefix(array=strings)
+   !< test_passed(1) = astring//''=='fl'
+   !< astring = strings(1)%common_prefix(array=strings(1:2))
+   !< test_passed(2) = astring//''=='flow'
+   !< strings(1) = 'dog'
+   !< strings(2) = 'racecar'
+   !< strings(3) = 'car'
+   !< astring = strings(1)%common_prefix(array=strings)
+   !< test_passed(3) = astring//''==''
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self      !< The string.
+   type(string),  intent(in) :: array(1:) !< Array of other strings.
+   type(string)              :: prefix    !< Longest common prefix.
+   integer                   :: a         !< Counter.
+
+   if (allocated(self%raw)) then
+      prefix = self
+      do a=1, size(array, dim=1)
+         prefix = prefix%common_prefix_string(other=array(a))
+      enddo
+   endif
+   endfunction common_prefix_strings
+
+   elemental function compare_version_string(self, other, sep) result(order)
+   !< Compare the version number into the string with the one into another string.
+   !<
+   !< See [[string:compare_version_character]] for the comparison rules.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: anotherstring
+   !< logical      :: test_passed(2)
+   !< astring = '1.2.0'
+   !< anotherstring = '1.10'
+   !< test_passed(1) = astring%compare_version(anotherstring)==-1
+   !< test_passed(2) = anotherstring%compare_version(astring)==1
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self  !< The string.
+   type(string),              intent(in)           :: other !< Other version.
+   character(kind=CK, len=*), intent(in), optional :: sep   !< Fields separator, default ".".
+   integer                                         :: order !< -1 if self<other, 0 if self==other, 1 if self>other.
+
+   order = self%compare_version_character(other=other%chars(), sep=sep)
+   endfunction compare_version_string
+
+   elemental function compare_version_character(self, other, sep) result(order)
+   !< Compare the version number into the string with the one into a character.
+   !<
+   !< The versions are compared field by field, the fields being separated by `sep`: two fields made only of digits are compared
+   !< as integers of arbitrary size (leading zeros are ignored), otherwise they are compared lexically. Missing or null fields count
+   !< as zero, thus `1.0` is equal to `1.0.0`.
+   !<
+   !< @note The comparison is not *semantic versioning* aware: a pre-release tag is compared lexically, thus `1.0.0-rc1` is greater
+   !< than `1.0.0`.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(8)
+   !< astring = '1.01'
+   !< test_passed(1) = astring%compare_version('1.001')==0
+   !< astring = '1.0'
+   !< test_passed(2) = astring%compare_version('1.0.0')==0
+   !< astring = '0.1'
+   !< test_passed(3) = astring%compare_version('1.1')==-1
+   !< astring = '1.10'
+   !< test_passed(4) = astring%compare_version('1.9')==1
+   !< astring = '1-2-3'
+   !< test_passed(5) = astring%compare_version('1-2-4', sep='-')==-1
+   !< astring = '1.99999999999999999999999'
+   !< test_passed(6) = astring%compare_version('1.100000000000000000000000')==-1
+   !< astring = '1.2.b'
+   !< test_passed(7) = astring%compare_version('1.2.a')==1
+   !< astring = '1.'
+   !< test_passed(8) = astring%compare_version('1')==0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self  !< The string.
+   character(kind=CK, len=*), intent(in)           :: other !< Other version.
+   character(kind=CK, len=*), intent(in), optional :: sep   !< Fields separator, default ".".
+   integer                                         :: order !< -1 if self<other, 0 if self==other, 1 if self>other.
+   character(kind=CK, len=:), allocatable          :: sep_  !< Separator, default value.
+
+   sep_ = '.'
+   if (present(sep)) then
+      if (len(sep)>0) sep_ = sep
+   endif
+   order = compare_versions(version_a=self%chars(), version_b=other, sep=sep_)
+   endfunction compare_version_character
+
    elemental function decode(self, codec) result(decoded)
    !< Return a string decoded accordingly the codec.
    !<
@@ -1243,6 +1427,66 @@ contains
    open(newunit=tempunit, file=tempname)
    close(unit=tempunit, status='delete')
    endsubroutine glob_string
+
+   elemental function hex(self, bits, uppercase) result(hexed)
+   !< Return the hexadecimal representation of the integer number into the string.
+   !<
+   !< Negative numbers are represented in two's complement on `bits` bits. The number is truncated to its `bits` lowest bits and
+   !< the leading zeros are removed.
+   !<
+   !< @note If the string does not contain an integer the result is not allocated.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: hexed
+   !< logical      :: test_passed(7)
+   !< astring = 26
+   !< test_passed(1) = astring%hex()//''=='1a'
+   !< astring = -1
+   !< test_passed(2) = astring%hex(bits=32)//''=='ffffffff'
+   !< test_passed(3) = astring%hex()//''=='ffffffffffffffff'
+   !< astring = 0
+   !< test_passed(4) = astring%hex()//''=='0'
+   !< astring = '255'
+   !< test_passed(5) = astring%hex(uppercase=.true.)//''=='FF'
+   !< astring = 4096
+   !< test_passed(6) = astring%hex(bits=8)//''=='0'
+   !< astring = 'not a number'
+   !< hexed = astring%hex()
+   !< test_passed(7) = hexed%is_allocated().eqv..false.
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)           :: self                           !< The string.
+   integer,       intent(in), optional :: bits                           !< Width of the representation, in [4, 64], default 64.
+   logical,       intent(in), optional :: uppercase                      !< Use uppercase digits, default lowercase.
+   type(string)                        :: hexed                          !< Hexadecimal representation.
+   character(kind=CK, len=16), parameter :: DIGITS_L = '0123456789abcdef' !< Lowercase hexadecimal digits.
+   character(kind=CK, len=16), parameter :: DIGITS_U = '0123456789ABCDEF' !< Uppercase hexadecimal digits.
+   character(kind=CK, len=16)          :: alphabet                       !< Hexadecimal digits used.
+   character(kind=CK, len=16)          :: buffer                         !< Digits buffer.
+   integer(I8P)                        :: number                         !< The number into the string.
+   integer                             :: nibbles                        !< Number of hexadecimal digits.
+   integer                             :: d                              !< Digit value.
+   integer                             :: n                              !< Counter.
+
+   if (allocated(self%raw)) then
+      if (self%is_integer()) then
+         number = self%to_number(kind=1_I8P)
+         nibbles = 16 ; if (present(bits)) nibbles = max(1, min(16, bits/4))
+         alphabet = DIGITS_L
+         if (present(uppercase)) then
+            if (uppercase) alphabet = DIGITS_U
+         endif
+         do n=1, nibbles
+            d = int(iand(ishft(number, -4*(n-1)), 15_I8P)) + 1
+            buffer(nibbles-n+1:nibbles-n+1) = alphabet(d:d)
+         enddo
+         n = verify(buffer(1:nibbles), '0') ; if (n==0) n = nibbles
+         hexed%raw = buffer(n:nibbles)
+      endif
+   endif
+   endfunction hex
 
    elemental function insert_character(self, substring, pos) result(inserted)
    !< Insert substring into string at a specified position.
@@ -1746,6 +1990,148 @@ contains
    endif
    endfunction strjoin_characters_array
 
+   pure function justify(self, width) result(lines)
+   !< Return the words of the string packed into fully justified lines of (at least) `width` characters.
+   !<
+   !< The words (separated by spaces) are greedily packed into lines; the blanks are evenly distributed between the words of each
+   !< line, the leftmost gaps taking the extra ones. The last line and the lines made of one word are left-justified and padded
+   !< with trailing blanks.
+   !<
+   !< @note A word longer than `width` is not broken: it is placed alone into a line longer than `width`.
+   !<
+   !< @note If the string is not allocated or it has no words the result has zero size.
+   !<
+   !<```fortran
+   !< type(string)              :: astring
+   !< type(string), allocatable :: lines(:)
+   !< logical                   :: test_passed(9)
+   !< astring = 'This is an example of text justification.'
+   !< lines = astring%justify(width=16)
+   !< test_passed(1) = size(lines, dim=1)==3
+   !< test_passed(2) = lines(1)//''=='This    is    an'
+   !< test_passed(3) = lines(2)//''=='example  of text'
+   !< test_passed(4) = lines(3)//''=='justification.  '
+   !< astring = '  What must be   acknowledgment shall be '
+   !< lines = astring%justify(width=16)
+   !< test_passed(5) = lines(1)//''=='What   must   be'
+   !< test_passed(6) = lines(2)//''=='acknowledgment  '
+   !< test_passed(7) = lines(3)//''=='shall be        '
+   !< lines = astring%justify(width=4)
+   !< test_passed(8) = size(lines, dim=1)==6.and.lines(4)//''=='acknowledgment'
+   !< astring = '   '
+   !< lines = astring%justify(width=16)
+   !< test_passed(9) = size(lines, dim=1)==0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)              :: self      !< The string.
+   integer,       intent(in)              :: width     !< Width of the justified lines.
+   type(string), allocatable              :: lines(:)  !< Justified lines.
+   type(string), allocatable              :: words(:)  !< Words of the string.
+   type(string), allocatable              :: buffer(:) !< Lines buffer.
+   character(kind=CK, len=:), allocatable :: line      !< Current line.
+   integer                                :: Nw        !< Number of words.
+   integer                                :: Nl        !< Number of lines.
+   integer                                :: first     !< First word of current line.
+   integer                                :: last      !< Last word of current line.
+   integer                                :: length    !< Length of current line with words separated by one blank.
+   integer                                :: gaps      !< Number of gaps between the words of current line.
+   integer                                :: blanks    !< Number of blanks to be distributed into the gaps.
+   integer                                :: Nb        !< Number of blanks of current gap.
+   integer                                :: g         !< Counter.
+
+   Nl = 0
+   Nw = 0
+   if (allocated(self%raw)) then
+      if (len_trim(self%raw)>0) then
+         call self%split(tokens=words)
+         Nw = size(words, dim=1)
+      endif
+   endif
+   allocate(buffer(1:Nw))
+   last = 0
+   do while (last<Nw)
+      first = last + 1
+      last = first
+      length = len(words(first)%raw)
+      do while (last<Nw)
+         if (length+1+len(words(last+1)%raw)>width) exit
+         last = last + 1
+         length = length + 1 + len(words(last)%raw)
+      enddo
+      gaps = last - first
+      line = words(first)%raw
+      if (last==Nw.or.gaps==0) then
+         do g=1, gaps
+            line = line//SPACE//words(first+g)%raw
+         enddo
+         if (len(line)<width) line = line//repeat(SPACE, width-len(line))
+      else
+         blanks = width - (length - gaps)
+         do g=1, gaps
+            Nb = blanks/gaps ; if (g<=mod(blanks, gaps)) Nb = Nb + 1
+            line = line//repeat(SPACE, Nb)//words(first+g)%raw
+         enddo
+      endif
+      Nl = Nl + 1
+      buffer(Nl)%raw = line
+   enddo
+   allocate(lines(1:Nl))
+   do g=1, Nl
+      lines(g)%raw = buffer(g)%raw
+   enddo
+   endfunction justify
+
+   elemental function len_last_word(self, sep) result(length)
+   !< Return the length of the last word of the string.
+   !<
+   !< @note The trailing separators are ignored.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(6)
+   !< astring = 'Hello World'
+   !< test_passed(1) = astring%len_last_word()==5
+   !< astring = '   fly me   to   the moon  '
+   !< test_passed(2) = astring%len_last_word()==4
+   !< astring = 'joyboy'
+   !< test_passed(3) = astring%len_last_word()==6
+   !< astring = 'src/lib/stringifor//'
+   !< test_passed(4) = astring%len_last_word(sep='/')==10
+   !< astring = '    '
+   !< test_passed(5) = astring%len_last_word()==0
+   !< call astring%free
+   !< test_passed(6) = astring%len_last_word()==0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self   !< The string.
+   character(kind=CK, len=*), intent(in), optional :: sep    !< Separator.
+   integer                                         :: length !< Length of the last word.
+   character(kind=CK, len=:), allocatable          :: sep_   !< Separator, default value.
+   integer                                         :: last   !< Position of the last character of the last word.
+   integer                                         :: s      !< Position of the last separator before the last word.
+
+   length = 0
+   if (allocated(self%raw)) then
+      sep_ = SPACE
+      if (present(sep)) then
+         if (len(sep)>0) sep_ = sep
+      endif
+      last = len(self%raw)
+      do while (last>=len(sep_))
+         if (self%raw(last-len(sep_)+1:last)/=sep_) exit
+         last = last - len(sep_)
+      enddo
+      s = index(self%raw(1:last), sep_, back=.true.)
+      if (s>0) then
+         length = last - (s + len(sep_) - 1)
+      else
+         length = last
+      endif
+   endif
+   endfunction len_last_word
+
    elemental function lower(self)
    !< Return a string with all lowercase characters.
    !<
@@ -2144,6 +2530,46 @@ contains
       enddo
    endif
    endfunction reverse
+
+   elemental function reverse_words(self, sep) result(reversed)
+   !< Return a string with the words order reversed.
+   !<
+   !< @note Multiple subsequent separators are collapsed to one occurence, leading and trailing ones are removed.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(5)
+   !< astring = 'the sky is blue'
+   !< test_passed(1) = astring%reverse_words()//''=='blue is sky the'
+   !< astring = '  hello world  '
+   !< test_passed(2) = astring%reverse_words()//''=='world hello'
+   !< astring = 'a good   example'
+   !< test_passed(3) = astring%reverse_words()//''=='example good a'
+   !< astring = 'src/lib/stringifor'
+   !< test_passed(4) = astring%reverse_words(sep='/')//''=='stringifor/lib/src'
+   !< astring = '   '
+   !< test_passed(5) = astring%reverse_words()//''==''
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self      !< The string.
+   character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
+   type(string)                                    :: reversed  !< The string with words order reversed.
+   character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
+   type(string), allocatable                       :: tokens(:) !< String tokens.
+   integer                                         :: Nt        !< Number of tokens.
+
+   if (allocated(self%raw)) then
+      sep_ = SPACE ; if (present(sep)) sep_ = sep
+      call self%split(tokens=tokens, sep=sep_)
+      Nt = size(tokens, dim=1)
+      if (Nt>0) then
+         reversed = reversed%join(array=tokens(Nt:1:-1), sep=sep_)
+      else
+         reversed = ''
+      endif
+   endif
+   endfunction reverse_words
 
    function search(self, tag_start, tag_end, in_string, in_character, istart, iend) result(tag)
    !< Search for *tagged* record into string, return the first record found (if any) matching the tags.
@@ -4392,6 +4818,78 @@ contains
    endfunction replace_one_occurrence
 
    ! non type-bound-procedures
+   pure function compare_versions(version_a, version_b, sep) result(order)
+   !< Compare two version numbers field by field, see [[string:compare_version_character]].
+   character(kind=CK, len=*), intent(in) :: version_a !< First version.
+   character(kind=CK, len=*), intent(in) :: version_b !< Second version.
+   character(kind=CK, len=*), intent(in) :: sep       !< Fields separator, it must be not null.
+   integer                               :: order     !< -1 if a<b, 0 if a==b, 1 if a>b.
+   integer                               :: first_a   !< First character of current field of first version.
+   integer                               :: first_b   !< First character of current field of second version.
+   integer                               :: last_a    !< Last character of current field of first version.
+   integer                               :: last_b    !< Last character of current field of second version.
+
+   order = 0
+   first_a = 1
+   first_b = 1
+   do while (first_a<=len(version_a).or.first_b<=len(version_b))
+      last_a = field_end(version=version_a, first=first_a)
+      last_b = field_end(version=version_b, first=first_b)
+      order = compare_fields(field_a=version_a(first_a:last_a), field_b=version_b(first_b:last_b))
+      if (order/=0) exit
+      first_a = last_a + len(sep) + 1
+      first_b = last_b + len(sep) + 1
+   enddo
+
+   contains
+      pure function field_end(version, first) result(last)
+      !< Return the position of the last character of the field starting at `first`, a missing field being null.
+      character(kind=CK, len=*), intent(in) :: version !< Version.
+      integer,                   intent(in) :: first   !< First character of the field.
+      integer                               :: last    !< Last character of the field.
+      integer                               :: s       !< Position of the next separator.
+
+      if (first>len(version)) then
+         last = first - 1
+      else
+         s = index(version(first:), sep)
+         if (s>0) then
+            last = first + s - 2
+         else
+            last = len(version)
+         endif
+      endif
+      endfunction field_end
+
+      pure function compare_fields(field_a, field_b) result(order)
+      !< Compare two fields: as integers if both are made only of digits, lexically otherwise.
+      character(kind=CK, len=*), intent(in) :: field_a             !< First field.
+      character(kind=CK, len=*), intent(in) :: field_b             !< Second field.
+      integer                               :: order               !< -1 if a<b, 0 if a==b, 1 if a>b.
+      character(kind=CK, len=10), parameter :: DIGITS='0123456789' !< Decimal digits.
+      integer                               :: a                   !< First significant digit of first field.
+      integer                               :: b                   !< First significant digit of second field.
+      logical                               :: are_integers        !< Both fields are made only of digits.
+
+      a = 1
+      b = 1
+      are_integers = verify(field_a, DIGITS)==0.and.verify(field_b, DIGITS)==0
+      if (are_integers) then
+         a = verify(field_a, '0') ; if (a==0) a = len(field_a) + 1
+         b = verify(field_b, '0') ; if (b==0) b = len(field_b) + 1
+      endif
+      if (are_integers.and.len(field_a)-a/=len(field_b)-b) then
+         order = merge(1, -1, len(field_a)-a>len(field_b)-b)
+      elseif (field_a(a:)<field_b(b:)) then
+         order = -1
+      elseif (field_a(a:)>field_b(b:)) then
+         order = 1
+      else
+         order = 0
+      endif
+      endfunction compare_fields
+   endfunction compare_versions
+
    subroutine get_delimiter_mode(unit, delim, iostat, iomsg)
    !< Get the DELIM changeable connection mode for the given unit.
    !<

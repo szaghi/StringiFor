@@ -31,16 +31,20 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `camelcase()` | All words capitalized, spaces removed |
 | `capitalize()` | First character upper, rest lower |
 | `colorize(color, style)` | ANSI terminal colorization via FACE |
+| `common_prefix(other)` / `common_prefix(array)` | Longest common prefix shared with another string/character, or with all elements of a string array |
 | `decode()` | Base64 decode |
 | `encode()` | Base64 encode |
 | `escape([escape_char])` | Escape backslashes (or custom character) |
 | `fill(width[, right][, fill_char])` | Pad with zeros (or custom char) to reach width |
+| `hex([bits][, uppercase])` | Hexadecimal representation of the integer held by the string (two's complement on `bits` bits, default 64) |
 | `insert(substring, pos)` | Insert substring at given position |
 | `join(array[, sep])` | Join an array of strings with receiver as default separator |
+| `justify(width)` | Pack the words into fully justified lines; returns `string(:)` |
 | `lower()` | All characters lowercase |
 | `partition(sep)` | Split at sep; return `string(3)` = [before, sep, after] |
 | `replace(old, new)` | Replace all occurrences of `old` with `new` |
 | `reverse()` | Reverse character order |
+| `reverse_words([sep])` | Reverse the order of the words |
 | `slice([first][, last][, stride])` | Substring by index range |
 | `snakecase()` | Words lowercase, joined by `_` |
 | `split(tokens, sep)` | Tokenize into allocatable array |
@@ -69,6 +73,8 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `len_trim()` | `integer` | Length without trailing spaces |
 | `start_with(prefix)` | `logical` | True if string starts with prefix |
 | `count(substring)` | `integer` | Number of non-overlapping occurrences |
+| `compare_version(other[, sep])` | `integer` | Field-by-field version comparison: `-1`, `0` or `1` |
+| `len_last_word([sep])` | `integer` | Length of the last word, trailing separators ignored |
 
 ## Number Casting
 

@@ -20,13 +20,16 @@ title: Features
 - Search and replace: `replace`, `search`, `index`, `count`, `scan`, `verify`
 - Splitting and joining: `split`, `split_chunked`, `partition`, `join`, `strjoin`
 - Padding and trimming: `fill`, `strip`, `adjustl`, `adjustr`, `trim`
-- Transformation: `reverse`, `unique`, `insert`, `slice`, `escape`, `unescape`
+- Transformation: `reverse`, `reverse_words`, `unique`, `insert`, `slice`, `escape`, `unescape`
+- Text layout: `justify`, `len_last_word`
+- Comparison helpers: `common_prefix`, `compare_version`
 - Encoding: `encode` / `decode` (Base64 via BeFoR64)
 - Terminal output: `colorize` (ANSI styles via FACE)
 
 ## Number Casting
 
 - Assign any PENF integer or real kind directly to a `string` via overloaded `assignment(=)`
+- Hexadecimal representation of an integer string with `hex`
 - Cast back with `to_number(kind=...)` — supports all PENF kinds: `I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P`
 - Inquiry methods: `is_number`, `is_integer`, `is_real`, `is_digit`
 

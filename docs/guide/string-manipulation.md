@@ -57,6 +57,13 @@ s = '0123456789'
 print "(A)", s%reverse()//''   ! 9876543210
 ```
 
+### Reverse words
+
+```fortran
+s = '  the sky   is blue '
+print "(A)", s%reverse_words()//''   ! blue is sky the
+```
+
 ### Unique — collapse repeated substrings
 
 ```fortran
@@ -103,6 +110,58 @@ s = 'Hello World'
 print "(A)", s%encode()//''   ! SGVsbG8gV29ybGQ=
 print "(A)", s%decode()//''   ! (decodes a Base64 string)
 ```
+
+### Justify — pack words into fully justified lines
+
+```fortran
+type(string), allocatable :: lines(:)
+
+s = 'This is an example of text justification.'
+lines = s%justify(width=16)
+! lines(1) = 'This    is    an'
+! lines(2) = 'example  of text'
+! lines(3) = 'justification.  '
+```
+
+The last line and single-word lines are left-justified and padded with trailing blanks. A word longer than `width` is not
+broken: it stays alone on a line longer than `width`.
+
+### Length of the last word
+
+```fortran
+s = '   fly me   to   the moon  '
+print "(I0)", s%len_last_word()   ! 4
+```
+
+## Comparing
+
+### Longest common prefix
+
+```fortran
+type(string) :: files(3)
+
+files(1) = 'src/lib/stringifor.F90'
+files(2) = 'src/lib/stringifor_string_t.F90'
+files(3) = 'src/tests/stringifor/stringifor-doctest-1.f90'
+s = files(1)%common_prefix(files(2))        ! src/lib/stringifor
+s = files(1)%common_prefix(array=files)     ! src/
+```
+
+### Version numbers
+
+`compare_version` returns `-1`, `0` or `1`. Fields made only of digits are compared as integers of any size, the others
+lexically; missing fields count as zero.
+
+```fortran
+s = '1.2.0'
+print "(I0)", s%compare_version('1.10')    ! -1
+print "(I0)", s%compare_version('1.2')     ! 0
+print "(I0)", s%compare_version('1.1.9')   ! 1
+```
+
+::: warning
+The comparison is not semantic-versioning aware: `1.0.0-rc1` compares greater than `1.0.0`.
+:::
 
 ## Splitting and Joining
 

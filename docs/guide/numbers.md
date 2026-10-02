@@ -91,6 +91,19 @@ end if
 The `kind` argument is only used to select the return type — its value is ignored. Pass any literal of the target kind (e.g., `1._R8P`, `0_I4P`).
 :::
 
+## Hexadecimal Representation
+
+`hex` returns the hexadecimal representation of the integer held by the string. Negative numbers are in two's complement on
+`bits` bits (default 64); the result is not allocated if the string is not an integer.
+
+```fortran
+s = 26
+print "(A)", s%hex()//''                  ! 1a
+print "(A)", s%hex(uppercase=.true.)//''  ! 1A
+s = -1
+print "(A)", s%hex(bits=32)//''           ! ffffffff
+```
+
 ## Complete Example
 
 ```fortran
