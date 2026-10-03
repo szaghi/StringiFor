@@ -1,0 +1,72 @@
+name: Compilers
+
+# Project-owned workflow (not managed by `fobis scaffold`): the test suite built with other compilers and operating
+# systems than the gfortran on Ubuntu of the CI workflow.
+#
+# REAL(16) is not available everywhere (gfortran on Apple silicon has no quadruple precision): where the compiler lacks
+# it the library is built without -DPENF_R16P and the tests using R16P are excluded.
+
+on:
+  push:
+    branches: ["**"]
+    tags-ignore: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  compilers:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: ifx / ubuntu,        os: ubuntu-24.04, compiler: intel, version: '2025.3', mode: tests-intel}
+          - {name: gfortran-14 / macos, os: macos-15,     compiler: gcc,   version: '14',     mode: tests-gnu-debug}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Fortran
+      id: fortran
+      uses: fortran-lang/setup-fortran@v1
+      with:
+        compiler: ${{ matrix.compiler }}
+        version: ${{ matrix.version }}
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install FoBiS
+      run: pip install FoBiS.py
+
+    - name: Check system
+      run: |
+        ${{ steps.fortran.outputs.fc }} --version
+        fobis --version
+
+    - name: Fetch dependencies
+      run: fobis fetch
+
+    - name: Build the tests
+      run: |
+        printf 'program q\nprint "(I0)", selected_real_kind(33, 4931)\nend program\n' > "$RUNNER_TEMP/q.f90"
+        ${{ steps.fortran.outputs.fc }} "$RUNNER_TEMP/q.f90" -o "$RUNNER_TEMP/q"
+        args=(--mode ${{ matrix.mode }} --fc ${{ steps.fortran.outputs.fc }}) # the compiler as installed (gfortran-14)
+        if [[ "$("$RUNNER_TEMP/q")" -gt 0 ]]; then
+          args+=(--preproc " -DPENF_R16P") # the leading space is needed: FoBiS mangles a value starting with a dash
+        else
+          echo "::notice::no REAL(16): building without -DPENF_R16P, the tests using R16P are excluded"
+          for test in $(grep -l R16P src/tests/*/*.f90); do
+            args+=(--exclude "$test")
+          done
+        fi
+        fobis build "${args[@]}"
+
+    - name: Run the tests
+      run: bash scripts/run_tests.sh

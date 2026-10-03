@@ -113,7 +113,7 @@ log             = True
 jobs            = 10
 
 [template-static-intel]
-compiler        = intel
+compiler        = intel_nextgen
 exclude_dirs    = $EXDIRS
 src             = src/
 cflags          = $CSTATIC_INT $OPTIMIZE
@@ -125,7 +125,7 @@ log             = True
 jobs            = 10
 
 [template-static-intel-debug]
-compiler        = intel
+compiler        = intel_nextgen
 exclude_dirs    = $EXDIRS
 src             = src/
 cflags          = $CSTATIC_INT $DEBUG_INT
@@ -137,7 +137,7 @@ log             = True
 jobs            = 10
 
 [template-shared-intel]
-compiler        = intel
+compiler        = intel_nextgen
 exclude_dirs    = $EXDIRS
 src             = src/
 cflags          = $CSHARED_INT $OPTIMIZE

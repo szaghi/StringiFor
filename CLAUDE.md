@@ -24,7 +24,7 @@ fobis build --mode stringifor-static-gnu
 # Build shared library (output: ./lib/libstringifor.so)
 fobis build --mode stringifor-shared-gnu
 
-# Intel Fortran variants
+# Intel Fortran variants (ifx, FoBiS compiler intel_nextgen; source /opt/intel/oneapi/<version>/oneapi-vars.sh first)
 fobis build --mode tests-intel
 fobis build --mode stringifor-static-intel
 fobis build --mode stringifor-shared-intel
@@ -46,11 +46,14 @@ fpm test
 ```bash
 make                        # static library with gfortran
 make TESTS=yes              # build tests suite
-make COMPILER=intel         # use Intel Fortran
+make COMPILER=intel         # use Intel Fortran (ifx)
 make COMPILER=intel TESTS=yes
 ```
 
 ## Running Tests
+
+CI also builds and runs the tests with ifx on Ubuntu and gfortran-14 on macOS (`.github/workflows/compilers.yml`,
+project-owned); where the compiler has no REAL(16) (gfortran on Apple silicon) the R16P tests are excluded.
 
 ```bash
 # After fobis build, run all test executables

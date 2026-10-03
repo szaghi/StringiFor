@@ -11,7 +11,7 @@ ifeq "$(COMPILER)" "gnu"
   OPTSL = -O2 -J $(DMOD)
 endif
 ifeq "$(COMPILER)" "intel"
-  FC    = ifort
+  FC    = ifx
   OPTSC = -c -assume realloc_lhs -standard-semantics -std08 -O2 -DPENF_R16P -module $(DMOD)
   OPTSL = -O2 -module $(DMOD)
 endif
