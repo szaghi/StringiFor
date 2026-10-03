@@ -124,6 +124,7 @@ type :: string
     procedure, pass(self) :: is_number    !< Return true if the string contains a number (real or integer).
     procedure, pass(self) :: is_real      !< Return true if the string contains an real.
     procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
+    procedure, pass(self) :: match        !< Return true if the string matches a wildcard pattern.
     procedure, pass(self) :: start_with   !< Return true if a string starts with a specified prefix.
     ! operators
     generic :: assignment(=) => string_assign_string,      &
@@ -1447,9 +1448,14 @@ contains
    subroutine glob_string(self, pattern, list)
    !< Glob search (string output), finds all the pathnames matching a given pattern according to the rules used by the Unix shell.
    !<
-   !< @note Method not portable: works only on Unix/GNU Linux OS.
+   !< @note Method not portable: works only on Unix/GNU Linux OS (it runs `ls` through the shell).
    !<
    !< @note If no pathname matches the pattern `list` is allocated with zero size.
+   !<
+   !< @note Only the wildcards `*`, `?` and `[...]` are special: every other character of the pattern is passed to the shell
+   !< escaped, so spaces, `;`, `$`, quotes or a leading `-` are part of the names searched, never shell syntax. A pattern
+   !< holding a new line matches nothing. A matching directory is listed itself, not its content. Match a list of names
+   !< already in memory with [[string:match]].
    !<
    !<```fortran
    !< type(string)                  :: astring
@@ -1467,32 +1473,39 @@ contains
    !<```fortran
    !< type(string)                  :: astring
    !< type(string),     allocatable :: alist_str(:)
-   !< integer, parameter            :: Nf=5
-   !< character(14)                 :: files(1:Nf)
+   !< character(len=:), allocatable :: files(:)
+   !< character(len=:), allocatable :: directory
    !< integer                       :: file_unit
    !< integer                       :: f
-   !< integer                       :: ff
-   !< logical                       :: test_passed
-   !<
-   !< do f=1, Nf
-   !<    files(f) = astring%tempname(prefix='foo-')
+   !< logical                       :: is_injected
+   !< logical                       :: test_passed(5)
+   !< files = [character(len=20) :: astring%tempname(prefix='glob test-'), astring%tempname(prefix='glob test-'), &
+   !<          astring%tempname(prefix='-glob-')]
+   !< do f=1, size(files, dim=1)
    !<    open(newunit=file_unit, file=files(f))
-   !<    write(file_unit, *)f
    !<    close(unit=file_unit)
    !< enddo
-   !< call astring%glob(pattern='foo-*', list=alist_str)
-   !< do f=1, Nf
+   !< call astring%glob(pattern='glob test-*.tmp', list=alist_str)
+   !< test_passed(1) = size(alist_str, dim=1)==2
+   !< if (test_passed(1)) test_passed(1) = all(alist_str==files(1).or.alist_str==files(2))
+   !< call astring%glob(pattern=files(3), list=alist_str)
+   !< test_passed(2) = size(alist_str, dim=1)==1
+   !< call astring%glob(pattern='glob test-*; touch glob-injected', list=alist_str)
+   !< inquire(file='glob-injected', exist=is_injected)
+   !< test_passed(3) = size(alist_str, dim=1)==0.and..not.is_injected
+   !< do f=1, size(files, dim=1)
    !<    open(newunit=file_unit, file=files(f))
    !<    close(unit=file_unit, status='delete')
    !< enddo
-   !< test_passed = .false.
-   !< outer_str: do f=1, size(alist_str, dim=1)
-   !<    do ff=1, Nf
-   !<       test_passed = alist_str(f) == files(ff)
-   !<       if (test_passed) cycle outer_str
-   !<    enddo
-   !< enddo outer_str
-   !< print '(L1)', test_passed
+   !< directory = astring%tempname(is_file=.false., prefix='glob-dir-')
+   !< call execute_command_line('mkdir '//directory)
+   !< call astring%glob(pattern=directory, list=alist_str)
+   !< test_passed(4) = size(alist_str, dim=1)==1
+   !< if (test_passed(4)) test_passed(4) = alist_str(1)==directory
+   !< call execute_command_line('rmdir '//directory)
+   !< call astring%glob(pattern='', list=alist_str)
+   !< test_passed(5) = size(alist_str, dim=1)==0
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)  :: self     !< The string.
@@ -1500,10 +1513,26 @@ contains
    type(string), allocatable, intent(out) :: list(:)  !< List of matching pathnames.
    type(string)                           :: tempfile !< Safe temporary file.
    character(len=:), allocatable          :: tempname !< Safe temporary name.
+   character(len=:), allocatable          :: tempdir  !< Directory of the temporary file.
    integer(I4P)                           :: tempunit !< Unit of temporary file.
+   integer                                :: length   !< Length of the TMPDIR environment variable.
+   integer                                :: status   !< Status of the TMPDIR environment variable.
 
-   tempname = self%tempname()
-   call execute_command_line('ls -1 '//trim(adjustl(pattern))//' > '//tempname//' 2> /dev/null')
+   if (len_trim(adjustl(pattern))==0.or.index(pattern, new_line('a'))>0.or.index(pattern, achar(0))>0) then
+      allocate(list(0))
+      return
+   endif
+   call get_environment_variable('TMPDIR', length=length, status=status)
+   if (status==0.and.length>0) then
+      allocate(character(len=length) :: tempdir)
+      call get_environment_variable('TMPDIR', value=tempdir)
+      tempdir = tempdir//'/'
+   else
+      tempdir = '/tmp/'
+   endif
+   tempname = self%tempname(prefix='stringifor-glob-', path=tempdir)
+   call execute_command_line('ls -1d -- '//shell_escape(trim(adjustl(pattern)))//' > '//shell_escape(tempname)// &
+                             ' 2> /dev/null')
    call tempfile%read_file(file=tempname)
    if (tempfile%len_trim()>0) call tempfile%split(sep=new_line('a'), tokens=list)
    if (.not.allocated(list)) allocate(list(0)) ! no matches
@@ -4071,6 +4100,81 @@ contains
    endif
    endfunction is_upper
 
+   elemental function match(self, pattern) result(is_match)
+   !< Return true if the whole string matches a wildcard pattern.
+   !<
+   !< The wildcards are the ones of the shell (as Python `fnmatch.fnmatchcase`):
+   !<
+   !<+ `*` matches any sequence of characters, also empty;
+   !<+ `?` matches any single character;
+   !<+ `[seq]` matches any character of `seq`, where `a-z` is a range; `[!seq]` any character not in `seq`; a `]` just after
+   !<  `[` or `[!` is a member of `seq`; a `[` without its closing `]` is a plain character.
+   !<
+   !< Any other character matches itself: the match is case-sensitive, there is no escape character (match a wildcard with a
+   !< one-character class, `[*]`) and a leading dot is not special. A not allocated string matches nothing.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(9)
+   !< astring = 'data/report-2026.csv'
+   !< test_passed(1) = astring%match('*.csv')
+   !< test_passed(2) = astring%match('data/report-????.csv')
+   !< test_passed(3) = astring%match('*-20[0-9][0-9].*')
+   !< test_passed(4) = .not.astring%match('*.CSV')
+   !< test_passed(5) = .not.astring%match('report*')
+   !< test_passed(6) = astring%match('*[!a-z].csv')
+   !< astring = 'a*b'
+   !< test_passed(7) = astring%match('a[*]b').and..not.astring%match('a[*]c')
+   !< astring = ''
+   !< test_passed(8) = astring%match('*').and..not.astring%match('?')
+   !< astring = '[x]'
+   !< test_passed(9) = astring%match('[[]x]').and.astring%match('[[]x[]]').and..not.astring%match('[]x]*')
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in) :: self      !< The string.
+   character(kind=CK, len=*), intent(in) :: pattern   !< Wildcard pattern.
+   logical                               :: is_match  !< Result of the test.
+   integer                               :: s         !< Character counter into the string.
+   integer                               :: p         !< Character counter into the pattern.
+   integer                               :: star_s    !< Character of the string matched by the last star.
+   integer                               :: star_p    !< Position of the last star in the pattern.
+   integer                               :: token_len !< Length of the pattern token matching a character.
+
+   is_match = .false.
+   if (.not.allocated(self%raw)) return
+   ! the classic backtracking on the last star: every other token matches exactly one character
+   s = 1
+   p = 1
+   star_p = 0
+   star_s = 0
+   do while (s<=len(self%raw))
+      if (p<=len(pattern)) then
+         if (pattern(p:p)=='*') then
+            star_p = p
+            star_s = s
+            p = p + 1
+            cycle
+         endif
+         token_len = match_token(pattern=pattern, p=p, c=self%raw(s:s))
+         if (token_len>0) then
+            p = p + token_len
+            s = s + 1
+            cycle
+         endif
+      endif
+      if (star_p==0) return
+      p = star_p + 1     ! let the last star match one more character
+      star_s = star_s + 1
+      s = star_s
+   enddo
+   do while (p<=len(pattern))
+      if (pattern(p:p)/='*') return
+      p = p + 1
+   enddo
+   is_match = .true.
+   endfunction match
+
    elemental function start_with(self, prefix, start, end)
    !< Return true if a string starts with a specified prefix.
    !<
@@ -5118,6 +5222,101 @@ contains
    upper = c
    if (is_lower_char(c)) upper = achar(iachar(c) - CASE_SHIFT, kind=CK)
    endfunction upper_char
+
+   pure function match_token(pattern, p, c) result(token_len)
+   !< Return the length of the token of a wildcard pattern starting at p if it matches the character c, 0 otherwise.
+   !<
+   !< The token is `?`, a class `[seq]` or `[!seq]`, or a plain character, see [[string:match]]; `*` is handled by the caller.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:match]].
+   character(kind=CK, len=*), intent(in) :: pattern    !< Wildcard pattern.
+   integer,                   intent(in) :: p          !< Position of the token into the pattern.
+   character(kind=CK, len=1), intent(in) :: c          !< Character to match.
+   integer                               :: token_len  !< Length of the token if it matches c, 0 otherwise.
+   integer                               :: first      !< First character of the set of a class.
+   integer                               :: last       !< Position of the closing bracket of a class.
+   integer                               :: i          !< Character counter into the set.
+   logical                               :: is_negated !< The class is negated.
+   logical                               :: is_member  !< The character is a member of the set.
+
+   token_len = 0
+   select case(pattern(p:p))
+   case('?')
+      token_len = 1
+   case('[')
+      first = p + 1
+      is_negated = .false.
+      if (first<=len(pattern)) then
+         if (pattern(first:first)=='!') then
+            is_negated = .true.
+            first = first + 1
+         endif
+      endif
+      ! the first character of the set is a member even if it is a ']': the closing bracket is searched after it
+      last = 0
+      if (first<len(pattern)) last = index(pattern(first+1:), ']')
+      if (last==0) then ! no closing bracket: a plain '['
+         if (c=='[') token_len = 1
+         return
+      endif
+      last = first + last
+      is_member = .false.
+      i = first
+      do while (i<last.and..not.is_member)
+         if (i+2<last.and.pattern(i+1:i+1)=='-') then ! a range
+            is_member = iachar(c)>=iachar(pattern(i:i)).and.iachar(c)<=iachar(pattern(i+2:i+2))
+            i = i + 3
+         else
+            is_member = c==pattern(i:i)
+            i = i + 1
+         endif
+      enddo
+      if (is_member.neqv.is_negated) token_len = last - p + 1
+   case default
+      if (c==pattern(p:p)) token_len = 1
+   endselect
+   endfunction match_token
+
+   pure function shell_escape(raw) result(escaped)
+   !< Return raw with a backslash before every character that the POSIX shell could take as syntax.
+   !<
+   !< The letters, the digits, `._/-+,:@%=!` and the wildcards `*?[]` are left as they are: the shell still expands the
+   !< wildcards, but spaces, `;`, `|`, `&`, `$`, quotes, parentheses, `~`, `#` and the like become plain characters.
+   !<
+   !< @note A new line cannot be escaped (a backslash before it continues the line): the caller must reject it.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:glob]].
+   character(kind=CK, len=*), intent(in)  :: raw     !< Raw characters data.
+   character(kind=CK, len=:), allocatable :: escaped !< Escaped characters data.
+   character(kind=CK, len=*), parameter   :: SAFE = '._/-+,:@%=!*?[]' !< Characters kept as they are, with letters and digits.
+   integer                                :: n       !< Number of characters to escape.
+   integer                                :: c       !< Character counter into raw.
+   integer                                :: e       !< Character counter into escaped.
+
+   n = 0
+   do c=1, len(raw)
+      if (is_unsafe(raw(c:c))) n = n + 1
+   enddo
+   allocate(character(kind=CK, len=len(raw)+n) :: escaped)
+   e = 0
+   do c=1, len(raw)
+      if (is_unsafe(raw(c:c))) then
+         e = e + 1
+         escaped(e:e) = BACKSLASH
+      endif
+      e = e + 1
+      escaped(e:e) = raw(c:c)
+   enddo
+
+   contains
+      elemental function is_unsafe(ch)
+      !< Return true if the character must be escaped.
+      character(kind=CK, len=1), intent(in) :: ch        !< The character.
+      logical                               :: is_unsafe !< Result of the test.
+
+      is_unsafe = .not.(is_lower_char(ch).or.is_upper_char(ch).or.(ch>='0'.and.ch<='9').or.index(SAFE, ch)>0)
+      endfunction is_unsafe
+   endfunction shell_escape
 
    pure subroutine append_to_buffer(buffer, length, piece)
    !< Append a piece to the first length characters of a buffer, doubling the buffer when it is full.

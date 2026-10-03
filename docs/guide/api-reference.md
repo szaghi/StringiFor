@@ -79,6 +79,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `is_number([allow_spaces])` | `logical` | True if string represents an integer or real |
 | `is_real([allow_spaces])` | `logical` | True if string represents a real: a decimal point or an exponent is required, an integer is not a real |
 | `is_upper()` | `logical` | True if all characters are uppercase |
+| `match(pattern)` | `logical` | True if the whole string matches a wildcard pattern (`*`, `?`, `[seq]`, `[!seq]`) |
 | `len()` | `integer` | Total length (like `LEN`) |
 | `len_last_word([sep])` | `integer` | Length of the last word, trailing separators ignored |
 | `len_trim()` | `integer` | Length without trailing spaces |
@@ -135,7 +136,7 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 | `basedir([sep])` | Directory component of a path |
 | `basename([sep][, extension][, strip_last_extension])` | File name component, optionally stripped |
 | `extension()` | File extension (with leading dot) |
-| `glob(pattern, list)` | Pathnames matching a shell pattern; `list` is a `string` or `character` allocatable array (subroutine, Unix only) |
+| `glob(pattern, list)` | Pathnames matching a shell pattern, only its wildcards special; `list` is a `string` or `character` allocatable array (subroutine, Unix only) |
 | `search(tag_start, tag_end[, in_string][, in_character][, istart][, iend])` | Find first region delimited by tags |
 | `tempname([is_file][, prefix][, path])` | Generate a unique temporary file/directory name |
 

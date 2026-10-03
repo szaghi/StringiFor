@@ -2,30 +2,37 @@ program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
  type(string), allocatable :: alist_str(:)
- integer, parameter :: Nf=5
- character(14) :: files(1:Nf)
+ character(len=:), allocatable :: files(:)
+ character(len=:), allocatable :: directory
  integer :: file_unit
  integer :: f
- integer :: ff
- logical :: test_passed
-
- do f=1, Nf
- files(f) = astring%tempname(prefix='foo-')
+ logical :: is_injected
+ logical :: test_passed(5)
+ files = [character(len=20) :: astring%tempname(prefix='glob test-'), astring%tempname(prefix='glob test-'), &
+ astring%tempname(prefix='-glob-')]
+ do f=1, size(files, dim=1)
  open(newunit=file_unit, file=files(f))
- write(file_unit, *)f
  close(unit=file_unit)
  enddo
- call astring%glob(pattern='foo-*', list=alist_str)
- do f=1, Nf
+ call astring%glob(pattern='glob test-*.tmp', list=alist_str)
+ test_passed(1) = size(alist_str, dim=1)==2
+ if (test_passed(1)) test_passed(1) = all(alist_str==files(1).or.alist_str==files(2))
+ call astring%glob(pattern=files(3), list=alist_str)
+ test_passed(2) = size(alist_str, dim=1)==1
+ call astring%glob(pattern='glob test-*; touch glob-injected', list=alist_str)
+ inquire(file='glob-injected', exist=is_injected)
+ test_passed(3) = size(alist_str, dim=1)==0.and..not.is_injected
+ do f=1, size(files, dim=1)
  open(newunit=file_unit, file=files(f))
  close(unit=file_unit, status='delete')
  enddo
- test_passed = .false.
- outer_str: do f=1, size(alist_str, dim=1)
- do ff=1, Nf
- test_passed = alist_str(f) == files(ff)
- if (test_passed) cycle outer_str
- enddo
- enddo outer_str
- print '(L1)', test_passed
+ directory = astring%tempname(is_file=.false., prefix='glob-dir-')
+ call execute_command_line('mkdir '//directory)
+ call astring%glob(pattern=directory, list=alist_str)
+ test_passed(4) = size(alist_str, dim=1)==1
+ if (test_passed(4)) test_passed(4) = alist_str(1)==directory
+ call execute_command_line('rmdir '//directory)
+ call astring%glob(pattern='', list=alist_str)
+ test_passed(5) = size(alist_str, dim=1)==0
+ print '(L1)', all(test_passed)
 endprogram volatile_doctest

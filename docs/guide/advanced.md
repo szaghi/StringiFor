@@ -79,9 +79,25 @@ call write_file(file='data.bin', lines=lines, form='unformatted')
 array of strings or of deferred-length characters, allocated with zero size when nothing matches. It is also a procedure
 of the module, `call glob(self, pattern, list)`.
 
+Only the wildcards `*`, `?` and `[...]` are special: any other character of the pattern, a space, a `;`, a `$`, a quote
+or a leading `-`, is part of the names searched, never a command of the shell. A matching directory is listed itself, not
+its content.
+
 ::: warning
 `glob` runs the `ls` command: it works on Unix-like systems only.
 :::
+
+## Matching names
+
+<<< @/examples/snippets/wildcards.f90
+
+<<< @/examples/output/wildcards.ansi{ansi}
+
+`match(pattern)` tells whether the whole string matches a wildcard pattern, with no file system involved: it works on any
+system, on names already in memory. The wildcards are the ones of the shell, as Python `fnmatch.fnmatchcase`: `*` any
+sequence of characters, `?` any single character, `[seq]` a character of `seq` (`a-z` is a range), `[!seq]` a character
+not in `seq`. The match is case-sensitive, there is no escape character (match a wildcard with a class, `[*]`) and a
+leading dot is not special. `match` is elemental: on an array of strings it gives an array of logicals.
 
 ## Temporary names
 

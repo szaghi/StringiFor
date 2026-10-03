@@ -7,7 +7,8 @@ program stringifor_test_differential
 !<
 !<+ `replace` is not recursive (v1.4.0): it is checked against a naive left-to-right scan;
 !<+ `count` (the character one) counted wrongly in v1.3.1: it is checked against a naive scan;
-!<+ `split` of a string made only of separators returned the string itself in v1.3.1: it now returns no tokens.
+!<+ `split` of a string made only of separators returned the string itself in v1.3.1: it now returns no tokens;
+!<+ `match` (v1.5.0) is checked against a naive recursive matcher.
 !<
 !< The inputs are short random strings over a small alphabet that contains the separators, generated with a fixed seed.
 use, intrinsic :: iso_fortran_env, only : iostat_eor
@@ -18,7 +19,7 @@ character(len=*), parameter :: ALPHABET = 'ab+ '                                
 character(len=3), parameter :: SEPS(7) = ['+  ', '   ', 'a  ', 'ab ', '++ ', 'aa ', '+a+'] !< Separators, to be trimmed.
 integer,          parameter :: SEPS_LEN(7) = [1, 1, 1, 2, 2, 2, 3]                          !< Length of the separators.
 integer,          parameter :: CASES = 10000                                                !< Random cases for each method.
-logical                     :: test_passed(9)                                               !< List of passed tests.
+logical                     :: test_passed(10)                                              !< List of passed tests.
 
 call init_random()
 test_passed(1) = check_split()
@@ -30,6 +31,7 @@ test_passed(6) = check_join()
 test_passed(7) = check_strjoin()
 test_passed(8) = check_read_lines(form='FORMATTED')
 test_passed(9) = check_read_lines(form='UNFORMATTED')
+test_passed(10) = check_match()
 print '(L1)', all(test_passed)
 if (.not.all(test_passed)) error stop 1 ! runners checking only the exit code must see the failure
 
@@ -337,6 +339,30 @@ contains
    close(unit, status='delete')
    endfunction check_read_lines
 
+   function check_match() result(is_ok)
+   !< Check match against a naive recursive matcher, on patterns rich of wildcards and class syntax.
+   character(len=*), parameter   :: PATTERN_ALPHABET = 'ab-]![*?' !< Characters of the random patterns.
+   logical                       :: is_ok                        !< Check result.
+   type(string)                  :: astring                      !< A random string.
+   character(len=:), allocatable :: pattern                      !< A random pattern.
+   integer                       :: i, c                         !< Counters.
+
+   is_ok = .true.
+   do i=1, 10 * CASES
+      astring = random_string(max_len=8)
+      allocate(character(len=random_integer(0, 8)) :: pattern)
+      do c=1, len(pattern)
+         pattern(c:c) = PATTERN_ALPHABET(random_integer(1, len(PATTERN_ALPHABET)):)
+      enddo
+      if (astring%match(pattern).neqv.naive_match(astring%raw, pattern)) then
+         call report('match', astring%raw, pattern)
+         is_ok = .false.
+         return
+      endif
+      deallocate(pattern)
+   enddo
+   endfunction check_match
+
    ! helpers
    subroutine init_random()
    !< Seed the random generator with a fixed seed.
@@ -440,6 +466,65 @@ contains
    enddo
    replaced = replaced//chars(c:)
    endfunction naive_replace
+
+   pure recursive function naive_match(chars, pattern) result(is_match)
+   !< Match a wildcard pattern by recursion on its first token (`*`, `?`, `[seq]`, `[!seq]` or a plain character).
+   character(len=*), intent(in) :: chars      !< Input.
+   character(len=*), intent(in) :: pattern    !< Wildcard pattern.
+   logical                      :: is_match   !< Result.
+   integer                      :: last       !< Position of the closing bracket of a class.
+   integer                      :: first      !< First character of the set of a class.
+   integer                      :: i          !< Counter.
+   logical                      :: is_member  !< The character is a member of the set.
+   logical                      :: is_negated !< The class is negated.
+
+   if (len(pattern)==0) then
+      is_match = len(chars)==0
+      return
+   endif
+   if (pattern(1:1)=='*') then
+      is_match = naive_match(chars, pattern(2:))
+      if (.not.is_match.and.len(chars)>0) is_match = naive_match(chars(2:), pattern)
+      return
+   endif
+   is_match = .false.
+   if (len(chars)==0) return
+   if (pattern(1:1)=='?') then
+      is_match = naive_match(chars(2:), pattern(2:))
+   elseif (pattern(1:1)=='[') then
+      first = 2
+      is_negated = .false.
+      if (len(pattern)>=2) is_negated = pattern(2:2)=='!'
+      if (is_negated) first = 3
+      last = 0
+      do i=first+1, len(pattern) ! the first member may be a ']'
+         if (pattern(i:i)==']') then
+            last = i
+            exit
+         endif
+      enddo
+      if (last==0) then ! a plain '['
+         if (chars(1:1)=='[') is_match = naive_match(chars(2:), pattern(2:))
+         return
+      endif
+      is_member = .false.
+      i = first
+      do while (i<last)
+         if (i+2<last) then
+            if (pattern(i+1:i+1)=='-') then
+               if (chars(1:1)>=pattern(i:i).and.chars(1:1)<=pattern(i+2:i+2)) is_member = .true.
+               i = i + 3
+               cycle
+            endif
+         endif
+         if (chars(1:1)==pattern(i:i)) is_member = .true.
+         i = i + 1
+      enddo
+      if (is_member.neqv.is_negated) is_match = naive_match(chars(2:), pattern(last+1:))
+   else
+      if (chars(1:1)==pattern(1:1)) is_match = naive_match(chars(2:), pattern(2:))
+   endif
+   endfunction naive_match
 
    pure function naive_count(chars, substring) result(n)
    !< Count the not overlapping occurrences of substring, left to right.

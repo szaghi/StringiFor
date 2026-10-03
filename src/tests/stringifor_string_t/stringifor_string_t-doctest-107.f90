@@ -6,7 +6,7 @@ use stringifor_string_t
  logical :: test_passed(1)
  astring = 'Hello '
  acharacter = 'World!'
- yetanotherstring = acharacter.cat.astring
- test_passed(1) = yetanotherstring%chars()=='World!Hello '
+ yetanotherstring = astring.cat.acharacter
+ test_passed(1) = yetanotherstring%chars()=='Hello World!'
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

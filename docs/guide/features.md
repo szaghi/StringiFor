@@ -31,7 +31,7 @@ print '(A)', s%upper()//''   ! call a method, get a character with //
 | **Comparing** | `common_prefix`, `compare_version` | [String Manipulation](./string-manipulation#comparing) |
 | **Numbers** | assignment from any integer and real kind; `to_number`; `is_number`, `is_integer`, `is_real`, `is_digit`; `hex` | [Numbers](./numbers) |
 | **Files** | `read_file`, `read_lines`, `read_line`, `write_file`, `write_lines`, `write_line`, formatted or unformatted stream | [Files and Paths](./advanced) |
-| **Paths** | `basedir`, `basename`, `extension`, `glob`, `tempname` | [Files and Paths](./advanced#paths) |
+| **Paths** | `basedir`, `basename`, `extension`, `glob`, `match` of wildcard patterns, `tempname` | [Files and Paths](./advanced#paths) |
 | **Encoding and colours** | base64 `encode` and `decode`; ANSI `colorize` | [Files and Paths](./advanced#encoding) |
 
 The [methods summary](./api-reference) lists every method with its arguments.

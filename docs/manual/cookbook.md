@@ -172,7 +172,8 @@ The first form is a subroutine of the module, the second a method reading the fi
 
 <<< @/examples/output/glob.ansi{ansi}
 
-`glob` runs the `ls` command: it works on Unix-like systems only.
+`glob` runs the `ls` command: it works on Unix-like systems only. To filter names already in memory, on any system, use
+`match`, see [Matching names](../guide/advanced#matching-names).
 
 ## Get a name for a temporary file
 
