@@ -4,6 +4,15 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.0] — 2026-10-03
+### Documentation
+- Add the 1.4.0 upgrade notes, sync run_tests.sh and release.sh
+
+
+### Performance
+- **string_t**: Make split, replace, unique, escape, join and read_* linear
+
+
 ## [1.3.1] — 2026-10-03
 ### Changed
 - **cmake**: Find PENF and FACE by their standard config names
