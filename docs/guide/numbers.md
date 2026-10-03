@@ -48,7 +48,8 @@ value is ignored, pass any constant of the wanted kind (`1_I4P`, `1._R8P`). A ca
 integer string, a cast to an integer kind an integer string.
 
 ::: warning
-On a string that does not hold a suitable number the result is undefined: check with `is_number` or `is_integer` first.
+On a string that does not hold a suitable number the result is 0 for an integer kind and a quiet NaN for a real kind:
+check with `is_number` or `is_integer` first to tell a parsed 0 from a failure.
 :::
 
 ## From a number to a string

@@ -55,6 +55,8 @@ make COMPILER=intel TESTS=yes
 ```bash
 # After fobis build, run all test executables
 bash scripts/run_tests.sh
+# (a test with a .result file, as the doctests, must also print it; --vmem KB caps the memory of each test:
+# use --vmem 4000000 on a machine with little memory)
 
 # Run a single test executable directly
 ./exe/<test_name>

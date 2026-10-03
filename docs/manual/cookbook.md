@@ -126,7 +126,7 @@ Repeated separators count as one, and the ones at the ends are ignored. `max_tok
 
 <<< @/examples/output/number_cast.ansi{ansi}
 
-Check first: on a string that is not a number the result of `to_number` is undefined.
+Check first: on a string that is not a number `to_number` gives 0 (integer kinds) or NaN (real kinds).
 
 ## Convert a number to a string
 

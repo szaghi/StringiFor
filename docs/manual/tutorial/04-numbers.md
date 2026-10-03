@@ -18,8 +18,8 @@ result, here a `real(R8P)`. The kinds are the portable ones of [PENF](https://gi
 `stringifor`: `I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`. A cast to a real kind accepts an integer string too.
 
 ::: warning
-`to_number` does not check the string: on something that is not a number the result is undefined. Check with
-`is_number` (or `is_integer`) first.
+`to_number` does not report an error: on something that is not a number it gives 0 (integer kinds) or NaN (real
+kinds). Check with `is_number` (or `is_integer`) first.
 :::
 
 ## From a number to a string

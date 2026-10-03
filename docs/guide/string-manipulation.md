@@ -43,7 +43,7 @@ leading and trailing character belonging to the set. `remove_nulls=.true.` cuts 
 
 | Method | Result |
 |---|---|
-| `replace(old, new[, count])` | every occurrence of `old` replaced by `new`, or the first `count` ones |
+| `replace(old, new[, count])` | every occurrence of `old` replaced by `new`, or the first `count` ones, left to right; the replaced text is not searched again |
 | `unique([substring])` | every run of `substring` (default a blank) collapsed to one occurrence |
 | `insert(substring, pos)` | `substring` inserted at position `pos` |
 | `escape(to_escape[, esc])` | the character `to_escape` preceded by a backslash, or by `esc` |
