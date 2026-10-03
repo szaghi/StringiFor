@@ -16,12 +16,12 @@ library = true
 [dependencies]
 [dependencies.BeFoR64]
 git = "https://github.com/szaghi/BeFoR64"
-rev = "09b95c08a2ee8995d19cf8551c22b783193f6246"
+rev = "e7734300c0596ad09c982e6105a4eba1d978082b"
 
 [dependencies.FACE]
 git = "https://github.com/szaghi/FACE"
-rev = "1455c549ae0c1ead96961ca61a73131d8176b6a4"
+rev = "120ed0968e68813428c615a005de43f304efdf41"
 
 [dependencies.PENF]
 git = "https://github.com/szaghi/PENF"
-rev = "65061235982495b158412b70c05b228af4320d94"
+rev = "4cb9d326c08f109ed5126d83c27e8e70c98b7eaa"
