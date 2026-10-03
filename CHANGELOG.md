@@ -4,6 +4,11 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.5.0] — 2026-10-03
+### Added
+- **string_t**: Add match of wildcard patterns, make glob safe
+
+
 ## [1.4.0] — 2026-10-03
 ### Documentation
 - Add the 1.4.0 upgrade notes, sync run_tests.sh and release.sh
