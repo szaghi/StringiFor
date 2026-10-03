@@ -4,6 +4,21 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.1] — 2026-10-03
+### Changed
+- **cmake**: Find PENF and FACE by their standard config names
+
+
+### Fixed
+- **makefile**: Repair the make build and keep the doctests in sync
+
+- **cmake**: Make the installed package usable by find_package
+
+- **string_t**: Return a not allocated string for an unknown codec
+
+- **release**: Sync fpm.toml version on release, unblock docs build
+
+
 ## [1.3.0] — 2026-10-02
 ### Added
 - **string_t**: Add six string methods from the issue #3 wishlist
