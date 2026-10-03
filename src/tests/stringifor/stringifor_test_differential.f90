@@ -8,7 +8,9 @@ program stringifor_test_differential
 !<+ `replace` is not recursive (v1.4.0): it is checked against a naive left-to-right scan;
 !<+ `count` (the character one) counted wrongly in v1.3.1: it is checked against a naive scan;
 !<+ `split` of a string made only of separators returned the string itself in v1.3.1: it now returns no tokens;
-!<+ `match` (v1.5.0) is checked against a naive recursive matcher.
+!<+ `match` (v1.5.0) is checked against a naive recursive matcher;
+!<+ `split` with `keep_empty` (v1.5.0) is checked against a naive left-to-right scan, `read_number` (v1.5.0) against
+!<  `to_number` and `is_integer`/`is_number`.
 !<
 !< The inputs are short random strings over a small alphabet that contains the separators, generated with a fixed seed.
 use, intrinsic :: iso_fortran_env, only : iostat_eor
@@ -19,7 +21,7 @@ character(len=*), parameter :: ALPHABET = 'ab+ '                                
 character(len=3), parameter :: SEPS(7) = ['+  ', '   ', 'a  ', 'ab ', '++ ', 'aa ', '+a+'] !< Separators, to be trimmed.
 integer,          parameter :: SEPS_LEN(7) = [1, 1, 1, 2, 2, 2, 3]                          !< Length of the separators.
 integer,          parameter :: CASES = 10000                                                !< Random cases for each method.
-logical                     :: test_passed(10)                                              !< List of passed tests.
+logical                     :: test_passed(12)                                              !< List of passed tests.
 
 call init_random()
 test_passed(1) = check_split()
@@ -32,6 +34,8 @@ test_passed(7) = check_strjoin()
 test_passed(8) = check_read_lines(form='FORMATTED')
 test_passed(9) = check_read_lines(form='UNFORMATTED')
 test_passed(10) = check_match()
+test_passed(11) = check_split_keep_empty()
+test_passed(12) = check_read_number()
 print '(L1)', all(test_passed)
 if (.not.all(test_passed)) error stop 1 ! runners checking only the exit code must see the failure
 
@@ -363,6 +367,71 @@ contains
    enddo
    endfunction check_match
 
+   function check_split_keep_empty() result(is_ok)
+   !< Check split keeping the empty fields against a naive left-to-right scan (as Python str.split(sep, maxsplit)).
+   logical                   :: is_ok         !< Check result.
+   type(string)              :: astring       !< A random string.
+   type(string), allocatable :: tokens(:)     !< Tokens of split.
+   type(string), allocatable :: ref_tokens(:) !< Tokens of the reference split.
+   integer                   :: max_tokens(5) !< Values of max_tokens.
+   integer                   :: i, s, m       !< Counters.
+
+   max_tokens = [-1, 0, 1, 2, 3]
+   is_ok = .true.
+   do i=1, CASES
+      astring = random_string()
+      do s=1, size(SEPS)
+         do m=0, size(max_tokens)
+            if (m==0) then
+               call astring%split(tokens=tokens, sep=SEPS(s)(1:SEPS_LEN(s)), keep_empty=.true.)
+               call naive_split_keep_empty(astring%raw, SEPS(s)(1:SEPS_LEN(s)), huge(1), ref_tokens)
+            else
+               call astring%split(tokens=tokens, sep=SEPS(s)(1:SEPS_LEN(s)), max_tokens=max_tokens(m), keep_empty=.true.)
+               call naive_split_keep_empty(astring%raw, SEPS(s)(1:SEPS_LEN(s)), max_tokens(m), ref_tokens)
+            endif
+            if (.not.same_tokens(tokens, ref_tokens)) then
+               call report('split keep_empty', astring%raw, SEPS(s)(1:SEPS_LEN(s)))
+               is_ok = .false.
+               return
+            endif
+         enddo
+      enddo
+   enddo
+   endfunction check_split_keep_empty
+
+   function check_read_number() result(is_ok)
+   !< Check read_number against to_number and is_integer/is_number, on random strings looking like numbers.
+   character(len=*), parameter :: NUMBER_ALPHABET = '0123456789+-.eEdx ' !< Characters of the random strings.
+   logical                     :: is_ok                                  !< Check result.
+   type(string)                :: astring                                !< A random string.
+   real(R8P)                   :: real_                                  !< Number read.
+   integer(I4P)                :: integer_                               !< Number read.
+   integer                     :: iostat                                 !< IO status code.
+   integer                     :: i, c                                   !< Counters.
+
+   is_ok = .true.
+   do i=1, CASES
+      astring = repeat(' ', random_integer(0, 8))
+      do c=1, astring%len()
+         astring%raw(c:c) = NUMBER_ALPHABET(random_integer(1, len(NUMBER_ALPHABET)):)
+      enddo
+      call astring%read_number(real_, iostat=iostat)
+      if (iostat==0.and..not.astring%is_number()) is_ok = .false. ! a number may still overflow
+      if (iostat==0) then
+         if (real_/=astring%to_number(kind=1._R8P)) is_ok = .false.
+      else
+         if (real_==real_) is_ok = .false. ! not a NaN
+      endif
+      call astring%read_number(integer_, iostat=iostat)
+      if (iostat==0.and..not.astring%is_integer()) is_ok = .false.
+      if (integer_/=astring%to_number(kind=1_I4P)) is_ok = .false.
+      if (.not.is_ok) then
+         call report('read_number', astring%raw, '')
+         return
+      endif
+   enddo
+   endfunction check_read_number
+
    ! helpers
    subroutine init_random()
    !< Seed the random generator with a fixed seed.
@@ -525,6 +594,42 @@ contains
       if (chars(1:1)==pattern(1:1)) is_match = naive_match(chars(2:), pattern(2:))
    endif
    endfunction naive_match
+
+   pure subroutine naive_split_keep_empty(chars, sep, max_splits, tokens)
+   !< Split at every separator, left to right, at most max_splits times (all if max_splits<=0), keeping the empty fields.
+   character(len=*),          intent(in)  :: chars      !< Input.
+   character(len=*),          intent(in)  :: sep        !< Separator.
+   integer,                   intent(in)  :: max_splits !< Maximum number of splits.
+   type(string), allocatable, intent(out) :: tokens(:)  !< Tokens.
+   type(string), allocatable              :: grown(:)   !< Grown tokens.
+   character(len=:), allocatable          :: field      !< Current field.
+   integer                                :: c          !< Character counter.
+
+   allocate(tokens(0))
+   field = ''
+   c = 1
+   do while (c<=len(chars))
+      if (size(tokens)<max_splits.or.max_splits<=0) then
+         if (c+len(sep)-1<=len(chars)) then
+            if (chars(c:c+len(sep)-1)==sep) then
+               allocate(grown(size(tokens)+1))
+               grown(1:size(tokens)) = tokens
+               grown(size(grown))%raw = field
+               call move_alloc(from=grown, to=tokens)
+               field = ''
+               c = c + len(sep)
+               cycle
+            endif
+         endif
+      endif
+      field = field//chars(c:c)
+      c = c + 1
+   enddo
+   allocate(grown(size(tokens)+1))
+   grown(1:size(tokens)) = tokens
+   grown(size(grown))%raw = field
+   call move_alloc(from=grown, to=tokens)
+   endsubroutine naive_split_keep_empty
 
    pure function naive_count(chars, substring) result(n)
    !< Count the not overlapping occurrences of substring, left to right.

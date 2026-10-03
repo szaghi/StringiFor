@@ -49,8 +49,18 @@ integer string, a cast to an integer kind an integer string.
 
 ::: warning
 On a string that does not hold a suitable number the result is 0 for an integer kind and a quiet NaN for a real kind:
-check with `is_number` or `is_integer` first to tell a parsed 0 from a failure.
+check with `is_number` or `is_integer` first to tell a parsed 0 from a failure, or use `read_number`.
 :::
+
+### With an error status
+
+<<< @/examples/snippets/checked_cast.f90
+
+<<< @/examples/output/checked_cast.ansi{ansi}
+
+`read_number(number[, iostat][, iomsg])` is a subroutine: the kind is the one of `number`, and the failure is reported
+as by a `read` statement, `iostat` being 0 on success and positive otherwise, `iomsg` explaining it. On failure `number`
+gets the same value as `to_number`, 0 or NaN. It is elemental: on an array of strings, `number` and `iostat` are arrays.
 
 ## From a number to a string
 

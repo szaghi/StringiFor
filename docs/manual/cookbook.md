@@ -56,7 +56,8 @@ The words are separated by blanks, or by `sep`.
 
 <<< @/examples/output/split_words.ansi{ansi}
 
-Repeated separators count as one, and the ones at the ends are ignored. `max_tokens` is the number of splits.
+Repeated separators count as one, and the ones at the ends are ignored. `max_tokens` is the number of splits. To keep
+the empty fields, as in a CSV record, pass `keep_empty=.true.`.
 
 ## Join an array of strings
 
@@ -126,7 +127,8 @@ Repeated separators count as one, and the ones at the ends are ignored. `max_tok
 
 <<< @/examples/output/number_cast.ansi{ansi}
 
-Check first: on a string that is not a number `to_number` gives 0 (integer kinds) or NaN (real kinds).
+Check first: on a string that is not a number `to_number` gives 0 (integer kinds) or NaN (real kinds). To get an error
+status instead, use `call s%read_number(number, iostat=iostat)`.
 
 ## Convert a number to a string
 

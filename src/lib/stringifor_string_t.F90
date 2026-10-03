@@ -85,6 +85,18 @@ type :: string
     procedure, pass(self) :: read_file        !< Read a file a single string stream.
     procedure, pass(self) :: read_line        !< Read line (record) from a connected unit.
     procedure, pass(self) :: read_lines       !< Read (all) lines (records) from a connected unit as a single ascii stream.
+    generic               :: read_number => &
+                             read_number_I1P,&
+#ifndef _NVF
+                             read_number_I2P,&
+#endif
+                             read_number_I4P,&
+                             read_number_I8P,&
+#if defined PENF_R16P
+                             read_number_R16P,&
+#endif
+                             read_number_R8P,&
+                             read_number_R4P  !< Cast string to number, with an error status.
     procedure, pass(self) :: replace          !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse          !< Return a reversed string.
     procedure, pass(self) :: reverse_words    !< Return a string with the words order reversed.
@@ -203,6 +215,15 @@ type :: string
     procedure, private, pass(self) :: to_real_R4P      !< Cast string to real.
     procedure, private, pass(self) :: to_real_R8P      !< Cast string to real.
     procedure, private, pass(self) :: to_real_R16P     !< Cast string to real.
+    procedure, private, pass(self) :: read_number_I1P  !< Cast string to integer, with an error status.
+#ifndef _NVF
+    procedure, private, pass(self) :: read_number_I2P  !< Cast string to integer, with an error status.
+#endif
+    procedure, private, pass(self) :: read_number_I4P  !< Cast string to integer, with an error status.
+    procedure, private, pass(self) :: read_number_I8P  !< Cast string to integer, with an error status.
+    procedure, private, pass(self) :: read_number_R4P  !< Cast string to real, with an error status.
+    procedure, private, pass(self) :: read_number_R8P  !< Cast string to real, with an error status.
+    procedure, private, pass(self) :: read_number_R16P !< Cast string to real, with an error status.
     ! assignments
     procedure, private, pass(lhs) :: string_assign_string      !< Assignment operator from string input.
     procedure, private, pass(lhs) :: string_assign_character   !< Assignment operator from character input.
@@ -2885,10 +2906,14 @@ contains
    endif
    endfunction snakecase
 
-   pure subroutine split(self, tokens, sep, max_tokens)
+   pure subroutine split(self, tokens, sep, max_tokens, keep_empty)
    !< Return a list of substring in the string, using sep as the delimiter string.
    !<
    !< @note Multiple subsequent separators are collapsed to one occurrence.
+   !<
+   !< @note With `keep_empty=.true.` nothing is collapsed and the empty fields are tokens (as Python `str.split(sep)`): `'a,,b'`
+   !< gives `'a'`, `''` and `'b'`, a null string gives one null token; `max_tokens` is then the number of splits, the last token
+   !< being the rest of the string.
    !<
    !< @note If `max_tokens` is passed the returned number of tokens is either `max_tokens` or `max_tokens + 1`.
    !<
@@ -2897,7 +2922,7 @@ contains
    !<```fortran
    !< type(string)              :: astring
    !< type(string), allocatable :: strings(:)
-   !< logical                   :: test_passed(12)
+   !< logical                   :: test_passed(14)
    !< astring = '+ab-++cre-++cre-ab+'
    !< call astring%split(tokens=strings, sep='+')
    !< test_passed(1) = (strings(1)//''=='ab-'.and.strings(2)//''=='cre-'.and.strings(3)//''=='cre-ab')
@@ -2934,6 +2959,13 @@ contains
    !< astring = '+++'
    !< call astring%split(tokens=strings, sep='+')
    !< test_passed(12) = (size(strings, dim=1)==0)
+   !< astring = ',a,,b,'
+   !< call astring%split(tokens=strings, sep=',', keep_empty=.true.)
+   !< test_passed(13) = size(strings, dim=1)==5
+   !< if (test_passed(13)) test_passed(13) = all(strings==['  ', 'a ', '  ', 'b ', '  ']).and.all(strings%len()==[0, 1, 0, 1, 0])
+   !< call astring%split(tokens=strings, sep=',', max_tokens=2, keep_empty=.true.)
+   !< test_passed(14) = size(strings, dim=1)==3
+   !< if (test_passed(14)) test_passed(14) = strings(1)//''==''.and.strings(2)//''=='a'.and.strings(3)//''==',b,'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -2941,6 +2973,7 @@ contains
    type(string), allocatable, intent(out)          :: tokens(:)  !< Tokens substring.
    character(kind=CK, len=*), intent(in), optional :: sep        !< Separator.
    integer,                   intent(in), optional :: max_tokens !< Fix the maximum number of returned tokens.
+   logical,                   intent(in), optional :: keep_empty !< Keep the empty fields, collapsing nothing.
    character(kind=CK, len=:), allocatable          :: sep_       !< Separator, default value.
    character(kind=CK, len=:), allocatable          :: uniq       !< The string with the sequential separators collapsed.
    integer,                   allocatable          :: pos(:)     !< Positions of the separators into uniq.
@@ -2953,6 +2986,23 @@ contains
 
    if (allocated(self%raw)) then
      sep_ = SPACE ; if (present(sep)) sep_ = sep
+     if (present(keep_empty)) then
+       if (keep_empty) then ! split at every separator (at the first max_tokens ones), the empty fields being tokens
+         No = count_substring(self%raw, sep_)
+         if (present(max_tokens)) then
+           if (max_tokens < No.and.max_tokens > 0) No = max_tokens
+         endif
+         allocate(tokens(No+1))
+         c = 1
+         do t=1, No
+           first = c - 1 + index(self%raw(c:), sep_) ! first character of the separator
+           tokens(t)%raw = self%raw(c:first-1)
+           c = first + len(sep_)
+         enddo
+         tokens(No+1)%raw = self%raw(c:)
+         return
+       endif
+     endif
 
      uniq = unique_substring(raw=self%raw, substring=sep_)
      No = count_substring(uniq, sep_)
@@ -3271,15 +3321,8 @@ contains
    class(string), intent(in) :: self      !< The string.
    integer(I1P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I1P)              :: to_number !< The number into the string.
-   integer                   :: iostat    !< IO status code.
 
-   to_number = 0_I1P
-   if (allocated(self%raw)) then
-     if (self%is_integer()) then
-       read(self%raw, *, iostat=iostat) to_number
-       if (iostat/=0) to_number = 0_I1P
-     endif
-   endif
+   call self%read_number_I1P(number=to_number)
    endfunction to_integer_I1P
 
 #ifndef _NVF
@@ -3302,15 +3345,8 @@ contains
    class(string), intent(in) :: self      !< The string.
    integer(I2P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I2P)              :: to_number !< The number into the string.
-   integer                   :: iostat    !< IO status code.
 
-   to_number = 0_I2P
-   if (allocated(self%raw)) then
-     if (self%is_integer()) then
-       read(self%raw, *, iostat=iostat) to_number
-       if (iostat/=0) to_number = 0_I2P
-     endif
-   endif
+   call self%read_number_I2P(number=to_number)
    endfunction to_integer_I2P
 #endif
 
@@ -3336,15 +3372,8 @@ contains
    class(string), intent(in) :: self      !< The string.
    integer(I4P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I4P)              :: to_number !< The number into the string.
-   integer                   :: iostat    !< IO status code.
 
-   to_number = 0_I4P
-   if (allocated(self%raw)) then
-     if (self%is_integer()) then
-       read(self%raw, *, iostat=iostat) to_number
-       if (iostat/=0) to_number = 0_I4P
-     endif
-   endif
+   call self%read_number_I4P(number=to_number)
    endfunction to_integer_I4P
 
    elemental function to_integer_I8P(self, kind) result(to_number)
@@ -3366,15 +3395,8 @@ contains
    class(string), intent(in) :: self      !< The string.
    integer(I8P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I8P)              :: to_number !< The number into the string.
-   integer                   :: iostat    !< IO status code.
 
-   to_number = 0_I8P
-   if (allocated(self%raw)) then
-     if (self%is_integer()) then
-       read(self%raw, *, iostat=iostat) to_number
-       if (iostat/=0) to_number = 0_I8P
-     endif
-   endif
+   call self%read_number_I8P(number=to_number)
    endfunction to_integer_I8P
 
    elemental function to_real_R4P(self, kind) result(to_number)
@@ -3396,15 +3418,8 @@ contains
    class(string), intent(in) :: self      !< The string.
    real(R4P),     intent(in) :: kind      !< Mold parameter for kind detection.
    real(R4P)                 :: to_number !< The number into the string.
-   integer                   :: iostat    !< IO status code.
 
-   to_number = ieee_value(to_number, ieee_quiet_nan)
-   if (allocated(self%raw)) then
-     if (self%is_number()) then
-       read(self%raw, *, iostat=iostat) to_number
-       if (iostat/=0) to_number = ieee_value(to_number, ieee_quiet_nan)
-     endif
-   endif
+   call self%read_number_R4P(number=to_number)
    endfunction to_real_R4P
 
    elemental function to_real_R8P(self, kind) result(to_number)
@@ -3429,15 +3444,8 @@ contains
    class(string), intent(in) :: self      !< The string.
    real(R8P),     intent(in) :: kind      !< Mold parameter for kind detection.
    real(R8P)                 :: to_number !< The number into the string.
-   integer                   :: iostat    !< IO status code.
 
-   to_number = ieee_value(to_number, ieee_quiet_nan)
-   if (allocated(self%raw)) then
-     if (self%is_number()) then
-       read(self%raw, *, iostat=iostat) to_number
-       if (iostat/=0) to_number = ieee_value(to_number, ieee_quiet_nan)
-     endif
-   endif
+   call self%read_number_R8P(number=to_number)
    endfunction to_real_R8P
 
    elemental function to_real_R16P(self, kind) result(to_number)
@@ -3459,16 +3467,243 @@ contains
    class(string), intent(in) :: self      !< The string.
    real(R16P),    intent(in) :: kind      !< Mold parameter for kind detection.
    real(R16P)                :: to_number !< The number into the string.
-   integer                   :: iostat    !< IO status code.
 
-   to_number = ieee_value(to_number, ieee_quiet_nan)
-   if (allocated(self%raw)) then
-     if (self%is_number()) then
-       read(self%raw, *, iostat=iostat) to_number
-       if (iostat/=0) to_number = ieee_value(to_number, ieee_quiet_nan)
-     endif
-   endif
+   call self%read_number_R16P(number=to_number)
    endfunction to_real_R16P
+
+   elemental subroutine read_number_I1P(self, number, iostat, iomsg)
+   !< Cast string to integer (I1P), with an error status.
+   !<
+   !< @note If the string is not an integer `number` is 0 and `iostat` is positive: unlike `to_number`, the failure is
+   !< reported. As the `read` statement, `iomsg` is changed only on failure. See [[string:is_integer]].
+   !<
+   !< @note The doctest is not necessary, this being tested by the I4P one.
+   class(string),    intent(in)              :: self    !< The string.
+   integer(I1P),     intent(out)             :: number  !< The number into the string.
+   integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
+   character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
+   integer                                   :: iostat_ !< IO status code, local variable.
+   character(len=99)                         :: iomsg_  !< IO status message, local variable.
+
+   number = 0_I1P
+   iostat_ = 1
+   iomsg_ = 'the string is not allocated'
+   if (allocated(self%raw)) then
+      iomsg_ = 'the string is not an integer'
+      if (self%is_integer()) then
+         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
+         if (iostat_/=0) number = 0_I1P
+      endif
+   endif
+   if (present(iostat)) iostat = iostat_
+   if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
+   endsubroutine read_number_I1P
+
+#ifndef _NVF
+   elemental subroutine read_number_I2P(self, number, iostat, iomsg)
+   !< Cast string to integer (I2P), with an error status.
+   !<
+   !< @note If the string is not an integer `number` is 0 and `iostat` is positive: unlike `to_number`, the failure is
+   !< reported. As the `read` statement, `iomsg` is changed only on failure. See [[string:is_integer]].
+   !<
+   !< @note The doctest is not necessary, this being tested by the I4P one.
+   class(string),    intent(in)              :: self    !< The string.
+   integer(I2P),     intent(out)             :: number  !< The number into the string.
+   integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
+   character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
+   integer                                   :: iostat_ !< IO status code, local variable.
+   character(len=99)                         :: iomsg_  !< IO status message, local variable.
+
+   number = 0_I2P
+   iostat_ = 1
+   iomsg_ = 'the string is not allocated'
+   if (allocated(self%raw)) then
+      iomsg_ = 'the string is not an integer'
+      if (self%is_integer()) then
+         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
+         if (iostat_/=0) number = 0_I2P
+      endif
+   endif
+   if (present(iostat)) iostat = iostat_
+   if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
+   endsubroutine read_number_I2P
+#endif
+
+   elemental subroutine read_number_I4P(self, number, iostat, iomsg)
+   !< Cast string to integer (I4P), with an error status.
+   !<
+   !< @note If the string is not an integer `number` is 0 and `iostat` is positive: unlike `to_number`, the failure is
+   !< reported. As the `read` statement, `iomsg` is changed only on failure. See [[string:is_integer]].
+   !<
+   !<```fortran
+   !< use penf
+   !< type(string)      :: astring
+   !< integer(I4P)      :: integer_
+   !< integer           :: iostat
+   !< character(len=99) :: iomsg
+   !< logical           :: test_passed(4)
+   !< astring = '127'
+   !< call astring%read_number(integer_, iostat=iostat)
+   !< test_passed(1) = integer_==127_I4P.and.iostat==0
+   !< astring = '12x'
+   !< call astring%read_number(integer_, iostat=iostat, iomsg=iomsg)
+   !< test_passed(2) = integer_==0_I4P.and.iostat>0.and.trim(iomsg)=='the string is not an integer'
+   !< astring = '99999999999'
+   !< call astring%read_number(integer_, iostat=iostat)
+   !< test_passed(3) = integer_==0_I4P.and.iostat/=0
+   !< call astring%free
+   !< call astring%read_number(integer_, iostat=iostat)
+   !< test_passed(4) = iostat>0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),    intent(in)              :: self    !< The string.
+   integer(I4P),     intent(out)             :: number  !< The number into the string.
+   integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
+   character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
+   integer                                   :: iostat_ !< IO status code, local variable.
+   character(len=99)                         :: iomsg_  !< IO status message, local variable.
+
+   number = 0_I4P
+   iostat_ = 1
+   iomsg_ = 'the string is not allocated'
+   if (allocated(self%raw)) then
+      iomsg_ = 'the string is not an integer'
+      if (self%is_integer()) then
+         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
+         if (iostat_/=0) number = 0_I4P
+      endif
+   endif
+   if (present(iostat)) iostat = iostat_
+   if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
+   endsubroutine read_number_I4P
+
+   elemental subroutine read_number_I8P(self, number, iostat, iomsg)
+   !< Cast string to integer (I8P), with an error status.
+   !<
+   !< @note If the string is not an integer `number` is 0 and `iostat` is positive: unlike `to_number`, the failure is
+   !< reported. As the `read` statement, `iomsg` is changed only on failure. See [[string:is_integer]].
+   !<
+   !< @note The doctest is not necessary, this being tested by the I4P one.
+   class(string),    intent(in)              :: self    !< The string.
+   integer(I8P),     intent(out)             :: number  !< The number into the string.
+   integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
+   character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
+   integer                                   :: iostat_ !< IO status code, local variable.
+   character(len=99)                         :: iomsg_  !< IO status message, local variable.
+
+   number = 0_I8P
+   iostat_ = 1
+   iomsg_ = 'the string is not allocated'
+   if (allocated(self%raw)) then
+      iomsg_ = 'the string is not an integer'
+      if (self%is_integer()) then
+         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
+         if (iostat_/=0) number = 0_I8P
+      endif
+   endif
+   if (present(iostat)) iostat = iostat_
+   if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
+   endsubroutine read_number_I8P
+
+   elemental subroutine read_number_R4P(self, number, iostat, iomsg)
+   !< Cast string to real (R4P), with an error status.
+   !<
+   !< @note If the string is not a number `number` is a quiet NaN and `iostat` is positive: unlike `to_number`, the failure is
+   !< reported. As the `read` statement, `iomsg` is changed only on failure. See [[string:is_number]].
+   !<
+   !< @note The doctest is not necessary, this being tested by the R8P one.
+   class(string),    intent(in)              :: self    !< The string.
+   real(R4P),        intent(out)             :: number  !< The number into the string.
+   integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
+   character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
+   integer                                   :: iostat_ !< IO status code, local variable.
+   character(len=99)                         :: iomsg_  !< IO status message, local variable.
+
+   number = ieee_value(number, ieee_quiet_nan)
+   iostat_ = 1
+   iomsg_ = 'the string is not allocated'
+   if (allocated(self%raw)) then
+      iomsg_ = 'the string is not a number'
+      if (self%is_number()) then
+         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
+         if (iostat_/=0) number = ieee_value(number, ieee_quiet_nan)
+      endif
+   endif
+   if (present(iostat)) iostat = iostat_
+   if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
+   endsubroutine read_number_R4P
+
+   elemental subroutine read_number_R8P(self, number, iostat, iomsg)
+   !< Cast string to real (R8P), with an error status.
+   !<
+   !< @note If the string is not a number `number` is a quiet NaN and `iostat` is positive: unlike `to_number`, the failure is
+   !< reported. As the `read` statement, `iomsg` is changed only on failure. See [[string:is_number]].
+   !<
+   !<```fortran
+   !< use penf
+   !< type(string) :: astrings(3)
+   !< real(R8P)    :: reals(3)
+   !< integer      :: iostats(3)
+   !< logical      :: test_passed(3)
+   !< astrings(1) = '3.4e9'
+   !< astrings(2) = '12'
+   !< astrings(3) = 'twelve'
+   !< call astrings%read_number(reals, iostat=iostats)
+   !< test_passed(1) = reals(1)==3.4e9_R8P.and.iostats(1)==0
+   !< test_passed(2) = reals(2)==12._R8P.and.iostats(2)==0
+   !< test_passed(3) = reals(3)/=reals(3).and.iostats(3)>0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),    intent(in)              :: self    !< The string.
+   real(R8P),        intent(out)             :: number  !< The number into the string.
+   integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
+   character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
+   integer                                   :: iostat_ !< IO status code, local variable.
+   character(len=99)                         :: iomsg_  !< IO status message, local variable.
+
+   number = ieee_value(number, ieee_quiet_nan)
+   iostat_ = 1
+   iomsg_ = 'the string is not allocated'
+   if (allocated(self%raw)) then
+      iomsg_ = 'the string is not a number'
+      if (self%is_number()) then
+         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
+         if (iostat_/=0) number = ieee_value(number, ieee_quiet_nan)
+      endif
+   endif
+   if (present(iostat)) iostat = iostat_
+   if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
+   endsubroutine read_number_R8P
+
+   elemental subroutine read_number_R16P(self, number, iostat, iomsg)
+   !< Cast string to real (R16P), with an error status.
+   !<
+   !< @note If the string is not a number `number` is a quiet NaN and `iostat` is positive: unlike `to_number`, the failure is
+   !< reported. As the `read` statement, `iomsg` is changed only on failure. See [[string:is_number]].
+   !<
+   !< @note The doctest is not necessary, this being tested by the R8P one.
+   class(string),    intent(in)              :: self    !< The string.
+   real(R16P),       intent(out)             :: number  !< The number into the string.
+   integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
+   character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
+   integer                                   :: iostat_ !< IO status code, local variable.
+   character(len=99)                         :: iomsg_  !< IO status message, local variable.
+
+   number = ieee_value(number, ieee_quiet_nan)
+   iostat_ = 1
+   iomsg_ = 'the string is not allocated'
+   if (allocated(self%raw)) then
+      iomsg_ = 'the string is not a number'
+      if (self%is_number()) then
+         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
+         if (iostat_/=0) number = ieee_value(number, ieee_quiet_nan)
+      endif
+   endif
+   if (present(iostat)) iostat = iostat_
+   if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
+   endsubroutine read_number_R16P
 
    elemental function unescape(self, to_unescape, unesc) result(unescaped)
    !< Unescape double backslashes (or custom escaped character).

@@ -59,10 +59,16 @@ leading and trailing character belonging to the set. `remove_nulls=.true.` cuts 
 
 <<< @/examples/output/split_words.ansi{ansi}
 
-`split(tokens[, sep][, max_tokens])` is a subroutine: it allocates `tokens`. Repeated separators count as one and the
-separators at the ends are ignored; `max_tokens` is the number of splits, the last token keeps the rest.
-`split_chunked(tokens, chunks[, sep])` gives the same tokens splitting in chunks of `chunks` tokens, to use less memory
-on very long strings.
+`split(tokens[, sep][, max_tokens][, keep_empty])` is a subroutine: it allocates `tokens`. Repeated separators count as
+one and the separators at the ends are ignored; `max_tokens` is the number of splits, the last token keeps the rest.
+`split_chunked(tokens, chunks[, sep])` gives the same tokens splitting in chunks of `chunks` tokens.
+
+With `keep_empty=.true.` nothing is collapsed and the empty fields are tokens, as Python `str.split(sep)`: the fields of
+a CSV record keep their position.
+
+<<< @/examples/snippets/csv_fields.f90
+
+<<< @/examples/output/csv_fields.ansi{ansi}
 
 <<< @/examples/snippets/partition.f90
 

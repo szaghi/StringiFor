@@ -1,0 +1,4 @@
+$ checked_cast
+3.25 ->     3.25
+n/a -> error: the string is not a number
+1e3 ->  1000.00

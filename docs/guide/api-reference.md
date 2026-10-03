@@ -53,7 +53,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `reverse_words([sep])` | Reverse the order of the words |
 | `slice([first][, last][, stride])` | Section `first:last:stride`, bounds clamped into the string; returns `character` |
 | `snakecase([sep])` | Words lowercase, joined by `_` |
-| `split(tokens[, sep][, max_tokens])` | Tokenize into allocatable array (subroutine); sequential separators count as one, a string of only separators has no tokens |
+| `split(tokens[, sep][, max_tokens][, keep_empty])` | Tokenize into allocatable array (subroutine); sequential separators count as one, a string of only separators has no tokens; with `keep_empty` the empty fields are tokens |
 | `split_chunked(tokens, chunks[, sep])` | Tokenize in chunks of `chunks` tokens, memory-efficient (subroutine) |
 | `startcase([sep])` | Title case — each word capitalized |
 | `strip([remove_nulls][, remove])` | Remove leading/trailing spaces, or the characters of the set `remove` |
@@ -92,6 +92,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | Method | Description |
 |--------|-------------|
 | `to_number(kind)` | Cast string to the numeric kind of the `kind` argument |
+| `read_number(number[, iostat][, iomsg])` | Cast string to the kind of `number`, reporting a failure in `iostat`/`iomsg` (elemental subroutine) |
 
 The `kind` argument selects the return type — pass any literal of the target PENF kind:
 
@@ -105,7 +106,7 @@ n = s%to_number(kind=0_I4P)
 
 A cast to a real kind accepts both real and integer strings; a cast to an integer kind requires an integer string. If the
 string does not hold a suitable number the result is 0 for an integer kind and a quiet NaN for a real kind: check with
-`is_number` / `is_integer` first to tell a parsed 0 from a failure.
+`is_number` / `is_integer` first to tell a parsed 0 from a failure, or use `read_number`, which reports it.
 
 ## File I/O Methods (type-bound)
 
