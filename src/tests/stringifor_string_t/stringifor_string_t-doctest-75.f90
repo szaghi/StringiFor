@@ -3,9 +3,12 @@ use stringifor_string_t
  use penf
  type(string) :: astring
  integer(I4P) :: integer_
- logical :: test_passed(1)
+ logical :: test_passed(2)
  astring = '127'
  integer_ = astring%to_number(kind=1_I4P)
  test_passed(1) = integer_==127_I4P
+ astring = '12x'
+ integer_ = astring%to_number(kind=1_I4P)
+ test_passed(2) = integer_==0_I4P
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

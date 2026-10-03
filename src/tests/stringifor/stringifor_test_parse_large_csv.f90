@@ -11,7 +11,7 @@ type(string), allocatable     :: cells(:,:)     !< The CSV table cells.
 integer                       :: rows_number    !< The CSV file rows number.
 integer                       :: columns_number !< The CSV file columns number.
 integer                       :: c, r           !< Counter.
-logical                       :: test_passed(1) !< List of passed tests.
+logical                       :: test_passed(5) !< List of passed tests.
 
 test_passed = .false.
 
@@ -39,6 +39,11 @@ do r=2, rows_number
 enddo
 print "(A)", ''
 
-test_passed = .true.
+test_passed(1) = rows_number==1000
+test_passed(2) = columns_number==23
+test_passed(3) = cells(1, 1)=='488.750000000000000'
+test_passed(4) = cells(6, 1)=='935.544846279384000'
+test_passed(5) = cells(23, 1000)=='0.000000000000000'
 print "(A,L1)", new_line('a')//'Are all tests passed? ', all(test_passed)
+if (.not.all(test_passed)) error stop 1
 endprogram stringifor_test_parse_large_csv

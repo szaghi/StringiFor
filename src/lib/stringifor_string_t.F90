@@ -2,6 +2,7 @@
 module stringifor_string_t
 !< StringiFor, definition of `string` type.
 use, intrinsic :: iso_fortran_env, only : iostat_eor
+use, intrinsic :: ieee_arithmetic, only : ieee_quiet_nan, ieee_value
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
@@ -245,13 +246,10 @@ type :: string
     procedure, private, pass(dtv) :: write_formatted               !< Formatted output.
     procedure, private, pass(dtv) :: read_unformatted              !< Unformatted input.
     procedure, private, pass(dtv) :: write_unformatted             !< Unformatted output.
-    ! miscellanea
-    procedure, private, pass(self) :: replace_one_occurrence !< Replace the first occurrence of substring old by new.
 endtype string
 
 ! internal parameters
-character(kind=CK, len=26), parameter :: UPPER_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' !< Upper case alphabet.
-character(kind=CK, len=26), parameter :: LOWER_ALPHABET = 'abcdefghijklmnopqrstuvwxyz' !< Lower case alphabet.
+integer,                    parameter :: CASE_SHIFT     = iachar('a') - iachar('A')    !< ASCII distance of the cases.
 character(kind=CK, len=1),  parameter :: SPACE          = ' '                          !< Space character.
 character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
@@ -409,8 +407,15 @@ contains
    elemental function count_substring(s, substring) result(No)
    !< Count the number of occurences of a substring into a string.
    !<
+   !< @note The occurrences are not overlapping, counted from left to right. A null substring has no occurrences.
+   !<
    !<```fortran
-   !< print "(L1)", count('hello', substring='ll')==1
+   !< logical :: test_passed(4)
+   !< test_passed(1) = count('hello', substring='ll')==1
+   !< test_passed(2) = count('aaaa', substring='a')==4
+   !< test_passed(3) = count('aaaa', substring='aa')==2
+   !< test_passed(4) = count('abc', substring='')==0
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    character(*), intent(in) :: s         !< String.
@@ -420,13 +425,13 @@ contains
    integer(I4P)             :: c2        !< Counters.
 
    No = 0
-   if (len(substring) > len(s)) return
+   if (len(substring)==0.or.len(substring)>len(s)) return
    c1 = 1
    do
      c2 = index(string=s(c1:), substring=substring)
      if (c2==0) return
      No = No + 1
-     c1 = c1 + c2 + len(substring)
+     c1 = c1 + c2 - 1 + len(substring)
    enddo
    endfunction count_substring
 
@@ -552,7 +557,7 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(4)
+   !< logical      :: test_passed(5)
    !< astring = '   Hello World  !    '
    !< test_passed(1) = astring%count(substring=' ')==10
    !< astring = 'Hello World  !    '
@@ -561,6 +566,7 @@ contains
    !< test_passed(3) = astring%count(substring=' ', ignore_isolated=.true.)==6
    !< astring = '   Hello World  !    '
    !< test_passed(4) = astring%count(substring=' ', ignore_isolated=.true.)==8
+   !< test_passed(5) = astring%count(substring='')==0
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -574,7 +580,7 @@ contains
 
    No = 0
    if (allocated(self%raw)) then
-      if (len(substring)>len(self%raw)) return
+      if (len(substring)==0.or.len(substring)>len(self%raw)) return
       ignore_isolated_ = .false. ; if (present(ignore_isolated)) ignore_isolated_ = ignore_isolated
       c1 = 1
       do
@@ -964,13 +970,11 @@ contains
    !=> T <<<
    class(string), intent(in) :: self        !< The string.
    type(string)              :: capitalized !< Upper case string.
-   integer                   :: c           !< Character counter.
 
    if (allocated(self%raw)) then
      capitalized = self%lower()
      if (len(capitalized%raw)>0) then
-       c = index(LOWER_ALPHABET, capitalized%raw(1:1))
-       if (c>0) capitalized%raw(1:1) = UPPER_ALPHABET(c:c)
+       capitalized%raw(1:1) = upper_char(capitalized%raw(1:1))
      endif
    endif
    endfunction capitalize
@@ -1297,19 +1301,13 @@ contains
    character(kind=CK, len=1), intent(in)           :: to_escape !< Character to be escaped.
    character(kind=CK, len=*), intent(in), optional :: esc       !< Character used to escape.
    type(string)                                    :: escaped   !< Escaped string.
-   character(kind=CK, len=:), allocatable          :: esc_      !< Character to escape, local variable.
-   integer                                         :: c         !< Character counter.
 
    if (allocated(self%raw)) then
-     esc_ = BACKSLASH ; if (present(esc)) esc_ = esc
-     escaped%raw = ''
-     do c=1, len(self%raw)
-       if (self%raw(c:c)==to_escape) then
-         escaped%raw = escaped%raw//esc_//to_escape
-       else
-         escaped%raw = escaped%raw//self%raw(c:c)
-       endif
-     enddo
+     if (present(esc)) then
+       escaped%raw = replace_substring(raw=self%raw, old=to_escape, new=esc//to_escape)
+     else
+       escaped%raw = replace_substring(raw=self%raw, old=to_escape, new=BACKSLASH//to_escape)
+     endif
    endif
    endfunction escape
 
@@ -1686,7 +1684,6 @@ contains
    character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
    type(string)                                    :: join      !< The join of array.
    character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
-   integer                                         :: a         !< Counter.
 
    if (allocated(self%raw)) then
       sep_ = self%raw
@@ -1694,16 +1691,7 @@ contains
       sep_ = ''
    endif
    if (present(sep)) sep_ = sep
-   join = ''
-   if (size(array, dim=1)==0) return
-   do a=2, size(array, dim=1)
-      if (allocated(array(a)%raw)) join%raw = join%raw//sep_//array(a)%raw
-   enddo
-   if (allocated(array(1)%raw)) then
-      join%raw = array(1)%raw//join%raw
-   else
-      join%raw = join%raw(len(sep_)+1:len(join%raw))
-   endif
+   join%raw = join_raws(array=array, sep=sep_)
    endfunction join_strings
 
    pure function join_characters(self, array, sep) result(join)
@@ -1746,7 +1734,6 @@ contains
    character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
    type(string)                                    :: join      !< The join of array.
    character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
-   integer                                         :: a         !< Counter.
 
    if (allocated(self%raw)) then
       sep_ = self%raw
@@ -1754,16 +1741,7 @@ contains
       sep_ = ''
    endif
    if (present(sep)) sep_ = sep
-   join = ''
-   if (size(array, dim=1)==0) return
-   do a=2, size(array, dim=1)
-      if (array(a)/='') join%raw = join%raw//sep_//array(a)
-   enddo
-   if (array(1)/='') then
-      join%raw = array(1)//join%raw
-   else
-      join%raw = join%raw(len(sep_)+1:len(join%raw))
-   endif
+   join%raw = join_chars(array=array, sep=sep_, is_trim=.false.)
    endfunction join_characters
 
    pure function strjoin_strings(array, sep) result(join)
@@ -1798,20 +1776,10 @@ contains
    character(kind=CK, len=*), intent(in), optional :: sep       !< Separator.
    type(string)                                    :: join      !< The join of array.
    character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
-   integer                                         :: a         !< Counter.
 
    sep_ = ''
    if (present(sep)) sep_ = sep
-   join = ''
-   if (size(array, dim=1)==0) return
-   do a=2, size(array, dim=1)
-      if (allocated(array(a)%raw))join%raw = join%raw//sep_//array(a)%raw
-   enddo
-   if (allocated(array(1)%raw)) then
-      join%raw = array(1)%raw//join%raw
-   else
-      join%raw = join%raw(len(sep_)+1:len(join%raw))
-   endif
+   join%raw = join_raws(array=array, sep=sep_)
    endfunction strjoin_strings
 
   pure function strjoin_characters(array, sep, is_trim) result(join)
@@ -1875,33 +1843,11 @@ contains
    type(string)                                    :: join      !< The join of array.
    character(kind=CK, len=:), allocatable          :: sep_      !< Separator, default value.
    logical                                         :: is_trim_  !< Flag to setup trim character or not
-   integer                                         :: a         !< Counter.
 
    sep_ = ''
    if (present(sep)) sep_ = sep
    is_trim_ = .true. ; if (present(is_trim)) is_trim_ = is_trim
-   join = ''
-   if (size(array, dim=1)==0) return
-
-   if (is_trim_) then
-       do a=2, size(array, dim=1)
-          if (trim(array(a))/='') join%raw = join%raw//sep_//trim(array(a))
-       enddo
-       if (trim(array(1))/='') then
-          join%raw = trim(array(1))//join%raw
-       else
-          join%raw = join%raw(len(sep_)+1:len(join%raw))
-       endif
-   else
-       do a=2, size(array, dim=1)
-          if (array(a)/='') join%raw = join%raw//sep_//array(a)
-       enddo
-       if (array(1)/='') then
-          join%raw = array(1)//join%raw
-       else
-          join%raw = join%raw(len(sep_)+1:len(join%raw))
-       endif
-   endif
+   join%raw = join_chars(array=array, sep=sep_, is_trim=is_trim_)
    endfunction strjoin_characters
 
    pure function strjoin_strings_array(array, sep, is_col) result(join)
@@ -2238,13 +2184,11 @@ contains
    class(string), intent(in) :: self  !< The string.
    type(string)              :: lower !< Upper case string.
    integer                   :: n1    !< Characters counter.
-   integer                   :: n2    !< Characters counter.
 
    if (allocated(self%raw)) then
       lower = self
       do n1=1, len(self%raw)
-         n2 = index(UPPER_ALPHABET, self%raw(n1:n1))
-         if (n2>0) lower%raw(n1:n1) = LOWER_ALPHABET(n2:n2)
+         lower%raw(n1:n1) = lower_char(self%raw(n1:n1))
       enddo
    endif
    endfunction lower
@@ -2353,7 +2297,7 @@ contains
    character(len=:), allocatable             :: iomsg_     !< IO status message, local variable.
    integer                                   :: unit       !< Logical unit.
    logical                                   :: does_exist !< Check if file exist.
-   integer(I4P)                              :: filesize   !< Size of the file for fast reading.
+   integer(I8P)                              :: filesize   !< Size of the file for fast reading.
 
    iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
    inquire(file=file, iomsg=iomsg_, iostat=iostat_, exist=does_exist)
@@ -2361,11 +2305,13 @@ contains
       is_fast_ = .false. ; if (present(is_fast)) is_fast_ = is_fast
       if (is_fast_) then
          open(newunit=unit, file=file, access='STREAM', form='UNFORMATTED', iomsg=iomsg_, iostat=iostat_)
-         inquire(file=file, size=filesize)
-         if (allocated(self%raw)) deallocate(self%raw)
-         allocate(character(len=filesize):: self%raw)
-         read(unit=unit, iostat=iostat_, iomsg=iomsg_) self%raw
-         close(unit)
+         if (iostat_==0) then
+            inquire(unit=unit, size=filesize)
+            if (allocated(self%raw)) deallocate(self%raw)
+            allocate(character(kind=CK, len=filesize):: self%raw)
+            read(unit=unit, iostat=iostat_, iomsg=iomsg_) self%raw
+            close(unit)
+         endif
       else
          form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
          select case(form_%chars())
@@ -2481,39 +2427,52 @@ contains
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string),    intent(inout)           :: self    !< The string.
-   integer,          intent(in)              :: unit    !< Logical unit.
-   character(len=*), intent(in),    optional :: form    !< Format of unit.
-   integer,          intent(out),   optional :: iostat  !< IO status code.
-   character(len=*), intent(inout), optional :: iomsg   !< IO status message.
-   type(string)                              :: form_   !< Format of unit, local variable.
-   integer                                   :: iostat_ !< IO status code, local variable.
-   character(len=:),          allocatable    :: iomsg_  !< IO status message, local variable.
-   character(kind=CK, len=:), allocatable    :: line    !< Line storage.
-   character(kind=CK, len=1)                 :: ch      !< Character storage.
+   class(string),    intent(inout)           :: self      !< The string.
+   integer,          intent(in)              :: unit      !< Logical unit.
+   character(len=*), intent(in),    optional :: form      !< Format of unit.
+   integer,          intent(out),   optional :: iostat    !< IO status code.
+   character(len=*), intent(inout), optional :: iomsg     !< IO status message.
+   type(string)                              :: form_     !< Format of unit, local variable.
+   integer                                   :: iostat_   !< IO status code, local variable.
+   character(len=:),          allocatable    :: iomsg_    !< IO status message, local variable.
+   character(kind=CK, len=:), allocatable    :: line      !< Line storage, a buffer of which only line_len chars are used.
+   integer                                   :: line_len  !< Length of the line read.
+   character(kind=CK, len=1024)              :: chunk     !< Chunk of the line read by a single statement.
+   integer                                   :: chunk_len !< Length of the chunk read.
+   character(kind=CK, len=1)                 :: ch        !< Character storage.
 
    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
    iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
-   line = ''
+   line_len = 0
    select case(form_%chars())
    case('FORMATTED')
       do
-         read(unit, "(A)", advance='no', iostat=iostat_, iomsg=iomsg_, err=10, end=10, eor=10) ch
-         line = line//ch
+         chunk_len = 0
+         read(unit, "(A)", advance='no', size=chunk_len, iostat=iostat_, iomsg=iomsg_) chunk
+         if (iostat_==0.or.is_iostat_eor(iostat_).or.is_iostat_end(iostat_)) &
+            call append_to_buffer(buffer=line, length=line_len, piece=chunk(1:chunk_len))
+         if (iostat_/=0) exit
       enddo
    case('UNFORMATTED')
       do
-         read(unit, iostat=iostat_, iomsg=iomsg_, err=10, end=10) ch
+         read(unit, iostat=iostat_, iomsg=iomsg_) ch
+         if (iostat_/=0) exit
          if (ch==new_line('a')) then
             iostat_ = iostat_eor
             exit
          endif
-         line = line//ch
+         call append_to_buffer(buffer=line, length=line_len, piece=ch)
       enddo
    endselect
-   10 if (is_iostat_eor(iostat_)) iostat_ = 0                 ! the end of the record is the regular end of a line
-   if (is_iostat_end(iostat_).and.len(line)>0) iostat_ = 0 ! last line without line terminator
-   if (iostat_==0) self%raw = line
+   if (is_iostat_eor(iostat_)) iostat_ = 0                 ! the end of the record is the regular end of a line
+   if (is_iostat_end(iostat_).and.line_len>0) iostat_ = 0 ! last line without line terminator
+   if (iostat_==0) then
+      if (line_len>0) then
+         self%raw = line(1:line_len)
+      else
+         self%raw = ''
+      endif
+   endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg)) iomsg = iomsg_
    endsubroutine read_line
@@ -2566,27 +2525,29 @@ contains
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string),    intent(inout)           :: self    !< The string.
-   integer,          intent(in)              :: unit    !< Logical unit.
-   character(len=*), intent(in),    optional :: form    !< Format of unit.
-   integer,          intent(out),   optional :: iostat  !< IO status code.
-   character(len=*), intent(inout), optional :: iomsg   !< IO status message.
-   integer                                   :: iostat_ !< IO status code, local variable.
-   character(len=:), allocatable             :: iomsg_  !< IO status message, local variable.
-   type(string)                              :: lines   !< Lines storage.
-   type(string)                              :: line    !< Line storage.
+   class(string),    intent(inout)           :: self      !< The string.
+   integer,          intent(in)              :: unit      !< Logical unit.
+   character(len=*), intent(in),    optional :: form      !< Format of unit.
+   integer,          intent(out),   optional :: iostat    !< IO status code.
+   character(len=*), intent(inout), optional :: iomsg     !< IO status message.
+   integer                                   :: iostat_   !< IO status code, local variable.
+   character(len=:), allocatable             :: iomsg_    !< IO status message, local variable.
+   character(kind=CK, len=:), allocatable    :: lines     !< Lines storage, a buffer of which only lines_len chars are used.
+   integer                                   :: lines_len !< Length of the lines read.
+   type(string)                              :: line      !< Line storage.
 
    iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
    rewind(unit)
    iostat_ = 0
-   lines%raw = ''
+   lines_len = 0
    do
       line%raw = ''
       call line%read_line(unit=unit, form=form, iostat=iostat_, iomsg=iomsg_)
       if (iostat_/=0) exit
-      lines%raw = lines%raw//line%raw//new_line('a')
+      call append_to_buffer(buffer=lines, length=lines_len, piece=line%raw)
+      call append_to_buffer(buffer=lines, length=lines_len, piece=new_line('a'))
    enddo
-   if (lines%raw/='') self%raw = lines%raw
+   if (lines_len>0) self%raw = lines(1:lines_len)
    if (present(iostat)) iostat = iostat_
    if (present(iomsg)) iomsg = iomsg_
    endsubroutine read_lines
@@ -2594,9 +2555,13 @@ contains
    elemental function replace(self, old, new, count) result(replaced)
    !< Return a string with all occurrences of substring old replaced by new.
    !<
+   !< @note The occurrences are not overlapping, found from left to right, and the replaced text is not searched again
+   !< (as Python `str.replace`): `'aaaa'` with `'aa'` replaced by `'a'` gives `'aa'`. If `count` is passed only the first
+   !< `count` occurrences are replaced, none if `count<=0`. A null `old` substring leaves the string unchanged.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(4)
+   !< logical      :: test_passed(8)
    !< astring = 'When YOU are sad YOU should think to me :-)'
    !< test_passed(1) = (astring%replace(old='YOU', new='THEY')//''=='When THEY are sad THEY should think to me :-)')
    !< test_passed(2) = (astring%replace(old='YOU', new='THEY', count=1)//''=='When THEY are sad YOU should think to me :-)')
@@ -2607,6 +2572,13 @@ contains
    !< astring = 'abcd  efg    hlmn'
    !< astring = astring%replace(old='', new='-')
    !< test_passed(4) = (astring//''=='abcd  efg    hlmn')
+   !< astring = 'aaa'
+   !< test_passed(5) = (astring%replace(old='a', new='aa')//''=='aaaaaa')
+   !< astring = 'aaaa'
+   !< test_passed(6) = (astring%replace(old='aa', new='a')//''=='aa')
+   !< astring = 'abab'
+   !< test_passed(7) = (astring%replace(old='ab', new='x', count=0)//''=='abab')
+   !< test_passed(8) = (astring%replace(old='ab', new='')//''=='')
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -2615,23 +2587,13 @@ contains
    character(kind=CK, len=*), intent(in)           :: new      !< New substring.
    integer,                   intent(in), optional :: count    !< Number of old occurences to be replaced.
    type(string)                                    :: replaced !< The string with old replaced by new.
-   integer                                         :: r        !< Counter.
 
    if (allocated(self%raw)) then
-      replaced = self
-      if (len(old)==0) return ! avoid infite loop for null substring replacement
-      r = 0
-      do
-         if (index(replaced%raw, old)>0) then
-            replaced = replaced%replace_one_occurrence(old=old, new=new)
-            r = r + 1
-            if (present(count)) then
-               if (r>=count) exit
-            endif
-         else
-            exit
-         endif
-      enddo
+      if (len(old)==0) then
+         replaced = self
+      else
+         replaced%raw = replace_substring(raw=self%raw, old=old, new=new, count=count)
+      endif
    endif
    endfunction replace
 
@@ -2901,10 +2863,12 @@ contains
    !<
    !< @note If `max_tokens` is passed the returned number of tokens is either `max_tokens` or `max_tokens + 1`.
    !<
+   !< @note A string made only of separators has no tokens (`tokens` is allocated with size 0).
+   !<
    !<```fortran
    !< type(string)              :: astring
    !< type(string), allocatable :: strings(:)
-   !< logical                   :: test_passed(11)
+   !< logical                   :: test_passed(12)
    !< astring = '+ab-++cre-++cre-ab+'
    !< call astring%split(tokens=strings, sep='+')
    !< test_passed(1) = (strings(1)//''=='ab-'.and.strings(2)//''=='cre-'.and.strings(3)//''=='cre-ab')
@@ -2938,69 +2902,63 @@ contains
    !< astring = '1-2-3-4-5-6-7-8'
    !< call astring%split(tokens=strings, sep='-', max_tokens=3)
    !< test_passed(11) = (strings(1)//''=='1'.and.strings(2)//''=='2'.and.strings(3)//''=='3'.and.strings(4)//''=='4-5-6-7-8')
+   !< astring = '+++'
+   !< call astring%split(tokens=strings, sep='+')
+   !< test_passed(12) = (size(strings, dim=1)==0)
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string),             intent(in)           :: self           !< The string.
-   type(string), allocatable, intent(out)          :: tokens(:)      !< Tokens substring.
-   character(kind=CK, len=*), intent(in), optional :: sep            !< Separator.
-   integer,                   intent(in), optional :: max_tokens     !< Fix the maximum number of returned tokens.
-   character(kind=CK, len=:), allocatable          :: sep_           !< Separator, default value.
-   integer                                         :: No             !< Number of occurrences of sep.
-   integer                                         :: t              !< Character counter.
-   type(string)                                    :: temporary      !< Temporary storage.
-   type(string), allocatable                       :: temp_toks(:,:) !< Temporary tokens substring.
+   class(string),             intent(in)           :: self       !< The string.
+   type(string), allocatable, intent(out)          :: tokens(:)  !< Tokens substring.
+   character(kind=CK, len=*), intent(in), optional :: sep        !< Separator.
+   integer,                   intent(in), optional :: max_tokens !< Fix the maximum number of returned tokens.
+   character(kind=CK, len=:), allocatable          :: sep_       !< Separator, default value.
+   character(kind=CK, len=:), allocatable          :: uniq       !< The string with the sequential separators collapsed.
+   integer,                   allocatable          :: pos(:)     !< Positions of the separators into uniq.
+   integer                                         :: No         !< Number of occurrences of sep.
+   integer                                         :: first      !< Index of the first token from the head field.
+   integer                                         :: c          !< Character counter.
+   integer                                         :: t          !< Counter.
+   logical                                         :: has_head   !< The field before the first separator is a token.
+   logical                                         :: has_tail   !< The field after the last separator is a token.
 
    if (allocated(self%raw)) then
      sep_ = SPACE ; if (present(sep)) sep_ = sep
 
-     temporary = self%unique(sep_)
-     No = temporary%count(sep_)
-
-     if (No>0) then
-       if (present(max_tokens)) then
-         if (max_tokens < No.and.max_tokens > 0) No = max_tokens
-       endif
-       allocate(temp_toks(3, No))
-       temp_toks(:, 1) = temporary%partition(sep_)
-       if (No>1) then
-         do t=2, No
-           temp_toks(:, t) = temp_toks(3, t-1)%partition(sep_)
-         enddo
-       endif
-
-       if (temp_toks(1, 1)%raw/=''.and.temp_toks(3, No)%raw/='') then
-         allocate(tokens(No+1))
-         do t=1, No
-           if (t==No) then
-             tokens(t  ) = temp_toks(1, t)
-             tokens(t+1) = temp_toks(3, t)
-           else
-             tokens(t) = temp_toks(1, t)
-           endif
-         enddo
-       elseif (temp_toks(1, 1)%raw/='') then
-         allocate(tokens(No))
-         do t=1, No
-           tokens(t) = temp_toks(1, t)
-         enddo
-       elseif (temp_toks(3, No)%raw/='') then
-         allocate(tokens(No))
-         do t=1, No-1
-           tokens(t) = temp_toks(1, t+1)
-         enddo
-         tokens(No) = temp_toks(3, No)
-       else
-         allocate(tokens(No-1))
-         do t=2, No
-           tokens(t-1) = temp_toks(1, t)
-         enddo
-       endif
-
-     else
+     uniq = unique_substring(raw=self%raw, substring=sep_)
+     No = count_substring(uniq, sep_)
+     if (No==0) then
        allocate(tokens(1))
        tokens(1) = self
+       return
      endif
+     if (uniq==sep_.and.len(uniq)==len(sep_)) then ! only separators: no tokens
+       allocate(tokens(0))
+       return
+     endif
+     if (present(max_tokens)) then
+       if (max_tokens < No.and.max_tokens > 0) No = max_tokens
+     endif
+
+     allocate(pos(No))
+     c = 1
+     do t=1, No
+       pos(t) = c - 1 + index(uniq(c:), sep_)
+       c = pos(t) + len(sep_)
+     enddo
+     ! the head and the tail fields are tokens only if they are not blank, the inner fields always are
+     has_head = uniq(1:pos(1)-1)/=''
+     has_tail = uniq(pos(No)+len(sep_):)/=''
+     allocate(tokens(No - 1 + merge(1, 0, has_head) + merge(1, 0, has_tail)))
+     first = 0
+     if (has_head) then
+       tokens(1)%raw = uniq(1:pos(1)-1)
+       first = 1
+     endif
+     do t=2, No
+       tokens(first+t-1)%raw = uniq(pos(t-1)+len(sep_):pos(t)-1)
+     enddo
+     if (has_tail) tokens(size(tokens, dim=1))%raw = uniq(pos(No)+len(sep_):)
    endif
    endsubroutine split
 
@@ -3185,17 +3143,14 @@ contains
    class(string), intent(in) :: self     !< The string.
    type(string)              :: swapcase !< Upper case string.
    integer                   :: n1       !< Characters counter.
-   integer                   :: n2       !< Characters counter.
 
    if (allocated(self%raw)) then
       swapcase = self
       do n1=1, len(self%raw)
-         n2 = index(UPPER_ALPHABET, self%raw(n1:n1))
-         if (n2>0) then
-            swapcase%raw(n1:n1) = LOWER_ALPHABET(n2:n2)
+         if (is_upper_char(self%raw(n1:n1))) then
+            swapcase%raw(n1:n1) = lower_char(self%raw(n1:n1))
          else
-            n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
-            if (n2>0) swapcase%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
+            swapcase%raw(n1:n1) = upper_char(self%raw(n1:n1))
          endif
       enddo
    endif
@@ -3271,6 +3226,8 @@ contains
    elemental function to_integer_I1P(self, kind) result(to_number)
    !< Cast string to integer (I1P).
    !<
+   !< @note A string that is not an integer gives 0, see [[string:is_integer]].
+   !<
    !<```fortran
    !< use penf
    !< type(string) :: astring
@@ -3285,15 +3242,22 @@ contains
    class(string), intent(in) :: self      !< The string.
    integer(I1P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I1P)              :: to_number !< The number into the string.
+   integer                   :: iostat    !< IO status code.
 
+   to_number = 0_I1P
    if (allocated(self%raw)) then
-     if (self%is_integer()) read(self%raw, *) to_number
+     if (self%is_integer()) then
+       read(self%raw, *, iostat=iostat) to_number
+       if (iostat/=0) to_number = 0_I1P
+     endif
    endif
    endfunction to_integer_I1P
 
 #ifndef _NVF
    elemental function to_integer_I2P(self, kind) result(to_number)
    !< Cast string to integer (I2P).
+   !<
+   !< @note A string that is not an integer gives 0, see [[string:is_integer]].
    !<
    !<```fortran
    !< use penf
@@ -3309,9 +3273,14 @@ contains
    class(string), intent(in) :: self      !< The string.
    integer(I2P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I2P)              :: to_number !< The number into the string.
+   integer                   :: iostat    !< IO status code.
 
+   to_number = 0_I2P
    if (allocated(self%raw)) then
-     if (self%is_integer()) read(self%raw, *) to_number
+     if (self%is_integer()) then
+       read(self%raw, *, iostat=iostat) to_number
+       if (iostat/=0) to_number = 0_I2P
+     endif
    endif
    endfunction to_integer_I2P
 #endif
@@ -3319,28 +3288,40 @@ contains
    elemental function to_integer_I4P(self, kind) result(to_number)
    !< Cast string to integer (I4P).
    !<
+   !< @note A string that is not an integer gives 0, see [[string:is_integer]].
+   !<
    !<```fortran
    !< use penf
    !< type(string) :: astring
    !< integer(I4P) :: integer_
-   !< logical      :: test_passed(1)
+   !< logical      :: test_passed(2)
    !< astring = '127'
    !< integer_ = astring%to_number(kind=1_I4P)
    !< test_passed(1) = integer_==127_I4P
+   !< astring = '12x'
+   !< integer_ = astring%to_number(kind=1_I4P)
+   !< test_passed(2) = integer_==0_I4P
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in) :: self      !< The string.
    integer(I4P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I4P)              :: to_number !< The number into the string.
+   integer                   :: iostat    !< IO status code.
 
+   to_number = 0_I4P
    if (allocated(self%raw)) then
-     if (self%is_integer()) read(self%raw, *) to_number
+     if (self%is_integer()) then
+       read(self%raw, *, iostat=iostat) to_number
+       if (iostat/=0) to_number = 0_I4P
+     endif
    endif
    endfunction to_integer_I4P
 
    elemental function to_integer_I8P(self, kind) result(to_number)
    !< Cast string to integer (I8P).
+   !<
+   !< @note A string that is not an integer gives 0, see [[string:is_integer]].
    !<
    !<```fortran
    !< use penf
@@ -3356,14 +3337,21 @@ contains
    class(string), intent(in) :: self      !< The string.
    integer(I8P),  intent(in) :: kind      !< Mold parameter for kind detection.
    integer(I8P)              :: to_number !< The number into the string.
+   integer                   :: iostat    !< IO status code.
 
+   to_number = 0_I8P
    if (allocated(self%raw)) then
-     if (self%is_integer()) read(self%raw, *) to_number
+     if (self%is_integer()) then
+       read(self%raw, *, iostat=iostat) to_number
+       if (iostat/=0) to_number = 0_I8P
+     endif
    endif
    endfunction to_integer_I8P
 
    elemental function to_real_R4P(self, kind) result(to_number)
    !< Cast string to real (R4P).
+   !<
+   !< @note A string that is not a number gives a quiet NaN, see [[string:is_number]].
    !<
    !<```fortran
    !< use penf
@@ -3379,37 +3367,54 @@ contains
    class(string), intent(in) :: self      !< The string.
    real(R4P),     intent(in) :: kind      !< Mold parameter for kind detection.
    real(R4P)                 :: to_number !< The number into the string.
+   integer                   :: iostat    !< IO status code.
 
+   to_number = ieee_value(to_number, ieee_quiet_nan)
    if (allocated(self%raw)) then
-     if (self%is_number()) read(self%raw, *) to_number
+     if (self%is_number()) then
+       read(self%raw, *, iostat=iostat) to_number
+       if (iostat/=0) to_number = ieee_value(to_number, ieee_quiet_nan)
+     endif
    endif
    endfunction to_real_R4P
 
    elemental function to_real_R8P(self, kind) result(to_number)
    !< Cast string to real (R8P).
    !<
+   !< @note A string that is not a number gives a quiet NaN, see [[string:is_number]].
+   !<
    !<```fortran
    !< use penf
    !< type(string) :: astring
    !< real(R8P)    :: real_
-   !< logical      :: test_passed(1)
+   !< logical      :: test_passed(2)
    !< astring = '3.4e9'
    !< real_ = astring%to_number(kind=1._R8P)
    !< test_passed(1) = real_==3.4e9_R8P
+   !< astring = '12x'
+   !< real_ = astring%to_number(kind=1._R8P)
+   !< test_passed(2) = real_/=real_
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in) :: self      !< The string.
    real(R8P),     intent(in) :: kind      !< Mold parameter for kind detection.
    real(R8P)                 :: to_number !< The number into the string.
+   integer                   :: iostat    !< IO status code.
 
+   to_number = ieee_value(to_number, ieee_quiet_nan)
    if (allocated(self%raw)) then
-     if (self%is_number()) read(self%raw, *) to_number
+     if (self%is_number()) then
+       read(self%raw, *, iostat=iostat) to_number
+       if (iostat/=0) to_number = ieee_value(to_number, ieee_quiet_nan)
+     endif
    endif
    endfunction to_real_R8P
 
    elemental function to_real_R16P(self, kind) result(to_number)
    !< Cast string to real (R16P).
+   !<
+   !< @note A string that is not a number gives a quiet NaN, see [[string:is_number]].
    !<
    !<```fortran
    !< use penf
@@ -3425,9 +3430,14 @@ contains
    class(string), intent(in) :: self      !< The string.
    real(R16P),    intent(in) :: kind      !< Mold parameter for kind detection.
    real(R16P)                :: to_number !< The number into the string.
+   integer                   :: iostat    !< IO status code.
 
+   to_number = ieee_value(to_number, ieee_quiet_nan)
    if (allocated(self%raw)) then
-     if (self%is_number()) read(self%raw, *) to_number
+     if (self%is_number()) then
+       read(self%raw, *, iostat=iostat) to_number
+       if (iostat/=0) to_number = ieee_value(to_number, ieee_quiet_nan)
+     endif
    endif
    endfunction to_real_R16P
 
@@ -3436,10 +3446,12 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(2)
+   !< logical      :: test_passed(3)
    !< astring = '^\\s \\d+\\s*'
    !< test_passed(1) = (astring%unescape(to_unescape='\')//''=='^\s \d+\s*')
    !< test_passed(2) = (astring%unescape(to_unescape='s')//''=='^\s \\d+\s*')
+   !< astring = '^|\s |\d+|\s*'
+   !< test_passed(3) = (astring%unescape(to_unescape='\', unesc='|')//''=='^\s \d+\s*')
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -3447,28 +3459,13 @@ contains
    character(kind=CK, len=1), intent(in)           :: to_unescape !< Character to be unescaped.
    character(kind=CK, len=*), intent(in), optional :: unesc       !< Character used to unescape.
    type(string)                                    :: unescaped   !< Escaped string.
-   character(kind=CK, len=:), allocatable          :: unesc_      !< Character to unescape, local variable.
-   integer                                         :: c           !< Character counter.
 
    if (allocated(self%raw)) then
-      unesc_ = '' ; if (present(unesc)) unesc_ = unesc
-      unescaped%raw = ''
-      c = 1
-      do
-         if (c>len(self%raw)) exit
-         if (c==len(self%raw)) then
-            unescaped%raw = unescaped%raw//self%raw(c:c)
-            exit
-         else
-            if (self%raw(c:c+1)==BACKSLASH//to_unescape) then
-               unescaped%raw = unescaped%raw//to_unescape
-               c = c + 2
-            else
-               unescaped%raw = unescaped%raw//self%raw(c:c)
-               c = c + 1
-            endif
-         endif
-      enddo
+     if (present(unesc)) then
+       unescaped%raw = replace_substring(raw=self%raw, old=unesc//to_unescape, new=to_unescape)
+     else
+       unescaped%raw = replace_substring(raw=self%raw, old=BACKSLASH//to_unescape, new=to_unescape)
+     endif
    endif
    endfunction unescape
 
@@ -3476,38 +3473,32 @@ contains
    !< Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.
    !<
    !< For example the string ' ab-cre-cre-ab' is reduce to 'ab-cre-ab' if the substring is '-cre'.
-   !< @note Eventual multiple trailing white space are not reduced to one occurrence.
+   !<
+   !< @note The leftmost occurrence of the doubled substring is reduced to one until none is left, so the result never
+   !< contains the doubled substring. A null substring leaves the string unchanged.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(1)
+   !< logical      :: test_passed(3)
    !< astring = '+++ab-++cre-++cre-ab+++++'
    !< test_passed(1) = astring%unique(substring='+')//''=='+ab-+cre-+cre-ab+'
+   !< astring = 'ab   '
+   !< test_passed(2) = astring%unique()//''=='ab '
+   !< astring = 'abab'
+   !< test_passed(3) = astring%unique(substring='')//''=='abab'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self       !< The string.
    character(kind=CK, len=*), intent(in), optional :: substring  !< Substring which multiple occurences must be reduced to one.
-   character(kind=CK, len=:), allocatable          :: substring_ !< Substring, default value.
    type(string)                                    :: uniq       !< String parsed.
-#ifdef _NVF
-   character(9999)                                 :: nvf_bug  !< Work around for NVFortran bug.
-#endif
 
    if (allocated(self%raw)) then
-     substring_ = SPACE ; if (present(substring)) substring_ = substring
-
-     uniq = self
-     do
-#ifdef _NVF
-       nvf_bug = substring_
-       if (.not.uniq%index(repeat(trim(nvf_bug), 2))>0) exit
-       uniq = uniq%replace(old=repeat(trim(nvf_bug), 2), new=substring_)
-#else
-       if (.not.uniq%index(repeat(substring_, 2))>0) exit
-       uniq = uniq%replace(old=repeat(substring_, 2), new=substring_)
-#endif
-     enddo
+     if (present(substring)) then
+       uniq%raw = unique_substring(raw=self%raw, substring=substring)
+     else
+       uniq%raw = unique_substring(raw=self%raw, substring=SPACE)
+     endif
    endif
    endfunction unique
 
@@ -3525,13 +3516,11 @@ contains
    class(string), intent(in) :: self  !< The string.
    type(string)              :: upper !< Upper case string.
    integer                   :: n1    !< Characters counter.
-   integer                   :: n2    !< Characters counter.
 
    if (allocated(self%raw)) then
       upper = self
       do n1=1, len(self%raw)
-         n2 = index(LOWER_ALPHABET, self%raw(n1:n1))
-         if (n2>0) upper%raw(n1:n1) = UPPER_ALPHABET(n2:n2)
+         upper%raw(n1:n1) = upper_char(self%raw(n1:n1))
       enddo
    endif
    endfunction upper
@@ -3873,7 +3862,7 @@ contains
    if (allocated(self%raw)) then
       is_lower = .true.
       do c=1, len(self%raw)
-         if (index(UPPER_ALPHABET, self%raw(c:c))>0) then
+         if (is_upper_char(self%raw(c:c))) then
             is_lower = .false.
             exit
          endif
@@ -4074,7 +4063,7 @@ contains
    if (allocated(self%raw)) then
       is_upper = .true.
       do c=1, len(self%raw)
-         if (index(LOWER_ALPHABET, self%raw(c:c))>0) then
+         if (is_lower_char(self%raw(c:c))) then
             is_upper = .false.
             exit
          endif
@@ -5029,56 +5018,270 @@ contains
    subroutine read_unformatted(dtv, unit, iostat, iomsg)
    !< Unformatted input.
    !<
-   !< @bug Change temporary acks: find a more precise length of the input string and avoid the trimming!
-   class(string),             intent(inout) :: dtv       !< The string.
-   integer,                   intent(in)    :: unit      !< Logical unit.
-   integer,                   intent(out)   :: iostat    !< IO status code.
-   character(kind=CK, len=*), intent(inout) :: iomsg     !< IO status message.
-   character(kind=CK, len=100)              :: temporary !< Temporary storage string.
+   !< @note The string is stored as its length (an `I8P` integer) followed by its characters, see [[string:write_unformatted]].
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: bstring
+   !< type(string) :: cstring
+   !< integer      :: scratch
+   !< logical      :: test_passed(4)
+   !< astring = repeat('a', 250)//'  '
+   !< open(newunit=scratch, status='SCRATCH', form='UNFORMATTED')
+   !< write(scratch) astring, bstring
+   !< rewind(scratch)
+   !< read(scratch) cstring, bstring
+   !< close(scratch)
+   !< test_passed(1) = cstring%len()==252.and.cstring==astring
+   !< test_passed(2) = bstring%is_allocated().and.bstring%len()==0
+   !< open(newunit=scratch, status='SCRATCH', form='UNFORMATTED', access='STREAM')
+   !< write(scratch) astring
+   !< rewind(scratch)
+   !< read(scratch) cstring
+   !< close(scratch)
+   !< test_passed(3) = cstring%len()==252
+   !< test_passed(4) = cstring==astring
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(inout) :: dtv    !< The string.
+   integer,                   intent(in)    :: unit   !< Logical unit.
+   integer,                   intent(out)   :: iostat !< IO status code.
+   character(kind=CK, len=*), intent(inout) :: iomsg  !< IO status message.
+   integer(I8P)                             :: length !< Length of the string.
 
-   read(unit, iostat=iostat, iomsg=iomsg)temporary
-   dtv%raw = trim(temporary)
+   read(unit, iostat=iostat, iomsg=iomsg) length
+   if (iostat/=0) return
+   if (allocated(dtv%raw)) deallocate(dtv%raw)
+   allocate(character(kind=CK, len=length) :: dtv%raw)
+   read(unit, iostat=iostat, iomsg=iomsg) dtv%raw
    endsubroutine read_unformatted
 
    subroutine write_unformatted(dtv, unit, iostat, iomsg)
    !< Unformatted output.
+   !<
+   !< @note The string is stored as its length (an `I8P` integer) followed by its characters, a not allocated string being
+   !< stored as a null one.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:read_unformatted]].
    class(string),             intent(in)    :: dtv    !< The string.
    integer,                   intent(in)    :: unit   !< Logical unit.
    integer,                   intent(out)   :: iostat !< IO status code.
    character(kind=CK, len=*), intent(inout) :: iomsg  !< IO status message.
 
    if (allocated(dtv%raw)) then
-     write(unit, iostat=iostat, iomsg=iomsg)dtv%raw
+     write(unit, iostat=iostat, iomsg=iomsg) int(len(dtv%raw), I8P), dtv%raw
    else
-     write(unit, iostat=iostat, iomsg=iomsg)''
+     write(unit, iostat=iostat, iomsg=iomsg) 0_I8P
    endif
    endsubroutine write_unformatted
 
-   ! miscellanea
-   elemental function replace_one_occurrence(self, old, new) result(replaced)
-   !< Return a string with the first occurrence of substring old replaced by new.
+   ! non type-bound-procedures
+   elemental function is_lower_char(c) result(is_lower)
+   !< Return true if the character is an ASCII lowercase letter.
    !<
-   !< @note The doctest is not necessary, this being tested by [[string:replace]].
-   class(string),             intent(in)  :: self      !< The string.
-   character(kind=CK, len=*), intent(in)  :: old       !< Old substring.
-   character(kind=CK, len=*), intent(in)  :: new       !< New substring.
-   type(string)                           :: replaced  !< The string with old replaced by new.
-   integer                                :: pos       !< Position from which replace old.
+   !< @note The doctest is not necessary, this being tested by [[string:is_upper]] and [[string:lower]].
+   character(kind=CK, len=1), intent(in) :: c        !< The character.
+   logical                               :: is_lower !< Result of the test.
 
-   if (allocated(self%raw)) then
-      replaced = self
-      pos = index(string=self%raw, substring=old)
-      if (pos>0) then
-         if (pos==1) then
-            replaced%raw = new//self%raw(len(old)+1:)
-         else
-            replaced%raw = self%raw(1:pos-1)//new//self%raw(pos+len(old):)
+   is_lower = iachar(c)>=iachar('a').and.iachar(c)<=iachar('z')
+   endfunction is_lower_char
+
+   elemental function is_upper_char(c) result(is_upper)
+   !< Return true if the character is an ASCII uppercase letter.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:is_lower]] and [[string:upper]].
+   character(kind=CK, len=1), intent(in) :: c        !< The character.
+   logical                               :: is_upper !< Result of the test.
+
+   is_upper = iachar(c)>=iachar('A').and.iachar(c)<=iachar('Z')
+   endfunction is_upper_char
+
+   elemental function lower_char(c) result(lower)
+   !< Return the lowercase of an ASCII uppercase letter, any other character unchanged.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:lower]].
+   character(kind=CK, len=1), intent(in) :: c     !< The character.
+   character(kind=CK, len=1)             :: lower !< Lowercase character.
+
+   lower = c
+   if (is_upper_char(c)) lower = achar(iachar(c) + CASE_SHIFT, kind=CK)
+   endfunction lower_char
+
+   elemental function upper_char(c) result(upper)
+   !< Return the uppercase of an ASCII lowercase letter, any other character unchanged.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:upper]].
+   character(kind=CK, len=1), intent(in) :: c     !< The character.
+   character(kind=CK, len=1)             :: upper !< Uppercase character.
+
+   upper = c
+   if (is_lower_char(c)) upper = achar(iachar(c) - CASE_SHIFT, kind=CK)
+   endfunction upper_char
+
+   pure subroutine append_to_buffer(buffer, length, piece)
+   !< Append a piece to the first length characters of a buffer, doubling the buffer when it is full.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:read_line]] and [[string:read_lines]].
+   character(kind=CK, len=:), allocatable, intent(inout) :: buffer !< Buffer, only its first length characters are used.
+   integer,                                intent(inout) :: length !< Length of the used part of the buffer.
+   character(kind=CK, len=*),              intent(in)    :: piece  !< Piece to append.
+   character(kind=CK, len=:), allocatable                :: grown  !< Grown buffer.
+
+   if (.not.allocated(buffer)) allocate(character(kind=CK, len=max(1024, len(piece))) :: buffer)
+   if (length+len(piece)>len(buffer)) then
+      allocate(character(kind=CK, len=max(2*len(buffer), length+len(piece))) :: grown)
+      grown(1:length) = buffer(1:length)
+      call move_alloc(from=grown, to=buffer)
+   endif
+   buffer(length+1:length+len(piece)) = piece
+   length = length + len(piece)
+   endsubroutine append_to_buffer
+
+   pure function replace_substring(raw, old, new, count) result(replaced)
+   !< Return raw with the occurrences of old replaced by new, in one pass.
+   !<
+   !< The occurrences are not overlapping, found from left to right, and the replaced text is not searched again.
+   !< If `count` is passed only the first `count` occurrences are replaced, none if `count<=0`.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:replace]], [[string:escape]] and [[string:unescape]].
+   character(kind=CK, len=*), intent(in)           :: raw      !< Raw characters data.
+   character(kind=CK, len=*), intent(in)           :: old      !< Old substring, not null.
+   character(kind=CK, len=*), intent(in)           :: new      !< New substring.
+   integer,                   intent(in), optional :: count    !< Number of old occurences to be replaced.
+   character(kind=CK, len=:), allocatable          :: replaced !< Raw with old replaced by new.
+   integer                                         :: count_   !< Number of old occurences to be replaced, local variable.
+   integer                                         :: n        !< Number of occurrences replaced.
+   integer                                         :: pos      !< Position of an occurrence, relative to c.
+   integer                                         :: c        !< Character counter into raw.
+   integer                                         :: r        !< Character counter into replaced.
+
+   count_ = huge(1) ; if (present(count)) count_ = count
+   n = 0
+   c = 1
+   do while (n<count_)
+      pos = index(raw(c:), old)
+      if (pos==0) exit
+      n = n + 1
+      c = c + pos - 1 + len(old)
+   enddo
+   allocate(character(kind=CK, len=len(raw)+n*(len(new)-len(old))) :: replaced)
+   c = 1
+   r = 1
+   do while (n>0)
+      pos = index(raw(c:), old)
+      replaced(r:r+pos-2) = raw(c:c+pos-2)
+      r = r + pos - 1
+      replaced(r:r+len(new)-1) = new
+      r = r + len(new)
+      c = c + pos - 1 + len(old)
+      n = n - 1
+   enddo
+   replaced(r:) = raw(c:)
+   endfunction replace_substring
+
+   pure function unique_substring(raw, substring) result(uniq)
+   !< Return raw with the sequential occurrences of substring reduced to one, in one pass.
+   !<
+   !< The result is the one of replacing the leftmost occurrence of `substring//substring` by `substring` until none is
+   !< left: the characters are appended one by one to the result and, when the result ends with `substring//substring`,
+   !< the last `substring` is removed. The leftmost occurrence being the first to end, the two are the same.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:unique]].
+   character(kind=CK, len=*), intent(in)  :: raw       !< Raw characters data.
+   character(kind=CK, len=*), intent(in)  :: substring !< Substring which sequential occurrences are reduced to one.
+   character(kind=CK, len=:), allocatable :: uniq      !< Raw with the sequential occurrences reduced to one.
+   character(kind=CK, len=:), allocatable :: buffer    !< Buffer, the result being never longer than raw.
+   integer                                :: ls        !< Length of the substring.
+   integer                                :: c         !< Character counter into raw.
+   integer                                :: r         !< Length of the result into the buffer.
+
+   ls = len(substring)
+   if (ls==0.or.index(raw, substring//substring)==0) then
+      uniq = raw
+      return
+   endif
+   allocate(character(kind=CK, len=len(raw)) :: buffer)
+   r = 0
+   do c=1, len(raw)
+      r = r + 1
+      buffer(r:r) = raw(c:c)
+      if (r>=2*ls) then
+         if (buffer(r:r)==substring(ls:ls)) then
+            if (buffer(r-2*ls+1:r-ls)==substring.and.buffer(r-ls+1:r)==substring) r = r - ls
          endif
       endif
-   endif
-   endfunction replace_one_occurrence
+   enddo
+   uniq = buffer(1:r)
+   endfunction unique_substring
 
-   ! non type-bound-procedures
+   pure function join_raws(array, sep) result(join)
+   !< Return the join of the allocated strings of an array, the not allocated ones being skipped.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:join]] and [[strjoin]].
+   class(string),             intent(in)  :: array(1:) !< Array to be joined.
+   character(kind=CK, len=*), intent(in)  :: sep       !< Separator.
+   character(kind=CK, len=:), allocatable :: join      !< The join of array.
+   integer                                :: length    !< Length of the join.
+   integer                                :: c         !< Character counter into join.
+   integer                                :: a         !< Counter.
+   logical                                :: is_first  !< The item is the first joined.
+
+   length = -len(sep)
+   do a=1, size(array, dim=1)
+      if (allocated(array(a)%raw)) length = length + len(sep) + len(array(a)%raw)
+   enddo
+   allocate(character(kind=CK, len=max(0, length)) :: join)
+   c = 0
+   is_first = .true.
+   do a=1, size(array, dim=1)
+      if (.not.allocated(array(a)%raw)) cycle
+      if (.not.is_first) then
+         join(c+1:c+len(sep)) = sep
+         c = c + len(sep)
+      endif
+      is_first = .false.
+      join(c+1:c+len(array(a)%raw)) = array(a)%raw
+      c = c + len(array(a)%raw)
+   enddo
+   endfunction join_raws
+
+   pure function join_chars(array, sep, is_trim) result(join)
+   !< Return the join of the not blank characters of an array, the blank ones being skipped.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:join]] and [[strjoin]].
+   character(kind=CK, len=*), intent(in)  :: array(1:) !< Array to be joined.
+   character(kind=CK, len=*), intent(in)  :: sep       !< Separator.
+   logical,                   intent(in)  :: is_trim   !< Trim the items.
+   character(kind=CK, len=:), allocatable :: join      !< The join of array.
+   integer                                :: length    !< Length of the join.
+   integer                                :: item_len  !< Length of an item.
+   integer                                :: c         !< Character counter into join.
+   integer                                :: a         !< Counter.
+   logical                                :: is_first  !< The item is the first joined.
+
+   length = -len(sep)
+   do a=1, size(array, dim=1)
+      if (array(a)=='') cycle
+      item_len = len(array(a)) ; if (is_trim) item_len = len_trim(array(a))
+      length = length + len(sep) + item_len
+   enddo
+   allocate(character(kind=CK, len=max(0, length)) :: join)
+   c = 0
+   is_first = .true.
+   do a=1, size(array, dim=1)
+      if (array(a)=='') cycle
+      if (.not.is_first) then
+         join(c+1:c+len(sep)) = sep
+         c = c + len(sep)
+      endif
+      is_first = .false.
+      item_len = len(array(a)) ; if (is_trim) item_len = len_trim(array(a))
+      join(c+1:c+item_len) = array(a)(1:item_len)
+      c = c + item_len
+   enddo
+   endfunction join_chars
+
    pure function compare_versions(version_a, version_b, sep) result(order)
    !< Compare two version numbers field by field, see [[string:compare_version_character]].
    character(kind=CK, len=*), intent(in) :: version_a !< First version.

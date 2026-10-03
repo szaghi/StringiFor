@@ -2,7 +2,7 @@ program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
  type(string), allocatable :: strings(:)
- logical :: test_passed(11)
+ logical :: test_passed(12)
  astring = '+ab-++cre-++cre-ab+'
  call astring%split(tokens=strings, sep='+')
  test_passed(1) = (strings(1)//''=='ab-'.and.strings(2)//''=='cre-'.and.strings(3)//''=='cre-ab')
@@ -36,5 +36,8 @@ use stringifor_string_t
  astring = '1-2-3-4-5-6-7-8'
  call astring%split(tokens=strings, sep='-', max_tokens=3)
  test_passed(11) = (strings(1)//''=='1'.and.strings(2)//''=='2'.and.strings(3)//''=='3'.and.strings(4)//''=='4-5-6-7-8')
+ astring = '+++'
+ call astring%split(tokens=strings, sep='+')
+ test_passed(12) = (size(strings, dim=1)==0)
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

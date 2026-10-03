@@ -48,18 +48,18 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `lower()` | All characters lowercase |
 | `partition([sep])` | Split at the first sep (default space); return `string(3)` = [before, sep, after] |
 | `repeat(ncopies)` | Concatenate `ncopies` copies of the string |
-| `replace(old, new[, count])` | Replace all (or the first `count`) occurrences of `old` with `new` |
+| `replace(old, new[, count])` | Replace all (or the first `count`) occurrences of `old` with `new`, left to right; the replaced text is not searched again |
 | `reverse()` | Reverse character order |
 | `reverse_words([sep])` | Reverse the order of the words |
 | `slice([first][, last][, stride])` | Section `first:last:stride`, bounds clamped into the string; returns `character` |
 | `snakecase([sep])` | Words lowercase, joined by `_` |
-| `split(tokens[, sep][, max_tokens])` | Tokenize into allocatable array (subroutine) |
+| `split(tokens[, sep][, max_tokens])` | Tokenize into allocatable array (subroutine); sequential separators count as one, a string of only separators has no tokens |
 | `split_chunked(tokens, chunks[, sep])` | Tokenize in chunks of `chunks` tokens, memory-efficient (subroutine) |
 | `startcase([sep])` | Title case — each word capitalized |
 | `strip([remove_nulls][, remove])` | Remove leading/trailing spaces, or the characters of the set `remove` |
 | `swapcase()` | Swap upper↔lower case |
 | `trim()` | Remove trailing spaces |
-| `unescape(to_unescape[, unesc])` | Remove the backslash escaping the character `to_unescape` |
+| `unescape(to_unescape[, unesc])` | Remove the backslash (or `unesc`) escaping the character `to_unescape` |
 | `unique([substring])` | Collapse repeated occurrences of substring (default space) to one |
 | `upper()` | All characters uppercase |
 
@@ -103,7 +103,8 @@ n = s%to_number(kind=0_I4P)
 ```
 
 A cast to a real kind accepts both real and integer strings; a cast to an integer kind requires an integer string. If the
-string does not hold a suitable number the result is undefined: check with `is_number` / `is_integer` first.
+string does not hold a suitable number the result is 0 for an integer kind and a quiet NaN for a real kind: check with
+`is_number` / `is_integer` first to tell a parsed 0 from a failure.
 
 ## File I/O Methods (type-bound)
 
