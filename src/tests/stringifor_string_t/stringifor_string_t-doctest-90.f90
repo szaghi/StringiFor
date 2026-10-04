@@ -2,11 +2,10 @@ program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
  logical :: test_passed(3)
- astring = ' Hello World'
- test_passed(1) = astring%is_lower().eqv..false.
- astring = ' HELLO WORLD'
- test_passed(2) = astring%is_lower().eqv..false.
- astring = ' hello world'
- test_passed(3) = astring%is_lower().eqv..true.
+ astring = '^\\s \\d+\\s*'
+ test_passed(1) = (astring%unescape(to_unescape='\')//''=='^\s \d+\s*')
+ test_passed(2) = (astring%unescape(to_unescape='s')//''=='^\s \\d+\s*')
+ astring = '^|\s |\d+|\s*'
+ test_passed(3) = (astring%unescape(to_unescape='\', unesc='|')//''=='^\s \d+\s*')
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

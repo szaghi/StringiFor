@@ -1,33 +1,29 @@
 program volatile_doctest
 use stringifor_string_t
- type(string), allocatable :: strings_arr(:, :)
- logical :: test_passed(5)
-
- strings_arr = reshape( source = &
- [string('one'), string('two'), string('three'), &
- string('ONE'), string('TWO'), string('THREE')], &
- shape = [3, 2] )
-
- test_passed(1) = all( strjoin(array=strings_arr) == &
- reshape([string('onetwothree'), string('ONETWOTHREE')], &
- shape = [2]) )
-
- test_passed(2) = all( strjoin(array=strings_arr, sep='_') == &
- reshape([string('one_two_three'), string('ONE_TWO_THREE')], &
- shape = [2]) )
-
- test_passed(3) = all( strjoin(array=strings_arr, is_col=.false.) == &
- reshape([string('oneONE'), string('twoTWO'), string('threeTHREE')], &
- shape = [3]) )
-
- test_passed(4) = all( strjoin(array=strings_arr, sep='_', is_col=.false.) == &
- reshape([string('one_ONE'), string('two_TWO'), string('three_THREE')], &
- shape = [3]) )
-
- call strings_arr(2, 1)%free
- test_passed(5) = all( strjoin(array=strings_arr, sep='_', is_col=.false.) == &
- reshape([string('one_ONE'), string('TWO'), string('three_THREE')], &
- shape = [3]) )
-
+ type(string) :: astring
+ character(5) :: characters(3)
+ logical :: test_passed(6)
+ characters(1) = 'one'
+ characters(2) = 'two'
+ characters(3) = 'three'
+ test_passed(1) = (astring%join(array=characters)//''==characters(1)//characters(2)//characters(3))
+ test_passed(2) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(2)//'-'//characters(3))
+ characters(1) = ''
+ characters(2) = 'two'
+ characters(3) = 'three'
+ test_passed(3) = (astring%join(array=characters, sep='-')//''==characters(2)//'-'//characters(3))
+ characters(1) = 'one'
+ characters(2) = 'two'
+ characters(3) = ''
+ test_passed(4) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(2))
+ characters(1) = 'one'
+ characters(2) = ''
+ characters(3) = 'three'
+ test_passed(5) = (astring%join(array=characters, sep='-')//''==characters(1)//'-'//characters(3))
+ characters(1) = 'one'
+ characters(2) = 'two'
+ characters(3) = 'three'
+ astring = '_'
+ test_passed(6) = (astring%join(array=characters)//''==characters(1)//'_'//characters(2)//'_'//characters(3))
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

@@ -1,12 +1,11 @@
 program volatile_doctest
 use stringifor_string_t
+ use penf
  type(string) :: astring
- logical :: test_passed(5)
- astring = 'Hello WorLD!'
- test_passed(1) = astring%end_with(suffix='LD!').eqv..true.
- test_passed(2) = astring%end_with(suffix='lD!').eqv..false.
- test_passed(3) = astring%end_with(suffix='orLD!', start=5).eqv..true.
- test_passed(4) = astring%end_with(suffix='orLD!', start=8, end=12).eqv..true.
- test_passed(5) = astring%end_with(suffix='!').eqv..true.
+ real(R16P) :: real_
+ logical :: test_passed(1)
+ astring = '3.4e9'
+ real_ = astring%to_number(kind=1._R16P)
+ test_passed(1) = real_==3.4e9_R16P
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

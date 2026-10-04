@@ -28,6 +28,24 @@ The word-level styles split the string in words, at the blanks or at `sep`:
 | `snakecase([sep])` | every word lower case, joined by `_` |
 | `is_upper()`, `is_lower()` | true if every character is an upper (lower) case letter |
 
+## Character classes
+
+<<< @/examples/snippets/char_classes.f90
+
+<<< @/examples/output/char_classes.ansi{ansi}
+
+| Method | True if all the characters are |
+|---|---|
+| `is_alpha()` | letters |
+| `is_alnum()` | letters or digits |
+| `is_digit()` | digits |
+| `is_xdigit()` | hexadecimal digits, `0-9`, `a-f`, `A-F` |
+| `is_punct()` | punctuation: printable, not letters, digits or space (as C `ispunct`) |
+| `is_space()` | whitespace: space, tab, new line, vertical tab, form feed, carriage return (as C `isspace`) |
+| `is_lower()`, `is_upper()` | not uppercase, not lowercase letters |
+
+The classes are the ASCII ones. A null string is in no class, as in Python.
+
 ## Cleaning and replacing
 
 <<< @/examples/snippets/strip.f90
@@ -52,6 +70,19 @@ leading and trailing character belonging to the set. `remove_nulls=.true.` cuts 
 <<< @/examples/snippets/escape.f90
 
 <<< @/examples/output/escape.ansi{ansi}
+
+<<< @/examples/snippets/tidy.f90
+
+<<< @/examples/output/tidy.ansi{ansi}
+
+| Method | Result |
+|---|---|
+| `compact([sep])` | the words separated by one `sep` (default a blank): whitespace runs collapsed, the ends removed, as Python `sep.join(s.split())` |
+| `squeeze([set])` | every run of a repeated character reduced to one, only for the characters of `set` if passed, as `tr -s` |
+| `expand_tabs([tab_size])` | the tabs replaced by blanks up to the next tab stop, every `tab_size` columns (default 8), as Python `str.expandtabs` |
+| `transliterate(old_set, new_set)` | each character of `old_set` replaced by the one at the same position in `new_set`; a shorter `new_set` repeats its last character, a null one deletes, as `tr` |
+| `quote([quote_char])` | the string between quotes (default `"`), the inner ones doubled, as Fortran list-directed output and CSV |
+| `unquote()` | the inverse of `quote`, for a string starting and ending with the same `'` or `"`; any other string unchanged |
 
 ## Splitting and joining
 
@@ -133,6 +164,15 @@ passed as `in_string` or `in_character`; `istart` and `iend` return where the te
 
 `fill(width[, right][, filling_char])` pads to `width` characters, on the left unless `right=.true.`, with zeros unless
 `filling_char` is passed. A string already as wide as `width`, or wider, is returned unchanged.
+
+<<< @/examples/snippets/align.f90
+
+<<< @/examples/output/align.ansi{ansi}
+
+`center(width[, fill_char])`, `ljust(width[, fill_char])` and `rjust(width[, fill_char])` center, left justify and right
+justify the string in `width` characters, padding with blanks or with `fill_char`, as the Python methods of the same
+name: a string already as wide as `width` is returned unchanged, and an odd padding of `center` puts the extra character
+on the left if `width` is odd, on the right otherwise.
 
 <<< @/examples/snippets/justify.f90
 

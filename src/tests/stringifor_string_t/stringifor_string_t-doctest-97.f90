@@ -1,8 +1,12 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(1)
- astring = 'hello'
- test_passed(1) = astring%chars()=='hello'
+ logical :: test_passed(3)
+ astring = 'Fortran2023'
+ test_passed(1) = astring%is_alnum()
+ astring = 'Fortran 2023'
+ test_passed(2) = .not.astring%is_alnum()
+ astring = ''
+ test_passed(3) = .not.astring%is_alnum()
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

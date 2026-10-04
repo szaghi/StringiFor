@@ -46,6 +46,7 @@ type :: string
     procedure, pass(self) :: basename         !< Return the base file name of a string containing a file name.
     procedure, pass(self) :: camelcase        !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize       !< Return a string with its first character capitalized and the rest lowercased.
+    procedure, pass(self) :: center           !< Return the string centered in a given width.
     procedure, pass(self) :: chars            !< Return the raw characters data.
     generic               :: colorize => &
                              colorize_str     !< Colorize and stylize strings.
@@ -56,9 +57,11 @@ type :: string
     generic               :: compare_version =>        &
                              compare_version_string,   &
                              compare_version_character !< Compare two version numbers, return -1, 0 or 1.
+    procedure, pass(self) :: compact          !< Return the words of the string separated by one separator, whitespace collapsed.
     procedure, pass(self) :: decode           !< Decode string.
     procedure, pass(self) :: encode           !< Encode string.
     procedure, pass(self) :: escape           !< Escape backslashes (or custom escape character).
+    procedure, pass(self) :: expand_tabs      !< Return a string with the tabs expanded to spaces.
     procedure, pass(self) :: extension        !< Return the extension of a string containing a file name.
     procedure, pass(self) :: fill             !< Pad string on the left (or right) with zeros (or other char) to fill width.
     procedure, pass(self) :: free             !< Free dynamic memory.
@@ -80,8 +83,10 @@ type :: string
                                                        !< Return join 1D string array of an 2D array of strings or characters in columns or rows.
     procedure, pass(self) :: justify          !< Return the words of the string packed into fully justified lines.
     procedure, pass(self) :: len_last_word    !< Return the length of the last word of the string.
+    procedure, pass(self) :: ljust            !< Return the string left justified in a given width.
     procedure, pass(self) :: lower            !< Return a string with all lowercase characters.
     procedure, pass(self) :: partition        !< Split string at separator and return the 3 parts (before, the separator and after).
+    procedure, pass(self) :: quote            !< Return the string quoted, the inner quotes doubled.
     procedure, pass(self) :: read_file        !< Read a file a single string stream.
     procedure, pass(self) :: read_line        !< Read line (record) from a connected unit.
     procedure, pass(self) :: read_lines       !< Read (all) lines (records) from a connected unit as a single ascii stream.
@@ -100,11 +105,13 @@ type :: string
     procedure, pass(self) :: replace          !< Return a string with all occurrences of substring old replaced by new.
     procedure, pass(self) :: reverse          !< Return a reversed string.
     procedure, pass(self) :: reverse_words    !< Return a string with the words order reversed.
+    procedure, pass(self) :: rjust            !< Return the string right justified in a given width.
     procedure, pass(self) :: search           !< Search for *tagged* record into string.
     procedure, pass(self) :: slice            !< Return the raw characters data sliced.
     procedure, pass(self) :: snakecase        !< Return a string with all words lowercase separated by "_".
     procedure, pass(self) :: split            !< Return a list of substring in the string, using sep as the delimiter string.
     procedure, pass(self) :: split_chunked    !< Return a list of substring in the string, using sep as the delimiter string.
+    procedure, pass(self) :: squeeze          !< Return a string with the runs of a repeated character reduced to one.
     procedure, pass(self) :: startcase        !< Return a string with all words capitalized, e.g. title case.
     procedure, pass(self) :: strip            !< Return a string with the leading and trailing characters removed.
     procedure, pass(self) :: swapcase         !< Return a string with uppercase chars converted to lowercase and vice versa.
@@ -121,8 +128,10 @@ type :: string
 #endif
                              to_real_R8P,   &
                              to_real_R4P      !< Cast string to number.
+    procedure, pass(self) :: transliterate    !< Return a string with the characters of a set replaced by the ones of another.
     procedure, pass(self) :: unescape         !< Unescape double backslashes (or custom escaped character).
     procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
+    procedure, pass(self) :: unquote          !< Return the string unquoted, the inner doubled quotes undoubled.
     procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
     procedure, pass(self) :: write_file       !< Write a single string stream into file.
     procedure, pass(self) :: write_line       !< Write line (record) to a connected unit.
@@ -130,12 +139,17 @@ type :: string
     ! inquire methods
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
+    procedure, pass(self) :: is_alnum     !< Return true if all characters in the string are letters or digits.
+    procedure, pass(self) :: is_alpha     !< Return true if all characters in the string are letters.
     procedure, pass(self) :: is_digit     !< Return true if all characters in the string are digits.
     procedure, pass(self) :: is_integer   !< Return true if the string contains an integer.
     procedure, pass(self) :: is_lower     !< Return true if all characters in the string are lowercase.
     procedure, pass(self) :: is_number    !< Return true if the string contains a number (real or integer).
+    procedure, pass(self) :: is_punct     !< Return true if all characters in the string are punctuation characters.
     procedure, pass(self) :: is_real      !< Return true if the string contains an real.
+    procedure, pass(self) :: is_space     !< Return true if all characters in the string are whitespace.
     procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
+    procedure, pass(self) :: is_xdigit    !< Return true if all characters in the string are hexadecimal digits.
     procedure, pass(self) :: match        !< Return true if the string matches a wildcard pattern.
     procedure, pass(self) :: start_with   !< Return true if a string starts with a specified prefix.
     ! operators
@@ -1001,6 +1015,46 @@ contains
    endif
    endfunction capitalize
 
+   elemental function center(self, width, fill_char) result(centered)
+   !< Return the string centered in a string of length `width`, padded with `fill_char` (default a space).
+   !<
+   !< @note As Python `str.center`: a string not shorter than `width` is returned unchanged; when the padding is odd the extra
+   !< fill character goes on the left if `width` is odd, on the right otherwise.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: centered
+   !< logical      :: test_passed(4)
+   !< astring = 'abc'
+   !< test_passed(1) = astring%center(7, '*')//''=='**abc**'
+   !< centered = astring%center(6)
+   !< test_passed(2) = centered%len()==6.and.centered//''==' abc'
+   !< test_passed(3) = astring%center(2)//''=='abc'
+   !< astring = 'ab'
+   !< test_passed(4) = astring%center(5, '-')//''=='--ab-'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self       !< The string.
+   integer,                   intent(in)           :: width      !< Width of the result.
+   character(kind=CK, len=1), intent(in), optional :: fill_char  !< Fill character, default a space.
+   type(string)                                    :: centered   !< The string centered.
+   character(kind=CK, len=1)                       :: fill_char_ !< Fill character, local variable.
+   integer                                         :: margin     !< Number of fill characters.
+   integer                                         :: left       !< Number of fill characters on the left.
+
+   if (allocated(self%raw)) then
+      fill_char_ = SPACE ; if (present(fill_char)) fill_char_ = fill_char
+      margin = width - len(self%raw)
+      if (margin<=0) then
+         centered = self
+      else
+         left = margin / 2 + iand(iand(margin, width), 1)
+         centered%raw = repeat(fill_char_, left)//self%raw//repeat(fill_char_, margin - left)
+      endif
+   endif
+   endfunction center
+
    pure function chars(self) result(raw)
    !< Return the raw characters data.
    !<
@@ -1136,6 +1190,61 @@ contains
       enddo
    endif
    endfunction common_prefix_strings
+
+   elemental function compact(self, sep) result(compacted)
+   !< Return the words of the string separated by `sep` (default a space): every run of whitespace becomes one separator, the
+   !< leading and trailing whitespace is removed.
+   !<
+   !< @note As Python `sep.join(s.split())`; the whitespace is the one of [[string:is_space]], a null `sep` removes it.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = '  one'//achar(9)//' two'//new_line('a')//'three  '
+   !< test_passed(1) = astring%compact()//''=='one two three'
+   !< test_passed(2) = astring%compact(sep=', ')//''=='one, two, three'
+   !< test_passed(3) = astring%compact(sep='')//''=='onetwothree'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self      !< The string.
+   character(kind=CK, len=*), intent(in), optional :: sep       !< Separator of the words, default a space.
+   type(string)                                    :: compacted !< The compacted string.
+   character(kind=CK, len=:), allocatable          :: buffer    !< Buffer, only its first length characters are used.
+   integer                                         :: length    !< Length of the result.
+   integer                                         :: first     !< First character of a word.
+   integer                                         :: c         !< Character counter.
+
+   if (allocated(self%raw)) then
+      length = 0
+      c = 1
+      do
+         do while (c<=len(self%raw))
+            if (.not.is_space_char(self%raw(c:c))) exit
+            c = c + 1
+         enddo
+         if (c>len(self%raw)) exit
+         first = c
+         do while (c<=len(self%raw))
+            if (is_space_char(self%raw(c:c))) exit
+            c = c + 1
+         enddo
+         if (length>0) then
+            if (present(sep)) then
+               call append_to_buffer(buffer=buffer, length=length, piece=sep)
+            else
+               call append_to_buffer(buffer=buffer, length=length, piece=SPACE)
+            endif
+         endif
+         call append_to_buffer(buffer=buffer, length=length, piece=self%raw(first:c-1))
+      enddo
+      if (length>0) then
+         compacted%raw = buffer(1:length)
+      else
+         compacted%raw = ''
+      endif
+   endif
+   endfunction compact
 
    elemental function compare_version_string(self, other, sep) result(order)
    !< Compare the version number into the string with the one into another string.
@@ -1332,6 +1441,61 @@ contains
      endif
    endif
    endfunction escape
+
+   elemental function expand_tabs(self, tab_size) result(expanded)
+   !< Return a string with every tab replaced by the spaces up to the next tab stop, every `tab_size` columns (default 8).
+   !<
+   !< @note As Python `str.expandtabs`: the column restarts after a new line or a carriage return; a `tab_size` not positive
+   !< removes the tabs.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'a'//achar(9)//'bc'//achar(9)//'d'
+   !< test_passed(1) = astring%expand_tabs()//''=='a       bc      d'
+   !< test_passed(2) = astring%expand_tabs(4)//''=='a   bc  d'
+   !< astring = 'abcd'//achar(9)//'e'//new_line('a')//achar(9)//'f'
+   !< test_passed(3) = astring%expand_tabs(4)//''=='abcd    e'//new_line('a')//'    f'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)              :: self      !< The string.
+   integer,       intent(in), optional    :: tab_size  !< Columns between tab stops, default 8.
+   type(string)                           :: expanded  !< The string with the tabs expanded.
+   character(kind=CK, len=:), allocatable :: buffer    !< Buffer, only its first length characters are used.
+   integer                                :: tab_size_ !< Columns between tab stops, local variable.
+   integer                                :: length    !< Length of the result.
+   integer                                :: column    !< Column of the next character, from 0.
+   integer                                :: spaces    !< Spaces replacing a tab.
+   integer                                :: c         !< Character counter.
+
+   if (allocated(self%raw)) then
+      tab_size_ = 8 ; if (present(tab_size)) tab_size_ = tab_size
+      length = 0
+      column = 0
+      do c=1, len(self%raw)
+         select case(self%raw(c:c))
+         case(TAB)
+            if (tab_size_>0) then
+               spaces = tab_size_ - mod(column, tab_size_)
+               call append_to_buffer(buffer=buffer, length=length, piece=repeat(SPACE, spaces))
+               column = column + spaces
+            endif
+         case(achar(10, kind=CK), achar(13, kind=CK))
+            call append_to_buffer(buffer=buffer, length=length, piece=self%raw(c:c))
+            column = 0
+         case default
+            call append_to_buffer(buffer=buffer, length=length, piece=self%raw(c:c))
+            column = column + 1
+         endselect
+      enddo
+      if (length>0) then
+         expanded%raw = buffer(1:length)
+      else
+         expanded%raw = ''
+      endif
+   endif
+   endfunction expand_tabs
 
    elemental function extension(self)
    !< Return the extension of a string containing a file name.
@@ -2220,6 +2384,39 @@ contains
    endif
    endfunction len_last_word
 
+   elemental function ljust(self, width, fill_char) result(justified)
+   !< Return the string left justified in a string of length `width`, padded with `fill_char` (default a space).
+   !<
+   !< @note As Python `str.ljust`: a string not shorter than `width` is returned unchanged.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: centered
+   !< logical      :: test_passed(3)
+   !< astring = 'abc'
+   !< test_passed(1) = astring%ljust(6, '.')//''=='abc...'
+   !< centered = astring%ljust(6)
+   !< test_passed(2) = centered%len()==6.and.centered//''=='abc'
+   !< test_passed(3) = astring%ljust(2)//''=='abc'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self       !< The string.
+   integer,                   intent(in)           :: width      !< Width of the result.
+   character(kind=CK, len=1), intent(in), optional :: fill_char  !< Fill character, default a space.
+   type(string)                                    :: justified  !< The string justified.
+   character(kind=CK, len=1)                       :: fill_char_ !< Fill character, local variable.
+
+   if (allocated(self%raw)) then
+      fill_char_ = SPACE ; if (present(fill_char)) fill_char_ = fill_char
+      if (width<=len(self%raw)) then
+         justified = self
+      else
+         justified%raw = self%raw//repeat(fill_char_, width - len(self%raw))
+      endif
+   endif
+   endfunction ljust
+
    elemental function lower(self)
    !< Return a string with all lowercase characters.
    !<
@@ -2283,6 +2480,33 @@ contains
       endif
    endif
    endfunction partition
+
+   elemental function quote(self, quote_char) result(quoted)
+   !< Return the string between `quote_char` (default `"`), every `quote_char` inside it doubled.
+   !<
+   !< @note The quoting of Fortran list-directed output and of CSV, undone by [[string:unquote]].
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'say "hi"'
+   !< test_passed(1) = astring%quote()//''=='"say ""hi"""'
+   !< test_passed(2) = astring%quote("'")//''=="'say ""hi""'"
+   !< astring = astring%quote()
+   !< test_passed(3) = astring%unquote()//''=='say "hi"'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self        !< The string.
+   character(kind=CK, len=1), intent(in), optional :: quote_char  !< Quote character, default `"`.
+   type(string)                                    :: quoted      !< The quoted string.
+   character(kind=CK, len=1)                       :: quote_char_ !< Quote character, local variable.
+
+   if (allocated(self%raw)) then
+      quote_char_ = '"' ; if (present(quote_char)) quote_char_ = quote_char
+      quoted%raw = quote_char_//replace_substring(raw=self%raw, old=quote_char_, new=quote_char_//quote_char_)//quote_char_
+   endif
+   endfunction quote
 
    subroutine read_file(self, file, is_fast, form, iostat, iomsg)
    !< Read a file as a single string stream.
@@ -2714,6 +2938,39 @@ contains
    endif
    endfunction reverse_words
 
+   elemental function rjust(self, width, fill_char) result(justified)
+   !< Return the string right justified in a string of length `width`, padded with `fill_char` (default a space).
+   !<
+   !< @note As Python `str.rjust`: a string not shorter than `width` is returned unchanged.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: centered
+   !< logical      :: test_passed(3)
+   !< astring = 'abc'
+   !< test_passed(1) = astring%rjust(6, '.')//''=='...abc'
+   !< centered = astring%rjust(6)
+   !< test_passed(2) = centered%len()==6.and.centered//''=='   abc'
+   !< test_passed(3) = astring%rjust(2)//''=='abc'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self       !< The string.
+   integer,                   intent(in)           :: width      !< Width of the result.
+   character(kind=CK, len=1), intent(in), optional :: fill_char  !< Fill character, default a space.
+   type(string)                                    :: justified  !< The string justified.
+   character(kind=CK, len=1)                       :: fill_char_ !< Fill character, local variable.
+
+   if (allocated(self%raw)) then
+      fill_char_ = SPACE ; if (present(fill_char)) fill_char_ = fill_char
+      if (width<=len(self%raw)) then
+         justified = self
+      else
+         justified%raw = repeat(fill_char_, width - len(self%raw))//self%raw
+      endif
+   endif
+   endfunction rjust
+
    function search(self, tag_start, tag_end, in_string, in_character, istart, iend) result(tag)
    !< Search for *tagged* record into string, return the first record found (if any) matching the tags.
    !<
@@ -3119,6 +3376,48 @@ contains
       endif
       endsubroutine split_last_token
    endsubroutine split_chunked
+
+   elemental function squeeze(self, set) result(squeezed)
+   !< Return a string with every run of a repeated character reduced to one, only for the characters of `set` if passed.
+   !<
+   !< @note As `tr -s`. To reduce the runs of a substring see [[string:unique]].
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(2)
+   !< astring = 'bookkeeper  --  aa'
+   !< test_passed(1) = astring%squeeze()//''=='bokeper - a'
+   !< test_passed(2) = astring%squeeze(set=' -')//''=='bookkeeper - aa'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self     !< The string.
+   character(kind=CK, len=*), intent(in), optional :: set      !< Characters whose runs are reduced, default all.
+   type(string)                                    :: squeezed !< The squeezed string.
+   character(kind=CK, len=:), allocatable          :: buffer   !< Buffer, the result being never longer than the string.
+   integer                                         :: length   !< Length of the result.
+   integer                                         :: c        !< Character counter.
+   logical                                         :: is_run   !< The character repeats the previous one and is squeezed.
+
+   if (allocated(self%raw)) then
+      allocate(character(kind=CK, len=len(self%raw)) :: buffer)
+      length = 0
+      do c=1, len(self%raw)
+         is_run = .false.
+         if (c>1) then
+            if (self%raw(c:c)==self%raw(c-1:c-1)) then
+               is_run = .true.
+               if (present(set)) is_run = index(set, self%raw(c:c))>0
+            endif
+         endif
+         if (.not.is_run) then
+            length = length + 1
+            buffer(length:length) = self%raw(c:c)
+         endif
+      enddo
+      squeezed%raw = buffer(1:length)
+   endif
+   endfunction squeeze
 
    elemental function startcase(self, sep)
    !< Return a string with all words capitalized, e.g. title case.
@@ -3705,6 +4004,48 @@ contains
    if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
    endsubroutine read_number_R16P
 
+   elemental function transliterate(self, old_set, new_set) result(transliterated)
+   !< Return a string with every character of `old_set` replaced by the character at the same position in `new_set`.
+   !<
+   !< @note As GNU `tr`: if `new_set` is shorter than `old_set` its last character replaces the remaining ones, if it is null
+   !< the characters of `old_set` are deleted. A character repeated in `old_set` is replaced as its first occurrence.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'hello world'
+   !< test_passed(1) = astring%transliterate('lo', 'LO')//''=='heLLO wOrLd'
+   !< test_passed(2) = astring%transliterate('elo', 'x')//''=='hxxxx wxrxd'
+   !< test_passed(3) = astring%transliterate('lo', '')//''=='he wrd'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)  :: self           !< The string.
+   character(kind=CK, len=*), intent(in)  :: old_set        !< Characters to replace.
+   character(kind=CK, len=*), intent(in)  :: new_set        !< Replacing characters.
+   type(string)                           :: transliterated !< The transliterated string.
+   character(kind=CK, len=:), allocatable :: buffer         !< Buffer, the result being never longer than the string.
+   integer                                :: length         !< Length of the result.
+   integer                                :: c              !< Character counter.
+   integer                                :: i              !< Position into old_set.
+
+   if (allocated(self%raw)) then
+      allocate(character(kind=CK, len=len(self%raw)) :: buffer)
+      length = 0
+      do c=1, len(self%raw)
+         i = index(old_set, self%raw(c:c))
+         if (i==0) then
+            length = length + 1
+            buffer(length:length) = self%raw(c:c)
+         elseif (len(new_set)>0) then
+            length = length + 1
+            buffer(length:length) = new_set(min(i, len(new_set)):min(i, len(new_set)))
+         endif
+      enddo
+      transliterated%raw = buffer(1:length)
+   endif
+   endfunction transliterate
+
    elemental function unescape(self, to_unescape, unesc) result(unescaped)
    !< Unescape double backslashes (or custom escaped character).
    !<
@@ -3765,6 +4106,45 @@ contains
      endif
    endif
    endfunction unique
+
+   elemental function unquote(self) result(unquoted)
+   !< Return the string without its quotes, if it starts and ends with the same quote character (`'` or `"`), the doubled
+   !< quote characters inside it undoubled; any other string unchanged.
+   !<
+   !< @note The inverse of [[string:quote]].
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = '"say ""hi"""'
+   !< test_passed(1) = astring%unquote()//''=='say "hi"'
+   !< astring = "'it''s'"
+   !< test_passed(2) = astring%unquote()//''=="it's"
+   !< astring = '"unbalanced'
+   !< test_passed(3) = astring%unquote()//''=='"unbalanced'
+   !< astring = '""'
+   !< test_passed(4) = astring%unquote()//''==''.and.astring%len()==2
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self     !< The string.
+   type(string)              :: unquoted !< The unquoted string.
+   integer                   :: n        !< Length of the string.
+
+   if (allocated(self%raw)) then
+      unquoted = self
+      n = len(self%raw)
+      if (n>=2) then
+         if ((self%raw(1:1)=='"'.or.self%raw(1:1)=="'").and.self%raw(n:n)==self%raw(1:1)) then
+            if (n==2) then
+               unquoted%raw = ''
+            else
+               unquoted%raw = replace_substring(raw=self%raw(2:n-1), old=self%raw(1:1)//self%raw(1:1), new=self%raw(1:1))
+            endif
+         endif
+      endif
+   endif
+   endfunction unquote
 
    elemental function upper(self)
    !< Return a string with all uppercase characters.
@@ -3965,6 +4345,66 @@ contains
    is_allocated = allocated(self%raw)
    endfunction is_allocated
 
+   elemental function is_alnum(self)
+   !< Return true if all characters in the string are letters or digits.
+   !<
+   !< @note The letters and the digits are the ASCII ones. A null or not allocated string gives false.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'Fortran2023'
+   !< test_passed(1) = astring%is_alnum()
+   !< astring = 'Fortran 2023'
+   !< test_passed(2) = .not.astring%is_alnum()
+   !< astring = ''
+   !< test_passed(3) = .not.astring%is_alnum()
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self !< The string.
+   logical                   :: is_alnum !< Result of the test.
+   integer                   :: c        !< Character counter.
+
+   is_alnum = .false.
+   if (allocated(self%raw)) then
+      do c=1, len(self%raw)
+         is_alnum = is_lower_char(self%raw(c:c)).or.is_upper_char(self%raw(c:c)).or.is_digit_char(self%raw(c:c))
+         if (.not.is_alnum) exit
+      enddo
+   endif
+   endfunction is_alnum
+
+   elemental function is_alpha(self)
+   !< Return true if all characters in the string are letters.
+   !<
+   !< @note The letters are the ASCII ones. A null or not allocated string gives false.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'Fortran'
+   !< test_passed(1) = astring%is_alpha()
+   !< astring = 'Fortran2023'
+   !< test_passed(2) = .not.astring%is_alpha()
+   !< astring = ''
+   !< test_passed(3) = .not.astring%is_alpha()
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self !< The string.
+   logical                   :: is_alpha !< Result of the test.
+   integer                   :: c        !< Character counter.
+
+   is_alpha = .false.
+   if (allocated(self%raw)) then
+      do c=1, len(self%raw)
+         is_alpha = is_lower_char(self%raw(c:c)).or.is_upper_char(self%raw(c:c))
+         if (.not.is_alpha) exit
+      enddo
+   endif
+   endfunction is_alpha
+
    elemental function is_digit(self)
    !< Return true if all characters in the string are digits.
    !<
@@ -4164,6 +4604,37 @@ contains
    is_number = (self%is_integer(allow_spaces=allow_spaces).or.self%is_real(allow_spaces=allow_spaces))
    endfunction is_number
 
+   elemental function is_punct(self)
+   !< Return true if all characters in the string are punctuation characters.
+   !<
+   !< @note The punctuation characters are the printable ASCII ones that are not letters, digits or space (as C `ispunct`).
+   !< A null or not allocated string gives false.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = '!?(),.;'
+   !< test_passed(1) = astring%is_punct()
+   !< astring = '!? ok'
+   !< test_passed(2) = .not.astring%is_punct()
+   !< astring = ''
+   !< test_passed(3) = .not.astring%is_punct()
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self !< The string.
+   logical                   :: is_punct !< Result of the test.
+   integer                   :: c        !< Character counter.
+
+   is_punct = .false.
+   if (allocated(self%raw)) then
+      do c=1, len(self%raw)
+         is_punct = is_punct_char(self%raw(c:c))
+         if (.not.is_punct) exit
+      enddo
+   endif
+   endfunction is_punct
+
    elemental function is_real(self, allow_spaces)
    !< Return true if the string contains a real.
    !<
@@ -4304,6 +4775,37 @@ contains
    endif
    endfunction is_real
 
+   elemental function is_space(self)
+   !< Return true if all characters in the string are whitespace.
+   !<
+   !< @note The whitespace is space, tab, new line, vertical tab, form feed and carriage return (as C `isspace`). A null or
+   !< not allocated string gives false.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = ' '//achar(9)//new_line('a')
+   !< test_passed(1) = astring%is_space()
+   !< astring = ' x '
+   !< test_passed(2) = .not.astring%is_space()
+   !< astring = ''
+   !< test_passed(3) = .not.astring%is_space()
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self !< The string.
+   logical                   :: is_space !< Result of the test.
+   integer                   :: c        !< Character counter.
+
+   is_space = .false.
+   if (allocated(self%raw)) then
+      do c=1, len(self%raw)
+         is_space = is_space_char(self%raw(c:c))
+         if (.not.is_space) exit
+      enddo
+   endif
+   endfunction is_space
+
    elemental function is_upper(self)
    !< Return true if all characters in the string are uppercase.
    !<
@@ -4334,6 +4836,36 @@ contains
       enddo
    endif
    endfunction is_upper
+
+   elemental function is_xdigit(self)
+   !< Return true if all characters in the string are hexadecimal digits.
+   !<
+   !< @note The hexadecimal digits are `0-9`, `a-f` and `A-F`. A null or not allocated string gives false.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = '00ff7FA9'
+   !< test_passed(1) = astring%is_xdigit()
+   !< astring = '0x00ff'
+   !< test_passed(2) = .not.astring%is_xdigit()
+   !< astring = ''
+   !< test_passed(3) = .not.astring%is_xdigit()
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self !< The string.
+   logical                   :: is_xdigit !< Result of the test.
+   integer                   :: c        !< Character counter.
+
+   is_xdigit = .false.
+   if (allocated(self%raw)) then
+      do c=1, len(self%raw)
+         is_xdigit = is_xdigit_char(self%raw(c:c))
+         if (.not.is_xdigit) exit
+      enddo
+   endif
+   endfunction is_xdigit
 
    elemental function match(self, pattern) result(is_match)
    !< Return true if the whole string matches a wildcard pattern.
@@ -5416,6 +5948,48 @@ contains
    endsubroutine write_unformatted
 
    ! non type-bound-procedures
+   elemental function is_digit_char(c) result(is_digit)
+   !< Return true if the character is an ASCII digit.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:is_alnum]].
+   character(kind=CK, len=1), intent(in) :: c        !< The character.
+   logical                               :: is_digit !< Result of the test.
+
+   is_digit = iachar(c)>=iachar('0').and.iachar(c)<=iachar('9')
+   endfunction is_digit_char
+
+   elemental function is_punct_char(c) result(is_punct)
+   !< Return true if the character is printable ASCII and not a letter, a digit or a space (as C `ispunct`).
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:is_punct]].
+   character(kind=CK, len=1), intent(in) :: c        !< The character.
+   logical                               :: is_punct !< Result of the test.
+
+   is_punct = iachar(c)>iachar(' ').and.iachar(c)<127.and. &
+              .not.(is_lower_char(c).or.is_upper_char(c).or.is_digit_char(c))
+   endfunction is_punct_char
+
+   elemental function is_space_char(c) result(is_space)
+   !< Return true if the character is a space, a tab, a new line, a vertical tab, a form feed or a carriage return.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:is_space]].
+   character(kind=CK, len=1), intent(in) :: c        !< The character.
+   logical                               :: is_space !< Result of the test.
+
+   is_space = c==SPACE.or.(iachar(c)>=9.and.iachar(c)<=13)
+   endfunction is_space_char
+
+   elemental function is_xdigit_char(c) result(is_xdigit)
+   !< Return true if the character is a hexadecimal digit.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:is_xdigit]].
+   character(kind=CK, len=1), intent(in) :: c         !< The character.
+   logical                               :: is_xdigit !< Result of the test.
+
+   is_xdigit = is_digit_char(c).or.(iachar(c)>=iachar('a').and.iachar(c)<=iachar('f')).or. &
+               (iachar(c)>=iachar('A').and.iachar(c)<=iachar('F'))
+   endfunction is_xdigit_char
+
    elemental function is_lower_char(c) result(is_lower)
    !< Return true if the character is an ASCII lowercase letter.
    !<

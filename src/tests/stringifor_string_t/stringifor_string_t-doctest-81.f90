@@ -1,16 +1,11 @@
 program volatile_doctest
 use stringifor_string_t
  use penf
- type(string) :: astrings(3)
- real(R8P) :: reals(3)
- integer :: iostats(3)
- logical :: test_passed(3)
- astrings(1) = '3.4e9'
- astrings(2) = '12'
- astrings(3) = 'twelve'
- call astrings%read_number(reals, iostat=iostats)
- test_passed(1) = reals(1)==3.4e9_R8P.and.iostats(1)==0
- test_passed(2) = reals(2)==12._R8P.and.iostats(2)==0
- test_passed(3) = reals(3)/=reals(3).and.iostats(3)>0
+ type(string) :: astring
+ integer(I2P) :: integer_
+ logical :: test_passed(1)
+ astring = '127'
+ integer_ = astring%to_number(kind=1_I2P)
+ test_passed(1) = integer_==127_I2P
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

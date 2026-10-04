@@ -1,18 +1,33 @@
 program volatile_doctest
 use stringifor_string_t
- type(string) :: astring
- logical :: test_passed(6)
- astring = 'Hello World'
- test_passed(1) = astring%len_last_word()==5
- astring = '   fly me   to   the moon  '
- test_passed(2) = astring%len_last_word()==4
- astring = 'joyboy'
- test_passed(3) = astring%len_last_word()==6
- astring = 'src/lib/stringifor//'
- test_passed(4) = astring%len_last_word(sep='/')==10
- astring = '    '
- test_passed(5) = astring%len_last_word()==0
- call astring%free
- test_passed(6) = astring%len_last_word()==0
+ type(string), allocatable :: strings_arr(:, :)
+ logical :: test_passed(5)
+
+ strings_arr = reshape( source = &
+ [string('one'), string('two'), string('three'), &
+ string('ONE'), string('TWO'), string('THREE')], &
+ shape = [3, 2] )
+
+ test_passed(1) = all( strjoin(array=strings_arr) == &
+ reshape([string('onetwothree'), string('ONETWOTHREE')], &
+ shape = [2]) )
+
+ test_passed(2) = all( strjoin(array=strings_arr, sep='_') == &
+ reshape([string('one_two_three'), string('ONE_TWO_THREE')], &
+ shape = [2]) )
+
+ test_passed(3) = all( strjoin(array=strings_arr, is_col=.false.) == &
+ reshape([string('oneONE'), string('twoTWO'), string('threeTHREE')], &
+ shape = [3]) )
+
+ test_passed(4) = all( strjoin(array=strings_arr, sep='_', is_col=.false.) == &
+ reshape([string('one_ONE'), string('two_TWO'), string('three_THREE')], &
+ shape = [3]) )
+
+ call strings_arr(2, 1)%free
+ test_passed(5) = all( strjoin(array=strings_arr, sep='_', is_col=.false.) == &
+ reshape([string('one_ONE'), string('TWO'), string('three_THREE')], &
+ shape = [3]) )
+
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

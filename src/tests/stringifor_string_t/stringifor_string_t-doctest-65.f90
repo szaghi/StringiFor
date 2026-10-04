@@ -1,20 +1,23 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(12)
- astring = 'Hello World'
- test_passed(1) = astring%slice(first=1, last=5)=='Hello'
- test_passed(2) = astring%slice(first=7)=='World'
- test_passed(3) = astring%slice(last=5)=='Hello'
- test_passed(4) = astring%slice()=='Hello World'
- test_passed(5) = astring%slice(stride=2)=='HloWrd'
- test_passed(6) = astring%slice(stride=-1)=='dlroW olleH'
- test_passed(7) = astring%slice(first=5, last=1, stride=-2)=='olH'
- test_passed(8) = astring%slice(first=-3, last=100)=='Hello World'
- test_passed(9) = len(astring%slice(first=7, last=5))==0
- test_passed(10) = len(astring%slice(stride=0))==0
- test_passed(11) = astring%slice(istart=1, iend=5)=='Hello'
- call astring%free
- test_passed(12) = len(astring%slice(first=1, last=5))==0
+ logical :: test_passed(8)
+ astring = 'When YOU are sad YOU should think to me :-)'
+ test_passed(1) = (astring%replace(old='YOU', new='THEY')//''=='When THEY are sad THEY should think to me :-)')
+ test_passed(2) = (astring%replace(old='YOU', new='THEY', count=1)//''=='When THEY are sad YOU should think to me :-)')
+ astring = repeat(new_line('a')//'abcd', 20)
+ astring = astring%replace(old=new_line('a'), new='|cr|')
+ astring = astring%replace(old='|cr|', new=new_line('a')//'    ')
+ test_passed(3) = (astring//''==repeat(new_line('a')//'    '//'abcd', 20))
+ astring = 'abcd  efg    hlmn'
+ astring = astring%replace(old='', new='-')
+ test_passed(4) = (astring//''=='abcd  efg    hlmn')
+ astring = 'aaa'
+ test_passed(5) = (astring%replace(old='a', new='aa')//''=='aaaaaa')
+ astring = 'aaaa'
+ test_passed(6) = (astring%replace(old='aa', new='a')//''=='aa')
+ astring = 'abab'
+ test_passed(7) = (astring%replace(old='ab', new='x', count=0)//''=='abab')
+ test_passed(8) = (astring%replace(old='ab', new='')//''=='')
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

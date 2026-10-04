@@ -1,0 +1,7 @@
+$ char_classes
+word      alpha alnum xdigit punct space
+Fortran        T     T     F     F     F
+F2023          F     T     T     F     F
+c0ffee         F     T     T     F     F
+?!,            F     F     F     T     F
+               F     F     F     F     T

@@ -1,13 +1,10 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- character(len=:), allocatable :: acharacter
- logical :: test_passed(2)
- astring = 'one'
- acharacter = 'ONE'
- test_passed(1) = ((acharacter<astring).eqv..true.)
- astring = 'ONE'
- acharacter = 'one'
- test_passed(2) = ((acharacter<astring).eqv..false.)
+ type(string) :: anotherstring
+ logical :: test_passed(1)
+ astring = 'Hello '
+ anotherstring = 'Bye bye'
+ test_passed(1) = astring//anotherstring=='Hello Bye bye'
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

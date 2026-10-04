@@ -1,14 +1,12 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- character(len=:), allocatable :: acharacter
- logical :: test_passed(5)
- astring = 'this is string example wow!!!'
- acharacter = '... '
- test_passed(1) = astring%insert(substring=acharacter, pos=1)//''=='... this is string example wow!!!'
- test_passed(2) = astring%insert(substring=acharacter, pos=23)//''=='this is string example...  wow!!!'
- test_passed(3) = astring%insert(substring=acharacter, pos=29)//''=='this is string example wow!!!... '
- test_passed(4) = astring%insert(substring=acharacter, pos=-1)//''=='... this is string example wow!!!'
- test_passed(5) = astring%insert(substring=acharacter, pos=100)//''=='this is string example wow!!!... '
+ type(string), allocatable :: alist_str(:)
+ character(len=:), allocatable :: alist_chr(:)
+ logical :: test_passed(2)
+ call astring%glob(pattern='no-file-has-this-name-*', list=alist_str)
+ test_passed(1) = allocated(alist_str).and.size(alist_str, dim=1)==0
+ call astring%glob(pattern='no-file-has-this-name-*', list=alist_chr)
+ test_passed(2) = allocated(alist_chr).and.size(alist_chr, dim=1)==0
  print '(L1)', all(test_passed)
 endprogram volatile_doctest
