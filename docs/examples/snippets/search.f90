@@ -11,4 +11,8 @@ print '(I0)', s%index('2001')
 print '(I0)', s%index('.', back=.true.)
 print '(I0)', s%scan('0123456789')              ! the first digit
 print '(I0)', s%verify('abcdefghijklmnopqrstuvwxyz')  ! the first character that is not a letter
+s = 'aaaa'
+print '(I0,1X,I0)', s%count('aa'), s%count('aa', overlapping=.true.)
+s = 'a.b.c.d'
+print '(I0,1X,I0)', s%index('.', occurrence=2), s%index('.', back=.true., occurrence=2)
 endprogram search_text

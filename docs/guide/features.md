@@ -25,7 +25,7 @@ print '(A)', s%upper()//''   ! call a method, get a character with //
 | **Intrinsics** | `adjustl`, `adjustr`, `count`, `index`, `len_trim`, `repeat`, `scan`, `trim`, `verify` accept a string | [Strings and I/O](./basic-io#the-fortran-intrinsics) |
 | **Case** | `upper`, `lower`, `swapcase`, `capitalize`, `camelcase`, `snakecase`, `startcase`; `is_upper`, `is_lower` | [String Manipulation](./string-manipulation#case-conversion) |
 | **Classes** | `is_alpha`, `is_alnum`, `is_digit`, `is_xdigit`, `is_punct`, `is_space` | [String Manipulation](./string-manipulation#character-classes) |
-| **Cleaning** | `strip` (blanks or a set of characters), `replace`, `unique`, `insert`, `escape`, `unescape`, `compact`, `squeeze`, `expand_tabs`, `transliterate`, `quote`, `unquote` | [String Manipulation](./string-manipulation#cleaning-and-replacing) |
+| **Cleaning** | `strip` (blanks or a set of characters), `replace`, `unique`, `insert`, `escape`, `unescape`, `lstrip`, `rstrip`, `compact`, `squeeze`, `expand_tabs`, `transliterate`, `quote`, `unquote` | [String Manipulation](./string-manipulation#cleaning-and-replacing) |
 | **Tokens** | `split` (empty fields optionally kept), `split_chunked`, `partition`, `join`, `strjoin` (1D and 2D arrays) | [String Manipulation](./string-manipulation#splitting-and-joining) |
 | **Parts** | `slice` with a stride, `reverse`, `reverse_words`, `start_with`, `end_with`, `count`, `index`, `scan`, `verify`, `search` between tags | [String Manipulation](./string-manipulation#slicing-and-reversing) |
 | **Layout** | `fill`, `center`, `ljust`, `rjust`, `justify`, `len_last_word` | [String Manipulation](./string-manipulation#padding-and-layout) |

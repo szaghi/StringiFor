@@ -50,6 +50,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `justify(lines, width)` | Pack the words into fully justified lines (subroutine, allocates `lines`) |
 | `ljust(width[, fill_char])` | Left justified in `width` characters, as Python `str.ljust` |
 | `lower()` | All characters lowercase |
+| `lstrip([remove][, whitespace])` | As `strip`, the leading characters only |
 | `partition([sep])` | Split at the first sep (default space); return `string(3)` = [before, sep, after] |
 | `quote([quote_char])` | Between quotes (default `"`), the inner ones doubled |
 | `repeat(ncopies)` | Concatenate `ncopies` copies of the string |
@@ -57,13 +58,14 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `reverse()` | Reverse character order |
 | `reverse_words([sep])` | Reverse the order of the words |
 | `rjust(width[, fill_char])` | Right justified in `width` characters, as Python `str.rjust` |
+| `rstrip([remove][, whitespace])` | As `strip`, the trailing characters only |
 | `slice([first][, last][, stride])` | Section `first:last:stride`, bounds clamped into the string; returns `character` |
 | `snakecase([sep])` | Words lowercase, joined by `_` |
 | `split(tokens[, sep][, max_tokens][, keep_empty])` | Tokenize into allocatable array (subroutine); sequential separators count as one, a string of only separators has no tokens; with `keep_empty` the empty fields are tokens |
 | `split_chunked(tokens, chunks[, sep])` | Tokenize in chunks of `chunks` tokens (subroutine) |
 | `squeeze([set])` | Runs of a repeated character (of `set` if passed) reduced to one, as `tr -s` |
 | `startcase([sep])` | Title case — each word capitalized |
-| `strip([remove_nulls][, remove])` | Remove leading/trailing spaces, or the characters of the set `remove` |
+| `strip([remove_nulls][, remove][, whitespace])` | Remove leading/trailing spaces, or the characters of the set `remove`, and all the whitespace if `whitespace` |
 | `swapcase()` | Swap upper↔lower case |
 | `transliterate(old_set, new_set)` | Characters of `old_set` replaced by the ones of `new_set`, as `tr` |
 | `trim()` | Remove trailing spaces |
@@ -78,9 +80,9 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 |--------|---------|-------------|
 | `chars()` | `character(:)` | Raw character data (null if not allocated) |
 | `compare_version(other[, sep])` | `integer` | Field-by-field version comparison: `-1`, `0` or `1` |
-| `count(substring[, ignore_isolated])` | `integer` | Number of non-overlapping occurrences |
+| `count(substring[, ignore_isolated][, overlapping])` | `integer` | Number of occurrences, not overlapping unless `overlapping=.true.` |
 | `end_with(suffix[, start][, end][, ignore_null_eof])` | `logical` | True if string ends with suffix |
-| `index(substring[, back])` | `integer` | Position of substring (like `INDEX`) |
+| `index(substring[, back][, occurrence])` | `integer` | Position of substring (like `INDEX`); `occurrence=k` gives the k-th one |
 | `is_allocated()` | `logical` | True if `raw` member is allocated |
 | `is_alnum()` | `logical` | True if all characters are letters or digits |
 | `is_alpha()` | `logical` | True if all characters are letters |

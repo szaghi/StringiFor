@@ -52,8 +52,11 @@ The classes are the ASCII ones. A null string is in no class, as in Python.
 
 <<< @/examples/output/strip.ansi{ansi}
 
-`strip([remove_nulls][, remove])` removes the blanks at both ends; with `remove`, a set of characters, it removes every
-leading and trailing character belonging to the set. `remove_nulls=.true.` cuts the string at its first null character.
+`strip([remove_nulls][, remove][, whitespace])` removes the blanks at both ends; with `remove`, a set of characters, it
+removes every leading and trailing character belonging to the set; `whitespace=.true.` removes tabs, new lines, vertical
+tabs, form feeds and carriage returns too, as Python `str.strip()`. `lstrip([remove][, whitespace])` and
+`rstrip([remove][, whitespace])` do the same at the beginning or at the end only. `remove_nulls=.true.` cuts the string at
+its first null character.
 
 <<< @/examples/snippets/replace.f90
 
@@ -144,8 +147,9 @@ are clamped into the string: a slice never goes out of bounds, and it is empty w
 | Method | Result |
 |---|---|
 | `start_with(prefix[, start][, end])`, `end_with(suffix[, start][, end][, ignore_null_eof])` | true if the string, or its part `start:end`, starts (ends) with it |
-| `count(substring[, ignore_isolated])` | number of non-overlapping occurrences |
-| `index(substring[, back])`, `scan(set[, back])`, `verify(set[, back])` | like the intrinsics |
+| `count(substring[, ignore_isolated][, overlapping])` | number of occurrences, not overlapping (as Python `str.count`) unless `overlapping=.true.` |
+| `index(substring[, back][, occurrence])` | like the intrinsic; `occurrence=k` gives the k-th occurrence, not overlapping, from the end if `back` |
+| `scan(set[, back])`, `verify(set[, back])` | like the intrinsics |
 
 `search` returns the first text enclosed by two tags, tags included:
 

@@ -9,8 +9,8 @@ program stringifor_test_differential
 !<+ `count` (the character one) counted wrongly in v1.3.1: it is checked against a naive scan;
 !<+ `split` of a string made only of separators returned the string itself in v1.3.1: it now returns no tokens;
 !<+ `match` (v1.5.0) is checked against a naive recursive matcher;
-!<+ `split` with `keep_empty` (v1.5.0) is checked against a naive left-to-right scan, `read_number` (v1.5.0) against
-!<  `to_number` and `is_integer`/`is_number`.
+!<+ `split` with `keep_empty` (v1.5.0) is checked against a naive left-to-right scan;
+!<+ `read_number` (v1.5.0, fast path in v1.8.0) is checked bit by bit against the read statement (the v1.6.0 algorithm).
 !<
 !< The inputs are short random strings over a small alphabet that contains the separators, generated with a fixed seed.
 use, intrinsic :: iso_fortran_env, only : iostat_eor
@@ -400,37 +400,111 @@ contains
    endfunction check_split_keep_empty
 
    function check_read_number() result(is_ok)
-   !< Check read_number against to_number and is_integer/is_number, on random strings looking like numbers.
-   character(len=*), parameter :: NUMBER_ALPHABET = '0123456789+-.eEdx ' !< Characters of the random strings.
-   logical                     :: is_ok                                  !< Check result.
-   type(string)                :: astring                                !< A random string.
-   real(R8P)                   :: real_                                  !< Number read.
-   integer(I4P)                :: integer_                               !< Number read.
-   integer                     :: iostat                                 !< IO status code.
-   integer                     :: i, c                                   !< Counters.
+   !< Check read_number (and its fast path) against the read statement, bit by bit, for real and integer kinds.
+   !<
+   !< The reference is the v1.6.0 algorithm: the read statement on a string accepted by is_number (is_integer for the integer
+   !< kinds). The strings are numbers made of blanks, signs, leading zeros, up to 20 integer and fraction digits and exponents up
+   !< to 999, integers at the limits of the kinds, and random junk.
+   logical                       :: is_ok      !< Check result.
+   type(string)                  :: astring    !< A random string.
+   character(len=:), allocatable :: chars      !< The random string.
+   real(R8P)                     :: real8      !< Number read.
+   real(R8P)                     :: ref_real8  !< Number read by the reference.
+   real(R4P)                     :: real4      !< Number read.
+   real(R4P)                     :: ref_real4  !< Number read by the reference.
+   integer(I1P)                  :: int1       !< Number read.
+   integer(I1P)                  :: ref_int1   !< Number read by the reference.
+   integer(I8P)                  :: int8       !< Number read.
+   integer(I8P)                  :: ref_int8   !< Number read by the reference.
+   integer                       :: iostat     !< IO status code.
+   integer                       :: ref_iostat !< IO status code of the reference.
+   integer                       :: i          !< Counter.
 
    is_ok = .true.
-   do i=1, CASES
-      astring = repeat(' ', random_integer(0, 8))
-      do c=1, astring%len()
-         astring%raw(c:c) = NUMBER_ALPHABET(random_integer(1, len(NUMBER_ALPHABET)):)
-      enddo
-      call astring%read_number(real_, iostat=iostat)
-      if (iostat==0.and..not.astring%is_number()) is_ok = .false. ! a number may still overflow
-      if (iostat==0) then
-         if (real_/=astring%to_number(kind=1._R8P)) is_ok = .false.
-      else
-         if (real_==real_) is_ok = .false. ! not a NaN
-      endif
-      call astring%read_number(integer_, iostat=iostat)
-      if (iostat==0.and..not.astring%is_integer()) is_ok = .false.
-      if (integer_/=astring%to_number(kind=1_I4P)) is_ok = .false.
+   do i=1, 10 * CASES
+      chars = random_number_string()
+      astring = chars
+      call astring%read_number(real8, iostat=iostat)
+      ref_iostat = 1
+      if (astring%is_number()) read(chars, *, iostat=ref_iostat) ref_real8
+      if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
+      if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.transfer(real8, 1_I8P)==transfer(ref_real8, 1_I8P)
+      call astring%read_number(real4, iostat=iostat)
+      ref_iostat = 1
+      if (astring%is_number()) read(chars, *, iostat=ref_iostat) ref_real4
+      if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
+      if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.transfer(real4, 1_I4P)==transfer(ref_real4, 1_I4P)
+      call astring%read_number(int1, iostat=iostat)
+      ref_iostat = 1
+      if (astring%is_integer()) read(chars, *, iostat=ref_iostat) ref_int1
+      if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
+      if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.int1==ref_int1
+      call astring%read_number(int8, iostat=iostat)
+      ref_iostat = 1
+      if (astring%is_integer()) read(chars, *, iostat=ref_iostat) ref_int8
+      if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
+      if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.int8==ref_int8
       if (.not.is_ok) then
-         call report('read_number', astring%raw, '')
+         call report('read_number', chars, '')
          return
       endif
    enddo
    endfunction check_read_number
+
+   function random_number_string() result(chars)
+   !< Return a random string looking like a number, sometimes a limit of the integer kinds, sometimes junk.
+   character(len=*), parameter   :: JUNK = '0123456789+-.eEdD x' !< Characters of the junk strings.
+   character(len=*), parameter   :: LIMITS(8) = [character(len=20) :: '127', '-128', '128', '-129', & !< Limits of the kinds.
+                                                 '9223372036854775807', '-9223372036854775808', '9223372036854775808', '1e18']
+   character(len=:), allocatable :: chars                           !< Random string.
+   integer                       :: c                               !< Counter.
+
+   select case(random_integer(1, 20))
+   case(1:2)
+      allocate(character(len=random_integer(0, 10)) :: chars)
+      do c=1, len(chars)
+         chars(c:c) = JUNK(random_integer(1, len(JUNK)):)
+      enddo
+   case(3)
+      chars = trim(LIMITS(random_integer(1, size(LIMITS))))
+   case default
+      chars = repeat(' ', random_integer(0, 2))//random_sign()
+      chars = chars//random_digits(20)
+      if (random_integer(0, 1)==1) chars = chars//'.'//random_digits(20)
+      if (random_integer(0, 1)==1) then
+         c = random_integer(1, 4)
+         chars = chars//'eEdD'(c:c)//random_sign()//random_digits(3)
+      endif
+      chars = chars//repeat(' ', random_integer(0, 1))
+   endselect
+   endfunction random_number_string
+
+   function random_sign() result(sign)
+   !< Return no sign, '+' or '-', at random.
+   character(len=:), allocatable :: sign !< Random sign.
+
+   select case(random_integer(1, 3))
+   case(1)
+      sign = ''
+   case(2)
+      sign = '+'
+   case default
+      sign = '-'
+   endselect
+   endfunction random_sign
+
+   function random_digits(max_len) result(digits)
+   !< Return a random run of digits, of length up to max_len, sometimes with a leading zero.
+   integer, intent(in)           :: max_len !< Maximum length.
+   character(len=:), allocatable :: digits  !< Random digits.
+   integer                       :: c       !< Counter.
+
+   allocate(character(len=random_integer(0, max_len)) :: digits)
+   do c=1, len(digits)
+      digits(c:c) = achar(iachar('0') + random_integer(0, 9))
+   enddo
+   if (len(digits)>0.and.random_integer(0, 4)==0) digits(1:1) = '0'
+   endfunction random_digits
 
    ! helpers
    subroutine init_random()

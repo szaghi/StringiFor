@@ -47,6 +47,11 @@ Leading and trailing blanks are accepted, unless `allow_spaces=.false.`.
 value is ignored, pass any constant of the wanted kind (`1_I4P`, `1._R8P`). A cast to a real kind accepts a real or an
 integer string, a cast to an integer kind an integer string.
 
+A plain decimal number (a sign, at most 18 significant digits, a decimal point, an exponent) is converted without the
+`read` statement when the result is exact: any integer in the range of the kind, and a real whose digits and power of ten
+are exact in the kind (up to 15 digits and `1e22` for `R8P`), a single correctly rounded operation. Every other string goes
+through `read`: the result is the same, the plain numbers are about twenty times faster.
+
 ::: warning
 On a string that does not hold a suitable number the result is 0 for an integer kind and a quiet NaN for a real kind:
 check with `is_number` or `is_integer` first to tell a parsed 0 from a failure, or use `read_number`.

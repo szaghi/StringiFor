@@ -85,6 +85,7 @@ type :: string
     procedure, pass(self) :: len_last_word    !< Return the length of the last word of the string.
     procedure, pass(self) :: ljust            !< Return the string left justified in a given width.
     procedure, pass(self) :: lower            !< Return a string with all lowercase characters.
+    procedure, pass(self) :: lstrip           !< Return a string with the leading characters removed.
     procedure, pass(self) :: partition        !< Split string at separator and return the 3 parts (before, the separator and after).
     procedure, pass(self) :: quote            !< Return the string quoted, the inner quotes doubled.
     procedure, pass(self) :: read_file        !< Read a file a single string stream.
@@ -106,6 +107,7 @@ type :: string
     procedure, pass(self) :: reverse          !< Return a reversed string.
     procedure, pass(self) :: reverse_words    !< Return a string with the words order reversed.
     procedure, pass(self) :: rjust            !< Return the string right justified in a given width.
+    procedure, pass(self) :: rstrip           !< Return a string with the trailing characters removed.
     procedure, pass(self) :: search           !< Search for *tagged* record into string.
     procedure, pass(self) :: slice            !< Return the raw characters data sliced.
     procedure, pass(self) :: snakecase        !< Return a string with all words lowercase separated by "_".
@@ -286,6 +288,13 @@ endtype string
 
 ! internal parameters
 integer,                    parameter :: CASE_SHIFT     = iachar('a') - iachar('A')    !< ASCII distance of the cases.
+! powers of ten exactly representable, for the correctly rounded fast path of the number casting (Clinger)
+real(R8P), parameter :: P10_R8P(0:22) = [1.e0_R8P,  1.e1_R8P,  1.e2_R8P,  1.e3_R8P,  1.e4_R8P,  1.e5_R8P,  1.e6_R8P,  &
+                                         1.e7_R8P,  1.e8_R8P,  1.e9_R8P,  1.e10_R8P, 1.e11_R8P, 1.e12_R8P, 1.e13_R8P, &
+                                         1.e14_R8P, 1.e15_R8P, 1.e16_R8P, 1.e17_R8P, 1.e18_R8P, 1.e19_R8P, 1.e20_R8P, &
+                                         1.e21_R8P, 1.e22_R8P] !< 1e0..1e22.
+real(R4P), parameter :: P10_R4P(0:10) = [1.e0_R4P, 1.e1_R4P, 1.e2_R4P, 1.e3_R4P, 1.e4_R4P, 1.e5_R4P, &
+                                         1.e6_R4P, 1.e7_R4P, 1.e8_R4P, 1.e9_R4P, 1.e10_R4P] !< 1e0..1e10.
 character(kind=CK, len=1),  parameter :: SPACE          = ' '                          !< Space character.
 character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
@@ -440,38 +449,47 @@ contains
    if (allocated(s%raw)) adjusted = adjustr(s%raw)
    endfunction sadjustr_character
 
-   elemental function count_substring(s, substring) result(No)
+   elemental function count_substring(s, substring, overlapping) result(No)
    !< Count the number of occurences of a substring into a string.
    !<
-   !< @note The occurrences are not overlapping, counted from left to right. A null substring has no occurrences.
+   !< @note The occurrences are not overlapping, counted from left to right (as Python `str.count`), unless `overlapping` is
+   !< true. A null substring has no occurrences.
    !<
    !<```fortran
-   !< logical :: test_passed(4)
+   !< logical :: test_passed(6)
    !< test_passed(1) = count('hello', substring='ll')==1
    !< test_passed(2) = count('aaaa', substring='a')==4
    !< test_passed(3) = count('aaaa', substring='aa')==2
    !< test_passed(4) = count('abc', substring='')==0
+   !< test_passed(5) = count('aaaa', substring='aa', overlapping=.true.)==3
+   !< test_passed(6) = count('abab', substring='ab', overlapping=.true.)==2
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   character(*), intent(in) :: s         !< String.
-   character(*), intent(in) :: substring !< Substring.
-   integer(I4P)             :: No        !< Number of occurrences.
-   integer(I4P)             :: c1        !< Counters.
-   integer(I4P)             :: c2        !< Counters.
+   character(*), intent(in)           :: s           !< String.
+   character(*), intent(in)           :: substring   !< Substring.
+   logical,      intent(in), optional :: overlapping !< Count the overlapping occurrences too.
+   integer(I4P)                       :: No          !< Number of occurrences.
+   integer(I4P)                       :: c1          !< Counters.
+   integer(I4P)                       :: c2          !< Counters.
+   integer(I4P)                       :: step        !< Advance after an occurrence.
 
    No = 0
    if (len(substring)==0.or.len(substring)>len(s)) return
+   step = len(substring)
+   if (present(overlapping)) then
+     if (overlapping) step = 1
+   endif
    c1 = 1
    do
      c2 = index(string=s(c1:), substring=substring)
      if (c2==0) return
      No = No + 1
-     c1 = c1 + c2 - 1 + len(substring)
+     c1 = c1 + c2 - 1 + step
    enddo
    endfunction count_substring
 
-   elemental function sindex_character_string(s, substring, back) result(i)
+   elemental function sindex_character_string(s, substring, back, occurrence) result(i)
    !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
    !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
    !< the start of the last occurrence rather than the first.
@@ -486,15 +504,19 @@ contains
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   character(kind=CK, len=*), intent(in)           :: s         !< String.
-   type(string),              intent(in)           :: substring !< Searched substring.
-   logical,                   intent(in), optional :: back      !< Start of the last occurrence rather than the first.
-   integer                                         :: i         !< Result of the search.
+   character(kind=CK, len=*), intent(in)           :: s          !< String.
+   type(string),              intent(in)           :: substring  !< Searched substring.
+   logical,                   intent(in), optional :: back       !< Start of the last occurrence rather than the first.
+   integer,                   intent(in), optional :: occurrence !< Number of the occurrence, default 1.
+   integer                                         :: i          !< Result of the search.
 
+   i = 0
    if (allocated(substring%raw)) then
-     i = index(string=s, substring=substring%raw, back=back)
-   else
-     i = 0
+     if (present(occurrence)) then
+       i = find_occurrence(raw=s, substring=substring%raw, occurrence=occurrence, back=back)
+     else
+       i = index(string=s, substring=substring%raw, back=back)
+     endif
    endif
    endfunction sindex_character_string
 
@@ -584,8 +606,11 @@ contains
    if (allocated(adjusted%raw)) adjusted%raw = adjustr(adjusted%raw)
    endfunction sadjustr
 
-   elemental function scount(self, substring, ignore_isolated) result(No)
+   elemental function scount(self, substring, ignore_isolated, overlapping) result(No)
    !< Count the number of occurences of a substring into a string.
+   !<
+   !< @note The occurrences are not overlapping, counted from left to right (as Python `str.count`), unless `overlapping` is
+   !< true: `'aaaa'` holds 2 occurrences of `'aa'`, 3 overlapping ones.
    !<
    !< @note If `ignore_isolated` is set to true the eventual "isolated" occurences are ignored: an isolated occurrences are those
    !< occurrences happening at the start of string (thus not having a left companion) or at the end of the string (thus not having a
@@ -593,7 +618,7 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(5)
+   !< logical      :: test_passed(6)
    !< astring = '   Hello World  !    '
    !< test_passed(1) = astring%count(substring=' ')==10
    !< astring = 'Hello World  !    '
@@ -603,21 +628,29 @@ contains
    !< astring = '   Hello World  !    '
    !< test_passed(4) = astring%count(substring=' ', ignore_isolated=.true.)==8
    !< test_passed(5) = astring%count(substring='')==0
+   !< astring = 'aaaa'
+   !< test_passed(6) = astring%count('aa')==2.and.astring%count('aa', overlapping=.true.)==3
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in)              :: self             !< The string.
    character(*),  intent(in)              :: substring        !< Substring.
    logical,       intent(in), optional    :: ignore_isolated  !< Ignore "isolated" occurrences.
+   logical,       intent(in), optional    :: overlapping      !< Count the overlapping occurrences too.
    integer                                :: No               !< Number of occurrences.
    logical                                :: ignore_isolated_ !< Ignore "isolated" occurrences, local variable.
    integer                                :: c1               !< Counter.
    integer                                :: c2               !< Counter.
+   integer                                :: step             !< Advance after an occurrence.
 
    No = 0
    if (allocated(self%raw)) then
       if (len(substring)==0.or.len(substring)>len(self%raw)) return
       ignore_isolated_ = .false. ; if (present(ignore_isolated)) ignore_isolated_ = ignore_isolated
+      step = len(substring)
+      if (present(overlapping)) then
+         if (overlapping) step = 1
+      endif
       c1 = 1
       do
          c2 = index(string=self%raw(c1:), substring=substring)
@@ -629,41 +662,52 @@ contains
                No = No + 1
             endif
          endif
-         c1 = c1 + c2 - 1 + len(substring)
+         c1 = c1 + c2 - 1 + step
       enddo
    endif
    endfunction scount
 
-   elemental function sindex_string_string(self, substring, back) result(i)
+   elemental function sindex_string_string(self, substring, back, occurrence) result(i)
    !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
    !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
    !< the start of the last occurrence rather than the first.
    !<
+   !< @note With `occurrence=k` the start of the k-th occurrence is returned (counted from the end if `back` is true), zero if
+   !< there are fewer: the occurrences are not overlapping, as for [[string:count]].
+   !<
    !<```fortran
    !< type(string) :: string1
    !< type(string) :: string2
-   !< logical      :: test_passed(2)
+   !< logical      :: test_passed(4)
    !< string1 = 'Hello World Hello!'
    !< string2 = 'llo'
    !< test_passed(1) = string1%index(substring=string2)==index(string='Hello World Hello!', substring='llo')
    !< test_passed(2) = string1%index(substring=string2, back=.true.)==index(string='Hello World Hello!', substring='llo', &
    !<                                                                       back=.true.)
+   !< string1 = 'ab-ab-ab'
+   !< string2 = 'ab'
+   !< test_passed(3) = string1%index(string2, occurrence=2)==4.and.string1%index(string2, occurrence=4)==0
+   !< test_passed(4) = string1%index(string2, back=.true., occurrence=2)==4
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string), intent(in)           :: self      !< The string.
-   type(string),  intent(in)           :: substring !< Searched substring.
-   logical,       intent(in), optional :: back      !< Start of the last occurrence rather than the first.
-   integer                             :: i         !< Result of the search.
+   class(string), intent(in)           :: self       !< The string.
+   type(string),  intent(in)           :: substring  !< Searched substring.
+   logical,       intent(in), optional :: back       !< Start of the last occurrence rather than the first.
+   integer,       intent(in), optional :: occurrence !< Number of the occurrence, default 1.
+   integer                             :: i          !< Result of the search.
 
-   if (allocated(self%raw)) then
-      i = index(string=self%raw, substring=substring%raw, back=back)
-   else
-      i = 0
+   i = 0
+   if (allocated(self%raw).and.allocated(substring%raw)) then
+      if (present(occurrence)) then
+         i = find_occurrence(raw=self%raw, substring=substring%raw, occurrence=occurrence, back=back)
+      else
+         i = index(string=self%raw, substring=substring%raw, back=back)
+      endif
    endif
    endfunction sindex_string_string
 
-   elemental function sindex_string_character(self, substring, back) result(i)
+   elemental function sindex_string_character(self, substring, back, occurrence) result(i)
    !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
    !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
    !< the start of the last occurrence rather than the first.
@@ -677,15 +721,19 @@ contains
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string),             intent(in)           :: self      !< The string.
-   character(kind=CK, len=*), intent(in)           :: substring !< Searched substring.
-   logical,                   intent(in), optional :: back      !< Start of the last occurrence rather than the first.
-   integer                                         :: i         !< Result of the search.
+   class(string),             intent(in)           :: self       !< The string.
+   character(kind=CK, len=*), intent(in)           :: substring  !< Searched substring.
+   logical,                   intent(in), optional :: back       !< Start of the last occurrence rather than the first.
+   integer,                   intent(in), optional :: occurrence !< Number of the occurrence, default 1.
+   integer                                         :: i          !< Result of the search.
 
+   i = 0
    if (allocated(self%raw)) then
-      i = index(string=self%raw, substring=substring, back=back)
-   else
-      i = 0
+      if (present(occurrence)) then
+         i = find_occurrence(raw=self%raw, substring=substring, occurrence=occurrence, back=back)
+      else
+         i = index(string=self%raw, substring=substring, back=back)
+      endif
    endif
    endfunction sindex_string_character
 
@@ -2417,6 +2465,29 @@ contains
    endif
    endfunction ljust
 
+   elemental function lstrip(self, remove, whitespace) result(stripped)
+   !< Return a copy of the string with the leading characters removed: spaces by default, the characters of the set `remove`
+   !< if passed, plus the whitespace of [[string:is_space]] if `whitespace` is true (as Python `str.lstrip`).
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = '  xx-ab-xx  '
+   !< test_passed(1) = astring%lstrip()//'|'=='xx-ab-xx  |'
+   !< test_passed(2) = astring%lstrip(remove=' x')//''=='-ab-xx'
+   !< test_passed(3) = astring%lstrip(remove='')//''==astring//''
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self       !< The string.
+   character(kind=CK, len=*), intent(in), optional :: remove     !< Set of characters to be removed, default space.
+   logical,                   intent(in), optional :: whitespace !< Remove the whitespace too.
+   type(string)                                    :: stripped   !< The stripped string.
+
+   if (allocated(self%raw)) &
+      stripped%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace), left=.true., right=.false.)
+   endfunction lstrip
+
    elemental function lower(self)
    !< Return a string with all lowercase characters.
    !<
@@ -2971,6 +3042,29 @@ contains
    endif
    endfunction rjust
 
+   elemental function rstrip(self, remove, whitespace) result(stripped)
+   !< Return a copy of the string with the trailing characters removed: spaces by default, the characters of the set `remove`
+   !< if passed, plus the whitespace of [[string:is_space]] if `whitespace` is true (as Python `str.rstrip`).
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = '  xx-ab-xx'//achar(9)//new_line('a')
+   !< test_passed(1) = '|'//astring%rstrip(whitespace=.true.)=='|  xx-ab-xx'
+   !< test_passed(2) = astring%rstrip(remove='x', whitespace=.true.)//''=='  xx-ab-'
+   !< test_passed(3) = astring%rstrip()//''==astring//''
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self       !< The string.
+   character(kind=CK, len=*), intent(in), optional :: remove     !< Set of characters to be removed, default space.
+   logical,                   intent(in), optional :: whitespace !< Remove the whitespace too.
+   type(string)                                    :: stripped   !< The stripped string.
+
+   if (allocated(self%raw)) &
+      stripped%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace), left=.false., right=.true.)
+   endfunction rstrip
+
    function search(self, tag_start, tag_end, in_string, in_character, istart, iend) result(tag)
    !< Search for *tagged* record into string, return the first record found (if any) matching the tags.
    !<
@@ -3448,15 +3542,17 @@ contains
    endif
    endfunction startcase
 
-   elemental function strip(self, remove_nulls, remove)
+   elemental function strip(self, remove_nulls, remove, whitespace)
    !< Return a copy of the string with the leading and trailing characters removed.
    !<
    !< By default the leading and trailing spaces are removed. If `remove` is passed, it is the set of characters to be removed:
-   !< all the leading and trailing characters of the string belonging to the set are removed, in any order they occur.
+   !< all the leading and trailing characters of the string belonging to the set are removed, in any order they occur. If
+   !< `whitespace` is true, the whitespace of [[string:is_space]] (space, tab, new line, vertical tab, form feed, carriage
+   !< return) is removed too, as Python `str.strip()`. To strip one side only see [[string:lstrip]] and [[string:rstrip]].
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(8)
+   !< logical      :: test_passed(10)
    !< astring = '  Hello World!   '
    !< test_passed(1) = astring%strip()//''=='Hello World!'
    !< astring = '   hello   '
@@ -3472,32 +3568,21 @@ contains
    !< test_passed(7) = astring%strip(remove=' ')//''==''
    !< astring = '--a-b--'
    !< test_passed(8) = astring%strip(remove='-')//''=='a-b'
+   !< astring = achar(9)//' a b'//new_line('a')
+   !< test_passed(9) = astring%strip(whitespace=.true.)//''=='a b'
+   !< test_passed(10) = astring%strip(remove='b', whitespace=.true.)//''=='a'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self         !< The string.
    logical,                   intent(in), optional :: remove_nulls !< Remove null characters at the end.
    character(kind=CK, len=*), intent(in), optional :: remove       !< Set of characters to be removed, default space.
+   logical,                   intent(in), optional :: whitespace   !< Remove the whitespace too.
    type(string)                                    :: strip        !< The stripped string.
    integer                                         :: c            !< Counter.
-   integer                                         :: first        !< First character not to be removed.
-   integer                                         :: last         !< Last character not to be removed.
 
    if (allocated(self%raw)) then
-      if (present(remove)) then
-         first = verify(self%raw, remove)
-         last = verify(self%raw, remove, back=.true.)
-         if (len(remove)==0) then
-            strip%raw = self%raw
-         elseif (first>0) then
-            strip%raw = self%raw(first:last)
-         else
-            strip%raw = ''
-         endif
-      else
-         strip = self%adjustl()
-         strip = strip%trim()
-      endif
+      strip%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace), left=.true., right=.true.)
       if (present(remove_nulls)) then
          if (remove_nulls) then
             c = index(strip%raw, char(0))
@@ -3783,11 +3868,25 @@ contains
    character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
+   logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: negative !< The number is negative.
+   integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: exponent !< Decimal exponent of the number.
 
    number = 0_I1P
    iostat_ = 1
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
+      call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
+                             is_ok=is_fast)
+      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+         if (negative) mantissa = -mantissa
+         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+            number = int(mantissa, kind=I1P)
+            if (present(iostat)) iostat = 0
+            return
+         endif
+      endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -3812,11 +3911,25 @@ contains
    character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
+   logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: negative !< The number is negative.
+   integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: exponent !< Decimal exponent of the number.
 
    number = 0_I2P
    iostat_ = 1
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
+      call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
+                             is_ok=is_fast)
+      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+         if (negative) mantissa = -mantissa
+         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+            number = int(mantissa, kind=I2P)
+            if (present(iostat)) iostat = 0
+            return
+         endif
+      endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -3862,11 +3975,25 @@ contains
    character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
+   logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: negative !< The number is negative.
+   integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: exponent !< Decimal exponent of the number.
 
    number = 0_I4P
    iostat_ = 1
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
+      call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
+                             is_ok=is_fast)
+      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+         if (negative) mantissa = -mantissa
+         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+            number = int(mantissa, kind=I4P)
+            if (present(iostat)) iostat = 0
+            return
+         endif
+      endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -3890,11 +4017,25 @@ contains
    character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
+   logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: negative !< The number is negative.
+   integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: exponent !< Decimal exponent of the number.
 
    number = 0_I8P
    iostat_ = 1
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
+      call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
+                             is_ok=is_fast)
+      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+         if (negative) mantissa = -mantissa
+         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+            number = int(mantissa, kind=I8P)
+            if (present(iostat)) iostat = 0
+            return
+         endif
+      endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -3918,11 +4059,30 @@ contains
    character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
+   logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: negative !< The number is negative.
+   integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: exponent !< Decimal exponent of the number.
 
    number = ieee_value(number, ieee_quiet_nan)
    iostat_ = 1
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
+      call parse_number_fast(raw=self%raw, is_integer=.false., negative=negative, mantissa=mantissa, exponent=exponent, &
+                             is_ok=is_fast)
+      if (is_fast) then ! mantissa<=2**24 and |exponent|<=10: one exact operation, correctly rounded (Clinger)
+         if (mantissa<=16777216_I8P.and.abs(exponent)<=10) then
+            number = real(mantissa, kind=R4P)
+            if (exponent>=0) then
+               number = number * P10_R4P(exponent)
+            else
+               number = number / P10_R4P(-exponent)
+            endif
+            if (negative) number = -number
+            if (present(iostat)) iostat = 0
+            return
+         endif
+      endif
       iomsg_ = 'the string is not a number'
       if (self%is_number()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -3961,11 +4121,30 @@ contains
    character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
+   logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: negative !< The number is negative.
+   integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: exponent !< Decimal exponent of the number.
 
    number = ieee_value(number, ieee_quiet_nan)
    iostat_ = 1
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
+      call parse_number_fast(raw=self%raw, is_integer=.false., negative=negative, mantissa=mantissa, exponent=exponent, &
+                             is_ok=is_fast)
+      if (is_fast) then ! mantissa<=2**53 and |exponent|<=22: one exact operation, correctly rounded (Clinger)
+         if (mantissa<=9007199254740992_I8P.and.abs(exponent)<=22) then
+            number = real(mantissa, kind=R8P)
+            if (exponent>=0) then
+               number = number * P10_R8P(exponent)
+            else
+               number = number / P10_R8P(-exponent)
+            endif
+            if (negative) number = -number
+            if (present(iostat)) iostat = 0
+            return
+         endif
+      endif
       iomsg_ = 'the string is not a number'
       if (self%is_number()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -5948,6 +6127,200 @@ contains
    endsubroutine write_unformatted
 
    ! non type-bound-procedures
+   pure subroutine parse_number_fast(raw, is_integer, negative, mantissa, exponent, is_ok)
+   !< Parse a plain decimal number, `[blanks][sign]digits[.digits][e|E|d|D[sign]digits][blanks]` (only the integer part if
+   !< `is_integer`), into its sign, its digits as an integer and its decimal exponent.
+   !<
+   !< `is_ok` is false for anything else, and for more than 18 significant digits: the caller then falls back to the read
+   !< statement. The accepted strings are a subset of the ones accepted by [[string:is_number]] and by the read statement.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:read_number]] and by the differential test.
+   character(kind=CK, len=*), intent(in)  :: raw          !< Raw characters data.
+   logical,                   intent(in)  :: is_integer   !< Accept an integer only, no fraction nor exponent.
+   logical,                   intent(out) :: negative     !< The number is negative.
+   integer(I8P),              intent(out) :: mantissa     !< Significant digits, as an integer.
+   integer,                   intent(out) :: exponent     !< Decimal exponent: the number is mantissa * 10**exponent.
+   logical,                   intent(out) :: is_ok        !< The string is a plain decimal number of at most 18 digits.
+   integer                                :: c            !< Character counter.
+   integer                                :: d            !< Value of a digit.
+   integer                                :: digits       !< Significant digits read.
+   integer                                :: exp_value    !< Value of the exponent field.
+   logical                                :: has_digit    !< A digit has been read.
+   logical                                :: exp_negative !< The exponent field is negative.
+
+   negative = .false.
+   mantissa = 0_I8P
+   exponent = 0
+   is_ok = .false.
+   c = 1
+   do while (c<=len(raw))
+      if (raw(c:c)/=SPACE) exit
+      c = c + 1
+   enddo
+   if (c>len(raw)) return
+   if (raw(c:c)=='+'.or.raw(c:c)=='-') then
+      negative = raw(c:c)=='-'
+      c = c + 1
+   endif
+   has_digit = .false.
+   digits = 0
+   do while (c<=len(raw)) ! digits of the integer part
+      d = iachar(raw(c:c)) - iachar('0')
+      if (d<0.or.d>9) exit
+      has_digit = .true.
+      if (mantissa>0.or.d>0) then ! the leading zeros are not significant
+         digits = digits + 1
+         if (digits>18) return
+         mantissa = mantissa * 10 + d
+      endif
+      c = c + 1
+   enddo
+   if (.not.is_integer.and.c<=len(raw)) then
+      if (raw(c:c)=='.') then
+         c = c + 1
+         do while (c<=len(raw)) ! digits after the decimal point
+            d = iachar(raw(c:c)) - iachar('0')
+            if (d<0.or.d>9) exit
+            has_digit = .true.
+            if (mantissa>0.or.d>0) then ! the leading zeros are not significant
+               digits = digits + 1
+               if (digits>18) return
+               mantissa = mantissa * 10 + d
+            endif
+            exponent = exponent - 1
+            c = c + 1
+         enddo
+      endif
+   endif
+   if (.not.has_digit) return
+   if (.not.is_integer.and.c<=len(raw)) then
+      if (index('eEdD', raw(c:c))>0) then
+         c = c + 1
+         exp_negative = .false.
+         if (c<=len(raw)) then
+            if (raw(c:c)=='+'.or.raw(c:c)=='-') then
+               exp_negative = raw(c:c)=='-'
+               c = c + 1
+            endif
+         endif
+         exp_value = 0
+         has_digit = .false.
+         do while (c<=len(raw))
+            d = iachar(raw(c:c)) - iachar('0')
+            if (d<0.or.d>9) exit
+            has_digit = .true.
+            if (exp_value>99999) return
+            exp_value = exp_value * 10 + d
+            c = c + 1
+         enddo
+         if (.not.has_digit) return
+         if (exp_negative) exp_value = -exp_value
+         exponent = exponent + exp_value
+      endif
+   endif
+   do while (c<=len(raw))
+      if (raw(c:c)/=SPACE) return
+      c = c + 1
+   enddo
+   is_ok = .true.
+   endsubroutine parse_number_fast
+
+   pure function find_occurrence(raw, substring, occurrence, back) result(pos)
+   !< Return the start of the occurrence number `occurrence` of substring into raw, zero if there are fewer.
+   !<
+   !< The occurrences are not overlapping, counted from the start or, if `back` is true, from the end. A null substring is
+   !< found by its first occurrence only, as the intrinsic `index`.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:index]].
+   character(kind=CK, len=*), intent(in)           :: raw        !< Raw characters data.
+   character(kind=CK, len=*), intent(in)           :: substring  !< Searched substring.
+   integer,                   intent(in)           :: occurrence !< Number of the occurrence.
+   logical,                   intent(in), optional :: back       !< Count from the end.
+   integer                                         :: pos        !< Start of the occurrence, zero if not found.
+   logical                                         :: back_      !< Count from the end, local variable.
+   integer                                         :: n          !< Occurrences found.
+   integer                                         :: c          !< First (last if back) character still searched.
+   integer                                         :: p          !< Position of an occurrence.
+
+   pos = 0
+   if (occurrence<1) return
+   back_ = .false. ; if (present(back)) back_ = back
+   if (len(substring)==0) then
+      if (occurrence==1) pos = index(raw, substring, back=back_)
+      return
+   endif
+   n = 0
+   if (back_) then
+      c = len(raw)
+      do
+         p = index(raw(1:c), substring, back=.true.)
+         if (p==0) return
+         n = n + 1
+         if (n==occurrence) exit
+         c = p - 1
+      enddo
+   else
+      c = 1
+      do
+         p = index(raw(c:), substring)
+         if (p==0) return
+         p = c + p - 1
+         n = n + 1
+         if (n==occurrence) exit
+         c = p + len(substring)
+      enddo
+   endif
+   pos = p
+   endfunction find_occurrence
+
+   pure function strip_characters(remove, whitespace) result(set)
+   !< Return the set of characters to strip: `remove` (default a space), plus the whitespace if `whitespace` is true.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:strip]].
+   character(kind=CK, len=*), intent(in), optional :: remove     !< Set of characters to be removed, default space.
+   logical,                   intent(in), optional :: whitespace !< Remove the whitespace too.
+   character(kind=CK, len=:), allocatable          :: set        !< Set of characters to strip.
+
+   if (present(remove)) then
+      set = remove
+   else
+      set = SPACE
+   endif
+   if (present(whitespace)) then
+      if (whitespace) set = set//SPACE//TAB//achar(10, kind=CK)//achar(11, kind=CK)//achar(12, kind=CK)//achar(13, kind=CK)
+   endif
+   endfunction strip_characters
+
+   pure function strip_set(raw, set, left, right) result(stripped)
+   !< Return raw without the leading (if left) and the trailing (if right) characters belonging to set.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:strip]], [[string:lstrip]] and [[string:rstrip]].
+   character(kind=CK, len=*), intent(in)  :: raw      !< Raw characters data.
+   character(kind=CK, len=*), intent(in)  :: set      !< Set of characters to strip.
+   logical,                   intent(in)  :: left     !< Strip the leading characters.
+   logical,                   intent(in)  :: right    !< Strip the trailing characters.
+   character(kind=CK, len=:), allocatable :: stripped !< Raw stripped.
+   integer                                :: first    !< First character kept.
+   integer                                :: last     !< Last character kept.
+
+   if (len(set)==0) then
+      stripped = raw
+      return
+   endif
+   first = 1
+   last = len(raw)
+   if (left) then
+      first = verify(raw, set)
+      if (first==0) first = len(raw) + 1
+   endif
+   if (right) last = verify(raw, set, back=.true.)
+   if (first<=last) then
+      stripped = raw(first:last)
+   else
+      stripped = ''
+   endif
+   endfunction strip_set
+
    elemental function is_digit_char(c) result(is_digit)
    !< Return true if the character is an ASCII digit.
    !<
