@@ -44,6 +44,9 @@ The words are separated by blanks, or by `sep`.
 
 <<< @/examples/output/strip.ansi{ansi}
 
+`strip` removes the blanks at both ends, or the characters of the set `remove`; `lstrip` and `rstrip` one end only.
+`whitespace=.true.` removes tabs, new lines and the other whitespace too, as Python `str.strip()`.
+
 ## Replace, collapse, insert
 
 <<< @/examples/snippets/replace.f90
@@ -133,6 +136,10 @@ is not a number instead of returning 0 or NaN.
 
 <<< @/examples/output/search.ansi{ansi}
 
+`count` and `index` look for occurrences that do not overlap, as Python: `'aaaa'` holds 2 `'aa'`, 3 with
+`overlapping=.true.`. `index(substring, occurrence=k)` is the k-th occurrence, counted from the end with `back=.true.`,
+0 if there are fewer.
+
 ## Get the text between two tags
 
 <<< @/examples/snippets/tags.f90
@@ -196,6 +203,32 @@ The first form is a subroutine of the module, the second a method reading the fi
 <<< @/examples/output/writefile.ansi{ansi}
 
 <<< @/examples/output/writefile-cat.ansi{ansi}
+
+## Write and read lines through an open unit
+
+<<< @/examples/snippets/unit_io.f90
+
+<<< @/examples/output/unit_io.ansi{ansi}
+
+`write_line` writes a string as one line, `write_lines` writes each line it holds as a line. `read_lines` rewinds the
+unit and reads every line: as a method into one string, as the procedure of the module into an array.
+
+## Save strings in a binary file
+
+<<< @/examples/snippets/binary_io.f90
+
+<<< @/examples/output/binary_io.ansi{ansi}
+
+An unformatted `write` stores each string as its length followed by its characters, and `read` gets it back exactly,
+blanks and empty strings included. The format is the same as that of `string_type` in the Fortran stdlib.
+
+## Read strings from the standard input
+
+<<< @/examples/snippets/read_stdin.f90
+
+<<< @/examples/output/read_stdin.ansi{ansi}
+
+A list-directed `read` takes one blank-delimited word, or a quoted text, for each string.
 
 ## Take a path apart
 

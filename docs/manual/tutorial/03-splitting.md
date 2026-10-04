@@ -24,6 +24,15 @@ separator is `sep`, or the string on which `join` is called when `sep` is not pa
 `partition` splits once, at the first separator, and returns three strings: what is before, the separator, what is
 after. `count` counts the occurrences of a substring.
 
+## Find
+
+<<< @/examples/snippets/report_3-find.f90
+
+`start_with` and `end_with` test the ends of the string; `index` is the position of a substring, as the intrinsic, the
+last one with `back=.true.`, the k-th one with `occurrence=k`: here the comma before the model. `count` and `index` look
+for occurrences that do not overlap, as Python does; `count(substring, overlapping=.true.)` counts the overlapping ones
+too.
+
 ## Empty fields
 
 <<< @/examples/snippets/report_3-empty.f90
@@ -41,8 +50,8 @@ The whole program:
 <<< @/examples/snippets/report_3.f90
 
 ::: tip What you learned
-`split` into an allocatable array, with or without the empty fields; `join` back, `partition` for one split; methods
-applied to a whole array.
+`split` into an allocatable array, with or without the empty fields; `join` back, `partition` for one split; `start_with`,
+`end_with`, `index` and `count` to find things; methods applied to a whole array.
 Reference: [String Manipulation](/guide/string-manipulation#splitting-and-joining).
 :::
 

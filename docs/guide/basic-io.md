@@ -75,6 +75,10 @@ characters, and `read(unit) astring` allocates and reads them back, trailing bla
 written as a null one. Unformatted files written by versions before 1.4.0, which held the characters only, are not
 readable.
 
+<<< @/examples/snippets/binary_io.f90
+
+<<< @/examples/output/binary_io.ansi{ansi}
+
 ## The Fortran intrinsics
 
 `adjustl`, `adjustr`, `count`, `index`, `len_trim`, `repeat`, `scan`, `trim` and `verify` are overloaded for strings,

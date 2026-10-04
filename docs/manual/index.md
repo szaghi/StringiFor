@@ -17,7 +17,7 @@ run; every output shown is the real output of that program.
 |---|---|
 | [1. A first string](./tutorial/01-first-string) | the `string` type; assignment, printing, `//` and `.cat.`, comparisons |
 | [2. Cleaning and transforming](./tutorial/02-cleaning) | `strip`, `replace`, `unique`, `compact`, `squeeze`, `transliterate`, upper and lower case, word-level case styles |
-| [3. Splitting and joining](./tutorial/03-splitting) | `split` (also keeping the empty fields), `join`, `partition`, `count`; a method on a whole array |
+| [3. Splitting and joining](./tutorial/03-splitting) | `split` (also keeping the empty fields), `join`, `partition`; `start_with`, `end_with`, `index`, `count`; a method on a whole array |
 | [4. Numbers](./tutorial/04-numbers) | `is_number`, `is_integer`, `is_real`, `to_number`, `read_number`, numbers assigned to strings, `hex` |
 | [5. Files and paths](./tutorial/05-files) | `read_file`, `write_file`, `basedir`, `basename`, `extension`, `match` |
 | [6. A polished report](./tutorial/06-report) | `ljust`, `rjust`, `slice`, `justify`, `colorize` |

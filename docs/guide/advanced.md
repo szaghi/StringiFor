@@ -45,6 +45,12 @@ the others.
 | `call s%write_line(unit[, form][, iostat][, iomsg])` | one string to a connected unit, as one line |
 | `call s%write_lines(unit[, form][, iostat][, iomsg])` | one string to a connected unit, each of the lines it contains as a line |
 
+Through a unit already open:
+
+<<< @/examples/snippets/unit_io.f90
+
+<<< @/examples/output/unit_io.ansi{ansi}
+
 ## Unformatted files
 
 Every procedure accepts `form='unformatted'`: the file is then read or written as a stream (`access='stream'`), the

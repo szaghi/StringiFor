@@ -10,5 +10,8 @@ Chevy-Venture
 year: 1999
 rest: Chevy, Venture, 4900.50, extended edition
 commas: 4
+T T
+second comma at 12
+last comma at   30
 3 tokens: 2003|Fiat|1800
 5 fields: 2003|Fiat||1800|
