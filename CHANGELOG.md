@@ -4,6 +4,15 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.8.0] — 2026-10-04
+### Added
+- **string_t**: Fast exact number casting, count/index/strip options
+
+
+### Documentation
+- Cover the new methods in tutorial, cookbook and home pages
+
+
 ## [1.7.0] — 2026-10-04
 ### Added
 - **string_t**: Add character classes, tr-like and padding methods
