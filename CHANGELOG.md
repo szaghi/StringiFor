@@ -4,6 +4,11 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.7.0] — 2026-10-04
+### Added
+- **string_t**: Add character classes, tr-like and padding methods
+
+
 ## [1.6.0] — 2026-10-03
 ### Added
 - **string_t**: Add read_number with an error status, keep empty fields in split
