@@ -2,7 +2,7 @@ program report
 !< Tutorial, chapter 3: splitting and joining.
 use stringifor
 implicit none
-type(string)              :: row, glue, pieces(3)
+type(string)              :: row, glue, pieces(3), record
 type(string), allocatable :: cells(:)
 integer                   :: c
 
@@ -22,4 +22,10 @@ pieces = row%partition(sep=', ')                  ! before, separator, after
 print '(A)', 'year: '//pieces(1)
 print '(A)', 'rest: '//pieces(3)
 print '(A,I0)', 'commas: ', row%count(',')
+
+record = '2003,Fiat,,1800,'                       ! the model and the notes are missing
+call record%split(tokens=cells, sep=',')
+print '(I0,A)', size(cells), ' tokens: '//glue%join(array=cells, sep='|')
+call record%split(tokens=cells, sep=',', keep_empty=.true.)
+print '(I0,A)', size(cells), ' fields: '//glue%join(array=cells, sep='|')
 endprogram report

@@ -23,6 +23,15 @@ the string in words and rewrite them in a style; `capitalize` makes upper case t
 
 With `remove`, `strip` removes from both ends every character of a set, in any order they occur.
 
+## Whitespace, repeats, character sets
+
+<<< @/examples/snippets/report_2-tidy.f90
+
+- `compact` turns every run of whitespace, blanks, tabs or new lines, into one blank and removes it at both ends.
+- `squeeze` reduces every run of a repeated character to one; with `set`, only for the characters of the set.
+- `transliterate` replaces each character of a set by the one at the same position in another set; a shorter second set
+  repeats its last character, an empty one deletes.
+
 ## Running it
 
 <<< @/examples/output/report_2.ansi{ansi}
@@ -32,7 +41,8 @@ The whole program:
 <<< @/examples/snippets/report_2.f90
 
 ::: tip What you learned
-`strip`, `replace`, `unique`, the case methods. Each returns a new string: assign it back to change the variable.
+`strip`, `replace`, `unique`, the case methods; `compact`, `squeeze`, `transliterate`. Each returns a new string:
+assign it back to change the variable.
 Reference: [String Manipulation](/guide/string-manipulation).
 :::
 

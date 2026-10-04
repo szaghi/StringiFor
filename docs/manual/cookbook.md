@@ -50,6 +50,23 @@ The words are separated by blanks, or by `sep`.
 
 <<< @/examples/output/replace.ansi{ansi}
 
+## Tidy whitespace, repeats, tabs and quotes
+
+<<< @/examples/snippets/tidy.f90
+
+<<< @/examples/output/tidy.ansi{ansi}
+
+`compact` collapses whitespace, `squeeze` repeated characters, `expand_tabs` aligns on tab stops, `transliterate` maps a
+set of characters onto another; `quote` and `unquote` add and remove quotes, doubling the inner ones.
+
+## Tell letters, digits, punctuation and blanks apart
+
+<<< @/examples/snippets/char_classes.f90
+
+<<< @/examples/output/char_classes.ansi{ansi}
+
+Each test is true if all the characters of the string are in the class, false for a null string.
+
 ## Split a line into words
 
 <<< @/examples/snippets/split_words.f90
@@ -72,6 +89,9 @@ the empty fields, as in a CSV record, pass `keep_empty=.true.`.
 <<< @/examples/snippets/csvline.f90
 
 <<< @/examples/output/csvline.ansi{ansi}
+
+`keep_empty=.true.` keeps the empty cell in its column, and `read_number` reports, with a positive `iostat`, a cell that
+is not a number instead of returning 0 or NaN.
 
 ## Split once, at the first separator
 
@@ -98,6 +118,14 @@ the empty fields, as in a CSV record, pass `keep_empty=.true.`.
 <<< @/examples/snippets/pad.f90
 
 <<< @/examples/output/pad.ansi{ansi}
+
+## Center or justify in a width
+
+<<< @/examples/snippets/align.f90
+
+<<< @/examples/output/align.ansi{ansi}
+
+`center`, `ljust` and `rjust` work as the Python methods: a string already as wide as the width is unchanged.
 
 ## Find something in a string
 
@@ -127,8 +155,15 @@ the empty fields, as in a CSV record, pass `keep_empty=.true.`.
 
 <<< @/examples/output/number_cast.ansi{ansi}
 
-Check first: on a string that is not a number `to_number` gives 0 (integer kinds) or NaN (real kinds). To get an error
-status instead, use `call s%read_number(number, iostat=iostat)`.
+Check first: on a string that is not a number `to_number` gives 0 (integer kinds) or NaN (real kinds).
+
+## Convert a string to a number, with an error status
+
+<<< @/examples/snippets/checked_cast.f90
+
+<<< @/examples/output/checked_cast.ansi{ansi}
+
+`read_number` reports the failure as a `read` statement: `iostat` is positive and `iomsg` says why.
 
 ## Convert a number to a string
 
@@ -174,8 +209,16 @@ The first form is a subroutine of the module, the second a method reading the fi
 
 <<< @/examples/output/glob.ansi{ansi}
 
-`glob` runs the `ls` command: it works on Unix-like systems only. To filter names already in memory, on any system, use
-`match`, see [Matching names](../guide/advanced#matching-names).
+`glob` runs the `ls` command: it works on Unix-like systems only. Only the wildcards `*`, `?` and `[...]` are special:
+any other character of the pattern is part of the names searched.
+
+## Filter names with a wildcard pattern
+
+<<< @/examples/snippets/wildcards.f90
+
+<<< @/examples/output/wildcards.ansi{ansi}
+
+`match` needs no file system: it works on any system, on names already in memory, and it is elemental.
 
 ## Get a name for a temporary file
 

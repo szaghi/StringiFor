@@ -19,8 +19,15 @@ result, here a `real(R8P)`. The kinds are the portable ones of [PENF](https://gi
 
 ::: warning
 `to_number` does not report an error: on something that is not a number it gives 0 (integer kinds) or NaN (real
-kinds). Check with `is_number` (or `is_integer`) first.
+kinds). Check with `is_number` (or `is_integer`) first, or use `read_number`.
 :::
+
+## With an error status
+
+<<< @/examples/snippets/report_4-read.f90
+
+`read_number` is a subroutine that does what `to_number` does and reports a failure as a `read` statement: `iostat` is 0
+on success and positive otherwise, `iomsg` says what went wrong. The kind of the result is the one of the variable passed.
 
 ## From a number to a string
 
@@ -42,7 +49,8 @@ The whole program:
 <<< @/examples/snippets/report_4.f90
 
 ::: tip What you learned
-`is_number`, `is_integer`, `is_real`; `to_number(kind=...)`; numbers assigned to strings; `hex`.
+`is_number`, `is_integer`, `is_real`; `to_number(kind=...)` and `read_number` with an error status; numbers assigned
+to strings; `hex`.
 Reference: [Numbers](/guide/numbers).
 :::
 

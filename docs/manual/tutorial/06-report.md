@@ -14,8 +14,8 @@ Fortran intrinsic.
 
 <<< @/examples/snippets/report_6-table.f90
 
-- `fill` pads a string to a width: on the left by default, on the right with `right=.true.`, with zeros unless
-  `filling_char` says otherwise.
+- `ljust` and `rjust` pad a string to a width, with blanks or with a fill character: `ljust` adds them on the right,
+  `rjust` on the left, `center` on both sides. `fill` pads with zeros by default.
 - The price becomes a rounded integer assigned back to the cell; `slice(first=2)` drops its sign. `slice` takes a first
   and a last position and a stride, all optional, and returns a `character`.
 
@@ -35,7 +35,7 @@ The whole program:
 <<< @/examples/snippets/report_6.f90
 
 ::: tip What you learned
-`colorize`, `fill`, `slice`, `justify`: a report in a short program.
+`colorize`, `ljust` and `rjust`, `slice`, `justify`: a report in a short program.
 Reference: [String Manipulation](/guide/string-manipulation), [Files and Paths](/guide/advanced#colours-for-the-terminal).
 :::
 

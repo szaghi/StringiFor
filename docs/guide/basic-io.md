@@ -51,6 +51,14 @@ procedure. `chars()` does the same and it is safe on a string not allocated: it 
 The `DT` edit descriptor uses the defined I/O of the type; it requires a compiler that supports defined derived-type
 I/O (gfortran ≥ 7.1).
 
+::: warning
+A string does not go to an `A` edit descriptor: `print '(A)', s` is not standard Fortran. The defined output of the
+type is used only by a `DT` edit descriptor or by list-directed output (12.6.4.8.4), and any other edit descriptor
+receives the components of the type, which shall not be allocatable (12.6.3): `raw` is. The compilers do not diagnose
+it at compile time: gfortran prints nothing, silently, while ifx stops with a run-time error (severe 125). Pass a
+character instead, `s//''` or `s%chars()`, or use `DT`.
+:::
+
 ## Reading
 
 List-directed and formatted reads accept a string. A list-directed read takes one blank-delimited word, or a quoted
@@ -61,6 +69,11 @@ text:
 <<< @/examples/output/read_stdin.ansi{ansi}
 
 To read from files, a line or a whole file at a time, see [Files and Paths](./advanced).
+
+Unformatted I/O stores a string exactly: `write(unit) astring` writes its length, an `I8P` integer, then its
+characters, and `read(unit) astring` allocates and reads them back, trailing blanks included; a string not allocated is
+written as a null one. Unformatted files written by versions before 1.4.0, which held the characters only, are not
+readable.
 
 ## The Fortran intrinsics
 

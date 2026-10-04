@@ -24,6 +24,14 @@ separator is `sep`, or the string on which `join` is called when `sep` is not pa
 `partition` splits once, at the first separator, and returns three strings: what is before, the separator, what is
 after. `count` counts the occurrences of a substring.
 
+## Empty fields
+
+<<< @/examples/snippets/report_3-empty.f90
+
+`split` counts repeated separators as one and ignores the ones at the ends: a record with missing values loses their
+position. With `keep_empty=.true.` every separator splits and the empty fields are tokens, as in Python
+`str.split(',')`: the fields of a CSV record stay in their columns.
+
 ## Running it
 
 <<< @/examples/output/report_3.ansi{ansi}
@@ -33,7 +41,8 @@ The whole program:
 <<< @/examples/snippets/report_3.f90
 
 ::: tip What you learned
-`split` into an allocatable array, `join` back, `partition` for one split; methods applied to a whole array.
+`split` into an allocatable array, with or without the empty fields; `join` back, `partition` for one split; methods
+applied to a whole array.
 Reference: [String Manipulation](/guide/string-manipulation#splitting-and-joining).
 :::
 

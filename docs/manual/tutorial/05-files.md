@@ -15,7 +15,9 @@ year, make, model, price, notes
 <<< @/examples/snippets/report_5-paths.f90
 
 `basedir`, `basename` and `extension` take a path apart. `basename` can also drop the last extension: this is how
-`report` names its output after its input.
+`report` names its output after its input. `match` compares the whole string with a wildcard pattern, `*` any sequence
+of characters, `?` one character, `[...]` a character of a set; `glob` uses the same patterns to list the files that
+match.
 
 ## Reading
 
@@ -42,7 +44,8 @@ The whole program:
 <<< @/examples/snippets/report_5.f90
 
 ::: tip What you learned
-`read_file` and `write_file` for whole files; `basedir`, `basename`, `extension` for the paths.
+`read_file` and `write_file` for whole files; `basedir`, `basename`, `extension` for the paths; `match` for wildcard
+patterns.
 Reference: [Files and Paths](/guide/advanced).
 :::
 

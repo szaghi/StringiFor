@@ -35,22 +35,22 @@ features:
     linkText: Strings and I/O
   - icon: ✂️
     title: Split, join, slice
-    details: "split and partition into tokens, join arrays back, slice with a stride, reverse characters or words, replace, strip a set of characters."
+    details: "split and partition into tokens (the empty CSV fields kept, if you want), join arrays back, slice with a stride, reverse characters or words, replace, strip, compact whitespace, squeeze repeats, transliterate sets of characters."
     link: /guide/string-manipulation
     linkText: String manipulation
   - icon: 🔠
     title: Case and layout
-    details: "upper, lower, capitalize, camelCase, snake_case, Start Case; pad to a width, wrap a paragraph in fully justified lines."
+    details: "upper, lower, capitalize, camelCase, snake_case, Start Case; letters, digits, punctuation and blanks told apart; pad, center or justify to a width, expand tabs, wrap a paragraph in fully justified lines."
     link: /guide/string-manipulation#case-conversion
     linkText: Case conversion
   - icon: 🔢
     title: Numbers in, numbers out
-    details: "Assign any integer or real kind to a string, cast back with to_number, ask is_number, is_integer, is_real; hexadecimal representation with hex."
+    details: "Assign any integer or real kind to a string, cast back with to_number, or with read_number and an error status; ask is_number, is_integer, is_real; hexadecimal representation with hex."
     link: /guide/numbers
     linkText: Numbers
   - icon: 📁
     title: Files and paths
-    details: "Read a file into an array of lines or one string, write it back, read line by line; basedir, basename, extension, glob, temporary names."
+    details: "Read a file into an array of lines or one string, write it back, read line by line; basedir, basename, extension, glob, wildcard match, temporary names."
     link: /guide/advanced
     linkText: Files and paths
   - icon: ⚖️

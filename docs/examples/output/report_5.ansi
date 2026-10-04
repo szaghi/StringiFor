@@ -2,5 +2,6 @@ $ report data/cars.csv
 directory: data
 file:      cars.csv
 extension: .csv
+a CSV file: T
 4 rows read from data/cars.csv
 table written to cars.md

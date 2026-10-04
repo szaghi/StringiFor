@@ -86,13 +86,17 @@ print "(A)", my_string%slice(first=2, last=5)
 
 Beyond solving the same issues as `aniso_varying_string`, StringiFor adds:
 
-- **Number casting** — assign any PENF integer or real directly to a `string`; cast back with `to_number(kind=...)`
+- **Number casting** — assign any PENF integer or real directly to a `string`; cast back with `to_number(kind=...)`, or
+  with `read_number` and an `iostat`/`iomsg` error status
+- **Python-like text methods** — `split` (optionally keeping the empty fields), `join`, `partition`, `replace`, `strip`,
+  `center`, `ljust`, `rjust`, `expand_tabs`, `compact`, `squeeze`, `transliterate`, `quote`/`unquote`
+- **Character classes** — `is_alpha`, `is_alnum`, `is_digit`, `is_xdigit`, `is_punct`, `is_space`
 - **File I/O** — `read_file`, `write_file`, `read_line` for common file-handling patterns
 - **Path manipulation** — `basedir`, `basename`, `extension`
 - **Case conversion** — `camelcase`, `snakecase`, `startcase`, `capitalize`, `swapcase`
 - **Encoding** — Base64 `encode`/`decode` via BeFoR64
 - **Color output** — ANSI terminal colorization via FACE
-- **Glob** — file-system pattern matching
+- **Wildcards** — `match` of `*`, `?`, `[...]` patterns on strings in memory; `glob` to list the matching files (Unix)
 - **Namespace safety** — all functionality is accessible through the single `string` type; no global namespace pollution unless the overloaded intrinsic interfaces are explicitly imported
 
 ## References
