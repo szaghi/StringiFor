@@ -53,3 +53,7 @@ jobs:
         bash scripts/oracle.sh columns
         bash scripts/oracle.sh xml
         bash scripts/oracle.sh whitespace
+        bash scripts/oracle.sh sort
+
+    - name: Check that strsort scales as n log n
+      run: build/utf8/gfortran/bin/sort_scaling

@@ -8,7 +8,8 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
-use stringifor, only : from_codepoints, I4P, scan, SF_CHARS, SF_COLUMNS, string, verify
+use stringifor, only : from_codepoints, I4P, scan, SF_CHARS, SF_COLUMNS, string, strless_natural, strless_nocase, strsort, &
+                       verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
 character(len=:), allocatable :: field(:) !< Fields of the line (padded).
@@ -22,13 +23,15 @@ integer                       :: nfield   !< Number of fields.
 integer(I4P),     allocatable :: codes(:) !< Codepoints.
 integer(I4P),     allocatable :: widths(:)!< Widths.
 integer                       :: k        !< Counter.
+integer,          allocatable :: perm(:)  !< Permutation of a sort.
 
 do
   call get_line(input_unit, line, iostat)
   if (iostat /= 0) exit
   call split_fields(line, field, lens, nfield)
   if (nfield < 2) call fail('malformed line: '//line)
-  if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each'.and.arg(1) /= 'space_each') s = unhex(arg(2)) ! a list of integers
+  if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each'.and.arg(1) /= 'space_each'.and.index(arg(1), 'strsort') /= 1) &
+    s = unhex(arg(2)) ! a list of integers, or of strings
   select case (arg(1))
   case ('len')
     call put_int(s%len())
@@ -239,6 +242,28 @@ do
     enddo
     call put_int_list(widths)
     deallocate(widths)
+  case ('strsort')
+    tokens = str_list(arg(2))
+    call strsort(tokens)
+    call put_list(tokens)
+  case ('strsort_index')
+    tokens = str_list(arg(2))
+    allocate(perm(size(tokens)))
+    call strsort(tokens, index=perm)
+    call put_int_list(int(perm, I4P))
+    deallocate(perm)
+  case ('strsort_nocase')
+    tokens = str_list(arg(2))
+    call strsort(tokens, less=strless_nocase)
+    call put_list(tokens)
+  case ('strsort_natural')
+    tokens = str_list(arg(2))
+    call strsort(tokens, less=strless_natural)
+    call put_list(tokens)
+  case ('strsort_null')
+    tokens = str_list(arg(2))
+    call strsort(tokens)
+    call put_null_list(tokens)
   case ('width_each')
     codes = int_list(arg(2))
     allocate(widths(size(codes)))
@@ -454,6 +479,50 @@ contains
   endif
   write(output_unit, '(a)') text
   endsubroutine put_list
+
+  function str_list(text) result(items)
+  !< Decode a list of strings: items in hexadecimal separated by commas, "[]" if empty, "-" for a not allocated string.
+  character(len=*), intent(in) :: text     !< Encoded list.
+  type(string), allocatable    :: items(:) !< Items.
+  integer                      :: i        !< Counter.
+  integer                      :: first    !< First character of the current item.
+  integer                      :: k        !< Item counter.
+
+  if (text == '[]') then
+    allocate(items(0))
+    return
+  endif
+  allocate(items(count([(text(i:i) == ',', i=1, len(text))]) + 1))
+  first = 1
+  k = 0
+  do i = 1, len(text) + 1
+    if (i <= len(text)) then
+      if (text(i:i) /= ',') cycle
+    endif
+    k = k + 1
+    if (text(first:i - 1) /= '-') items(k) = unhex(text(first:i - 1))
+    first = i + 1
+  enddo
+  endfunction str_list
+
+  subroutine put_null_list(items)
+  !< Write a list result, "-" for a not allocated string.
+  type(string), intent(in)      :: items(:) !< Result.
+  character(len=:), allocatable :: text     !< Encoded list.
+  integer                       :: i        !< Counter.
+
+  text = ''
+  do i = 1, size(items)
+    if (i > 1) text = text//','
+    if (allocated(items(i)%raw)) then
+      text = text//hex(items(i)%raw)
+    else
+      text = text//'-'
+    endif
+  enddo
+  if (size(items) == 0) text = '[]'
+  write(output_unit, '(a)') text
+  endsubroutine put_null_list
 
   subroutine fail(message)
   !< Stop with status 2.

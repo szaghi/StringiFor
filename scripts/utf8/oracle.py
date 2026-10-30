@@ -29,6 +29,9 @@ Suites:
               UCD 17.0.0 read codepoint by codepoint (gen_unicode_tables.naive_sets), on every Unicode scalar value
   positions   positions and lengths in characters (Phase 4 of #51): by=SF_CHARS and byte_pos/char_pos; the reference
               converts the byte results with its own split of the bytes into units
+  sort        strsort (Phase 9 of #51): byte, caseless and natural order, the permutation, stability on duplicates,
+              not allocated strings; the reference is Python's stable sorted with a key, and byte order is checked to
+              be codepoint order on well-formed UTF-8
   whitespace  Unicode whitespace (Phase 7 of #51): is_space, strip, lstrip, rstrip and compact, ASCII and with
               unicode=.true.; the reference is White_Space of the pinned UCD 17.0.0, checked against Python's
               str.isspace (which adds U+001C..U+001F), on spaced corpus strings and on every scalar value
@@ -44,6 +47,7 @@ from __future__ import annotations
 import argparse
 import codecs
 import fnmatch
+import itertools
 import random
 import re
 import subprocess
@@ -60,8 +64,8 @@ from corpus import POOL, RANDOM, SEED, cases, units  # noqa: E402
 
 _UCD_SETS: dict[str, set[int]] = {}
 
-Arg = bytes | int | list[int]
-Result = bytes | int | bool | list[bytes] | list[int]
+Arg = bytes | int | list[int] | list[bytes] | list[bytes | None]
+Result = bytes | int | bool | list[bytes] | list[int] | list[bytes | None]
 
 
 @dataclass(frozen=True)
@@ -1253,6 +1257,114 @@ def whitespace_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+def natural_key(data: bytes) -> list[tuple[int, int, int, bytes]]:
+    """Key of the natural order: per run, (first byte, 0, digits, value) for digits, (first byte, 1, 0, run) otherwise.
+
+    Every run of digits gets the first byte 0x30: a run of other bytes never starts with a digit, so the comparison of a
+    number with another run is decided by the first byte as in byte order.
+    """
+    key = []
+    for run in re.findall(rb"[0-9]+|[^0-9]+", data):
+        if run[:1].isdigit():
+            value = run.lstrip(b"0") or b"0"
+            key.append((0x30, 0, len(value), value))
+        else:
+            key.append((run[0], 1, 0, run))
+    return key
+
+
+SORT_KEYS: dict[str, Callable[[bytes], object]] = {
+    "bytes": lambda d: d,
+    "nocase": bytes.lower,
+    "natural": natural_key,
+}
+
+
+def sort_with(items: list[bytes | None], order: str) -> list[bytes | None]:
+    """Stable sort; a not allocated string (None) sorts as an empty one."""
+    return sorted(items, key=lambda d: SORT_KEYS[order](d or b""))
+
+
+def sort_index(items: list[bytes]) -> list[int]:
+    """The permutation of the stable byte-order sort, 1-based."""
+    return [i + 1 for i in sorted(range(len(items)), key=lambda i: items[i])]
+
+
+def sort_names(rng: random.Random) -> bytes:
+    """A name with digits, leading zeros and both cases, for the natural and caseless orders."""
+    stem = rng.choice(
+        [b"file", b"File", b"FILE", b"v", b"x", b"", b"a-", "été".encode()]
+    )
+    digits = (
+        b"0" * rng.randrange(3)
+        + str(rng.choice([0, 1, 2, 9, 10, 11, 99, 100, 10**20])).encode()
+    )
+    tail = rng.choice([b"", b".txt", b".", b"b", b"10", b"\xff"])
+    return stem + digits + tail
+
+
+def sort_lists(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (list of strings,): data with its prefixes and units, names with numbers, duplicates."""
+    pieces = units(data)
+    pool = [
+        data,
+        b"",
+        data[: len(data) // 2],
+        b"".join(reversed(pieces)),
+        data.upper(),
+        data.lower(),
+    ]
+    pool += [sort_names(rng) for _ in range(6)]
+    items = [rng.choice(pool) for _ in range(rng.randint(0, 12))]
+    return [(items,)]
+
+
+def check_sort_reference() -> list[str]:
+    """Byte order is codepoint order for well-formed UTF-8; the natural key is consistent with its definition."""
+    failures = []
+    rng = random.Random(SEED)
+    valid = [data for _, data in cases() if is_utf8(data)]
+    for _ in range(2000):
+        items = [rng.choice(valid) for _ in range(rng.randint(0, 12))]
+        if sorted(items) != [s.encode() for s in sorted(s.decode() for s in items)]:
+            failures.append(f"byte order differs from codepoint order on {items!r}")
+    for a, b in (
+        (b"file2", b"file10"),
+        (b"v1.9.1", b"v1.10.0"),
+        (b"x9", b"x10"),
+        (b"a", b"a0"),
+        (b"a1", b"ab"),
+    ):
+        if not natural_key(a) < natural_key(b):
+            failures.append(f"natural order: {a!r} is not before {b!r}")
+    if natural_key(b"a007") != natural_key(b"a7"):
+        failures.append("natural order: a007 and a7 differ")
+    return failures
+
+
+def sort_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """Stability on many duplicates and lengths 0..64, both orders of 2 and 3 items, not allocated strings."""
+    rng = random.Random(SEED)
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for n in range(65):
+        items: list[bytes] = [
+            rng.choice([b"a", b"b", b"A", b"a1", b"a01", b"a10"]) for _ in range(n)
+        ]
+        calls += [
+            (name, (items,))
+            for name in ("strsort_index", "strsort_nocase", "strsort_natural")
+        ]
+    for items in itertools.permutations([b"b", b"a", b"ab", b"\xff"], 3):
+        calls.append(("strsort_index", (list(items),)))
+    for _ in range(200):
+        items = [
+            rng.choice([None, b"", b"a", b"\x00", b"b"])
+            for _ in range(rng.randint(1, 8))
+        ]
+        calls.append(("strsort_null", (items,)))
+    return calls
+
+
 EXTRA = {
     "utf8": utf8_exhaustive,
     "escape": escape_extra,
@@ -1260,11 +1372,13 @@ EXTRA = {
     "columns": columns_extra,
     "xml": xml_extra,
     "whitespace": whitespace_extra,
+    "sort": sort_extra,
 }
 SELF_CHECKS = {
     "escape": check_escape_reference,
     "xml": check_xml_reference,
     "whitespace": check_space_reference,
+    "sort": check_sort_reference,
 }
 
 
@@ -1403,6 +1517,13 @@ SUITES: dict[str, list[Op]] = {
         Op("escape_roundtrip", single, lambda d: d),
         Op("escape_roundtrip_utf8", single, lambda d: d),
     ],
+    "sort": [
+        Op("strsort", sort_lists, lambda items: sort_with(items, "bytes")),
+        Op("strsort_index", sort_lists, sort_index),
+        Op("strsort_nocase", sort_lists, lambda items: sort_with(items, "nocase")),
+        Op("strsort_natural", sort_lists, lambda items: sort_with(items, "natural")),
+        Op("strsort_null", sort_lists, lambda items: sort_with(items, "bytes")),
+    ],
     "whitespace": [
         Op("is_space", spaced, is_space),
         Op("is_space_unicode", spaced, lambda d: is_space(d, unicode=True)),
@@ -1468,10 +1589,17 @@ def known_issue(compiler: str, name: str, call: tuple[Arg, ...]) -> str | None:
     return None
 
 
+def encode_item(item: bytes | int | None) -> str:
+    """Encode an item of a list: integer in decimal, string in hexadecimal, "-" for a not allocated string."""
+    if item is None:
+        return "-"
+    return str(item) if isinstance(item, int) else item.hex()
+
+
 def encode_arg(arg: Arg) -> str:
     """Encode an argument for cases.txt."""
     if isinstance(arg, list):
-        return ",".join(str(value) for value in arg) if arg else "[]"
+        return ",".join(encode_item(value) for value in arg) if arg else "[]"
     return str(arg) if isinstance(arg, int) else arg.hex()
 
 
@@ -1484,9 +1612,7 @@ def encode_result(result: Result) -> str:
     if isinstance(result, list):
         if not result:
             return "[]"
-        return ",".join(
-            str(item) if isinstance(item, int) else item.hex() for item in result
-        )
+        return ",".join(encode_item(item) for item in result)
     return result.hex()
 
 
