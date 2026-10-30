@@ -29,6 +29,7 @@ lib_sources=(
   "$tp/FACE/src/lib/face.F90"
   "$tp/BeFoR64/src/lib/befor64_pack_data_m.F90"
   "$tp/BeFoR64/src/lib/befor64.F90"
+  "$root/src/lib/stringifor_unicode_tables.F90"
   "$root/src/lib/stringifor_string_t.F90"
   "$root/src/lib/stringifor.F90"
 )

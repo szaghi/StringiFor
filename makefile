@@ -40,7 +40,7 @@ MKDIRS  = $(DOBJ) $(DMOD) $(DEXE)
 MAKELIB = ar -rcs $(DEXE)libstringifor.a $(DOBJ)*.o ; ranlib $(DEXE)libstringifor.a
 
 #the objects of the library and of its dependencies
-LIBOBJ = $(addprefix $(DOBJ),stringifor.o stringifor_string_t.o befor64.o befor64_pack_data_m.o face.o penf.o \
+LIBOBJ = $(addprefix $(DOBJ),stringifor.o stringifor_string_t.o stringifor_unicode_tables.o befor64.o befor64_pack_data_m.o face.o penf.o \
            penf_allocatable_memory.o penf_b_size.o penf_stringify.o penf_global_parameters_variables.o)
 
 #the tests: every program found in a directory of src/tests, no list to maintain
@@ -58,7 +58,7 @@ firstrule: $(RULE)
 
 #building rules
 #the library
-STRINGIFOR: $(MKDIRS) $(DOBJ)stringifor.o
+STRINGIFOR: $(MKDIRS) $(DOBJ)stringifor.o $(DOBJ)stringifor_unicode_tables.o
 	@echo $(LITEXT)
 	@$(MAKELIB)
 
@@ -88,6 +88,11 @@ $(DOBJ)stringifor.o: src/lib/stringifor.F90 \
 $(DOBJ)stringifor_string_t.o: src/lib/stringifor_string_t.F90 \
 	$(DOBJ)befor64.o \
 	$(DOBJ)face.o \
+	$(DOBJ)penf.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_unicode_tables.o: src/lib/stringifor_unicode_tables.F90 \
 	$(DOBJ)penf.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
