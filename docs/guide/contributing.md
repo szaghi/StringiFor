@@ -24,6 +24,22 @@ is welcome. The project follows a KISS (Keep It Simple and Stupid) philosophy.
 4. Check for unnecessary whitespace: `git diff --check`
 5. Submit a pull request with a clear commit message
 
+## UTF-8 harness
+
+The UTF-8 work ([#51](https://github.com/szaghi/StringiFor/issues/51)) is checked by three tools under `scripts/`,
+built with any compiler (`FC=nvfortran ...`); their products go to `build/utf8/`:
+
+- `bash scripts/oracle.sh SUITE`: calls the methods on a corpus of byte strings (`scripts/utf8/corpus.py`: ASCII,
+  UTF-8, every ill-formed class, Latin-1, binary) and compares each result with a Python reference
+  (`scripts/utf8/oracle.py`, where every documented difference from Python is written). `--list` shows the suites.
+- `bash scripts/bench.sh run -o NEW.csv` and `bash scripts/bench.sh compare BASELINE.csv NEW.csv`: timings of the
+  methods the work touches; the comparison fails when an ASCII timing is more than 5% slower than the baseline in
+  `scripts/utf8/baselines/` (re-measure a failing timing before calling it a regression).
+- `python3 -I scripts/utf8/gen_unicode_tables.py`: regenerates `src/lib/stringifor_unicode_tables.F90` from the
+  pinned Unicode Character Database; never edit that module by hand. `--check` verifies it.
+
+The `UTF-8 harness` workflow runs the corpus self-test, the table checks and the oracle suites.
+
 ## Fortran Coding Style
 
 - **Clarity over brevity**: `real :: gas_ideal_air` is better than `real :: gia`

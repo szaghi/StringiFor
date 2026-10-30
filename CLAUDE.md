@@ -85,6 +85,14 @@ Doctests gotchas:
   `bash scripts/sync_doctests.sh` and commit the result. The `Doctests sync` workflow
   (`.github/workflows/doctests-sync.yml`, project-owned) fails if they differ from what the sources contain.
 
+UTF-8 harness (issue #51; `docs/guide/contributing.md`, section *UTF-8 harness*): `bash scripts/oracle.sh SUITE`
+(methods against a Python reference over a byte-string corpus), `bash scripts/bench.sh run|compare` (timings against
+`scripts/utf8/baselines/`, pinned to one CPU), `python3 -I scripts/utf8/gen_unicode_tables.py [--check]` (the generated
+`src/lib/stringifor_unicode_tables.F90`: never edit it by hand). The drivers live in `scripts/utf8/src/`, outside
+`src/`, so FoBiS, make and CMake never build them; `scripts/utf8/build.sh` compiles the library sources itself (any
+`FC`, `-D_NVF` added for nvfortran). Compiler defects found by the oracle go in `KNOWN_COMPILER_ISSUES`
+(`scripts/utf8/oracle.py`), never into the reference.
+
 ## Doctest Format (TDD)
 
 Tests are embedded directly in source code as Fortran doctests. The format used in `stringifor_string_t.F90`:
