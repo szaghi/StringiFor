@@ -72,7 +72,7 @@ contains
     'len', 'index', 'index_back', 'count', 'scan', 'verify', 'replace', 'split', 'upper', 'lower', 'reverse', &
     'match', 'strip_remove', 'squeeze', 'transliterate', 'slice', 'insert', 'center', 'ljust', 'rjust', 'fill', &
     'expand_tabs', 'is_space', 'compact', 'partition', 'is_utf8', 'utf8_error', 'codepoints', 'to_valid_utf8', &
-    'escape_c', 'unescape_c']
+    'escape_c', 'unescape_c', 'escape_xml', 'unescape_xml']
   integer :: m !< Counter.
 
   do m = 1, size(methods)
@@ -184,6 +184,10 @@ contains
     result = text%escape_c()
   case ('unescape_c')
     result = text%unescape_c()
+  case ('escape_xml')
+    result = text%escape_xml()
+  case ('unescape_xml')
+    result = text%unescape_xml()
   case default
     error stop 'bench_driver: unknown method '//method
   endselect
