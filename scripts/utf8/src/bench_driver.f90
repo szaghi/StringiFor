@@ -71,7 +71,8 @@ contains
   character(len=*), parameter  :: methods(*) = [character(len=16) :: &
     'len', 'index', 'index_back', 'count', 'scan', 'verify', 'replace', 'split', 'upper', 'lower', 'reverse', &
     'match', 'strip_remove', 'squeeze', 'transliterate', 'slice', 'insert', 'center', 'ljust', 'rjust', 'fill', &
-    'expand_tabs', 'is_space', 'compact', 'partition', 'is_utf8', 'utf8_error', 'codepoints', 'to_valid_utf8']
+    'expand_tabs', 'is_space', 'compact', 'partition', 'is_utf8', 'utf8_error', 'codepoints', 'to_valid_utf8', &
+    'escape_c', 'unescape_c']
   integer :: m !< Counter.
 
   do m = 1, size(methods)
@@ -179,6 +180,10 @@ contains
     sink = sink + size(text%codepoints())
   case ('to_valid_utf8')
     result = text%to_valid_utf8()
+  case ('escape_c')
+    result = text%escape_c()
+  case ('unescape_c')
+    result = text%unescape_c()
   case default
     error stop 'bench_driver: unknown method '//method
   endselect

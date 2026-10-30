@@ -109,8 +109,11 @@ A *unit* is a well-formed UTF-8 sequence or a single byte that is not part of on
 
 | Method | Returns | Description |
 |--------|---------|-------------|
+| `escape_c([ascii])` | `string` | C escapes for what is not printable ASCII (`ascii=.false.`: only controls and ill-formed bytes) |
+| `escapes_error()` | `integer` | Byte position of the first malformed C escape, 0 if none |
 | `codepoints()` | `integer(I4P)(:)` | Codepoints, one per unit; a byte not part of a well-formed sequence is minus its value |
 | `is_utf8()` | `logical` | True if the string is well-formed UTF-8 |
+| `unescape_c()` | `string` | C escapes (`\n`, `\xHH`, `\uXXXX`, ...) expanded; `\xHH` and octal give bytes, `\u` and `\U` codepoints |
 | `to_valid_utf8([replacement])` | `string` | Each ill-formed sequence replaced by U+FFFD (or `replacement`) |
 | `utf8_error()` | `integer` | Byte position of the first ill-formed byte, 0 if none |
 

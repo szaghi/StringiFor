@@ -1,41 +1,15 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string), allocatable :: strings(:)
- type(string) :: line(3)
- integer :: iostat
- character(len=99) :: iomsg
- integer :: scratch
- integer :: l
- logical :: test_passed(9)
- line(1) = ' Hello World!   '
- line(2) = 'How are you?  '
- line(3) = '   All say: "Fine thanks"'
- open(newunit=scratch, file='read_file_test.tmp')
- write(scratch, "(A)") line(1)%chars()
- write(scratch, "(A)") line(2)%chars()
- write(scratch, "(A)") line(3)%chars()
- close(scratch)
- call astring%read_file(file='read_file_test.tmp', iostat=iostat, iomsg=iomsg)
- call astring%split(tokens=strings, sep=new_line('a'))
- test_passed(1) = (size(strings, dim=1)==size(line, dim=1))
- do l=1, size(strings, dim=1)
- test_passed(l+1) = (strings(l)==line(l))
- enddo
- open(newunit=scratch, file='read_file_test.tmp', form='UNFORMATTED', access='STREAM')
- write(scratch) line(1)%chars()//new_line('a')
- write(scratch) line(2)%chars()//new_line('a')
- write(scratch) line(3)%chars()//new_line('a')
- close(scratch)
- call astring%read_file(file='read_file_test.tmp', form='unformatted', iostat=iostat, iomsg=iomsg)
- call astring%split(tokens=strings, sep=new_line('a'))
- test_passed(5) = (size(strings, dim=1)==size(line, dim=1))
- do l=1, size(strings, dim=1)
- test_passed(l+5) = (strings(l)==line(l))
- enddo
- open(newunit=scratch, file='read_file_test.tmp', form='UNFORMATTED', access='STREAM')
- close(scratch, status='DELETE')
- call astring%read_file(file='read_file_test.tmp', iostat=iostat)
- test_passed(9) = (iostat/=0)
+ type(string) :: strings(3)
+ logical :: test_passed(3)
+ astring = 'Hello WorLD!'
+ strings = astring%partition(sep='lo Wo')
+ test_passed(1) = (strings(1)//''=='Hel'.and.strings(2)//''=='lo Wo'.and.strings(3)//''=='rLD!')
+ strings = astring%partition(sep='Hello')
+ test_passed(2) = (strings(1)//''==''.and.strings(2)//''=='Hello'.and.strings(3)//''==' WorLD!')
+ astring = 'Hello WorLD!'
+ strings = astring%partition()
+ test_passed(3) = (strings(1)//''=='Hello'.and.strings(2)//''==' '.and.strings(3)//''=='WorLD!')
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

@@ -47,3 +47,4 @@ jobs:
         bash scripts/oracle.sh invariant
         bash scripts/oracle.sh invariant --self-test
         bash scripts/oracle.sh utf8
+        bash scripts/oracle.sh escape

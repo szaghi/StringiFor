@@ -23,11 +23,14 @@ Suites:
   utf8        the UTF-8 core (Phase 1 of #51): is_utf8, utf8_error, codepoints, from_codepoints, to_valid_utf8; besides
               the corpus, every 2-byte string, every lead byte with boundary continuation bytes for 3- and 4-byte
               sequences, and the whole codespace through from_codepoints
+  escape      the C escape codecs (Phase 2 of #51): escape_c, unescape_c, escapes_error and the round trip; the
+              reference is checked first against Python's unicode_escape codec on the escapes both understand
 """
 
 from __future__ import annotations
 
 import argparse
+import codecs
 import random
 import subprocess
 import sys
@@ -261,7 +264,206 @@ def utf8_exhaustive() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
-EXTRA = {"utf8": utf8_exhaustive}
+BS = b"\\"  # one backslash
+SHORT = {
+    b"\\": 92,
+    b"'": 39,
+    b'"': 34,
+    b"a": 7,
+    b"b": 8,
+    b"f": 12,
+    b"n": 10,
+    b"r": 13,
+    b"t": 9,
+    b"v": 11,
+    b"e": 27,
+}
+OCTAL, HEX = b"01234567", b"0123456789abcdefABCDEF"
+
+
+def parse_escape(text: bytes, i: int) -> tuple[bytes, int]:
+    """Parse the escape whose backslash is at i: (bytes it gives, its length), length 0 if malformed."""
+    nxt = text[i + 1 : i + 2]
+    if nxt in SHORT and nxt:
+        return bytes([SHORT[nxt]]), 2
+    if nxt and nxt in OCTAL:
+        digits = 1
+        while (
+            digits < 3
+            and text[i + 1 + digits : i + 2 + digits] not in (b"",)
+            and text[i + 1 + digits] in OCTAL
+        ):
+            digits += 1
+        value = int(text[i + 1 : i + 1 + digits], 8)
+        return (bytes([value]), 1 + digits) if value <= 255 else (b"", 0)
+    width = {b"x": 2, b"u": 4, b"U": 8}.get(nxt, 0)
+    field = text[i + 2 : i + 2 + width]
+    if width == 0 or len(field) != width or any(c not in HEX for c in field):
+        return b"", 0
+    value = int(field, 16)
+    if nxt == b"x":
+        return bytes([value]), 4
+    if 0xD800 <= value <= 0xDFFF or value > 0x10FFFF:
+        return b"", 0
+    return chr(value).encode("utf-8"), 2 + width
+
+
+def unescape_c(text: bytes) -> bytes:
+    """Expand the C escapes; the backslash of a malformed escape is kept and the text after it read normally."""
+    out, i = [], 0
+    while i < len(text):
+        if text[i : i + 1] == BS:
+            value, n = parse_escape(text, i)
+            if n:
+                out.append(value)
+                i += n
+                continue
+        out.append(text[i : i + 1])
+        i += 1
+    return b"".join(out)
+
+
+def escapes_error(text: bytes) -> int:
+    """Byte position (1-based) of the backslash of the first malformed escape, 0 if none."""
+    i = 0
+    while i < len(text):
+        if text[i : i + 1] == BS:
+            _, n = parse_escape(text, i)
+            if n == 0:
+                return i + 1
+            i += n
+        else:
+            i += 1
+    return 0
+
+
+def escape_c(data: bytes, ascii_only: bool = True) -> bytes:
+    """C escapes for what is not printable ASCII (or, ascii_only False, only for controls and ill-formed bytes)."""
+    short = {
+        92: b"\\\\",
+        7: b"\\a",
+        8: b"\\b",
+        9: b"\\t",
+        10: b"\\n",
+        11: b"\\v",
+        12: b"\\f",
+        13: b"\\r",
+    }
+    out = []
+    for code in codepoints(data):
+        if code in short:
+            out.append(short[code])
+        elif code < 0:
+            out.append(b"\\x%02x" % -code)
+        elif code < 32 or code == 127:
+            out.append(b"\\x%02x" % code)
+        elif code < 127:
+            out.append(bytes([code]))
+        elif not ascii_only and code > 159:
+            out.append(chr(code).encode("utf-8"))
+        elif code <= 0xFFFF:
+            out.append(b"\\u%04x" % code)
+        else:
+            out.append(b"\\U%08x" % code)
+    return b"".join(out)
+
+
+def escape_texts(rng: random.Random, n: int, python_compatible: bool) -> list[bytes]:
+    """Random texts of escapes, malformed escapes and plain text (python_compatible: only what Python reads alike)."""
+
+    def valid() -> bytes:
+        kind = rng.randrange(6)
+        if kind == 0:
+            return BS + rng.choice(
+                [k for k in SHORT if not (python_compatible and k == b"e")]
+            )
+        if kind == 1:
+            value = rng.randrange(128 if python_compatible else 256)
+            # 3 digits in the compatible texts: a following digit can never extend the escape
+            width = 3 if python_compatible else rng.randint(len(oct(value)) - 2, 3)
+            return BS + oct(value)[2:].zfill(width).encode()
+        if kind == 2:
+            value = rng.randrange(128 if python_compatible else 256)
+            return BS + (b"x%02x" % value if rng.random() < 0.5 else b"x%02X" % value)
+        if kind == 3:
+            value = rng.choice([rng.randrange(0xD800), rng.randrange(0xE000, 0x10000)])
+            return BS + b"u%04x" % value
+        if kind == 4:
+            return BS + b"U%08x" % rng.choice(
+                [rng.randrange(0xD800), rng.randrange(0x10000, 0x110000)]
+            )
+        return rng.choice([b"a", b"Z", b" ", b"7", b"x", b"u"])
+
+    malformed = [
+        BS + b"q",
+        BS + b"x4",
+        BS + b"xg0",
+        BS + b"u12",
+        BS + b"ud800",
+        BS + b"U00110000",
+        BS + b"UFFFFFFFF",
+        BS + b"400",
+        BS + b"777",
+        BS,
+    ]
+    plain = [b"text", b" ", "\u00e9".encode(), b"\xff", b"9"]
+    texts = []
+    for _ in range(n):
+        tokens = []
+        for _ in range(rng.randint(0, 8)):
+            pick = rng.random()
+            if python_compatible or pick < 0.6:
+                tokens.append(valid())
+            elif pick < 0.8:
+                tokens.append(rng.choice(malformed))
+            else:
+                tokens.append(rng.choice(plain))
+        texts.append(b"".join(tokens))
+    return texts
+
+
+def check_escape_reference() -> list[str]:
+    """Check the reference against Python's unicode_escape codec on the escapes both read alike."""
+    failures = []
+    for text in escape_texts(random.Random(SEED), 5000, python_compatible=True):
+        expected = codecs.decode(text, "unicode_escape").encode("utf-8")
+        if unescape_c(text) != expected or escapes_error(text) != 0:
+            failures.append(
+                f"unescape_c({text!r}) = {unescape_c(text)!r}, Python {expected!r}"
+            )
+    for _, data in cases():
+        if (
+            is_utf8(data)
+            and codecs.decode(escape_c(data), "unicode_escape").encode("utf-8") != data
+        ):
+            failures.append(
+                f"escape_c({data!r}) = {escape_c(data)!r} is not read back by Python"
+            )
+    return failures
+
+
+def is_utf8(data: bytes) -> bool:
+    """True if the bytes are well-formed UTF-8."""
+    return utf8_error(data) == 0
+
+
+def escape_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """Calls of unescape_c and escapes_error on random texts of escapes; round trips of every 2-byte string."""
+    texts = escape_texts(random.Random(SEED), 4000, python_compatible=False)
+    calls: list[tuple[str, tuple[Arg, ...]]] = [
+        (name, (text,)) for text in texts for name in ("unescape_c", "escapes_error")
+    ]
+    pairs = [bytes([a, b]) for a in range(256) for b in range(256)]
+    calls += [
+        (name, (data,))
+        for data in pairs
+        for name in ("escape_roundtrip", "escape_roundtrip_utf8")
+    ]
+    return calls
+
+
+EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra}
+SELF_CHECKS = {"escape": check_escape_reference}
 
 
 SUITES: dict[str, list[Op]] = {
@@ -290,6 +492,14 @@ SUITES: dict[str, list[Op]] = {
         Op("from_codepoints", codepoint_lists, from_codepoints),
         Op("to_valid_utf8", single, to_valid_utf8),
         Op("to_valid_utf8_with", replacements_of, to_valid_utf8),
+    ],
+    "escape": [
+        Op("escape_c", single, escape_c),
+        Op("escape_c_utf8", single, lambda d: escape_c(d, ascii_only=False)),
+        Op("unescape_c", single, unescape_c),
+        Op("escapes_error", single, escapes_error),
+        Op("escape_roundtrip", single, lambda d: d),
+        Op("escape_roundtrip_utf8", single, lambda d: d),
     ],
 }
 
@@ -355,6 +565,13 @@ def run(args: argparse.Namespace) -> int:
     """Generate, run the driver, compare; return the exit status."""
     work: Path = args.work
     work.mkdir(parents=True, exist_ok=True)
+    if args.suite in SELF_CHECKS:
+        failures = SELF_CHECKS[args.suite]()
+        for failure in failures[: args.show]:
+            print(f"REFERENCE {failure}")
+        print(f"reference check {args.suite}: {len(failures)} failure(s)")
+        if failures:
+            return 1
     calls = generate(args.suite, args.seed, args.random)
     lines = [
         "\t".join([name, *(encode_arg(arg) for arg in call)]) for name, call in calls

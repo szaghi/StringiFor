@@ -1,0 +1,8 @@
+$ c_escapes
+Grüße, 你好! 😀
+tab\tnul\x00latin-1 \xe9 utf-8 \u00e9
+tab\tnul\x00latin-1 \xe9 utf-8 é
+read back: T
+first malformed escape at byte 12
+ok
+, then \q and \u12

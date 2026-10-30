@@ -65,6 +65,8 @@ type :: string
     procedure, pass(self) :: decode           !< Decode string.
     procedure, pass(self) :: encode           !< Encode string.
     procedure, pass(self) :: escape           !< Escape backslashes (or custom escape character).
+    procedure, pass(self) :: escape_c         !< Return the string with C escapes for what is not printable.
+    procedure, pass(self) :: escapes_error    !< Return the position of the first malformed C escape, 0 if none.
     procedure, pass(self) :: expand_tabs      !< Return a string with the tabs expanded to spaces.
     procedure, pass(self) :: extension        !< Return the extension of a string containing a file name.
     procedure, pass(self) :: fill             !< Pad string on the left (or right) with zeros (or other char) to fill width.
@@ -137,6 +139,7 @@ type :: string
     procedure, pass(self) :: to_valid_utf8    !< Return the string with the ill-formed UTF-8 replaced.
     procedure, pass(self) :: transliterate    !< Return a string with the characters of a set replaced by the ones of another.
     procedure, pass(self) :: unescape         !< Unescape double backslashes (or custom escaped character).
+    procedure, pass(self) :: unescape_c       !< Return the string with its C escapes expanded.
     procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: unquote          !< Return the string unquoted, the inner doubled quotes undoubled.
     procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
@@ -1577,6 +1580,141 @@ contains
      endif
    endif
    endfunction escape
+
+   elemental function escape_c(self, ascii) result(escaped)
+   !< Return the string with C escapes for what is not printable: the inverse of [[string:unescape_c]].
+   !<
+   !< @note A backslash becomes `\\`; BEL, BS, TAB, LF, VT, FF and CR become `\a \b \t \n \v \f \r`; the other ASCII
+   !< controls and DEL become `\xHH`; a byte that is not part of a well-formed UTF-8 sequence becomes `\xHH`; a
+   !< well-formed non-ASCII character becomes `\uXXXX` (up to U+FFFF) or `\UXXXXXXXX`, hexadecimal digits in lowercase.
+   !< The result is printable ASCII, and `unescape_c` gives back the same bytes, whatever they are. With `ascii=.false.`
+   !< the well-formed non-ASCII characters are kept as they are, except the C1 controls U+0080..U+009F. Quotes are
+   !< not escaped.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = 'caf'//char(195)//char(169)//achar(9)//'!'
+   !< test_passed(1) = astring%escape_c()=='caf'//char(92)//'u00e9'//char(92)//'t!'
+   !< test_passed(2) = astring%escape_c(ascii=.false.)=='caf'//char(195)//char(169)//char(92)//'t!'
+   !< astring = 'a'//char(255)//char(92)
+   !< test_passed(3) = astring%escape_c()=='a'//char(92)//'xff'//char(92)//char(92)
+   !< astring = char(240)//char(159)//char(152)//char(128)
+   !< test_passed(4) = astring%escape_c()==char(92)//'U0001f600'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)           :: self    !< The string.
+   logical,       intent(in), optional :: ascii   !< Escape every non-ASCII character (default), or only the C1 controls.
+   type(string)                        :: escaped !< Escaped string.
+   logical                             :: ascii_  !< Escape every non-ASCII character, local variable.
+   integer                             :: i       !< Byte position in the string.
+   integer                             :: o       !< Byte position in the result.
+   integer                             :: n       !< Bytes of a unit.
+   integer                             :: b       !< Byte value.
+   integer(I4P)                        :: code    !< Codepoint of a unit.
+   integer                             :: pass    !< 1: measure the result, 2: fill it.
+   character(kind=CK, len=10)          :: token   !< What a unit becomes.
+   integer                             :: t       !< Length of the token.
+
+   if (.not.allocated(self%raw)) return
+   ascii_ = .true. ; if (present(ascii)) ascii_ = ascii
+   do pass=1, 2
+      i = 1
+      o = 0
+      do while (i <= len(self%raw))
+         b = iand(ichar(self%raw(i:i)), 255)
+         n = 1
+         t = 2
+         select case (b)
+         case (92)
+            token = BACKSLASH//BACKSLASH
+         case (7)
+            token = BACKSLASH//'a'
+         case (8)
+            token = BACKSLASH//'b'
+         case (9)
+            token = BACKSLASH//'t'
+         case (10)
+            token = BACKSLASH//'n'
+         case (11)
+            token = BACKSLASH//'v'
+         case (12)
+            token = BACKSLASH//'f'
+         case (13)
+            token = BACKSLASH//'r'
+         case (0:6, 14:31, 127)
+            token = BACKSLASH//'x'//hex_lower(b, 2)
+            t = 4
+         case (32:91, 93:126)
+            token = self%raw(i:i)
+            t = 1
+         case default
+            call utf8_decode(self%raw, i, code, n)
+            if (code < 0) then
+               token = BACKSLASH//'x'//hex_lower(b, 2)
+               t = 4
+            elseif (.not.ascii_ .and. code > 159) then
+               token = self%raw(i:i+n-1)
+               t = n
+            elseif (code <= 65535) then
+               token = BACKSLASH//'u'//hex_lower(code, 4)
+               t = 6
+            else
+               token = BACKSLASH//'U'//hex_lower(code, 8)
+               t = 10
+            endif
+         endselect
+         if (pass == 2) escaped%raw(o+1:o+t) = token(1:t)
+         o = o + t
+         i = i + n
+      enddo
+      if (pass == 1) allocate(character(kind=CK, len=o) :: escaped%raw)
+   enddo
+   endfunction escape_c
+
+   elemental function escapes_error(self) result(position)
+   !< Return the byte position of the first malformed C escape, 0 if there is none (see [[string:unescape_c]]).
+   !<
+   !< @note Malformed is a backslash at the end, an unknown escape (`\q`), `\x` without 2 hexadecimal digits, `\u`
+   !< without 4, `\U` without 8, a surrogate or a value above U+10FFFF in `\u` or `\U`, an octal escape above `\377`.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'ok'//char(92)//'n'//char(92)//'u00e9'
+   !< test_passed(1) = astring%escapes_error()==0
+   !< astring = 'ab'//char(92)//'q'
+   !< test_passed(2) = astring%escapes_error()==3
+   !< astring = char(92)//'n'//char(92)//'ud800'
+   !< test_passed(3) = astring%escapes_error()==3
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self     !< The string.
+   integer                   :: position !< Position of the backslash of the first malformed escape, 0 if none.
+   integer                   :: i        !< Byte position.
+   integer                   :: n        !< Length of an escape, 0 if malformed.
+   integer(I4P)              :: value    !< Value of an escape.
+   logical                   :: is_byte  !< True if the value is a byte, false if it is a codepoint.
+
+   position = 0
+   if (.not.allocated(self%raw)) return
+   i = index(self%raw, BACKSLASH)
+   if (i == 0) return
+   do while (i <= len(self%raw))
+      if (self%raw(i:i) == BACKSLASH) then
+         call parse_c_escape(self%raw, i, value, is_byte, n)
+         if (n == 0) then
+            position = i
+            return
+         endif
+         i = i + n
+      else
+         i = i + 1
+      endif
+   enddo
+   endfunction escapes_error
 
    elemental function expand_tabs(self, tab_size) result(expanded)
    !< Return a string with every tab replaced by the spaces up to the next tab stop, every `tab_size` columns (default 8).
@@ -4397,6 +4535,66 @@ contains
    endif
    endfunction unescape
 
+   elemental function unescape_c(self) result(unescaped)
+   !< Return the string with its C escapes expanded: the inverse of [[string:escape_c]].
+   !<
+   !< @note The escapes are `\\ \' \" \a \b \f \n \r \t \v`, `\e` (ESC), `\0`..`\377` (1 to 3 octal digits) and `\xHH`
+   !< (exactly 2 hexadecimal digits), each giving one **byte**, and `\uXXXX` (exactly 4 hexadecimal digits) and
+   !< `\UXXXXXXXX` (exactly 8), each giving a **codepoint** encoded in UTF-8. The backslash of a malformed escape (see
+   !< [[string:escapes_error]]) is kept as it is and the text after it is read normally.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = 'caf'//char(92)//'u00e9'//char(92)//'t!'
+   !< test_passed(1) = astring%unescape_c()=='caf'//char(195)//char(169)//achar(9)//'!'
+   !< astring = char(92)//'x41'//char(92)//'101'//char(92)//char(92)
+   !< test_passed(2) = astring%unescape_c()=='AA'//char(92)
+   !< astring = char(92)//'q'//char(92)//'x4'
+   !< test_passed(3) = astring%unescape_c()==astring
+   !< astring = 'a'//char(255)//char(9)
+   !< astring = astring%escape_c()
+   !< test_passed(4) = astring%unescape_c()=='a'//char(255)//char(9)
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)              :: self      !< The string.
+   type(string)                           :: unescaped !< Unescaped string.
+   character(kind=CK, len=:), allocatable :: buffer    !< Result, at most as long as the string.
+   integer                                :: i         !< Byte position in the string.
+   integer                                :: o         !< Byte position in the result.
+   integer                                :: n         !< Length of an escape, 0 if malformed.
+   integer(I4P)                           :: value     !< Value of an escape.
+   logical                                :: is_byte   !< True if the value is a byte, false if it is a codepoint.
+
+   if (.not.allocated(self%raw)) return
+   if (index(self%raw, BACKSLASH) == 0) then
+      unescaped%raw = self%raw
+      return
+   endif
+   allocate(character(kind=CK, len=len(self%raw)) :: buffer) ! every escape is at least as long as what it gives
+   i = 1
+   o = 0
+   do while (i <= len(self%raw))
+      n = 0
+      if (self%raw(i:i) == BACKSLASH) call parse_c_escape(self%raw, i, value, is_byte, n)
+      if (n == 0) then ! a plain byte, or the backslash of a malformed escape
+         o = o + 1
+         buffer(o:o) = self%raw(i:i)
+         i = i + 1
+      elseif (is_byte) then
+         o = o + 1
+         buffer(o:o) = char(value)
+         i = i + n
+      else
+         buffer(o+1:o+utf8_encoded_len(value)) = utf8_encode(value)
+         o = o + utf8_encoded_len(value)
+         i = i + n
+      endif
+   enddo
+   unescaped%raw = buffer(1:o)
+   endfunction unescape_c
+
    elemental function unique(self, substring) result(uniq)
    !< Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.
    !<
@@ -6757,6 +6955,119 @@ contains
    enddo
    replaced(r:) = raw(c:)
    endfunction replace_substring
+
+   pure subroutine parse_c_escape(raw, i, value, is_byte, n)
+   !< Parse the C escape starting with the backslash at byte i (see [[string:unescape_c]]).
+   character(kind=CK, len=*), intent(in)  :: raw     !< Bytes.
+   integer,                   intent(in)  :: i       !< Position of the backslash.
+   integer(I4P),              intent(out) :: value   !< Byte or codepoint.
+   logical,                   intent(out) :: is_byte !< True if value is a byte, false if it is a codepoint.
+   integer,                   intent(out) :: n       !< Length of the escape, backslash included; 0 if malformed.
+   integer                                :: digits  !< Digits of a numeric escape.
+   logical                                :: is_hex  !< True if the hexadecimal digits are there.
+
+   value = 0
+   is_byte = .true.
+   n = 0
+   if (i + 1 > len(raw)) return
+   select case (raw(i+1:i+1))
+   case (BACKSLASH)
+      value = 92
+   case ("'")
+      value = 39
+   case ('"')
+      value = 34
+   case ('a')
+      value = 7
+   case ('b')
+      value = 8
+   case ('f')
+      value = 12
+   case ('n')
+      value = 10
+   case ('r')
+      value = 13
+   case ('t')
+      value = 9
+   case ('v')
+      value = 11
+   case ('e')
+      value = 27
+   case ('0':'7')
+      digits = 0
+      do while (digits < 3 .and. i + 1 + digits <= len(raw))
+         if (verify(raw(i+1+digits:i+1+digits), '01234567') /= 0) exit
+         value = value * 8 + (ichar(raw(i+1+digits:i+1+digits)) - ichar('0'))
+         digits = digits + 1
+      enddo
+      if (value > 255) return
+      n = 1 + digits
+      return
+   case ('x')
+      call read_hex(raw, i + 2, 2, value, is_hex)
+      if (.not.is_hex) return
+      n = 4
+      return
+   case ('u')
+      call read_hex(raw, i + 2, 4, value, is_hex)
+      if (.not.is_hex) return
+      if (value >= 55296 .and. value <= 57343) return
+      is_byte = .false.
+      n = 6
+      return
+   case ('U')
+      call read_hex(raw, i + 2, 8, value, is_hex)
+      if (.not.is_hex) return
+      if ((value >= 55296 .and. value <= 57343) .or. value > 1114111) return
+      is_byte = .false.
+      n = 10
+      return
+   case default
+      return
+   endselect
+   n = 2
+   endsubroutine parse_c_escape
+
+   pure subroutine read_hex(raw, first, digits, value, is_ok)
+   !< Read exactly `digits` hexadecimal digits starting at byte `first`; false if they are not there.
+   character(kind=CK, len=*), intent(in)  :: raw    !< Bytes.
+   integer,                   intent(in)  :: first  !< Position of the first digit.
+   integer,                   intent(in)  :: digits !< Number of digits, at most 8.
+   integer(I4P),              intent(out) :: value  !< Value read, saturated at huge(value) above 7FFFFFFF.
+   logical,                   intent(out) :: is_ok  !< True if the digits are there.
+   integer                                :: d      !< Digit counter.
+   integer                                :: h      !< Digit value.
+
+   value = 0
+   is_ok = .false.
+   if (first + digits - 1 > len(raw)) return
+   do d=first, first + digits - 1
+      h = index('0123456789abcdef', raw(d:d)) - 1
+      if (h < 0) h = index('0123456789ABCDEF', raw(d:d)) - 1
+      if (h < 0) return
+      if (value > 134217727) then ! a ninth significant digit would overflow: the value is far above U+10FFFF
+         value = huge(value)
+      else
+         value = value * 16 + h
+      endif
+   enddo
+   is_ok = .true.
+   endsubroutine read_hex
+
+   pure function hex_lower(value, digits) result(hex)
+   !< Return a non-negative value in lowercase hexadecimal, zero-padded to `digits` digits.
+   integer(I4P), intent(in) :: value  !< Value.
+   integer,      intent(in) :: digits !< Digits.
+   character(kind=CK, len=digits) :: hex !< Hexadecimal.
+   integer(I4P)                   :: v   !< Remaining value.
+   integer                        :: d   !< Digit counter.
+
+   v = value
+   do d=digits, 1, -1
+      hex(d:d) = '0123456789abcdef'(iand(v, 15)+1:iand(v, 15)+1)
+      v = ishft(v, -4)
+   enddo
+   endfunction hex_lower
 
    pure function unique_substring(raw, substring) result(uniq)
    !< Return raw with the sequential occurrences of substring reduced to one, in one pass.
