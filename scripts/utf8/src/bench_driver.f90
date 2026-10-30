@@ -71,7 +71,7 @@ contains
   character(len=*), parameter  :: methods(*) = [character(len=16) :: &
     'len', 'index', 'index_back', 'count', 'scan', 'verify', 'replace', 'split', 'upper', 'lower', 'reverse', &
     'match', 'strip_remove', 'squeeze', 'transliterate', 'slice', 'insert', 'center', 'ljust', 'rjust', 'fill', &
-    'expand_tabs', 'is_space', 'compact', 'partition']
+    'expand_tabs', 'is_space', 'compact', 'partition', 'is_utf8', 'utf8_error', 'codepoints', 'to_valid_utf8']
   integer :: m !< Counter.
 
   do m = 1, size(methods)
@@ -171,6 +171,14 @@ contains
   case ('partition')
     parts = text%partition(' zq')
     sink = sink + parts(1)%len()
+  case ('is_utf8')
+    sink = sink + merge(1, 0, text%is_utf8())
+  case ('utf8_error')
+    sink = sink + text%utf8_error()
+  case ('codepoints')
+    sink = sink + size(text%codepoints())
+  case ('to_valid_utf8')
+    result = text%to_valid_utf8()
   case default
     error stop 'bench_driver: unknown method '//method
   endselect

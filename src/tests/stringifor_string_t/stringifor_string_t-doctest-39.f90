@@ -1,11 +1,13 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
+ type(string) :: encoded
  logical :: test_passed(3)
- astring = 'a'//achar(9)//'bc'//achar(9)//'d'
- test_passed(1) = astring%expand_tabs()//''=='a       bc      d'
- test_passed(2) = astring%expand_tabs(4)//''=='a   bc  d'
- astring = 'abcd'//achar(9)//'e'//new_line('a')//achar(9)//'f'
- test_passed(3) = astring%expand_tabs(4)//''=='abcd    e'//new_line('a')//'    f'
+ astring = 'How are you?'
+ test_passed(1) = astring%encode(codec='base64')//''=='SG93IGFyZSB5b3U/'
+ encoded = astring%encode(codec='BASE64')
+ test_passed(2) = encoded%is_allocated().and.encoded=='SG93IGFyZSB5b3U/'
+ encoded = astring%encode(codec='rot13')
+ test_passed(3) = .not.encoded%is_allocated()
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

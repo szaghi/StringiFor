@@ -1,0 +1,6 @@
+$ utf8_check
+well-formed: T, bytes: 9
+codepoints (6): U+0063 U+0061 U+0066 U+00E9 U+0020 U+4F60
+well-formed: F, first error at byte 10
+codepoints: 99 97 102 233 32 20320 -233 33
+repaired: café 你?!

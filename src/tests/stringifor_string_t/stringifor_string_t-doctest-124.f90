@@ -1,12 +1,9 @@
 program volatile_doctest
 use stringifor_string_t
+ use penf
  type(string) :: astring
- type(string) :: anotherstring
- type(string) :: yetanotherstring
  logical :: test_passed(1)
- astring = 'Hello '
- anotherstring = 'Bye bye'
- yetanotherstring = astring.cat.anotherstring
- test_passed(1) = yetanotherstring%chars()=='Hello Bye bye'
+ astring = 3.021e6_R8P
+ test_passed(1) = astring%to_number(kind=1._R8P)==3.021e6_R8P
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

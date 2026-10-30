@@ -8,7 +8,7 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
-use stringifor, only : string
+use stringifor, only : from_codepoints, I4P, string
 implicit none
 character(len=:), allocatable :: line     !< Current line.
 character(len=:), allocatable :: field(:) !< Fields of the line (padded).
@@ -25,7 +25,7 @@ do
   if (iostat /= 0) exit
   call split_fields(line, field, lens, nfield)
   if (nfield < 2) call fail('malformed line: '//line)
-  s = unhex(arg(2))
+  if (arg(1) /= 'from_codepoints') s = unhex(arg(2)) ! its argument is a list of integers
   select case (arg(1))
   case ('len')
     call put_int(s%len())
@@ -66,6 +66,19 @@ do
   case ('concat')
     t = unhex(arg(3))
     write(output_unit, '(a)') hex(s//t)
+  case ('is_utf8')
+    call put_logical(s%is_utf8())
+  case ('utf8_error')
+    call put_int(s%utf8_error())
+  case ('codepoints')
+    call put_int_list(s%codepoints())
+  case ('from_codepoints')
+    t = from_codepoints(int_list(arg(2)))
+    call put_str(t)
+  case ('to_valid_utf8')
+    call put_str(s%to_valid_utf8())
+  case ('to_valid_utf8_with')
+    call put_str(s%to_valid_utf8(replacement=unhex(arg(3))))
   case default
     call fail('unknown operation: '//arg(1))
   endselect
@@ -92,6 +105,57 @@ contains
   read(text, *, iostat=iostat_) value
   if (iostat_ /= 0) call fail('not an integer: '//arg(i))
   endfunction int_arg
+
+  function int_list(text) result(values)
+  !< Decode a list of integers: decimal values separated by commas, "[]" if empty.
+  character(len=*), intent(in) :: text      !< Encoded list.
+  integer(I4P), allocatable    :: values(:) !< Values.
+  integer                      :: i         !< Counter.
+  integer                      :: first     !< First character of the current value.
+  integer                      :: k         !< Value counter.
+  integer                      :: iostat_   !< I/O status.
+
+  if (text == '[]') then
+    allocate(values(0))
+    return
+  endif
+  allocate(values(count([(text(i:i) == ',', i=1, len(text))]) + 1))
+  first = 1
+  k = 0
+  do i = 1, len(text) + 1
+    if (i > len(text)) then
+      k = k + 1
+      read(text(first:), *, iostat=iostat_) values(k)
+    elseif (text(i:i) == ',') then
+      k = k + 1
+      read(text(first:i - 1), *, iostat=iostat_) values(k)
+      first = i + 1
+    else
+      cycle
+    endif
+    if (iostat_ /= 0) call fail('bad integer list: '//text)
+  enddo
+  endfunction int_list
+
+  subroutine put_int_list(values)
+  !< Write a list of integers.
+  integer(I4P), intent(in)      :: values(:) !< Result.
+  character(len=:), allocatable :: text      !< Encoded list.
+  character(len=16)             :: item      !< One value.
+  integer                       :: i         !< Counter.
+
+  if (size(values) == 0) then
+    text = '[]'
+  else
+    text = ''
+    do i = 1, size(values)
+      write(item, '(i0)') values(i)
+      text = text//trim(item)//merge(',', ' ', i < size(values))
+    enddo
+    text = trim(text)
+  endif
+  write(output_unit, '(a)') text
+  endsubroutine put_int_list
 
   subroutine get_line(unit, line, iostat)
   !< Read a whole line of any length.

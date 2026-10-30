@@ -11,6 +11,7 @@ add_library(${LIB}
         stringifor.F90
         stringifor_string_t.F90
         stringifor_unicode_tables.F90
+        stringifor_utf8.F90
 )
 target_link_libraries(${LIB} PENF::PENF BeFoR64::BeFoR64 FACE::FACE)
 

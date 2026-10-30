@@ -6,6 +6,8 @@ use, intrinsic :: ieee_arithmetic, only : ieee_quiet_nan, ieee_value
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
+use stringifor_utf8, only : REPLACEMENT_CHARACTER, utf8_decode, utf8_encode, utf8_encoded_len, utf8_first_error, &
+                            utf8_subpart_len, utf8_unit_len, utf8_units
 
 implicit none
 private
@@ -15,6 +17,7 @@ save
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
 ! expose StingiFor objects
 public :: CK
+public :: from_codepoints
 public :: glob
 public :: strjoin
 public :: string
@@ -48,6 +51,7 @@ type :: string
     procedure, pass(self) :: capitalize       !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: center           !< Return the string centered in a given width.
     procedure, pass(self) :: chars            !< Return the raw characters data.
+    procedure, pass(self) :: codepoints       !< Return the codepoints of the string, one per unit.
     generic               :: colorize => &
                              colorize_str     !< Colorize and stylize strings.
     generic               :: common_prefix =>         &
@@ -130,11 +134,13 @@ type :: string
 #endif
                              to_real_R8P,   &
                              to_real_R4P      !< Cast string to number.
+    procedure, pass(self) :: to_valid_utf8    !< Return the string with the ill-formed UTF-8 replaced.
     procedure, pass(self) :: transliterate    !< Return a string with the characters of a set replaced by the ones of another.
     procedure, pass(self) :: unescape         !< Unescape double backslashes (or custom escaped character).
     procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: unquote          !< Return the string unquoted, the inner doubled quotes undoubled.
     procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
+    procedure, pass(self) :: utf8_error       !< Return the position of the first ill-formed UTF-8 byte, 0 if none.
     procedure, pass(self) :: write_file       !< Write a single string stream into file.
     procedure, pass(self) :: write_line       !< Write line (record) to a connected unit.
     procedure, pass(self) :: write_lines      !< Write lines (records) to a connected unit.
@@ -151,6 +157,7 @@ type :: string
     procedure, pass(self) :: is_real      !< Return true if the string contains an real.
     procedure, pass(self) :: is_space     !< Return true if all characters in the string are whitespace.
     procedure, pass(self) :: is_upper     !< Return true if all characters in the string are uppercase.
+    procedure, pass(self) :: is_utf8      !< Return true if the string is well-formed UTF-8.
     procedure, pass(self) :: is_xdigit    !< Return true if all characters in the string are hexadecimal digits.
     procedure, pass(self) :: match        !< Return true if the string matches a wildcard pattern.
     procedure, pass(self) :: start_with   !< Return true if a string starts with a specified prefix.
@@ -417,6 +424,47 @@ contains
 
    string_%raw = c
    endfunction string_
+
+   pure function from_codepoints(codes) result(astring)
+   !< Return a string given its codepoints, encoded in UTF-8: the inverse of [[string:codepoints]].
+   !<
+   !< @note A value in -255..-128 gives back the raw byte (the ill-formed bytes of [[string:codepoints]]), so
+   !< `from_codepoints(astring%codepoints())` is `astring` for any bytes. Any other value that is not a Unicode scalar
+   !< value (a surrogate U+D800..U+DFFF, a value above U+10FFFF or a negative one) gives U+FFFD.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = from_codepoints([104, 233, 20320])
+   !< test_passed(1) = astring%raw=='h'//char(195)//char(169)//char(228)//char(189)//char(160)
+   !< astring = from_codepoints([97, -255])
+   !< test_passed(2) = astring%raw=='a'//char(255)
+   !< astring = from_codepoints([55296])
+   !< test_passed(3) = astring%raw==char(239)//char(191)//char(189)
+   !< astring = 'x'//char(192)//char(175)//'y'
+   !< astring = from_codepoints(astring%codepoints())
+   !< test_passed(4) = astring%raw=='x'//char(192)//char(175)//'y'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   integer(I4P), intent(in) :: codes(:) !< Codepoints.
+   type(string)             :: astring  !< String.
+   integer                  :: c        !< Codepoint counter.
+   integer                  :: i        !< Byte position.
+   integer                  :: n        !< Bytes of a codepoint.
+
+   n = 0
+   do c=1, size(codes)
+      n = n + utf8_encoded_len(codes(c))
+   enddo
+   allocate(character(kind=CK, len=n) :: astring%raw)
+   i = 1
+   do c=1, size(codes)
+      n = utf8_encoded_len(codes(c))
+      astring%raw(i:i+n-1) = utf8_encode(codes(c))
+      i = i + n
+   enddo
+   endfunction from_codepoints
 
    ! builtins replacements
    pure function sadjustl_character(s) result(adjusted)
@@ -1102,6 +1150,46 @@ contains
       endif
    endif
    endfunction center
+
+   pure function codepoints(self) result(codes)
+   !< Return the codepoints of the string, one per unit (a well-formed UTF-8 sequence, or a byte that is not part of one).
+   !<
+   !< @note A byte that is not part of a well-formed UTF-8 sequence (Unicode Table 3-7: an overlong form, a surrogate, a
+   !< value above U+10FFFF, a truncated sequence, a stray continuation byte) is returned as minus its value, -255..-128:
+   !< the result is never confused with a codepoint, and [[from_codepoints]] gives back the same bytes. A null or not
+   !< allocated string gives an empty array.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = 'h'//char(195)//char(169)//char(228)//char(189)//char(160)
+   !< test_passed(1) = all(astring%codepoints()==[104, 233, 20320])
+   !< astring = 'a'//char(255)//char(192)//char(175)
+   !< test_passed(2) = all(astring%codepoints()==[97, -255, -192, -175])
+   !< astring = char(240)//char(159)//char(152)//char(128)
+   !< test_passed(3) = all(astring%codepoints()==[128512])
+   !< astring = ''
+   !< test_passed(4) = size(astring%codepoints())==0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self     !< The string.
+   integer(I4P), allocatable :: codes(:) !< Codepoints.
+   integer                   :: c        !< Codepoint counter.
+   integer                   :: i        !< Byte position.
+   integer                   :: n        !< Bytes of a unit.
+
+   if (.not.allocated(self%raw)) then
+      allocate(codes(0))
+      return
+   endif
+   allocate(codes(utf8_units(self%raw)))
+   i = 1
+   do c=1, size(codes)
+      call utf8_decode(self%raw, i, codes(c), n)
+      i = i + n
+   enddo
+   endfunction codepoints
 
    pure function chars(self) result(raw)
    !< Return the raw characters data.
@@ -4183,6 +4271,62 @@ contains
    if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
    endsubroutine read_number_R16P
 
+   elemental function to_valid_utf8(self, replacement) result(valid)
+   !< Return the string with every ill-formed UTF-8 sequence replaced, by U+FFFD by default.
+   !<
+   !< @note Each maximal subpart of an ill-formed sequence (the longest prefix of a well-formed sequence found there, or
+   !< a single byte that cannot start one) is replaced by one `replacement`, as Unicode recommends (chapter 3.9) and
+   !< Python's `errors='replace'` does: `E4 BD` (a truncated 3-byte sequence) gives one U+FFFD, `C0 AF` (an overlong
+   !< form) gives two. A well-formed string is returned unchanged.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'a'//char(228)//char(189)//'b'
+   !< astring = astring%to_valid_utf8()
+   !< test_passed(1) = astring%raw=='a'//char(239)//char(191)//char(189)//'b'
+   !< astring = char(192)//char(175)
+   !< astring = astring%to_valid_utf8(replacement='?')
+   !< test_passed(2) = astring%raw=='??'
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(3) = astring%to_valid_utf8()==astring
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string),             intent(in)           :: self         !< The string.
+   character(kind=CK, len=*), intent(in), optional :: replacement  !< Replacement of an ill-formed sequence (U+FFFD).
+   type(string)                                    :: valid        !< The valid string.
+   character(kind=CK, len=:), allocatable          :: replacement_ !< Replacement, local variable.
+   integer                                         :: i            !< Byte position in the string.
+   integer                                         :: o            !< Byte position in the result.
+   integer                                         :: n            !< Bytes of a unit.
+   integer                                         :: pass         !< 1: measure the result, 2: fill it.
+
+   if (.not.allocated(self%raw)) return
+   if (utf8_first_error(self%raw) == 0) then
+      valid%raw = self%raw
+      return
+   endif
+   replacement_ = REPLACEMENT_CHARACTER ; if (present(replacement)) replacement_ = replacement
+   do pass=1, 2
+      i = 1
+      o = 0
+      do while (i <= len(self%raw))
+         n = utf8_unit_len(self%raw, i)
+         if (n == 1 .and. iand(ichar(self%raw(i:i)), 255) > 127) then
+            n = utf8_subpart_len(self%raw, i)
+            if (pass == 2) valid%raw(o+1:o+len(replacement_)) = replacement_
+            o = o + len(replacement_)
+         else
+            if (pass == 2) valid%raw(o+1:o+n) = self%raw(i:i+n-1)
+            o = o + n
+         endif
+         i = i + n
+      enddo
+      if (pass == 1) allocate(character(kind=CK, len=o) :: valid%raw)
+   enddo
+   endfunction to_valid_utf8
+
    elemental function transliterate(self, old_set, new_set) result(transliterated)
    !< Return a string with every character of `old_set` replaced by the character at the same position in `new_set`.
    !<
@@ -4347,6 +4491,31 @@ contains
       enddo
    endif
    endfunction upper
+
+   elemental function utf8_error(self) result(position)
+   !< Return the byte position of the first byte that is not part of a well-formed UTF-8 sequence, 0 if there is none.
+   !<
+   !< @note Well-formed is Unicode Table 3-7: no overlong form, no surrogate, nothing above U+10FFFF, no truncated
+   !< sequence, no stray continuation byte. A null or not allocated string gives 0.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(1) = astring%utf8_error()==0
+   !< astring = 'ab'//char(237)//char(160)//char(128)
+   !< test_passed(2) = astring%utf8_error()==3
+   !< astring = 'x'//char(228)//char(189)
+   !< test_passed(3) = astring%utf8_error()==2
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self     !< The string.
+   integer                   :: position !< Position of the first ill-formed byte, 0 if none.
+
+   position = 0
+   if (allocated(self%raw)) position = utf8_first_error(self%raw)
+   endfunction utf8_error
 
    subroutine write_file(self, file, form, iostat, iomsg)
    !< Write a single string stream into file.
@@ -5015,6 +5184,34 @@ contains
       enddo
    endif
    endfunction is_upper
+
+   elemental function is_utf8(self)
+   !< Return true if the string is well-formed UTF-8.
+   !<
+   !< @note Well-formed is Unicode Table 3-7: no overlong form, no surrogate, nothing above U+10FFFF, no truncated
+   !< sequence, no stray continuation byte. ASCII is well-formed UTF-8. A null or not allocated string gives true (as
+   !< Python `str.isascii`): it has no ill-formed byte. [[string:utf8_error]] tells where the first error is.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(1) = astring%is_utf8()
+   !< astring = 'caf'//char(233)
+   !< test_passed(2) = .not.astring%is_utf8()
+   !< astring = char(192)//char(175)
+   !< test_passed(3) = .not.astring%is_utf8()
+   !< astring = ''
+   !< test_passed(4) = astring%is_utf8()
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self    !< The string.
+   logical                   :: is_utf8 !< Result of the test.
+
+   is_utf8 = .true.
+   if (allocated(self%raw)) is_utf8 = utf8_first_error(self%raw) == 0
+   endfunction is_utf8
 
    elemental function is_xdigit(self)
    !< Return true if all characters in the string are hexadecimal digits.

@@ -36,6 +36,7 @@ const docs = [
       { text: 'Strings and I/O',     link: '/guide/basic-io' },
       { text: 'String Manipulation', link: '/guide/string-manipulation' },
       { text: 'Numbers',             link: '/guide/numbers' },
+      { text: 'Unicode and UTF-8',   link: '/guide/unicode' },
       { text: 'Files and Paths',     link: '/guide/advanced' },
       { text: 'Methods Summary',     link: '/guide/api-reference' },
     ],

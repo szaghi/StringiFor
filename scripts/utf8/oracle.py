@@ -20,6 +20,9 @@ does, 1 when the corruption goes unnoticed).
 
 Suites:
   invariant   methods that are already correct on UTF-8 and must not change (design rule R4 of #51)
+  utf8        the UTF-8 core (Phase 1 of #51): is_utf8, utf8_error, codepoints, from_codepoints, to_valid_utf8; besides
+              the corpus, every 2-byte string, every lead byte with boundary continuation bytes for 3- and 4-byte
+              sequences, and the whole codespace through from_codepoints
 """
 
 from __future__ import annotations
@@ -36,8 +39,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from corpus import POOL, RANDOM, SEED, cases, units  # noqa: E402
 
-Arg = bytes | int
-Result = bytes | int | bool | list[bytes]
+Arg = bytes | int | list[int]
+Result = bytes | int | bool | list[bytes] | list[int]
 
 
 @dataclass(frozen=True)
@@ -159,6 +162,108 @@ def padded(left: bytes, right: bytes) -> tuple[bytes, bytes]:
     return left.ljust(width), right.ljust(width)
 
 
+def utf8_error(data: bytes) -> int:
+    """Byte position (1-based) of the first byte that is not part of a well-formed sequence, 0 if none."""
+    try:
+        data.decode("utf-8", "strict")
+    except UnicodeDecodeError as error:
+        return error.start + 1
+    return 0
+
+
+def codepoints(data: bytes) -> list[int]:
+    """Codepoints of the units; an ill-formed byte b is -b (Python's surrogateescape gives U+DC00+b)."""
+    return [
+        -(ord(char) - 0xDC00) if 0xDC80 <= ord(char) <= 0xDCFF else ord(char)
+        for char in data.decode("utf-8", "surrogateescape")
+    ]
+
+
+def from_codepoints(codes: list[int]) -> bytes:
+    """Inverse of codepoints: -255..-128 give the raw byte, non-scalar values give U+FFFD."""
+    out = []
+    for code in codes:
+        if -255 <= code <= -128:
+            out.append(bytes([-code]))
+        elif 0 <= code <= 0x10FFFF and not 0xD800 <= code <= 0xDFFF:
+            out.append(chr(code).encode("utf-8"))
+        else:
+            out.append("\ufffd".encode())
+    return b"".join(out)
+
+
+def to_valid_utf8(data: bytes, replacement: bytes = "\ufffd".encode()) -> bytes:
+    """Each maximal subpart of an ill-formed sequence replaced, as Python's errors='replace' segments them."""
+    out, start = [], 0
+    while True:
+        try:
+            out.append(data[start:].decode("utf-8", "strict").encode("utf-8"))
+            return b"".join(out)
+        except UnicodeDecodeError as error:
+            out.append(data[start : start + error.start] + replacement)
+            start += error.end
+
+
+def codepoint_lists(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (codes,): the codepoints of data (round trip) and values that are not scalar values."""
+    invalid = [-1, -127, -256, 0xD800, 0xDFFF, 0x110000, 2**31 - 1, -(2**31) + 1]
+    mixed = codepoints(data) + [rng.choice(invalid)]
+    rng.shuffle(mixed)
+    return [(codepoints(data),), (mixed,)]
+
+
+def replacements_of(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, replacement) with an ASCII, an empty and a multibyte replacement."""
+    return [(data, b"?"), (data, b""), (data, "\u2022".encode())]
+
+
+BOUNDARY = [
+    0x00,
+    0x41,
+    0x7F,
+    0x80,
+    0x8F,
+    0x90,
+    0x9F,
+    0xA0,
+    0xBF,
+    0xC0,
+    0xC2,
+    0xF4,
+    0xFF,
+]
+
+
+def utf8_exhaustive() -> list[tuple[str, tuple[Arg, ...]]]:
+    """Every 2-byte string; every lead byte with boundary bytes after it; the codespace by blocks of 1024."""
+    strings = [bytes([a, b]) for a in range(256) for b in range(256)]
+    strings += [
+        bytes([a, b, c]) for a in range(256) for b in BOUNDARY for c in BOUNDARY
+    ]
+    strings += [
+        bytes([a, b, c, d])
+        for a in range(0xF0, 0xF8)
+        for b in BOUNDARY
+        for c in BOUNDARY
+        for d in BOUNDARY
+    ]
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for data in strings:
+        calls += [
+            ("codepoints", (data,)),
+            ("utf8_error", (data,)),
+            ("to_valid_utf8", (data,)),
+        ]
+    calls += [
+        ("from_codepoints", (list(range(first, first + 1024)),))
+        for first in range(0, 0x110000, 1024)
+    ]
+    return calls
+
+
+EXTRA = {"utf8": utf8_exhaustive}
+
+
 SUITES: dict[str, list[Op]] = {
     "invariant": [
         Op("len", single, len),
@@ -177,6 +282,14 @@ SUITES: dict[str, list[Op]] = {
         Op("eq", pairs, lambda a, b: padded(a, b)[0] == padded(a, b)[1]),
         Op("lt", pairs, lambda a, b: padded(a, b)[0] < padded(a, b)[1]),
         Op("concat", pairs, lambda a, b: a + b),
+    ],
+    "utf8": [
+        Op("is_utf8", single, lambda d: utf8_error(d) == 0),
+        Op("utf8_error", single, utf8_error),
+        Op("codepoints", single, codepoints),
+        Op("from_codepoints", codepoint_lists, from_codepoints),
+        Op("to_valid_utf8", single, to_valid_utf8),
+        Op("to_valid_utf8_with", replacements_of, to_valid_utf8),
     ],
 }
 
@@ -206,6 +319,8 @@ def known_issue(compiler: str, name: str, call: tuple[Arg, ...]) -> str | None:
 
 def encode_arg(arg: Arg) -> str:
     """Encode an argument for cases.txt."""
+    if isinstance(arg, list):
+        return ",".join(str(value) for value in arg) if arg else "[]"
     return str(arg) if isinstance(arg, int) else arg.hex()
 
 
@@ -216,7 +331,11 @@ def encode_result(result: Result) -> str:
     if isinstance(result, int):
         return str(result)
     if isinstance(result, list):
-        return ",".join(item.hex() for item in result) if result else "[]"
+        if not result:
+            return "[]"
+        return ",".join(
+            str(item) if isinstance(item, int) else item.hex() for item in result
+        )
     return result.hex()
 
 
@@ -227,6 +346,8 @@ def generate(suite: str, seed: int, n_random: int) -> list[tuple[str, tuple[Arg,
     for _, data in cases(seed, n_random):
         for op in SUITES[suite]:
             calls.extend((op.name, args) for args in op.args(data, rng))
+    if suite in EXTRA:
+        calls.extend(EXTRA[suite]())
     return calls
 
 

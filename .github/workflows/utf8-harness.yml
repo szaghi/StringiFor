@@ -46,3 +46,4 @@ jobs:
       run: |
         bash scripts/oracle.sh invariant
         bash scripts/oracle.sh invariant --self-test
+        bash scripts/oracle.sh utf8

@@ -1,11 +1,19 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: anotherstring
- logical :: test_passed(2)
- astring = '1.2.0'
- anotherstring = '1.10'
- test_passed(1) = astring%compare_version(anotherstring)==-1
- test_passed(2) = anotherstring%compare_version(astring)==1
+ type(string) :: strings(3)
+ logical :: test_passed(3)
+ strings(1) = 'flower'
+ strings(2) = 'flow'
+ strings(3) = 'flight'
+ astring = strings(1)%common_prefix(array=strings)
+ test_passed(1) = astring//''=='fl'
+ astring = strings(1)%common_prefix(array=strings(1:2))
+ test_passed(2) = astring//''=='flow'
+ strings(1) = 'dog'
+ strings(2) = 'racecar'
+ strings(3) = 'car'
+ astring = strings(1)%common_prefix(array=strings)
+ test_passed(3) = astring//''==''
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

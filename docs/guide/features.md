@@ -30,6 +30,7 @@ print '(A)', s%upper()//''   ! call a method, get a character with //
 | **Parts** | `slice` with a stride, `reverse`, `reverse_words`, `start_with`, `end_with`, `count`, `index`, `scan`, `verify`, `search` between tags | [String Manipulation](./string-manipulation#slicing-and-reversing) |
 | **Layout** | `fill`, `center`, `ljust`, `rjust`, `justify`, `len_last_word` | [String Manipulation](./string-manipulation#padding-and-layout) |
 | **Comparing** | `common_prefix`, `compare_version` | [String Manipulation](./string-manipulation#comparing) |
+| **UTF-8** | `is_utf8`, `utf8_error`, `codepoints`, `from_codepoints`, `to_valid_utf8`: units are well-formed sequences, ill-formed bytes are kept | [Unicode and UTF-8](./unicode) |
 | **Numbers** | assignment from any integer and real kind; `to_number`, `read_number` with an error status; `is_number`, `is_integer`, `is_real`, `is_digit`; `hex` | [Numbers](./numbers) |
 | **Files** | `read_file`, `read_lines`, `read_line`, `write_file`, `write_lines`, `write_line`, formatted or unformatted stream | [Files and Paths](./advanced) |
 | **Paths** | `basedir`, `basename`, `extension`, `glob`, `match` of wildcard patterns, `tempname` | [Files and Paths](./advanced#paths) |

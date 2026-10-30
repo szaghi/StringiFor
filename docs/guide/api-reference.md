@@ -103,6 +103,17 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `start_with(prefix[, start][, end])` | `logical` | True if string starts with prefix |
 | `verify(set[, back])` | `integer` | Position of the first character not belonging to `set` (like `VERIFY`) |
 
+## UTF-8 Methods
+
+A *unit* is a well-formed UTF-8 sequence or a single byte that is not part of one: see [Unicode and UTF-8](./unicode).
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `codepoints()` | `integer(I4P)(:)` | Codepoints, one per unit; a byte not part of a well-formed sequence is minus its value |
+| `is_utf8()` | `logical` | True if the string is well-formed UTF-8 |
+| `to_valid_utf8([replacement])` | `string` | Each ill-formed sequence replaced by U+FFFD (or `replacement`) |
+| `utf8_error()` | `integer` | Byte position of the first ill-formed byte, 0 if none |
+
 ## Number Casting
 
 | Method | Description |
@@ -168,6 +179,7 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 
 | Procedure | Description |
 |-----------|-------------|
+| `from_codepoints(codes)` | String encoded in UTF-8 from codepoints, the inverse of `codepoints()` |
 | `glob(self, pattern, list)` | Glob search returning matching paths; `self` is a `string` |
 | `strjoin(array[, sep][, is_trim][, is_col])` | Join arrays of strings or characters |
 | `read_file`, `read_lines` | File reading subroutines |
