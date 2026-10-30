@@ -37,6 +37,26 @@ The other methods need no change: UTF-8 is self-synchronising, so a well-formed 
 character boundary, and `index`, `count`, `replace`, `split`, `partition`, `start_with`, `end_with` give the same
 results whether the text is read as bytes or as characters. On ASCII text every method gives what it always gave.
 
+## Positions and widths in characters
+
+Positions, lengths and widths count bytes by default, as the Fortran intrinsics, so they can always be used with
+`raw(i:j)`. The optional argument `by=SF_CHARS` counts characters instead; `SF_BYTES` is the default.
+
+<<< @/examples/snippets/by_chars.f90
+
+<<< @/examples/output/by_chars.ansi{ansi}
+
+| Methods | With `by=SF_CHARS` |
+|---|---|
+| `len`, `len_last_word` | the length in characters |
+| `index`, `scan`, `verify` | the number of the character holding the byte found (0 if none) |
+| `slice(first, last, stride)`, `insert(substring, pos)` | the positions count characters, which are never cut |
+| `center`, `ljust`, `rjust`, `fill`, `justify`, `expand_tabs` | the width counts characters |
+| `byte_pos(char_pos)`, `char_pos(byte_pos)` | (always) convert a position from one unit to the other |
+
+A character counts as one, whatever its display width: a CJK character takes two columns in a terminal (display
+widths come later, [#51](https://github.com/szaghi/StringiFor/issues/51)).
+
 ## Checking and inspecting
 
 <<< @/examples/snippets/utf8_check-inspect.f90

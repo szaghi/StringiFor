@@ -1854,7 +1854,7 @@ contains
    integer                                :: column    !< Column of the next character, from 0.
    integer                                :: spaces    !< Spaces replacing a tab.
    integer                                :: c         !< Byte position.
-   integer                                :: n         !< Bytes of a character.
+   integer                                :: n         !< First byte of the next character (by=SF_CHARS).
    logical                                :: by_char   !< A column is a character.
 
    if (allocated(self%raw)) then
@@ -1863,16 +1863,8 @@ contains
       if (present(by)) by_char = by==SF_CHARS
       length = 0
       column = 0
-      c = 0
-      do while (c<len(self%raw))
-         c = c + 1
-         if (by_char.and.iand(ichar(self%raw(c:c)), 255)>127) then ! a non-ASCII character takes one column
-            n = utf8_unit_len(self%raw, c)
-            call append_to_buffer(buffer=buffer, length=length, piece=self%raw(c:c+n-1))
-            column = column + 1
-            c = c + n - 1
-            cycle
-         endif
+      n = 0 ! by=SF_CHARS: the first byte of the next character
+      do c=1, len(self%raw)
          select case(self%raw(c:c))
          case(TAB)
             if (tab_size_>0) then
@@ -1885,7 +1877,12 @@ contains
             column = 0
          case default
             call append_to_buffer(buffer=buffer, length=length, piece=self%raw(c:c))
-            column = column + 1
+            if (.not.by_char) then
+               column = column + 1
+            elseif (c>=n) then ! the first byte of a character: one column for the whole character
+               column = column + 1
+               n = c + unit_length(self%raw, c)
+            endif
          endselect
       enddo
       if (length>0) then

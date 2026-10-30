@@ -106,6 +106,8 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 ## UTF-8 Methods
 
 A *unit* is a well-formed UTF-8 sequence or a single byte that is not part of one: see [Unicode and UTF-8](./unicode).
+Positions, lengths and widths count bytes; `len`, `index`, `scan`, `verify`, `slice`, `insert`, `len_last_word`,
+`center`, `ljust`, `rjust`, `fill`, `justify` and `expand_tabs` take `by=SF_CHARS` to count characters instead.
 `reverse`, `match`, `scan`, `verify`, `squeeze`, `transliterate` and the `remove=` set of `strip`, `lstrip` and
 `rstrip` work on units; positions and lengths count bytes.
 
@@ -114,6 +116,8 @@ A *unit* is a well-formed UTF-8 sequence or a single byte that is not part of on
 | `has_bom()` | `logical` | True if the string starts with a UTF-8 byte order mark (EF BB BF) |
 | `escape_c([ascii])` | `string` | C escapes for what is not printable ASCII (`ascii=.false.`: only controls and ill-formed bytes) |
 | `escapes_error()` | `integer` | Byte position of the first malformed C escape, 0 if none |
+| `byte_pos(char_pos)` | `integer` | Byte position of the first byte of the character number `char_pos` |
+| `char_pos(byte_pos)` | `integer` | Number of the character holding the byte at `byte_pos` |
 | `codepoints()` | `integer(I4P)(:)` | Codepoints, one per unit; a byte not part of a well-formed sequence is minus its value |
 | `is_utf8()` | `logical` | True if the string is well-formed UTF-8 |
 | `unescape_c()` | `string` | C escapes (`\n`, `\xHH`, `\uXXXX`, ...) expanded; `\xHH` and octal give bytes, `\u` and `\U` codepoints |
@@ -213,6 +217,13 @@ Re-exported from PENF for convenience:
 
 - `R16P` support (assignment and `to_number`) requires the `-DPENF_R16P` preprocessor flag.
 - `I2P` support is disabled when the `_NVF` macro is defined (NVIDIA Fortran compatibility).
+
+## Unit Constants
+
+| Constant | Meaning |
+|---|---|
+| `SF_BYTES` | `by=` unit: bytes, the default |
+| `SF_CHARS` | `by=` unit: characters (UTF-8 units) |
 
 ## Character Kind Constant
 

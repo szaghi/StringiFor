@@ -1,0 +1,8 @@
+$ by_chars
+bytes: 14, characters: 8
+space at byte 8, at character 6
+你好
+character 7 starts at byte 9, byte 9 is in character 7
+|..Ada..|..Ada..|
+|.José.|..José.|
+|.你好|...你好..|

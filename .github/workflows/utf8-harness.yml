@@ -49,3 +49,4 @@ jobs:
         bash scripts/oracle.sh utf8
         bash scripts/oracle.sh escape
         bash scripts/oracle.sh units
+        bash scripts/oracle.sh positions
