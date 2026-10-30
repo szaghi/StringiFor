@@ -187,6 +187,33 @@ between them, the leftmost gaps taking the extra ones; the last line and the lin
 padded. A word longer than `width` is not broken. `len_last_word([sep])` is the length of the last word, trailing
 separators ignored.
 
+## Sorting
+
+<<< @/examples/snippets/sorting-orders.f90
+
+<<< @/examples/snippets/sorting-permutation.f90
+
+<<< @/examples/output/sorting.ansi{ansi}
+
+`call strsort(strings[, index][, less])` sorts an array of strings in place with a stable merge sort: O(n log n)
+comparisons, and strings that are equal for the order keep their relative order. `index` returns the permutation (the
+string now at `i` was at `index(i)`), so arrays that go with the strings can be reordered with `array(index)`. A not
+allocated string sorts as an empty one and stays not allocated.
+
+The order is `less`, any `pure logical function less(a, b)` of two characters of kind `CK`, true if `a` comes before
+`b` (the abstract interface is `strsort_less`). The module provides three:
+
+| Order | Description |
+|---|---|
+| `strless` (default) | Byte order, the bytes as unsigned values, a prefix before the longer string, as Python `bytes`; for well-formed UTF-8 it is the codepoint order. Unlike the intrinsic `<`, which pads the shorter string with blanks, `'a'` is before `'a '` and before `'a'//achar(9)`. |
+| `strless_nocase` | Byte order with the ASCII letters lowercased: `README` and `readme` are equal and keep their order. |
+| `strless_natural` | Runs of ASCII digits compared as numbers of any size, the other runs in byte order: `run2` before `run10`, `v1.9.1` before `v1.10.0`; `run02` and `run2` are equal. Case-sensitive. |
+
+<<< @/examples/snippets/sorting-custom.f90
+
+None of them knows the conventions of a language (accents, `ß`, Unicode case folding): that is collation, out of the
+scope of StringiFor.
+
 ## Comparing
 
 <<< @/examples/snippets/prefix.f90

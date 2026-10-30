@@ -197,6 +197,8 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 | `from_codepoints(codes)` | String encoded in UTF-8 from codepoints, the inverse of `codepoints()` |
 | `glob(self, pattern, list)` | Glob search returning matching paths; `self` is a `string` |
 | `strjoin(array[, sep][, is_trim][, is_col])` | Join arrays of strings or characters |
+| `strsort(strings[, index][, less])` | Sort an array of strings in place (subroutine): stable merge sort, `index` the permutation, `less` the order |
+| `strless(a, b)`, `strless_nocase(a, b)`, `strless_natural(a, b)` | Orders for `strsort`: byte (the default), ASCII case ignored, natural (`file2` before `file10`) |
 | `read_file`, `read_lines` | File reading subroutines |
 | `write_file`, `write_lines` | File writing subroutines |
 

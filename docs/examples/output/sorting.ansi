@@ -1,0 +1,7 @@
+$ sorting
+README Run2.dat run02.dat run1.dat run10.dat run2.dat
+README Run2.dat run1.dat run02.dat run2.dat run10.dat
+README run02.dat run1.dat run10.dat Run2.dat run2.dat
+a a b b c c
+1.0 1.5 2.0 2.5 3.0 3.5
+ccc fff ab bb a e

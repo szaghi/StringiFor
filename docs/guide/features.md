@@ -27,6 +27,7 @@ print '(A)', s%upper()//''   ! call a method, get a character with //
 | **Classes** | `is_alpha`, `is_alnum`, `is_digit`, `is_xdigit`, `is_punct`, `is_space` | [String Manipulation](./string-manipulation#character-classes) |
 | **Cleaning** | `strip` (blanks or a set of characters), `replace`, `unique`, `insert`, `escape`, `unescape`, `lstrip`, `rstrip`, `compact`, `squeeze`, `expand_tabs`, `transliterate`, `quote`, `unquote` | [String Manipulation](./string-manipulation#cleaning-and-replacing) |
 | **Tokens** | `split` (empty fields optionally kept), `split_chunked`, `partition`, `join`, `strjoin` (1D and 2D arrays) | [String Manipulation](./string-manipulation#splitting-and-joining) |
+| **Sorting** | `strsort` (stable merge sort, permutation), orders `strless`, `strless_nocase`, `strless_natural` (`file2` before `file10`), or your own | [String Manipulation](./string-manipulation#sorting) |
 | **Parts** | `slice` with a stride, `reverse`, `reverse_words`, `start_with`, `end_with`, `count`, `index`, `scan`, `verify`, `search` between tags | [String Manipulation](./string-manipulation#slicing-and-reversing) |
 | **Layout** | `fill`, `center`, `ljust`, `rjust`, `justify`, `len_last_word` | [String Manipulation](./string-manipulation#padding-and-layout) |
 | **Comparing** | `common_prefix`, `compare_version` | [String Manipulation](./string-manipulation#comparing) |
@@ -60,7 +61,7 @@ flowchart TD
 
 Use only the `stringifor` module: it exports the type, the kinds (`I1P`, `I2P`, `I4P`, `I8P`, `R4P`, `R8P`, `R16P`), the
 character kind `CK`, the overloaded intrinsics, and the procedures `read_file`, `read_lines`, `write_file`,
-`write_lines`, `glob` and `strjoin`.
+`write_lines`, `glob`, `strjoin`, `strsort` and its orders.
 
 ## Compiler support
 
