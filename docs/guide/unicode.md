@@ -15,6 +15,28 @@ The methods on this page read the bytes as UTF-8. They work on *units*: a unit i
 is not part of a well-formed sequence is never merged with its neighbours, dropped or rewritten, unless you ask for it
 with `to_valid_utf8`: Latin-1 text and binary data go through unchanged.
 
+## Methods that work on characters
+
+These methods treat a unit as one character, so they never cut a character in two; their positions are still byte
+positions, usable with `raw(i:j)`:
+
+<<< @/examples/snippets/utf8_units.f90
+
+<<< @/examples/output/utf8_units.ansi{ansi}
+
+| Method | By units |
+|---|---|
+| `reverse()` | the units are reversed, the bytes of each keep their order |
+| `match(pattern)` | `?` and a class `[...]` match one unit; a range compares codepoints |
+| `scan(set)`, `verify(set)` | `set` is a set of units; the result is the byte position of the first byte of the unit found |
+| `strip`, `lstrip`, `rstrip` with `remove=` | `remove` is a set of units |
+| `squeeze([set])` | runs of a repeated unit are reduced; `set` is a set of units |
+| `transliterate(old_set, new_set)` | the k-th unit of `old_set` becomes the k-th unit of `new_set`, so the result can be longer |
+
+The other methods need no change: UTF-8 is self-synchronising, so a well-formed substring can only match at a
+character boundary, and `index`, `count`, `replace`, `split`, `partition`, `start_with`, `end_with` give the same
+results whether the text is read as bytes or as characters. On ASCII text every method gives what it always gave.
+
 ## Checking and inspecting
 
 <<< @/examples/snippets/utf8_check-inspect.f90

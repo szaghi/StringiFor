@@ -2,6 +2,29 @@
 title: Changelog
 ---
 
+## Upgrading to 1.9.0
+
+Release 1.9.0 reads UTF-8 text as characters ([Unicode and UTF-8](./unicode)). On ASCII text nothing changes. On
+non-ASCII text the methods that worked on single bytes now work on units, a unit being a well-formed UTF-8 sequence or a
+byte that is not part of one:
+
+- **`reverse`** keeps the bytes of each character in order: `'ab'` followed by `é` reverses to `é` then `'ba'`, it gave
+  invalid UTF-8.
+- **`match`**: `?` and a class `[...]` match one character, `'caf?'` matches `café`; a range compares codepoints.
+- **`scan`, `verify`, `strip`/`lstrip`/`rstrip` with `remove=`, `squeeze` with a set** take a set of characters: `ã`
+  no longer matches the set `é` (they share their first byte), and a backward `verify` gives the first byte of a
+  character, not its last one.
+- **`squeeze`** reduces runs of a repeated non-ASCII character, which it did not see.
+- **`transliterate`** maps characters to characters, so `old_set` and `new_set` can hold non-ASCII ones and the result
+  can be longer than the string.
+
+Bytes that are not well-formed UTF-8 (Latin-1 text, binary data) are units on their own and keep their old
+behaviour. The only difference for them is Latin-1 or binary content that happens to contain a well-formed sequence
+(the Latin-1 `Ã©` is the bytes C3 A9, `é` in UTF-8): that pair is now one unit.
+
+Two defects are fixed too: `split_chunked` crashed on a string made only of separators, it now gives no tokens as
+`split` does; `end_with` read one byte before a null string.
+
 ## Upgrading to 1.4.0
 
 Release 1.4.0 makes the string methods linear in time and memory and fixes their edge cases. Three changes can alter

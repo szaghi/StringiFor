@@ -1,0 +1,6 @@
+$ utf8_units
+好你 éfaC
+match Caf? *  : T
+scan e acute  : 4
+Cafe 你好
+Café |

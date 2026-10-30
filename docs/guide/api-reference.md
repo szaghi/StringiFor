@@ -106,6 +106,8 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 ## UTF-8 Methods
 
 A *unit* is a well-formed UTF-8 sequence or a single byte that is not part of one: see [Unicode and UTF-8](./unicode).
+`reverse`, `match`, `scan`, `verify`, `squeeze`, `transliterate` and the `remove=` set of `strip`, `lstrip` and
+`rstrip` work on units; positions and lengths count bytes.
 
 | Method | Returns | Description |
 |--------|---------|-------------|
