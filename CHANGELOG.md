@@ -4,6 +4,41 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.10.0] — 2026-10-30
+### Added
+- **utf8**: Positions and lengths in characters with by=SF_CHARS
+
+- **utf8**: Slice, insert and len_last_word in characters with by=SF_CHARS
+
+- **utf8**: Widths in characters with by=SF_CHARS
+
+- **utf8**: Display width in terminal columns
+
+- **xml**: Escape_xml, unescape_xml and xml_error
+
+- **utf8**: Unicode whitespace with unicode=.true.
+
+- **sort**: Strsort and the orders strless, strless_nocase, strless_natural
+
+
+### Documentation
+- **utf8**: Positions and widths in characters
+
+- **utf8**: Display width, and its differences from wcwidth
+
+- **xml**: XML escaping
+
+- **utf8**: Unicode whitespace
+
+- **sort**: Sorting arrays of strings
+
+
+### Fixed
+- **string_t**: Assigning a part of a string to itself
+
+- **string_t**: Partition as Python str.partition ⚠ BREAKING CHANGE
+
+
 ## [1.9.1] — 2026-10-30
 ### Fixed
 - **io**: Use-after-free in the module read_lines with skip_bom
