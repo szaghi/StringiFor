@@ -5756,18 +5756,41 @@ contains
    pure subroutine string_assign_character(lhs, rhs)
    !< Assignment operator from character input.
    !<
+   !< @note The right hand side can be a part of the left hand side itself (`astring = astring%raw(2:)`): it is copied
+   !< into the new data before the old data are freed.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(1)
+   !< logical      :: test_passed(4)
    !< astring = 'hello'
    !< test_passed(1) = astring%chars()=='hello'
+   !< astring = astring%raw(2:)
+   !< test_passed(2) = astring%chars()=='ello'
+   !< astring = astring%raw(1:2)//astring%raw
+   !< test_passed(3) = astring%chars()=='elello'
+   !< astring = astring%raw
+   !< test_passed(4) = astring%chars()=='elello'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string),             intent(inout) :: lhs !< Left hand side.
-   character(kind=CK, len=*), intent(in)    :: rhs !< Right hand side.
+   class(string),             intent(inout) :: lhs  !< Left hand side.
+   character(kind=CK, len=*), intent(in)    :: rhs  !< Right hand side.
+   character(kind=CK, len=:), allocatable   :: copy !< New data, filled before the old ones are freed.
 
-   lhs%raw = rhs
+   if (allocated(lhs%raw)) then
+      if (len(lhs%raw)==len(rhs)) then ! no reallocation: rhs is either distinct or the whole lhs%raw
+         lhs%raw(:) = rhs
+         return
+      endif
+   endif
+   ! rhs may be a part of lhs%raw (`astring = astring%raw(2:)`): the old data are freed only after rhs is read
+   allocate(character(kind=CK, len=len(rhs)) :: copy)
+   copy(:) = rhs
+#ifdef _NVF
+   lhs%raw = copy ! nvfortran 26.9: move_alloc of a deferred-length character keeps the old length of `to`
+#else
+   call move_alloc(from=copy, to=lhs%raw)
+#endif
    endsubroutine string_assign_character
 
    pure subroutine string_assign_integer_I1P(lhs, rhs)

@@ -73,6 +73,9 @@ do
   case ('lt')
     t = unhex(arg(3))
     call put_logical(s < t)
+  case ('assign_substring') ! the right hand side is a part of the left hand side
+    s = s%raw(int_arg(3):int_arg(4))
+    call put_str(s)
   case ('concat')
     t = unhex(arg(3))
     write(output_unit, '(a)') hex(s//t)

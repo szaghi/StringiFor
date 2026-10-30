@@ -218,6 +218,15 @@ def chunked(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
     return [(data, sep, rng.randint(1, 4)) for data, sep in nonempty_needles(data, rng)]
 
 
+def ranges(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, first, last) with 1 <= first <= last + 1 <= len + 1: substrings, the null one included."""
+    calls: list[tuple[Arg, ...]] = []
+    for _ in range(3):
+        first = rng.randint(1, len(data) + 1)
+        calls.append((data, first, rng.randint(first - 1, len(data))))
+    return calls
+
+
 def padded(left: bytes, right: bytes) -> tuple[bytes, bytes]:
     """Fortran comparison: the shorter operand is padded with blanks (deviation from Python, documented)."""
     width = max(len(left), len(right))
@@ -689,6 +698,7 @@ SUITES: dict[str, list[Op]] = {
         Op("eq", pairs, lambda a, b: padded(a, b)[0] == padded(a, b)[1]),
         Op("lt", pairs, lambda a, b: padded(a, b)[0] < padded(a, b)[1]),
         Op("concat", pairs, lambda a, b: a + b),
+        Op("assign_substring", ranges, lambda d, first, last: d[first - 1 : last]),
     ],
     "utf8": [
         Op("is_utf8", single, lambda d: utf8_error(d) == 0),
