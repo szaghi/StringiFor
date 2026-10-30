@@ -29,6 +29,9 @@ Suites:
               UCD 17.0.0 read codepoint by codepoint (gen_unicode_tables.naive_sets), on every Unicode scalar value
   positions   positions and lengths in characters (Phase 4 of #51): by=SF_CHARS and byte_pos/char_pos; the reference
               converts the byte results with its own split of the bytes into units
+  xml         XML escaping (Phase 6 of #51): escape_xml, unescape_xml, xml_error and the round trip, on every byte and
+              every 2-byte string too; the reference is checked first against xml.sax.saxutils and against expat, which
+              must read every escaped string back and reject every malformed reference
   units       the methods that work on units (Phase 3 of #51): the reference is Python str on the bytes decoded with
               surrogateescape, so each byte that is not part of a well-formed sequence is one character (rule R3)
 """
@@ -39,12 +42,15 @@ import argparse
 import codecs
 import fnmatch
 import random
+import re
 import subprocess
 import sys
 from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
+from xml.etree import ElementTree
+from xml.sax import saxutils
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from corpus import POOL, RANDOM, SEED, cases, units  # noqa: E402
@@ -529,6 +535,233 @@ def escape_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+XML_ENTITIES = {b"amp": b"&", b"lt": b"<", b"gt": b">", b"quot": b'"', b"apos": b"'"}
+XML_REFERENCE = re.compile(rb"&(?:(amp|lt|gt|quot|apos)|#([0-9]+)|#x([0-9a-fA-F]+));")
+XML_MARKUP = {38: b"&amp;", 60: b"&lt;", 62: b"&gt;", 34: b"&quot;", 39: b"&apos;"}
+XML_SPACES = {9: b"&#9;", 10: b"&#10;", 13: b"&#13;"}
+
+
+def escape_xml(data: bytes, attribute: bool = False) -> bytes:
+    """Escape & < > " ' (and, for an attribute, TAB LF CR); every other byte is kept."""
+    table = {**XML_MARKUP, **(XML_SPACES if attribute else {})}
+    return b"".join(table.get(b, bytes([b])) for b in data)
+
+
+def parse_xml_reference(text: bytes, i: int) -> tuple[bytes, int]:
+    """Parse the reference whose & is at i: (bytes it gives, its length), length 0 if malformed.
+
+    A character reference must be a Unicode scalar value other than 0 (no version of XML allows U+0000). The other
+    controls are accepted, as XML 1.1 does; XML 1.0 (and expat) reject them.
+    """
+    found = XML_REFERENCE.match(text, i)
+    if found is None:
+        return b"", 0
+    name, decimal, hexadecimal = found.groups()
+    if name is not None:
+        return XML_ENTITIES[name], found.end() - i
+    value = int(decimal, 10) if decimal is not None else int(hexadecimal, 16)
+    if value == 0 or value > 0x10FFFF or 0xD800 <= value <= 0xDFFF:
+        return b"", 0
+    return chr(value).encode("utf-8"), found.end() - i
+
+
+def unescape_xml(text: bytes) -> bytes:
+    """Expand the XML references; the & of a malformed reference is kept and the text after it read normally."""
+    out, i = [], 0
+    while i < len(text):
+        if text[i] == 38:
+            value, n = parse_xml_reference(text, i)
+            if n:
+                out.append(value)
+                i += n
+                continue
+        out.append(text[i : i + 1])
+        i += 1
+    return b"".join(out)
+
+
+def xml_error(text: bytes) -> int:
+    """Byte position (1-based) of the & of the first malformed reference, 0 if none."""
+    i = 0
+    while i < len(text):
+        if text[i] == 38:
+            _, n = parse_xml_reference(text, i)
+            if n == 0:
+                return i + 1
+            i += n
+        else:
+            i += 1
+    return 0
+
+
+XML_MALFORMED = [
+    b"&",
+    b"&amp",
+    b"&AMP;",
+    b"&nbsp;",
+    b"&#;",
+    b"&#x;",
+    b"&#X41;",
+    b"&#0;",
+    b"&#x0000;",
+    b"&#xD800;",
+    b"&#57343;",
+    b"&#x110000;",
+    b"&#1114112;",
+    b"&#99999999999999999999;",
+    b"&#x100000041;",  # 2**32 + 65: a 32-bit value that wraps around would give "A"
+    b"&#4294967361;",
+    b"&#12a;",
+    b"&# 65;",
+]
+
+
+def is_xml10_char(code: int) -> bool:
+    """True if the codepoint is a Char of XML 1.0 (production [2])."""
+    return (
+        code in (9, 10, 13)
+        or 0x20 <= code <= 0xD7FF
+        or 0xE000 <= code <= 0xFFFD
+        or code >= 0x10000
+    )
+
+
+def xml_texts(rng: random.Random, n: int, expat_compatible: bool) -> list[bytes]:
+    """Random texts of references, malformed references and plain text (expat_compatible: only what XML 1.0 reads).
+
+    The compatible texts hold no literal CR (a parser turns it into LF), no < and no & outside a reference.
+    """
+
+    def char_value() -> int:
+        while True:
+            code = rng.choice(
+                [
+                    rng.randrange(1, 0x80),
+                    rng.randrange(0x80, 0x10000),
+                    rng.randrange(0x10000, 0x110000),
+                ]
+            )
+            if not 0xD800 <= code <= 0xDFFF and (
+                not expat_compatible or is_xml10_char(code)
+            ):
+                return code
+
+    def valid() -> bytes:
+        kind = rng.randrange(3)
+        if kind == 0:
+            return b"&" + rng.choice(list(XML_ENTITIES)) + b";"
+        code = char_value()
+        if kind == 1:
+            return b"&#" + b"0" * rng.randrange(3) + str(code).encode() + b";"
+        digits = b"%x" % code if rng.random() < 0.5 else b"%X" % code
+        return b"&#x" + b"0" * rng.randrange(3) + digits + b";"
+
+    plain = [
+        b"text",
+        b" ",
+        b";",
+        b"#",
+        b"x",
+        b"amp",
+        "é".encode(),
+        b"\n",
+        b"\t",
+        b">",
+        b"'",
+        b'"',
+    ]
+    if not expat_compatible:
+        plain += [b"\xff", b"\r", b"<", b"&#x1;", b"&#31;"]
+    texts = []
+    for _ in range(n):
+        tokens = []
+        for _ in range(rng.randint(0, 8)):
+            pick = rng.random()
+            if pick < 0.5:
+                tokens.append(valid())
+            elif pick < 0.7 and not expat_compatible:
+                tokens.append(rng.choice(XML_MALFORMED))
+            else:
+                tokens.append(rng.choice(plain))
+        texts.append(b"".join(tokens))
+    return texts
+
+
+def expat_text(document: bytes) -> tuple[str | None, str | None]:
+    """Parse a document <a x="...">...</a> with expat: (text of the element, attribute x), None if not well-formed."""
+    try:
+        element = ElementTree.fromstring(document)
+    except ElementTree.ParseError:
+        return None, None
+    return element.text or "", element.get("x")
+
+
+def check_xml_reference() -> list[str]:
+    """Check the reference against xml.sax.saxutils and against expat, an XML parser."""
+    failures = []
+    quotes = {'"': "&quot;", "'": "&apos;"}
+    spaces = {"\t": "&#9;", "\n": "&#10;", "\r": "&#13;"}
+    for _, data in cases():
+        if not is_utf8(data):
+            continue
+        chars = data.decode("utf-8")
+        for attribute, entities in ((False, quotes), (True, quotes | spaces)):
+            if escape_xml(data, attribute) != saxutils.escape(chars, entities).encode(
+                "utf-8"
+            ):
+                failures.append(
+                    f"escape_xml({data!r}, {attribute}) differs from xml.sax.saxutils.escape"
+                )
+        if not all(is_xml10_char(ord(c)) for c in chars):
+            continue
+        escaped = escape_xml(data, attribute=True)
+        for quote in (b'"', b"'"):
+            element, value = expat_text(
+                b"<a x=" + quote + escaped + quote + b">" + escaped + b"</a>"
+            )
+            if element != chars or value != chars:
+                failures.append(
+                    f"expat reads {data!r} back as {element!r} and {value!r}"
+                )
+        element, _ = expat_text(b"<a>" + escape_xml(data) + b"</a>")
+        if element != chars.replace("\r\n", "\n").replace("\r", "\n"):
+            failures.append(f"expat reads the element {data!r} back as {element!r}")
+    for text in xml_texts(random.Random(SEED), 5000, expat_compatible=True):
+        element, _ = expat_text(b"<a>" + text + b"</a>")
+        if (
+            element is None
+            or unescape_xml(text) != element.encode("utf-8")
+            or xml_error(text) != 0
+        ):
+            failures.append(
+                f"unescape_xml({text!r}) = {unescape_xml(text)!r}, expat {element!r}"
+            )
+    for text in XML_MALFORMED:
+        if expat_text(b"<a>" + text + b"</a>")[0] is not None or xml_error(text) != 1:
+            failures.append(f"{text!r}: expat reads it or xml_error is not 1")
+    return failures
+
+
+def xml_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """Every byte escaped; unescape_xml and xml_error on random texts; round trips of every 2-byte string."""
+    calls: list[tuple[str, tuple[Arg, ...]]] = [
+        (name, (bytes([b]),))
+        for b in range(256)
+        for name in ("escape_xml", "escape_xml_attribute")
+    ]
+    texts = xml_texts(random.Random(SEED), 4000, expat_compatible=False) + XML_MALFORMED
+    calls += [
+        (name, (text,)) for text in texts for name in ("unescape_xml", "xml_error")
+    ]
+    pairs = [bytes([a, b]) for a in range(256) for b in range(256)]
+    calls += [
+        (name, (data,))
+        for data in pairs
+        for name in ("xml_roundtrip", "xml_roundtrip_attribute")
+    ]
+    return calls
+
+
 def text(data: bytes) -> str:
     """Decode bytes into units: each ill-formed byte becomes one character (surrogateescape)."""
     return data.decode("utf-8", "surrogateescape")
@@ -909,8 +1142,9 @@ EXTRA = {
     "escape": escape_extra,
     "units": units_extra,
     "columns": columns_extra,
+    "xml": xml_extra,
 }
-SELF_CHECKS = {"escape": check_escape_reference}
+SELF_CHECKS = {"escape": check_escape_reference, "xml": check_xml_reference}
 
 
 SUITES: dict[str, list[Op]] = {
@@ -1047,6 +1281,14 @@ SUITES: dict[str, list[Op]] = {
         Op("escapes_error", single, escapes_error),
         Op("escape_roundtrip", single, lambda d: d),
         Op("escape_roundtrip_utf8", single, lambda d: d),
+    ],
+    "xml": [
+        Op("escape_xml", single, escape_xml),
+        Op("escape_xml_attribute", single, lambda d: escape_xml(d, attribute=True)),
+        Op("unescape_xml", single, unescape_xml),
+        Op("xml_error", single, xml_error),
+        Op("xml_roundtrip", single, lambda d: d),
+        Op("xml_roundtrip_attribute", single, lambda d: d),
     ],
 }
 
