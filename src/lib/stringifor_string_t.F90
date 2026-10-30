@@ -7,7 +7,7 @@ use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 use stringifor_utf8, only : REPLACEMENT_CHARACTER, utf8_decode, utf8_encode, utf8_encoded_len, utf8_first_error, &
-                            utf8_subpart_len, utf8_unit_len, utf8_units
+                            utf8_scan, utf8_subpart_len, utf8_unit_len, utf8_units
 
 implicit none
 private
@@ -590,7 +590,7 @@ contains
    integer                                         :: i    !< Result of the search.
 
    if (allocated(set%raw)) then
-     i = scan(string=s, set=set%raw, back=back)
+     i = utf8_scan(raw=s, set=set%raw, back=back, inside=.true.)
    else
      i = 0
    endif
@@ -616,7 +616,7 @@ contains
    integer                                         :: i    !< Result of the search.
 
    if (allocated(set%raw)) then
-     i = verify(string=s, set=set%raw, back=back)
+     i = utf8_scan(raw=s, set=set%raw, back=back, inside=.false.)
    else
      i = 0
    endif
@@ -886,7 +886,7 @@ contains
    integer                             :: i     !< Result of the search.
 
    if (allocated(self%raw).and.allocated(set%raw)) then
-     i = scan(string=self%raw, set=set%raw, back=back)
+     i = utf8_scan(raw=self%raw, set=set%raw, back=back, inside=.true.)
    else
      i = 0
    endif
@@ -895,12 +895,19 @@ contains
    elemental function sscan_string_character(self, set, back) result(i)
    !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is in `set`.
    !<
+   !< @note The string and the set are made of units: a well-formed UTF-8 sequence, or a byte that is not part of one. A
+   !< unit matches a member of the set only as a whole (`a`//U+00E3 has no member of the set U+00E9, though both start with
+   !< the byte C3), and the result is the byte position of the first byte of the unit found.
+   !<
    !<```fortran
    !< type(string) :: string1
-   !< logical      :: test_passed(2)
+   !< logical      :: test_passed(4)
    !< string1 = 'Hello World Hello!'
    !< test_passed(1) = string1%scan(set='llo')==scan(string='Hello World Hello!', set='llo')
    !< test_passed(2) = string1%scan(set='llo', back=.true.)==scan(string='Hello World Hello!', set='llo', back=.true.)
+   !< string1 = 'a'//char(195)//char(163)
+   !< test_passed(3) = string1%scan(set=char(195)//char(169))==0
+   !< test_passed(4) = string1%scan(set='x'//char(195)//char(163))==2
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -910,7 +917,7 @@ contains
    integer                                         :: i     !< Result of the search.
 
    if (allocated(self%raw)) then
-     i = scan(string=self%raw, set=set, back=back)
+     i = utf8_scan(raw=self%raw, set=set, back=back, inside=.true.)
    else
      i = 0
    endif
@@ -953,7 +960,7 @@ contains
    integer                             :: i     !< Result of the search.
 
    if (allocated(self%raw).and.allocated(set%raw)) then
-     i = verify(string=self%raw, set=set%raw, back=back)
+     i = utf8_scan(raw=self%raw, set=set%raw, back=back, inside=.false.)
    else
      i = 0
    endif
@@ -963,12 +970,19 @@ contains
    !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is not
    !< in `set`. If all characters of `string` are found in `set`, the result is zero.
    !<
+   !< @note The string and the set are made of units: a well-formed UTF-8 sequence, or a byte that is not part of one. A
+   !< unit matches a member of the set only as a whole (`a`//U+00E3 has no member of the set U+00E9, though both start with
+   !< the byte C3), and the result is the byte position of the first byte of the unit found.
+   !<
    !<```fortran
    !< type(string) :: string1
-   !< logical      :: test_passed(2)
+   !< logical      :: test_passed(4)
    !< string1 = 'Hello World Hello!'
    !< test_passed(1) = string1%verify(set='llo')==verify(string='Hello World Hello!', set='llo')
    !< test_passed(2) = string1%verify(set='llo', back=.true.)==verify(string='Hello World Hello!', set='llo', back=.true.)
+   !< string1 = 'a'//char(195)//char(169)
+   !< test_passed(3) = string1%verify(set='a', back=.true.)==2
+   !< test_passed(4) = string1%verify(set='a'//char(195)//char(169))==0
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -978,7 +992,7 @@ contains
    integer                                         :: i     !< Result of the search.
 
    if (allocated(self%raw)) then
-     i = verify(string=self%raw, set=set, back=back)
+     i = utf8_scan(raw=self%raw, set=set, back=back, inside=.false.)
    else
      i = 0
    endif
@@ -3776,9 +3790,12 @@ contains
    !< `whitespace` is true, the whitespace of [[string:is_space]] (space, tab, new line, vertical tab, form feed, carriage
    !< return) is removed too, as Python `str.strip()`. To strip one side only see [[string:lstrip]] and [[string:rstrip]].
    !<
+   !< @note `remove` is a set of units, a well-formed UTF-8 sequence or a byte that is not part of one: a character is
+   !< removed as a whole or not at all.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(10)
+   !< logical      :: test_passed(12)
    !< astring = '  Hello World!   '
    !< test_passed(1) = astring%strip()//''=='Hello World!'
    !< astring = '   hello   '
@@ -3797,6 +3814,10 @@ contains
    !< astring = achar(9)//' a b'//new_line('a')
    !< test_passed(9) = astring%strip(whitespace=.true.)//''=='a b'
    !< test_passed(10) = astring%strip(remove='b', whitespace=.true.)//''=='a'
+   !< astring = char(195)//char(169)//'a'//char(195)//char(169)
+   !< test_passed(11) = astring%strip(remove=char(195)//char(169))//''=='a'
+   !< astring = char(195)//char(163)//'a'
+   !< test_passed(12) = astring%strip(remove=char(195)//char(169))//''==char(195)//char(163)//'a'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -6705,10 +6726,15 @@ contains
    first = 1
    last = len(raw)
    if (left) then
-      first = verify(raw, set)
+      first = utf8_scan(raw=raw, set=set, inside=.false.)
       if (first==0) first = len(raw) + 1
    endif
-   if (right) last = verify(raw, set, back=.true.)
+   if (right) then
+      last = utf8_scan(raw=raw, set=set, back=.true., inside=.false.) ! the first byte of the last unit kept
+      if (last>0) then
+         if (iand(ichar(raw(last:last)), 255)>127) last = last + utf8_unit_len(raw, last) - 1
+      endif
+   endif
    if (first<=last) then
       stripped = raw(first:last)
    else

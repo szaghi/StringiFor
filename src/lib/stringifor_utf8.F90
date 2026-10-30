@@ -14,6 +14,8 @@ public :: utf8_decode
 public :: utf8_encode
 public :: utf8_encoded_len
 public :: utf8_first_error
+public :: utf8_in_set
+public :: utf8_scan
 public :: utf8_subpart_len
 public :: utf8_unit_len
 public :: utf8_units
@@ -184,7 +186,82 @@ contains
    enddo
    endfunction utf8_units
 
+   pure function utf8_in_set(raw, i, n, set) result(found)
+   !< Return true if the unit raw(i:i+n-1) is one of the units of set.
+   character(len=*), intent(in) :: raw   !< Bytes.
+   integer,          intent(in) :: i     !< Position of the unit.
+   integer,          intent(in) :: n     !< Length of the unit.
+   character(len=*), intent(in) :: set   !< Set of units.
+   logical                      :: found !< Result.
+   integer                      :: j     !< Byte position in the set.
+   integer                      :: m     !< Length of a unit of the set.
+
+   found = .false.
+   j = 1
+   do while (j <= len(set))
+      m = 1
+      if (byte(set(j:j)) > 127) m = utf8_unit_len(set, j)
+      if (m == n) then
+         if (set(j:j+m-1) == raw(i:i+n-1)) then
+            found = .true.
+            return
+         endif
+      endif
+      j = j + m
+   enddo
+   endfunction utf8_in_set
+
+   pure function utf8_scan(raw, set, back, inside) result(position)
+   !< Return the byte position of the first (last if back) unit that is in the set (not in the set if .not.inside),
+   !< 0 if there is none: `scan` (inside) and `verify` (not inside) by units.
+   !<
+   !< With an ASCII set the intrinsic gives the answer, except a backward `verify` landing on a non-ASCII byte.
+   character(len=*), intent(in)           :: raw      !< Bytes.
+   character(len=*), intent(in)           :: set      !< Set of units.
+   logical,          intent(in), optional :: back     !< Search from the end.
+   logical,          intent(in)           :: inside   !< Search a unit in the set (scan) or not in the set (verify).
+   integer                                :: position !< Position of the first byte of the unit found, 0 if none.
+   logical                                :: back_    !< Search from the end, local variable.
+   integer                                :: i        !< Byte position.
+   integer                                :: n        !< Unit length.
+
+   back_ = .false. ; if (present(back)) back_ = back
+   if (is_ascii(set)) then
+      if (inside) then
+         position = scan(raw, set, back_)
+         return
+      endif
+      position = verify(raw, set, back_)
+      if (position == 0 .or. .not.back_) return ! forward: a unit start, all the bytes before being ASCII
+      if (byte(raw(position:position)) < 128) return
+   endif
+   position = 0
+   i = 1
+   do while (i <= len(raw))
+      n = 1
+      if (byte(raw(i:i)) > 127) n = utf8_unit_len(raw, i)
+      if (utf8_in_set(raw, i, n, set) .eqv. inside) then
+         position = i
+         if (.not.back_) return
+      endif
+      i = i + n
+   enddo
+   endfunction utf8_scan
+
    ! private
+   pure function is_ascii(text) result(ascii)
+   !< Return true if every byte of text is ASCII.
+   character(len=*), intent(in) :: text  !< Bytes.
+   logical                      :: ascii !< Result.
+   integer                      :: i     !< Byte position.
+
+   ascii = .false.
+   do i = 1, len(text)
+      if (byte(text(i:i)) > 127) return
+   enddo
+   ascii = .true.
+   endfunction is_ascii
+
    elemental function byte(c) result(value)
    !< Return the value 0..255 of a byte (`ichar` may be signed above 127 on some processors).
    character(len=1), intent(in) :: c     !< Byte.

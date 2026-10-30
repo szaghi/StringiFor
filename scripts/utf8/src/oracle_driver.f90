@@ -8,7 +8,7 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
-use stringifor, only : from_codepoints, I4P, string
+use stringifor, only : from_codepoints, I4P, scan, string, verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
 character(len=:), allocatable :: field(:) !< Fields of the line (padded).
@@ -93,6 +93,26 @@ do
   case ('escape_roundtrip_utf8')
     t = s%escape_c(ascii=.false.)
     call put_str(t%unescape_c())
+  case ('scan')
+    call put_int(s%scan(unhex(arg(3))))
+  case ('scan_back')
+    call put_int(s%scan(unhex(arg(3)), back=.true.))
+  case ('verify')
+    call put_int(s%verify(unhex(arg(3))))
+  case ('verify_back')
+    call put_int(s%verify(unhex(arg(3)), back=.true.))
+  case ('scan_overload')
+    t = unhex(arg(3))
+    call put_int(scan(unhex(arg(2)), t))
+  case ('verify_overload')
+    t = unhex(arg(3))
+    call put_int(verify(unhex(arg(2)), t, back=.true.))
+  case ('strip_remove')
+    call put_str(s%strip(remove=unhex(arg(3))))
+  case ('lstrip_remove')
+    call put_str(s%lstrip(remove=unhex(arg(3))))
+  case ('rstrip_remove')
+    call put_str(s%rstrip(remove=unhex(arg(3))))
   case default
     call fail('unknown operation: '//arg(1))
   endselect

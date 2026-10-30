@@ -25,6 +25,8 @@ Suites:
               sequences, and the whole codespace through from_codepoints
   escape      the C escape codecs (Phase 2 of #51): escape_c, unescape_c, escapes_error and the round trip; the
               reference is checked first against Python's unicode_escape codec on the escapes both understand
+  units       the methods that work on units (Phase 3 of #51): the reference is Python str on the bytes decoded with
+              surrogateescape, so each byte that is not part of a well-formed sequence is one character (rule R3)
 """
 
 from __future__ import annotations
@@ -462,6 +464,43 @@ def escape_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+def text(data: bytes) -> str:
+    """Decode bytes into units: each ill-formed byte becomes one character (surrogateescape)."""
+    return data.decode("utf-8", "surrogateescape")
+
+
+def raw(chars: str) -> bytes:
+    """Encode units back into the same bytes."""
+    return chars.encode("utf-8", "surrogateescape")
+
+
+def unit_search(data: bytes, members: bytes, back: bool, inside: bool) -> int:
+    """Byte position of the first (last) unit in (not in) the set of units, 0 if none."""
+    chars, wanted = text(data), set(text(members))
+    found, offset = 0, 0
+    for char in chars:
+        if (char in wanted) == inside:
+            found = offset + 1
+            if not back:
+                return found
+        offset += len(raw(char))
+    return found
+
+
+def unit_sets(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, set): sets of units of data, of the pool, a lone lead byte, an ASCII set, the empty set."""
+    pieces = units(data)
+    sets = [
+        b"".join(rng.sample(pieces, min(len(pieces), rng.randint(1, 3))))
+        if pieces
+        else b"x"
+    ]
+    sets.append(b"".join(rng.choice(POOL)[0] for _ in range(rng.randint(1, 3))))
+    sets.append(rng.choice([b"\xc3", b"\xe4\xbd", b" ", b"ab"]))
+    sets.append(b"")
+    return [(data, members) for members in sets]
+
+
 EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra}
 SELF_CHECKS = {"escape": check_escape_reference}
 
@@ -492,6 +531,37 @@ SUITES: dict[str, list[Op]] = {
         Op("from_codepoints", codepoint_lists, from_codepoints),
         Op("to_valid_utf8", single, to_valid_utf8),
         Op("to_valid_utf8_with", replacements_of, to_valid_utf8),
+    ],
+    "units": [
+        Op("scan", unit_sets, lambda d, m: unit_search(d, m, back=False, inside=True)),
+        Op(
+            "scan_back",
+            unit_sets,
+            lambda d, m: unit_search(d, m, back=True, inside=True),
+        ),
+        Op(
+            "verify",
+            unit_sets,
+            lambda d, m: unit_search(d, m, back=False, inside=False),
+        ),
+        Op(
+            "verify_back",
+            unit_sets,
+            lambda d, m: unit_search(d, m, back=True, inside=False),
+        ),
+        Op(
+            "scan_overload",
+            unit_sets,
+            lambda d, m: unit_search(d, m, back=False, inside=True),
+        ),
+        Op(
+            "verify_overload",
+            unit_sets,
+            lambda d, m: unit_search(d, m, back=True, inside=False),
+        ),
+        Op("strip_remove", unit_sets, lambda d, m: raw(text(d).strip(text(m)))),
+        Op("lstrip_remove", unit_sets, lambda d, m: raw(text(d).lstrip(text(m)))),
+        Op("rstrip_remove", unit_sets, lambda d, m: raw(text(d).rstrip(text(m)))),
     ],
     "escape": [
         Op("escape_c", single, escape_c),

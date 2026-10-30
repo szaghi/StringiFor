@@ -1,7 +1,7 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(10)
+ logical :: test_passed(12)
  astring = '  Hello World!   '
  test_passed(1) = astring%strip()//''=='Hello World!'
  astring = '   hello   '
@@ -20,5 +20,9 @@ use stringifor_string_t
  astring = achar(9)//' a b'//new_line('a')
  test_passed(9) = astring%strip(whitespace=.true.)//''=='a b'
  test_passed(10) = astring%strip(remove='b', whitespace=.true.)//''=='a'
+ astring = char(195)//char(169)//'a'//char(195)//char(169)
+ test_passed(11) = astring%strip(remove=char(195)//char(169))//''=='a'
+ astring = char(195)//char(163)//'a'
+ test_passed(12) = astring%strip(remove=char(195)//char(169))//''==char(195)//char(163)//'a'
  print '(L1)', all(test_passed)
 endprogram volatile_doctest
