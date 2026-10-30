@@ -6,7 +6,7 @@ module stringifor_utf8
 !< U+10FFFF, no truncated sequence) or a single byte that is not part of one. Every procedure works on units, so
 !< ill-formed input is never merged, dropped or rewritten unless a procedure says so.
 use penf, only : I4P, I8P
-use stringifor_unicode_tables, only : in_ranges, WIDE_RANGES, ZERO_WIDTH_RANGES
+use stringifor_unicode_tables, only : in_ranges, WHITE_SPACE_RANGES, WIDE_RANGES, ZERO_WIDTH_RANGES
 
 implicit none
 private
@@ -23,11 +23,13 @@ public :: utf8_in_set
 public :: utf8_nth_unit
 public :: utf8_unit_index
 public :: utf8_scan
+public :: utf8_space_len
 public :: utf8_subpart_len
 public :: utf8_unit_len
 public :: utf8_units
 public :: utf8_width
 public :: utf8_unit_width
+public :: utf8_white_space
 
 integer(I8P),     parameter :: HIGH_BITS = -9187201950435737472_I8P !< 8080808080808080: the high bit of 8 bytes.
 character(len=*), parameter :: REPLACEMENT_CHARACTER = char(239)//char(191)//char(189) !< U+FFFD in UTF-8.
@@ -353,6 +355,44 @@ contains
       i = i + n
    enddo
    endfunction utf8_width
+
+   pure function utf8_space_len(raw, i) result(n)
+   !< Return the length in bytes of the unit starting at byte i if it has the Unicode White_Space property, 0 if not.
+   !<
+   !< White_Space (PropList.txt) is TAB, LF, VT, FF, CR, space, U+0085, U+00A0, U+1680, U+2000..U+200A, U+2028,
+   !< U+2029, U+202F, U+205F and U+3000. An ill-formed byte is not whitespace.
+   character(len=*), intent(in) :: raw !< Bytes.
+   integer,          intent(in) :: i   !< Position of the first byte, 1 <= i <= len(raw).
+   integer                      :: n   !< Length of the whitespace unit, 0 if the unit is not whitespace.
+   integer(I4P)                 :: cp  !< Codepoint of the unit.
+
+   n = 0
+   select case (byte(raw(i:i)))
+   case (9:13, 32)
+      n = 1
+   case (128:)
+      call utf8_decode(raw, i, cp, n)
+      if (cp < 0) then
+         n = 0
+      elseif (.not.in_ranges(cp, WHITE_SPACE_RANGES)) then
+         n = 0
+      endif
+   endselect
+   endfunction utf8_space_len
+
+   pure function utf8_white_space() result(units)
+   !< Return every character with the Unicode White_Space property, encoded in UTF-8 one after the other.
+   character(len=:), allocatable :: units !< The whitespace characters.
+   integer                       :: r     !< Range counter.
+   integer(I4P)                  :: cp    !< Codepoint.
+
+   units = ''
+   do r = 1, size(WHITE_SPACE_RANGES, dim=2)
+      do cp = WHITE_SPACE_RANGES(1, r), WHITE_SPACE_RANGES(2, r)
+         units = units//utf8_encode(cp)
+      enddo
+   enddo
+   endfunction utf8_white_space
 
    pure function utf8_byte_pos(raw, k) result(position)
    !< Return the byte position of the first byte of the k-th unit, len(raw)+1 for k one past the last unit, 0 for any

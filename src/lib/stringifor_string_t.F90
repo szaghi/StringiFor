@@ -9,7 +9,7 @@ use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
                             utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
                             utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units, &
-                            utf8_unit_width, utf8_width
+                            utf8_unit_width, utf8_width, utf8_space_len, utf8_white_space
 
 implicit none
 private
@@ -1446,44 +1446,66 @@ contains
    endif
    endfunction common_prefix_strings
 
-   elemental function compact(self, sep) result(compacted)
+   elemental function compact(self, sep, unicode) result(compacted)
    !< Return the words of the string separated by `sep` (default a space): every run of whitespace becomes one separator, the
    !< leading and trailing whitespace is removed.
    !<
-   !< @note As Python `sep.join(s.split())`; the whitespace is the one of [[string:is_space]], a null `sep` removes it.
+   !< @note As Python `sep.join(s.split())`; the whitespace is the one of [[string:is_space]], ASCII or, with
+   !< `unicode=.true.`, Unicode White_Space. A null `sep` removes it.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(4)
    !< astring = '  one'//achar(9)//' two'//new_line('a')//'three  '
    !< test_passed(1) = astring%compact()//''=='one two three'
    !< test_passed(2) = astring%compact(sep=', ')//''=='one, two, three'
    !< test_passed(3) = astring%compact(sep='')//''=='onetwothree'
+   !< astring = 'one'//char(227)//char(128)//char(128)//'two'//char(194)//char(160)
+   !< test_passed(4) = astring%compact(unicode=.true.)//''=='one two'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self      !< The string.
    character(kind=CK, len=*), intent(in), optional :: sep       !< Separator of the words, default a space.
+   logical,                   intent(in), optional :: unicode   !< The whitespace is Unicode White_Space, not ASCII.
    type(string)                                    :: compacted !< The compacted string.
+   logical                                         :: unicode_  !< The whitespace is Unicode White_Space, local variable.
+   integer                                         :: n         !< Length of a whitespace unit, 0 if not whitespace.
    character(kind=CK, len=:), allocatable          :: buffer    !< Buffer, only its first length characters are used.
    integer                                         :: length    !< Length of the result.
    integer                                         :: first     !< First character of a word.
    integer                                         :: c         !< Character counter.
 
    if (allocated(self%raw)) then
+      unicode_ = .false. ; if (present(unicode)) unicode_ = unicode
       length = 0
       c = 1
       do
-         do while (c<=len(self%raw))
-            if (.not.is_space_char(self%raw(c:c))) exit
-            c = c + 1
-         enddo
+         if (unicode_) then
+            do while (c<=len(self%raw))
+               n = utf8_space_len(self%raw, c)
+               if (n==0) exit
+               c = c + n
+            enddo
+         else
+            do while (c<=len(self%raw))
+               if (.not.is_space_char(self%raw(c:c))) exit
+               c = c + 1
+            enddo
+         endif
          if (c>len(self%raw)) exit
          first = c
-         do while (c<=len(self%raw))
-            if (is_space_char(self%raw(c:c))) exit
-            c = c + 1
-         enddo
+         if (unicode_) then
+            do while (c<=len(self%raw)) ! a continuation byte never starts a whitespace unit: stepping by bytes is safe
+               if (utf8_space_len(self%raw, c)>0) exit
+               c = c + 1
+            enddo
+         else
+            do while (c<=len(self%raw))
+               if (is_space_char(self%raw(c:c))) exit
+               c = c + 1
+            enddo
+         endif
          if (length>0) then
             if (present(sep)) then
                call append_to_buffer(buffer=buffer, length=length, piece=sep)
@@ -2957,7 +2979,7 @@ contains
    endif
    endfunction ljust
 
-   elemental function lstrip(self, remove, whitespace) result(stripped)
+   elemental function lstrip(self, remove, whitespace, unicode) result(stripped)
    !< Return a copy of the string with the leading characters removed: spaces by default, the characters of the set `remove`
    !< if passed, plus the whitespace of [[string:is_space]] if `whitespace` is true (as Python `str.lstrip`).
    !<
@@ -2974,10 +2996,12 @@ contains
    class(string),             intent(in)           :: self       !< The string.
    character(kind=CK, len=*), intent(in), optional :: remove     !< Set of characters to be removed, default space.
    logical,                   intent(in), optional :: whitespace !< Remove the whitespace too.
+   logical,                   intent(in), optional :: unicode    !< The whitespace is Unicode White_Space, not ASCII.
    type(string)                                    :: stripped   !< The stripped string.
 
    if (allocated(self%raw)) &
-      stripped%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace), left=.true., right=.false.)
+      stripped%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace, unicode=unicode), &
+                               left=.true., right=.false.)
    endfunction lstrip
 
    elemental function lower(self)
@@ -3577,7 +3601,7 @@ contains
    endif
    endfunction rjust
 
-   elemental function rstrip(self, remove, whitespace) result(stripped)
+   elemental function rstrip(self, remove, whitespace, unicode) result(stripped)
    !< Return a copy of the string with the trailing characters removed: spaces by default, the characters of the set `remove`
    !< if passed, plus the whitespace of [[string:is_space]] if `whitespace` is true (as Python `str.rstrip`).
    !<
@@ -3594,10 +3618,12 @@ contains
    class(string),             intent(in)           :: self       !< The string.
    character(kind=CK, len=*), intent(in), optional :: remove     !< Set of characters to be removed, default space.
    logical,                   intent(in), optional :: whitespace !< Remove the whitespace too.
+   logical,                   intent(in), optional :: unicode    !< The whitespace is Unicode White_Space, not ASCII.
    type(string)                                    :: stripped   !< The stripped string.
 
    if (allocated(self%raw)) &
-      stripped%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace), left=.false., right=.true.)
+      stripped%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace, unicode=unicode), &
+                               left=.false., right=.true.)
    endfunction rstrip
 
    function search(self, tag_start, tag_end, in_string, in_character, istart, iend) result(tag)
@@ -4143,20 +4169,22 @@ contains
    endif
    endfunction startcase
 
-   elemental function strip(self, remove_nulls, remove, whitespace)
+   elemental function strip(self, remove_nulls, remove, whitespace, unicode)
    !< Return a copy of the string with the leading and trailing characters removed.
    !<
    !< By default the leading and trailing spaces are removed. If `remove` is passed, it is the set of characters to be removed:
    !< all the leading and trailing characters of the string belonging to the set are removed, in any order they occur. If
    !< `whitespace` is true, the whitespace of [[string:is_space]] (space, tab, new line, vertical tab, form feed, carriage
-   !< return) is removed too, as Python `str.strip()`. To strip one side only see [[string:lstrip]] and [[string:rstrip]].
+   !< return) is removed too, as Python `str.strip()`; with `unicode=.true.` it is the Unicode White_Space instead (see
+   !< [[string:is_space]]), `unicode` having no effect without `whitespace`. To strip one side only see [[string:lstrip]]
+   !< and [[string:rstrip]].
    !<
    !< @note `remove` is a set of units, a well-formed UTF-8 sequence or a byte that is not part of one: a character is
    !< removed as a whole or not at all.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(12)
+   !< logical      :: test_passed(14)
    !< astring = '  Hello World!   '
    !< test_passed(1) = astring%strip()//''=='Hello World!'
    !< astring = '   hello   '
@@ -4179,6 +4207,9 @@ contains
    !< test_passed(11) = astring%strip(remove=char(195)//char(169))//''=='a'
    !< astring = char(195)//char(163)//'a'
    !< test_passed(12) = astring%strip(remove=char(195)//char(169))//''==char(195)//char(163)//'a'
+   !< astring = char(227)//char(128)//char(128)//'a b'//char(194)//char(160)//achar(10)
+   !< test_passed(13) = astring%strip(whitespace=.true., unicode=.true.)//''=='a b'
+   !< test_passed(14) = astring%strip(whitespace=.true.)//''==char(227)//char(128)//char(128)//'a b'//char(194)//char(160)
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -4186,11 +4217,13 @@ contains
    logical,                   intent(in), optional :: remove_nulls !< Remove null characters at the end.
    character(kind=CK, len=*), intent(in), optional :: remove       !< Set of characters to be removed, default space.
    logical,                   intent(in), optional :: whitespace   !< Remove the whitespace too.
+   logical,                   intent(in), optional :: unicode      !< The whitespace is Unicode White_Space, not ASCII.
    type(string)                                    :: strip        !< The stripped string.
    integer                                         :: c            !< Counter.
 
    if (allocated(self%raw)) then
-      strip%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace), left=.true., right=.true.)
+      strip%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace, unicode=unicode), &
+                            left=.true., right=.true.)
       if (present(remove_nulls)) then
          if (remove_nulls) then
             c = index(strip%raw, char(0))
@@ -5910,34 +5943,52 @@ contains
    endif
    endfunction is_real
 
-   elemental function is_space(self)
+   elemental function is_space(self, unicode)
    !< Return true if all characters in the string are whitespace.
    !<
-   !< @note The whitespace is space, tab, new line, vertical tab, form feed and carriage return (as C `isspace`). A null or
-   !< not allocated string gives false.
+   !< @note The whitespace is space, tab, new line, vertical tab, form feed and carriage return (as C `isspace`). With
+   !< `unicode=.true.` it is the characters with the Unicode White_Space property: these 6, U+0085 (NEL), U+00A0
+   !< (no-break space), U+1680, U+2000..U+200A, U+2028, U+2029, U+202F, U+205F and U+3000 (ideographic space). A byte that
+   !< is not part of a well-formed UTF-8 sequence is not whitespace. A null or not allocated string gives false.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(4)
    !< astring = ' '//achar(9)//new_line('a')
    !< test_passed(1) = astring%is_space()
    !< astring = ' x '
    !< test_passed(2) = .not.astring%is_space()
    !< astring = ''
    !< test_passed(3) = .not.astring%is_space()
+   !< astring = char(194)//char(160)//char(227)//char(128)//char(128)//' '
+   !< test_passed(4) = astring%is_space(unicode=.true.).and..not.astring%is_space()
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string), intent(in) :: self !< The string.
-   logical                   :: is_space !< Result of the test.
-   integer                   :: c        !< Character counter.
+   class(string), intent(in)           :: self     !< The string.
+   logical,       intent(in), optional :: unicode  !< The whitespace is Unicode White_Space, not ASCII.
+   logical                             :: is_space !< Result of the test.
+   logical                             :: unicode_ !< The whitespace is Unicode White_Space, local variable.
+   integer                             :: c        !< Byte counter.
+   integer                             :: n        !< Length of a whitespace unit, 0 if not whitespace.
 
    is_space = .false.
    if (allocated(self%raw)) then
-      do c=1, len(self%raw)
-         is_space = is_space_char(self%raw(c:c))
-         if (.not.is_space) exit
-      enddo
+      unicode_ = .false. ; if (present(unicode)) unicode_ = unicode
+      if (unicode_) then
+         c = 1
+         do while (c<=len(self%raw))
+            n = utf8_space_len(self%raw, c)
+            is_space = n>0
+            if (.not.is_space) exit
+            c = c + n
+         enddo
+      else
+         do c=1, len(self%raw)
+            is_space = is_space_char(self%raw(c:c))
+            if (.not.is_space) exit
+         enddo
+      endif
    endif
    endfunction is_space
 
@@ -7297,12 +7348,14 @@ contains
    pos = p
    endfunction find_occurrence
 
-   pure function strip_characters(remove, whitespace) result(set)
-   !< Return the set of characters to strip: `remove` (default a space), plus the whitespace if `whitespace` is true.
+   pure function strip_characters(remove, whitespace, unicode) result(set)
+   !< Return the set of characters to strip: `remove` (default a space), plus the whitespace if `whitespace` is true, the
+   !< Unicode White_Space if `unicode` is true too.
    !<
    !< @note The doctest is not necessary, this being tested by [[string:strip]].
    character(kind=CK, len=*), intent(in), optional :: remove     !< Set of characters to be removed, default space.
    logical,                   intent(in), optional :: whitespace !< Remove the whitespace too.
+   logical,                   intent(in), optional :: unicode    !< The whitespace is Unicode White_Space, not ASCII.
    character(kind=CK, len=:), allocatable          :: set        !< Set of characters to strip.
 
    if (present(remove)) then
@@ -7311,7 +7364,12 @@ contains
       set = SPACE
    endif
    if (present(whitespace)) then
-      if (whitespace) set = set//SPACE//TAB//achar(10, kind=CK)//achar(11, kind=CK)//achar(12, kind=CK)//achar(13, kind=CK)
+      if (whitespace) then
+         set = set//SPACE//TAB//achar(10, kind=CK)//achar(11, kind=CK)//achar(12, kind=CK)//achar(13, kind=CK)
+         if (present(unicode)) then
+            if (unicode) set = set//utf8_white_space()
+         endif
+      endif
    endif
    endfunction strip_characters
 
