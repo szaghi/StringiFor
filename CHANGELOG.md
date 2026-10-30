@@ -4,6 +4,39 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.9.0] — 2026-10-30
+### Added
+- **unicode**: Generate the Unicode property tables from the UCD
+
+- **utf8**: Add the UTF-8 core: validation, codepoints and repair
+
+- **escape**: Add the C escape codecs escape_c, unescape_c and escapes_error
+
+- **utf8**: Scan, verify and strip work on units
+
+- **utf8**: Reverse, squeeze and transliterate work on units
+
+- **utf8**: Match wildcard patterns by units
+
+- **io**: Read and write the UTF-8 byte order mark
+
+
+### Documentation
+- Add searching to the tutorial, unit, binary and stdin recipes
+
+- **utf8**: Document the methods that work on units, add the 1.9.0 upgrade notes ⚠ BREAKING CHANGE
+
+
+### Fixed
+- **ci**: Run install smoke test from the release workflow
+
+- **string_t**: Split_chunked without tokens, end_with on a null string
+
+
+### Performance
+- **utf8**: ASCII fast paths for the methods that work on units
+
+
 ## [1.8.0] — 2026-10-04
 ### Added
 - **string_t**: Fast exact number casting, count/index/strip options
