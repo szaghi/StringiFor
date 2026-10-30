@@ -708,6 +708,67 @@ def char_positions(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
     return [(data, k) for k in {0, 1, n, n + 1, n + 2, rng.randint(1, n + 1)}]
 
 
+def fortran_div(a: int, b: int) -> int:
+    """Integer division truncating toward zero, as Fortran's."""
+    q = abs(a) // abs(b)
+    return q if (a >= 0) == (b > 0) else -q
+
+
+def slice_units(data: bytes, first: int, last: int, stride: int) -> bytes:
+    """StringiFor slice(first, last, stride, by=SF_CHARS): bounds clamped into the units, both included."""
+    pieces = units(data)
+    n = len(pieces)
+    if stride == 0:
+        return b""
+    first, last = (
+        (max(first, 1), min(last, n)) if stride > 0 else (min(first, n), max(last, 1))
+    )
+    length = max(0, fortran_div(last - first + stride, stride))
+    return b"".join(pieces[first - 1 + c * stride] for c in range(length))
+
+
+def insert_units(data: bytes, sub: bytes, pos: int) -> bytes:
+    """StringiFor insert(sub, pos, by=SF_CHARS): the first position prepends, the last one appends."""
+    pieces = units(data)
+    n = len(pieces)
+    at = min(max(1, pos), n)
+    if at == 1:
+        return sub + data
+    if at == n:
+        return data + sub
+    return b"".join(pieces[: at - 1]) + sub + b"".join(pieces[at - 1 :])
+
+
+def len_last_word_units(data: bytes, sep: bytes) -> int:
+    """StringiFor len_last_word(sep, by=SF_CHARS): trailing separators ignored."""
+    last = len(data)
+    while last >= len(sep) and data[last - len(sep) : last] == sep:
+        last -= len(sep)
+    at = data.rfind(sep, 0, last) + 1
+    word = data[at - 1 + len(sep) : last] if at > 0 else data[:last]
+    return len(units(word))
+
+
+def slices(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, first, last, stride) around and inside the units, strides -3..3."""
+    n = len(units(data))
+    calls: list[tuple[Arg, ...]] = []
+    for _ in range(3):
+        calls.append(
+            (data, rng.randint(-1, n + 2), rng.randint(-1, n + 2), rng.randint(-3, 3))
+        )
+    return calls
+
+
+def insertions(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, substring, pos) around and inside the units."""
+    n = len(units(data))
+    return [
+        (data, rng.choice(POOL)[0] + b"+", pos)
+        for pos in {-1, 1, n, n + 1, rng.randint(1, n + 1)}
+    ]
+
+
 EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra, "units": units_extra}
 SELF_CHECKS = {"escape": check_escape_reference}
 
@@ -771,6 +832,9 @@ SUITES: dict[str, list[Op]] = {
             unit_sets,
             lambda d, m: in_chars(d, unit_search(d, m, back=True, inside=False)),
         ),
+        Op("slice_chars", slices, slice_units),
+        Op("insert_chars", insertions, insert_units),
+        Op("len_last_word_chars", nonempty_needles, len_last_word_units),
         Op("byte_pos", char_positions, byte_pos),
         Op("char_pos", byte_positions, char_pos),
     ],

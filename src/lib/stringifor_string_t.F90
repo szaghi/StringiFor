@@ -2159,13 +2159,15 @@ contains
    endif
    endfunction hex
 
-   elemental function insert_character(self, substring, pos) result(inserted)
+   elemental function insert_character(self, substring, pos, by) result(inserted)
    !< Insert substring into string at a specified position.
+   !<
+   !< @note With `by=SF_CHARS` the position counts characters (UTF-8 units) instead of bytes.
    !<
    !<```fortran
    !< type(string)                  :: astring
    !< character(len=:), allocatable :: acharacter
-   !< logical                       :: test_passed(5)
+   !< logical                       :: test_passed(6)
    !< astring = 'this is string example wow!!!'
    !< acharacter = '... '
    !< test_passed(1) = astring%insert(substring=acharacter, pos=1)//''=='... this is string example wow!!!'
@@ -2173,18 +2175,21 @@ contains
    !< test_passed(3) = astring%insert(substring=acharacter, pos=29)//''=='this is string example wow!!!... '
    !< test_passed(4) = astring%insert(substring=acharacter, pos=-1)//''=='... this is string example wow!!!'
    !< test_passed(5) = astring%insert(substring=acharacter, pos=100)//''=='this is string example wow!!!... '
+   !< astring = 'caf'//char(195)//char(169)//'s'
+   !< test_passed(6) = astring%insert(substring='+', pos=4, by=SF_CHARS)//''=='caf+'//char(195)//char(169)//'s'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),    intent(in) :: self      !< The string.
    character(len=*), intent(in) :: substring !< Substring.
    integer,          intent(in) :: pos       !< Position from which insert substring.
+   integer, intent(in), optional :: by       !< Unit of pos: SF_BYTES (default) or SF_CHARS.
    type(string)                 :: inserted  !< Inserted string.
    integer                      :: safepos   !< Safe position from which insert substring.
 
    if (allocated(self%raw)) then
       inserted = self
-      safepos = min(max(1, pos), len(self%raw))
+      safepos = byte_safe_position(self%raw, pos, by)
       if (safepos==1) then
          inserted%raw = substring//self%raw
       elseif (safepos==len(self%raw)) then
@@ -2197,7 +2202,7 @@ contains
    endif
    endfunction insert_character
 
-   elemental function insert_string(self, substring, pos) result(inserted)
+   elemental function insert_string(self, substring, pos, by) result(inserted)
    !< Insert substring into string at a specified position.
    !<
    !<```fortran
@@ -2217,13 +2222,14 @@ contains
    class(string), intent(in) :: self      !< The string.
    type(string),  intent(in) :: substring !< Substring.
    integer,       intent(in) :: pos       !< Position from which insert substring.
+   integer, intent(in), optional :: by    !< Unit of pos: SF_BYTES (default) or SF_CHARS.
    type(string)              :: inserted  !< Inserted string.
    integer                   :: safepos   !< Safe position from which insert substring.
 
    if (allocated(self%raw)) then
       inserted = self
       if (allocated(substring%raw)) then
-         safepos = min(max(1, pos), len(self%raw))
+         safepos = byte_safe_position(self%raw, pos, by)
          if (safepos==1) then
             inserted%raw = substring%raw//self%raw
          elseif (safepos==len(self%raw)) then
@@ -2708,14 +2714,14 @@ contains
    enddo
    endsubroutine justify
 
-   elemental function len_last_word(self, sep) result(length)
+   elemental function len_last_word(self, sep, by) result(length)
    !< Return the length of the last word of the string.
    !<
-   !< @note The trailing separators are ignored.
+   !< @note The trailing separators are ignored. With `by=SF_CHARS` the length counts characters (UTF-8 units).
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(6)
+   !< logical      :: test_passed(7)
    !< astring = 'Hello World'
    !< test_passed(1) = astring%len_last_word()==5
    !< astring = '   fly me   to   the moon  '
@@ -2728,11 +2734,14 @@ contains
    !< test_passed(5) = astring%len_last_word()==0
    !< call astring%free
    !< test_passed(6) = astring%len_last_word()==0
+   !< astring = 'un caf'//char(195)//char(169)
+   !< test_passed(7) = astring%len_last_word()==5.and.astring%len_last_word(by=SF_CHARS)==4
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self   !< The string.
    character(kind=CK, len=*), intent(in), optional :: sep    !< Separator.
+   integer,                   intent(in), optional :: by     !< Unit of the result: SF_BYTES (default) or SF_CHARS.
    integer                                         :: length !< Length of the last word.
    character(kind=CK, len=:), allocatable          :: sep_   !< Separator, default value.
    integer                                         :: last   !< Position of the last character of the last word.
@@ -2754,6 +2763,9 @@ contains
          length = last - (s + len(sep_) - 1)
       else
          length = last
+      endif
+      if (present(by)) then
+         if (by==SF_CHARS) length = utf8_units(self%raw(last-length+1:last))
       endif
    endif
    endfunction len_last_word
@@ -3505,13 +3517,15 @@ contains
    if (present(iend)) iend = iend_
    endfunction search
 
-   pure function slice(self, first, last, stride, istart, iend) result(raw)
+   pure function slice(self, first, last, stride, istart, iend, by) result(raw)
    !< Return the raw characters data sliced.
    !<
    !< The slice is `first:last:stride`, like a Fortran array section, both bounds being included. All the arguments are optional:
    !< `stride` defaults to 1, `first` and `last` default to the string bounds, namely `1:len` for a positive stride and `len:1`
    !< for a negative one. The bounds are clamped into the string ones, thus a slice never goes out of bounds: it is null if the
    !< clamped section is empty, if `stride` is zero or if the string is not allocated.
+   !<
+   !< @note With `by=SF_CHARS` first, last and stride count characters (UTF-8 units), which are never cut.
    !<
    !< @note `istart` and `iend` are deprecated aliases of `first` and `last`, kept for backward compatibility of keyword calls:
    !< they are ignored if `first` and `last` are passed.
@@ -3525,7 +3539,7 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(12)
+   !< logical      :: test_passed(14)
    !< astring = 'Hello World'
    !< test_passed(1) = astring%slice(first=1, last=5)=='Hello'
    !< test_passed(2) = astring%slice(first=7)=='World'
@@ -3540,6 +3554,9 @@ contains
    !< test_passed(11) = astring%slice(istart=1, iend=5)=='Hello'
    !< call astring%free
    !< test_passed(12) = len(astring%slice(first=1, last=5))==0
+   !< astring = 'caf'//char(195)//char(169)//'!'
+   !< test_passed(13) = astring%slice(first=4, last=4, by=SF_CHARS)==char(195)//char(169)
+   !< test_passed(14) = astring%slice(stride=-1, by=SF_CHARS)=='!'//char(195)//char(169)//'fac'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -3549,20 +3566,39 @@ contains
    integer,       intent(in), optional    :: stride  !< Slice stride, default 1.
    integer,       intent(in), optional    :: istart  !< Deprecated alias of first.
    integer,       intent(in), optional    :: iend    !< Deprecated alias of last.
+   integer,       intent(in), optional    :: by      !< Unit of first, last and stride: SF_BYTES (default) or SF_CHARS.
    character(kind=CK, len=:), allocatable :: raw     !< Raw characters data.
    integer                                :: first_  !< Slice first index, local variable.
    integer                                :: last_   !< Slice last index, local variable.
    integer                                :: stride_ !< Slice stride, local variable.
    integer                                :: length  !< Length of the slice.
    integer                                :: c       !< Character counter.
+   integer, allocatable                   :: starts(:) !< First byte of each unit, then len+1 (by=SF_CHARS).
+   integer                                :: size_   !< Length of the string in the unit asked.
+   integer                                :: i       !< Byte position.
+   integer                                :: o       !< Byte position in the result.
+   logical                                :: by_char !< Positions in characters.
 
    stride_ = 1 ; if (present(stride)) stride_ = stride
    if (allocated(self%raw).and.stride_/=0) then
+      by_char = .false.
+      if (present(by)) by_char = by==SF_CHARS.and..not.is_ascii(self%raw)
+      size_ = len(self%raw)
+      if (by_char) then ! the units, as a list of their first bytes
+         size_ = utf8_units(self%raw)
+         allocate(starts(size_+1))
+         i = 1
+         do c=1, size_
+            starts(c) = i
+            i = i + unit_length(self%raw, i)
+         enddo
+         starts(size_+1) = len(self%raw) + 1
+      endif
       if (stride_>0) then
          first_ = 1
-         last_ = len(self%raw)
+         last_ = size_
       else
-         first_ = len(self%raw)
+         first_ = size_
          last_ = 1
       endif
       if (present(istart)) first_ = istart
@@ -3571,13 +3607,26 @@ contains
       if (present(last)) last_ = last
       if (stride_>0) then
          first_ = max(first_, 1)
-         last_ = min(last_, len(self%raw))
+         last_ = min(last_, size_)
       else
-         first_ = min(first_, len(self%raw))
+         first_ = min(first_, size_)
          last_ = max(last_, 1)
       endif
       length = max(0, (last_ - first_ + stride_)/stride_)
-      if (length>0) then
+      if (by_char.and.length>0) then ! the units first_, first_+stride_, ...: two passes, measure then fill
+         o = 0
+         do c=1, length
+            i = first_ + (c - 1) * stride_
+            o = o + starts(i+1) - starts(i)
+         enddo
+         allocate(character(kind=CK, len=o) :: raw)
+         o = 0
+         do c=1, length
+            i = first_ + (c - 1) * stride_
+            raw(o+1:o+starts(i+1)-starts(i)) = self%raw(starts(i):starts(i+1)-1)
+            o = o + starts(i+1) - starts(i)
+         enddo
+      elseif (length>0) then
          if (stride_==1) then
             raw = self%raw(first_:last_)
          else
@@ -7170,6 +7219,28 @@ contains
       if (pattern(p:p+m-1)==c) token_len = m
    endselect
    endfunction match_token
+
+   pure function byte_safe_position(raw, pos, by) result(safepos)
+   !< Return the insertion position of [[string:insert]] in bytes: pos clamped into 1..length (in the unit of `by`); the
+   !< first character gives 1 (insert prepends), the last one len(raw) (insert appends), any other its first byte.
+   character(kind=CK, len=*), intent(in)           :: raw     !< Bytes.
+   integer,                   intent(in)           :: pos     !< Position, in the unit of `by`.
+   integer,                   intent(in), optional :: by      !< Unit of pos.
+   integer                                         :: safepos !< Position in bytes.
+   integer                                         :: n       !< Number of characters.
+
+   safepos = min(max(1, pos), len(raw))
+   if (.not.present(by)) return
+   if (by/=SF_CHARS) return
+   n = utf8_units(raw)
+   safepos = min(max(1, pos), n)
+   if (safepos==1) return ! the same order of the tests as insert: the first character before the last one
+   if (safepos==n) then
+      safepos = len(raw)
+   else
+      safepos = utf8_byte_pos(raw, safepos)
+   endif
+   endfunction byte_safe_position
 
    pure function to_unit(raw, i, by) result(position)
    !< Return a byte position in the unit asked by `by`: unchanged for SF_BYTES (or absent), the character holding the

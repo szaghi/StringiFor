@@ -1,7 +1,7 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(12)
+ logical :: test_passed(14)
  astring = 'Hello World'
  test_passed(1) = astring%slice(first=1, last=5)=='Hello'
  test_passed(2) = astring%slice(first=7)=='World'
@@ -16,5 +16,8 @@ use stringifor_string_t
  test_passed(11) = astring%slice(istart=1, iend=5)=='Hello'
  call astring%free
  test_passed(12) = len(astring%slice(first=1, last=5))==0
+ astring = 'caf'//char(195)//char(169)//'!'
+ test_passed(13) = astring%slice(first=4, last=4, by=SF_CHARS)==char(195)//char(169)
+ test_passed(14) = astring%slice(stride=-1, by=SF_CHARS)=='!'//char(195)//char(169)//'fac'
  print '(L1)', all(test_passed)
 endprogram volatile_doctest
