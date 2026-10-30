@@ -48,6 +48,6 @@ docs/package-lock.json
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 
-# docs examples scratch and library builds
-build/
-lib/
+# docs examples scratch and library builds (anchored: src/lib and docs/api/src/lib are tracked)
+/build/
+/lib/
