@@ -1,0 +1,7 @@
+$ unicode_space
+[  42 　]
+[42]
+one two  three
+one|two|three
+F F
+F T

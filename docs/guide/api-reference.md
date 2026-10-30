@@ -38,7 +38,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `center(width[, fill_char])` | Centered in `width` characters, as Python `str.center` |
 | `colorize([color_fg][, color_bg][, style])` | ANSI terminal colorization via FACE; returns `character` |
 | `common_prefix(other)` / `common_prefix(array)` | Longest common prefix shared with another string/character, or with all elements of a string array |
-| `compact([sep])` | Words separated by one `sep` (default space), whitespace runs collapsed and the ends removed |
+| `compact([sep][, unicode])` | Words separated by one `sep` (default space), whitespace runs collapsed and the ends removed; `unicode=.true.`: Unicode White_Space |
 | `decode(codec)` | Decode; `codec='base64'` is the only codec available, an unknown one gives a not allocated string |
 | `encode(codec)` | Encode; `codec='base64'` is the only codec available, an unknown one gives a not allocated string |
 | `escape(to_escape[, esc])` | Escape the character `to_escape` with a backslash (or with `esc`) |
@@ -50,7 +50,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `justify(lines, width)` | Pack the words into fully justified lines (subroutine, allocates `lines`) |
 | `ljust(width[, fill_char])` | Left justified in `width` characters, as Python `str.ljust` |
 | `lower()` | All characters lowercase |
-| `lstrip([remove][, whitespace])` | As `strip`, the leading characters only |
+| `lstrip([remove][, whitespace][, unicode])` | As `strip`, the leading characters only |
 | `partition([sep])` | Split at the first sep (default space); return `string(3)` = [before, sep, after] |
 | `quote([quote_char])` | Between quotes (default `"`), the inner ones doubled |
 | `repeat(ncopies)` | Concatenate `ncopies` copies of the string |
@@ -58,14 +58,14 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `reverse()` | Reverse character order |
 | `reverse_words([sep])` | Reverse the order of the words |
 | `rjust(width[, fill_char])` | Right justified in `width` characters, as Python `str.rjust` |
-| `rstrip([remove][, whitespace])` | As `strip`, the trailing characters only |
+| `rstrip([remove][, whitespace][, unicode])` | As `strip`, the trailing characters only |
 | `slice([first][, last][, stride])` | Section `first:last:stride`, bounds clamped into the string; returns `character` |
 | `snakecase([sep])` | Words lowercase, joined by `_` |
 | `split(tokens[, sep][, max_tokens][, keep_empty])` | Tokenize into allocatable array (subroutine); sequential separators count as one, a string of only separators has no tokens; with `keep_empty` the empty fields are tokens |
 | `split_chunked(tokens, chunks[, sep])` | Tokenize in chunks of `chunks` tokens (subroutine) |
 | `squeeze([set])` | Runs of a repeated character (of `set` if passed) reduced to one, as `tr -s` |
 | `startcase([sep])` | Title case — each word capitalized |
-| `strip([remove_nulls][, remove][, whitespace])` | Remove leading/trailing spaces, or the characters of the set `remove`, and all the whitespace if `whitespace` |
+| `strip([remove_nulls][, remove][, whitespace][, unicode])` | Remove leading/trailing spaces, or the characters of the set `remove`, and all the whitespace if `whitespace` (Unicode White_Space with `unicode=.true.`) |
 | `swapcase()` | Swap upper↔lower case |
 | `transliterate(old_set, new_set)` | Characters of `old_set` replaced by the ones of `new_set`, as `tr` |
 | `trim()` | Remove trailing spaces |
@@ -92,7 +92,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `is_number([allow_spaces])` | `logical` | True if string represents an integer or real |
 | `is_punct()` | `logical` | True if all characters are punctuation (as C `ispunct`) |
 | `is_real([allow_spaces])` | `logical` | True if string represents a real: a decimal point or an exponent is required, an integer is not a real |
-| `is_space()` | `logical` | True if all characters are whitespace (as C `isspace`) |
+| `is_space([unicode])` | `logical` | True if all characters are whitespace (as C `isspace`; `unicode=.true.`: Unicode White_Space) |
 | `is_upper()` | `logical` | True if all characters are uppercase |
 | `is_xdigit()` | `logical` | True if all characters are hexadecimal digits |
 | `match(pattern)` | `logical` | True if the whole string matches a wildcard pattern (`*`, `?`, `[seq]`, `[!seq]`) |

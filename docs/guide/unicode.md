@@ -84,6 +84,31 @@ U+2028, U+2029 and the Hangul fillers U+3164 and U+FFA0, 1 to 13 visible format 
 the 26 regional indicators U+1F1E6..U+1F1FF, and -1 (not printable) to the 64 controls.
 
 
+## Whitespace
+
+By default the whitespace is ASCII: space, TAB, LF, VT, FF and CR, as C `isspace`. Text copied from web pages,
+word processors or CJK documents also holds no-break spaces (U+00A0), typographic spaces (U+2000..U+200A) and the
+ideographic space (U+3000). `unicode=.true.` makes `is_space`, `compact` and, with `whitespace=.true.`, `strip`,
+`lstrip` and `rstrip` use the Unicode White_Space property instead.
+
+<<< @/examples/snippets/unicode_space-strip.f90
+
+<<< @/examples/snippets/unicode_space-words.f90
+
+<<< @/examples/output/unicode_space.ansi{ansi}
+
+White_Space (UCD 17.0.0, `PropList.txt`) is the 6 ASCII characters above, U+0085 (NEL), U+00A0, U+1680,
+U+2000..U+200A, U+2028, U+2029, U+202F, U+205F and U+3000: 25 characters. A byte that is not part of a well-formed
+sequence is never whitespace, and neither are the characters that only look empty: the zero width space U+200B,
+the word joiner U+2060 and the byte order mark U+FEFF (strip the BOM with `skip_bom=` when reading a file).
+`unicode` has no effect on `strip`, `lstrip` and `rstrip` without `whitespace=.true.`.
+
+::: info Python
+Python's `str.isspace`, `str.split()` and `str.strip()` also treat U+001C..U+001F (the ASCII information separators)
+as whitespace, which White_Space does not. `bytes.split()` and `bytes.strip()` use the 6 ASCII characters, as the
+default here.
+:::
+
 ## Checking and inspecting
 
 <<< @/examples/snippets/utf8_check-inspect.f90
@@ -182,4 +207,5 @@ codespace (`bash scripts/oracle.sh utf8`), and the escapes on random texts, with
 Python's `unicode_escape` codec, and on the round trip of every 2-byte string (`bash scripts/oracle.sh escape`). The XML
 methods are checked the same way (`bash scripts/oracle.sh xml`), with the reference checked against Python's
 `xml.sax.saxutils` and against expat, an XML parser, which must read every escaped string back unchanged and reject
-every malformed reference.
+every malformed reference. The whitespace methods are checked against White_Space read from the
+pinned UCD, on spaced corpus strings and on every scalar value (`bash scripts/oracle.sh whitespace`).
