@@ -4,6 +4,11 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.9.1] — 2026-10-30
+### Fixed
+- **io**: Use-after-free in the module read_lines with skip_bom
+
+
 ## [1.9.0] — 2026-10-30
 ### Added
 - **unicode**: Generate the Unicode property tables from the UCD
