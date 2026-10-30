@@ -1,0 +1,8 @@
+$ xml_escape
+<note title="Q&amp;A: &quot;x &lt; y&quot; isn&apos;t&#10;always true">
+Q&amp;A: &quot;x &lt; y&quot; isn&apos;t
+always true
+</note>
+café ☕ <b> AT&T
+first malformed reference at byte 2
+R&D &nbsp; &#0; &#X41;

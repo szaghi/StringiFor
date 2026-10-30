@@ -145,6 +145,41 @@ gfortran and ifx keep a backslash in a character literal as it is (unless `-fbac
 `-Mbackslash`, or write the backslash as `char(92)`.
 :::
 
+## XML escaping
+
+`escape_xml` makes any text safe as the content of an XML (or HTML) element or as an attribute value; `unescape_xml`
+reads the references back.
+
+<<< @/examples/snippets/xml_escape-write.f90
+
+<<< @/examples/snippets/xml_escape-read.f90
+
+<<< @/examples/output/xml_escape.ansi{ansi}
+
+`escape_xml()` writes `& < > " '` as `&amp; &lt; &gt; &quot; &apos;`, so the result fits an element and an attribute
+in either quotes. With `attribute=.true.` it also writes TAB, LF and CR as `&#9; &#10; &#13;`: a parser turns those
+characters into spaces in an attribute value (and a CR, or a CR LF, into a LF anywhere), so only references keep
+them. Use it for attribute values, and for element content whose CRs matter. Every other byte is kept, non-ASCII text
+and ill-formed UTF-8 included, so `unescape_xml(escape_xml(s))` is `s` for any bytes.
+
+`unescape_xml()` expands the 5 predefined entities and the character references `&#N;` (decimal) and `&#xH;`
+(hexadecimal, either case of digits), each giving a codepoint in UTF-8. The `&` of a malformed reference is kept as it
+is and `xml_error()` gives its byte position, 0 if there is none. Malformed is a bare `&` (as in `R&D`), a missing
+`;`, an entity that XML does not predefine (`&nbsp;` belongs to HTML; a DTD's own entities are not read), an
+uppercase `&#X`, and a value that is not a Unicode scalar value or is 0. Nothing else is interpreted: markup, CDATA
+sections and comments are left as they are, and line ends are not normalized.
+
+::: warning Controls in XML
+XML 1.0 has no way to write the C0 controls other than TAB, LF and CR (U+0001..U+0008, U+000B, U+000C,
+U+000E..U+001F), not even as references, nor U+0000, U+FFFE and U+FFFF. `escape_xml` keeps them as they are, so text
+holding one gives a document that an XML 1.0 parser rejects: remove or replace them first if they can occur (for
+example with `escape_c`, which writes them as `\xHH`). `unescape_xml` reads `&#1;`..`&#x1F;` as XML 1.1 does; an XML
+1.0 parser rejects them. `&#0;` is malformed in every version.
+:::
+
 These methods are checked against Python on a corpus of byte strings, on every 2-byte string and on the whole
 codespace (`bash scripts/oracle.sh utf8`), and the escapes on random texts, with the reference itself checked against
-Python's `unicode_escape` codec, and on the round trip of every 2-byte string (`bash scripts/oracle.sh escape`).
+Python's `unicode_escape` codec, and on the round trip of every 2-byte string (`bash scripts/oracle.sh escape`). The XML
+methods are checked the same way (`bash scripts/oracle.sh xml`), with the reference checked against Python's
+`xml.sax.saxutils` and against expat, an XML parser, which must read every escaped string back unchanged and reject
+every malformed reference.

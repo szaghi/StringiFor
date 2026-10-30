@@ -117,14 +117,17 @@ width methods also take `by=SF_COLUMNS`, display columns.
 | `has_bom()` | `logical` | True if the string starts with a UTF-8 byte order mark (EF BB BF) |
 | `escape_c([ascii])` | `string` | C escapes for what is not printable ASCII (`ascii=.false.`: only controls and ill-formed bytes) |
 | `escapes_error()` | `integer` | Byte position of the first malformed C escape, 0 if none |
+| `escape_xml([attribute])` | `string` | `& < > " '` as `&amp; &lt; &gt; &quot; &apos;`; `attribute=.true.`: TAB, LF, CR as `&#9; &#10; &#13;` too |
 | `width()` | `integer` | Display width in terminal columns (East Asian wide 2, zero-width 0, controls 0) |
 | `byte_pos(char_pos)` | `integer` | Byte position of the first byte of the character number `char_pos` |
 | `char_pos(byte_pos)` | `integer` | Number of the character holding the byte at `byte_pos` |
 | `codepoints()` | `integer(I4P)(:)` | Codepoints, one per unit; a byte not part of a well-formed sequence is minus its value |
 | `is_utf8()` | `logical` | True if the string is well-formed UTF-8 |
 | `unescape_c()` | `string` | C escapes (`\n`, `\xHH`, `\uXXXX`, ...) expanded; `\xHH` and octal give bytes, `\u` and `\U` codepoints |
+| `unescape_xml()` | `string` | The 5 predefined XML entities and `&#N;`, `&#xH;` expanded (codepoints in UTF-8) |
 | `to_valid_utf8([replacement])` | `string` | Each ill-formed sequence replaced by U+FFFD (or `replacement`) |
 | `utf8_error()` | `integer` | Byte position of the first ill-formed byte, 0 if none |
+| `xml_error()` | `integer` | Byte position of the `&` of the first malformed XML reference, 0 if none |
 
 ## Number Casting
 
