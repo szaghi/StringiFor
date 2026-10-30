@@ -21,6 +21,9 @@
 *.a
 *.app
 
+# Python bytecode (scripts/utf8 imports its own modules)
+__pycache__/
+
 # log files
 *.log
 
