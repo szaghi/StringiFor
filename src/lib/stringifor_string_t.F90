@@ -3209,6 +3209,12 @@ contains
    if (allocated(self%raw)) then
       reversed = self
       length = len(self%raw)
+      if (is_ascii(self%raw)) then ! one byte per unit: the plain byte loop
+         do c=1, length
+            reversed%raw(c:c) = self%raw(length-c+1:length-c+1)
+         enddo
+         return
+      endif
       c = 1
       do while (c<=length)
          n = 1
@@ -3761,6 +3767,10 @@ contains
    logical                                         :: is_run   !< The unit repeats the previous one and is squeezed.
 
    if (allocated(self%raw)) then
+      if (is_ascii(self%raw)) then ! one byte per unit (a non-ASCII member of set never matches one)
+         call squeeze_bytes(self%raw, squeezed%raw, set)
+         return
+      endif
       allocate(character(kind=CK, len=len(self%raw)) :: buffer)
       length = 0
       m = 0
@@ -4556,7 +4566,7 @@ contains
    integer                                :: m              !< Bytes of the replacing unit.
 
    if (.not.allocated(self%raw)) return
-   if (is_ascii(old_set//new_set)) then ! ASCII sets: one byte for one byte, a non-ASCII unit kept
+   if (is_ascii(old_set).and.is_ascii(new_set)) then ! ASCII sets: one byte for one byte, a non-ASCII unit kept
       allocate(character(kind=CK, len=len(self%raw)) :: buffer)
       length = 0
       do c=1, len(self%raw)
@@ -5583,7 +5593,8 @@ contains
    star_p = 0
    star_s = 0
    do while (s<=len(self%raw))
-      n = unit_length(self%raw, s)
+      n = 1
+      if (iand(ichar(self%raw(s:s)), 255)>127) n = utf8_unit_len(self%raw, s)
       if (p<=len(pattern)) then
          if (pattern(p:p)=='*') then
             star_p = p
@@ -5591,7 +5602,11 @@ contains
             p = p + 1
             cycle
          endif
-         token_len = match_token(pattern=pattern, p=p, c=self%raw(s:s+n-1))
+         if (n==1.and.pattern(p:p)/='?'.and.pattern(p:p)/='['.and.iand(ichar(pattern(p:p)), 255)<128) then
+            token_len = merge(1, 0, pattern(p:p)==self%raw(s:s)) ! ASCII literal: compared here, the common case
+         else
+            token_len = match_token(pattern=pattern, p=p, c=self%raw(s:s+n-1))
+         endif
          if (token_len>0) then
             p = p + token_len
             s = s + n
@@ -5600,7 +5615,11 @@ contains
       endif
       if (star_p==0) return
       p = star_p + 1     ! let the last star match one more unit
-      star_s = star_s + unit_length(self%raw, star_s)
+      if (iand(ichar(self%raw(star_s:star_s)), 255)>127) then
+         star_s = star_s + utf8_unit_len(self%raw, star_s)
+      else
+         star_s = star_s + 1
+      endif
       s = star_s
    enddo
    do while (p<=len(pattern))
@@ -6944,7 +6963,7 @@ contains
          if (c=='[') token_len = 1
          return
       endif
-      code = range_code(c, 1)
+      code = -1 ! computed at the first range
       is_member = .false.
       i = first
       do while (i<last.and..not.is_member)
@@ -6953,6 +6972,7 @@ contains
          is_member = .false.
          if (high<last.and.pattern(i+m:i+m)=='-') then
             if (high+unit_length(pattern, high)-1<last) then ! a range
+               if (code<0) code = range_code(c, 1)
                is_member = code>=range_code(pattern, i).and.code<=range_code(pattern, high)
                i = high + unit_length(pattern, high)
                cycle
@@ -6963,6 +6983,12 @@ contains
       enddo
       if (is_member.neqv.is_negated) token_len = last - p + 1
    case default
+      if (iand(ichar(pattern(p:p)), 255)<128) then ! an ASCII byte of the pattern matches only itself
+         if (len(c)==1) then
+            if (c(1:1)==pattern(p:p)) token_len = 1
+         endif
+         return
+      endif
       m = unit_length(pattern, p)
       if (pattern(p:p+m-1)==c) token_len = m
    endselect
@@ -7093,6 +7119,34 @@ contains
    enddo
    replaced(r:) = raw(c:)
    endfunction replace_substring
+
+   pure subroutine squeeze_bytes(raw, squeezed, set)
+   !< Return the bytes with every run of a repeated byte reduced to one, only for the bytes of `set` if passed: the byte
+   !< loop of [[string:squeeze]], for ASCII text.
+   character(kind=CK, len=*),              intent(in)           :: raw      !< Raw characters data.
+   character(kind=CK, len=:), allocatable, intent(out)          :: squeezed !< Squeezed bytes.
+   character(kind=CK, len=*),              intent(in), optional :: set      !< Bytes whose runs are reduced, default all.
+   character(kind=CK, len=len(raw))                :: buffer   !< Buffer, the result being never longer.
+   integer                                         :: length   !< Length of the result.
+   integer                                         :: c        !< Byte counter.
+   logical                                         :: is_run   !< The byte repeats the previous one and is squeezed.
+
+   length = 0
+   do c=1, len(raw)
+      is_run = .false.
+      if (c>1) then
+         if (raw(c:c)==raw(c-1:c-1)) then
+            is_run = .true.
+            if (present(set)) is_run = index(set, raw(c:c))>0
+         endif
+      endif
+      if (.not.is_run) then
+         length = length + 1
+         buffer(length:length) = raw(c:c)
+      endif
+   enddo
+   squeezed = buffer(1:length)
+   endsubroutine squeeze_bytes
 
    pure subroutine parse_c_escape(raw, i, value, is_byte, n)
    !< Parse the C escape starting with the backslash at byte i (see [[string:unescape_c]]).

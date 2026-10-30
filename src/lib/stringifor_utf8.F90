@@ -5,11 +5,12 @@ module stringifor_utf8
 !< A *unit* is either a well-formed UTF-8 sequence (Unicode Table 3-7: no overlong form, no surrogate, nothing above
 !< U+10FFFF, no truncated sequence) or a single byte that is not part of one. Every procedure works on units, so
 !< ill-formed input is never merged, dropped or rewritten unless a procedure says so.
-use penf, only : I4P
+use penf, only : I4P, I8P
 
 implicit none
 private
 public :: REPLACEMENT_CHARACTER
+public :: ascii_run
 public :: is_ascii
 public :: utf8_decode
 public :: utf8_encode
@@ -23,6 +24,7 @@ public :: utf8_subpart_len
 public :: utf8_unit_len
 public :: utf8_units
 
+integer(I8P),     parameter :: HIGH_BITS = -9187201950435737472_I8P !< 8080808080808080: the high bit of 8 bytes.
 character(len=*), parameter :: REPLACEMENT_CHARACTER = char(239)//char(191)//char(189) !< U+FFFD in UTF-8.
 
 contains
@@ -158,10 +160,8 @@ contains
    position = 0
    i = 1
    do while (i <= len(raw))
-      if (byte(raw(i:i)) < 128) then ! ASCII fast path
-         i = i + 1
-         cycle
-      endif
+      i = ascii_run(raw, i) ! skip the ASCII bytes
+      if (i > len(raw)) return
       n = utf8_unit_len(raw, i)
       if (n == 1) then
          position = i
@@ -176,15 +176,16 @@ contains
    character(len=*), intent(in) :: raw   !< Bytes.
    integer                      :: units !< Number of units.
    integer                      :: i     !< Byte position.
+   integer                      :: j     !< End of a run of ASCII bytes.
 
    units = 0
    i = 1
    do while (i <= len(raw))
-      if (byte(raw(i:i)) < 128) then
-         i = i + 1
-      else
-         i = i + utf8_unit_len(raw, i)
-      endif
+      j = ascii_run(raw, i) ! an ASCII byte is a unit
+      units = units + j - i
+      i = j
+      if (i > len(raw)) return
+      i = i + utf8_unit_len(raw, i)
       units = units + 1
    enddo
    endfunction utf8_units
@@ -302,17 +303,31 @@ contains
    enddo
    endfunction utf8_scan
 
+   pure function ascii_run(raw, i) result(j)
+   !< Return the position of the first non-ASCII byte at or after byte i, len(raw)+1 if there is none.
+   !<
+   !< Eight bytes are tested at a time, their high bits masked in one 64-bit integer.
+   character(len=*), intent(in) :: raw !< Bytes.
+   integer,          intent(in) :: i   !< First byte tested.
+   integer                      :: j   !< Position of the first non-ASCII byte.
+
+   j = i
+   do while (j + 7 <= len(raw))
+      if (iand(transfer(raw(j:j+7), 0_I8P), HIGH_BITS) /= 0_I8P) exit
+      j = j + 8
+   enddo
+   do while (j <= len(raw))
+      if (byte(raw(j:j)) > 127) return
+      j = j + 1
+   enddo
+   endfunction ascii_run
+
    pure function is_ascii(text) result(ascii)
    !< Return true if every byte of text is ASCII.
    character(len=*), intent(in) :: text  !< Bytes.
    logical                      :: ascii !< Result.
-   integer                      :: i     !< Byte position.
 
-   ascii = .false.
-   do i = 1, len(text)
-      if (byte(text(i:i)) > 127) return
-   enddo
-   ascii = .true.
+   ascii = ascii_run(text, 1) > len(text)
    endfunction is_ascii
 
    ! private
