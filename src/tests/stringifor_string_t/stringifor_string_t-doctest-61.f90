@@ -2,7 +2,7 @@ program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
  type(string), allocatable :: lines(:)
- logical :: test_passed(9)
+ logical :: test_passed(10)
  astring = 'This is an example of text justification.'
  call astring%justify(lines=lines, width=16)
  test_passed(1) = size(lines, dim=1)==3
@@ -19,5 +19,8 @@ use stringifor_string_t
  astring = '   '
  call astring%justify(lines=lines, width=16)
  test_passed(9) = size(lines, dim=1)==0
+ astring = 'caf'//char(195)//char(169)//' au lait'
+ call astring%justify(lines=lines, width=4, by=SF_CHARS)
+ test_passed(10) = lines(1)//''=='caf'//char(195)//char(169).and.lines(2)//''=='au  '
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

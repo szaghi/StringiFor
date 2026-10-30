@@ -769,6 +769,58 @@ def insertions(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
     ]
 
 
+def justify_units(data: bytes, width: int) -> list[bytes]:
+    """StringiFor justify(lines, width, by=SF_CHARS): words packed in lines of width characters, the blanks spread
+    from the left; the last line, and a line of one word, padded on the right."""
+    words = split_collapse(data, b" ") if data.rstrip(b" ") else []
+
+    def size(text_: bytes) -> int:
+        return len(units(text_))
+
+    lines, last = [], 0
+    while last < len(words):
+        first = last + 1
+        last = first
+        length = size(words[first - 1])
+        while last < len(words) and length + 1 + size(words[last]) <= width:
+            last += 1
+            length += 1 + size(words[last - 1])
+        gaps, line = last - first, words[first - 1]
+        if last == len(words) or gaps == 0:
+            for g in range(1, gaps + 1):
+                line += b" " + words[first - 1 + g]
+            if size(line) < width:
+                line += b" " * (width - size(line))
+        else:
+            blanks = width - (length - gaps)
+            for g in range(1, gaps + 1):
+                line += (
+                    b" " * (blanks // gaps + (1 if g <= blanks % gaps else 0))
+                    + words[first - 1 + g]
+                )
+        lines.append(line)
+    return lines
+
+
+def widths(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, width) around the length in characters."""
+    n = len(units(data))
+    return [(data, w) for w in {0, n - 1, n, n + 1, n + rng.randint(2, 9)} if w >= 0]
+
+
+def with_tabs(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data with tabs, tab size 0..8)."""
+    pieces = units(data)
+    for _ in range(rng.randint(1, 3)):
+        pieces.insert(rng.randint(0, len(pieces)), b"\t")
+    return [(b"".join(pieces), rng.randint(0, 8))]
+
+
+def fills(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, width, right)."""
+    return [(d, w, rng.randint(0, 1)) for d, w in widths(data, rng)]
+
+
 EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra, "units": units_extra}
 SELF_CHECKS = {"escape": check_escape_reference}
 
@@ -835,6 +887,16 @@ SUITES: dict[str, list[Op]] = {
         Op("slice_chars", slices, slice_units),
         Op("insert_chars", insertions, insert_units),
         Op("len_last_word_chars", nonempty_needles, len_last_word_units),
+        Op("center_chars", widths, lambda d, w: raw(text(d).center(w, "*"))),
+        Op("ljust_chars", widths, lambda d, w: raw(text(d).ljust(w, "*"))),
+        Op("rjust_chars", widths, lambda d, w: raw(text(d).rjust(w, "*"))),
+        Op(
+            "fill_chars",
+            fills,
+            lambda d, w, r: raw(text(d).ljust(w, "0") if r else text(d).rjust(w, "0")),
+        ),
+        Op("expand_tabs_chars", with_tabs, lambda d, t: raw(text(d).expandtabs(t))),
+        Op("justify_chars", widths, justify_units),
         Op("byte_pos", char_positions, byte_pos),
         Op("char_pos", byte_positions, char_pos),
     ],

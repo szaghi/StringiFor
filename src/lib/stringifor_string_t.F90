@@ -1158,16 +1158,18 @@ contains
    endif
    endfunction capitalize
 
-   elemental function center(self, width, fill_char) result(centered)
+   elemental function center(self, width, fill_char, by) result(centered)
    !< Return the string centered in a string of length `width`, padded with `fill_char` (default a space).
    !<
    !< @note As Python `str.center`: a string not shorter than `width` is returned unchanged; when the padding is odd the extra
    !< fill character goes on the left if `width` is odd, on the right otherwise.
    !<
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !<
    !<```fortran
    !< type(string) :: astring
    !< type(string) :: centered
-   !< logical      :: test_passed(4)
+   !< logical      :: test_passed(5)
    !< astring = 'abc'
    !< test_passed(1) = astring%center(7, '*')//''=='**abc**'
    !< centered = astring%center(6)
@@ -1175,20 +1177,25 @@ contains
    !< test_passed(3) = astring%center(2)//''=='abc'
    !< astring = 'ab'
    !< test_passed(4) = astring%center(5, '-')//''=='--ab-'
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(5) = astring%center(6, '*', by=SF_CHARS)//''=='*'//'caf'//char(195)//char(169)//'*'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self       !< The string.
    integer,                   intent(in)           :: width      !< Width of the result.
    character(kind=CK, len=1), intent(in), optional :: fill_char  !< Fill character, default a space.
+   integer,                   intent(in), optional :: by         !< Unit of width: SF_BYTES (default) or SF_CHARS.
    type(string)                                    :: centered   !< The string centered.
    character(kind=CK, len=1)                       :: fill_char_ !< Fill character, local variable.
+   integer                                         :: size_      !< Length of the string, in the unit of width.
    integer                                         :: margin     !< Number of fill characters.
    integer                                         :: left       !< Number of fill characters on the left.
 
    if (allocated(self%raw)) then
+      size_ = measure(self%raw, by)
       fill_char_ = SPACE ; if (present(fill_char)) fill_char_ = fill_char
-      margin = width - len(self%raw)
+      margin = width - size_
       if (margin<=0) then
          centered = self
       else
@@ -1816,38 +1823,56 @@ contains
    enddo
    endfunction escapes_error
 
-   elemental function expand_tabs(self, tab_size) result(expanded)
+   elemental function expand_tabs(self, tab_size, by) result(expanded)
    !< Return a string with every tab replaced by the spaces up to the next tab stop, every `tab_size` columns (default 8).
    !<
    !< @note As Python `str.expandtabs`: the column restarts after a new line or a carriage return; a `tab_size` not positive
    !< removes the tabs.
    !<
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(4)
    !< astring = 'a'//achar(9)//'bc'//achar(9)//'d'
    !< test_passed(1) = astring%expand_tabs()//''=='a       bc      d'
    !< test_passed(2) = astring%expand_tabs(4)//''=='a   bc  d'
    !< astring = 'abcd'//achar(9)//'e'//new_line('a')//achar(9)//'f'
    !< test_passed(3) = astring%expand_tabs(4)//''=='abcd    e'//new_line('a')//'    f'
+   !< astring = 'caf'//char(195)//char(169)//achar(9)//'x'
+   !< test_passed(4) = astring%expand_tabs(8, by=SF_CHARS)//''=='caf'//char(195)//char(169)//'    x'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string), intent(in)              :: self      !< The string.
    integer,       intent(in), optional    :: tab_size  !< Columns between tab stops, default 8.
+   integer,       intent(in), optional    :: by        !< Unit of a column: SF_BYTES (default) or SF_CHARS.
    type(string)                           :: expanded  !< The string with the tabs expanded.
    character(kind=CK, len=:), allocatable :: buffer    !< Buffer, only its first length characters are used.
    integer                                :: tab_size_ !< Columns between tab stops, local variable.
    integer                                :: length    !< Length of the result.
    integer                                :: column    !< Column of the next character, from 0.
    integer                                :: spaces    !< Spaces replacing a tab.
-   integer                                :: c         !< Character counter.
+   integer                                :: c         !< Byte position.
+   integer                                :: n         !< Bytes of a character.
+   logical                                :: by_char   !< A column is a character.
 
    if (allocated(self%raw)) then
       tab_size_ = 8 ; if (present(tab_size)) tab_size_ = tab_size
+      by_char = .false.
+      if (present(by)) by_char = by==SF_CHARS
       length = 0
       column = 0
-      do c=1, len(self%raw)
+      c = 0
+      do while (c<len(self%raw))
+         c = c + 1
+         if (by_char.and.iand(ichar(self%raw(c:c)), 255)>127) then ! a non-ASCII character takes one column
+            n = utf8_unit_len(self%raw, c)
+            call append_to_buffer(buffer=buffer, length=length, piece=self%raw(c:c+n-1))
+            column = column + 1
+            c = c + n - 1
+            cycle
+         endif
          select case(self%raw(c:c))
          case(TAB)
             if (tab_size_>0) then
@@ -1891,14 +1916,16 @@ contains
    endif
    endfunction extension
 
-   elemental function fill(self, width, right, filling_char) result(filled)
+   elemental function fill(self, width, right, filling_char, by) result(filled)
    !< Pad string on the left (or right) with zeros (or other char) to fill width.
    !<
    !< @note A string already as wide as (or wider than) `width` is returned unchanged.
    !<
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(6)
+   !< logical      :: test_passed(7)
    !< astring = 'this is string example....wow!!!'
    !< test_passed(1) = astring%fill(width=40)//''=='00000000this is string example....wow!!!'
    !< test_passed(2) = astring%fill(width=50)//''=='000000000000000000this is string example....wow!!!'
@@ -1906,6 +1933,8 @@ contains
    !< test_passed(4) = astring%fill(width=40, filling_char='*')//''=='********this is string example....wow!!!'
    !< test_passed(5) = astring%fill(width=32)//''=='this is string example....wow!!!'
    !< test_passed(6) = astring%fill(width=5)//''=='this is string example....wow!!!'
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(7) = astring%fill(width=5, by=SF_CHARS)//''=='0'//'caf'//char(195)//char(169)
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -1913,18 +1942,21 @@ contains
    integer,                   intent(in)           :: width         !< Final width of filled string.
    logical,                   intent(in), optional :: right         !< Fill on the right instead of left.
    character(kind=CK, len=1), intent(in), optional :: filling_char  !< Filling character (default "0").
+   integer,                   intent(in), optional :: by            !< Unit of width: SF_BYTES (default) or SF_CHARS.
    type(string)                                    :: filled        !< Filled string.
    logical                                         :: right_        !< Fill on the right instead of left, local variable.
    character(kind=CK, len=1)                       :: filling_char_ !< Filling character (default "0"), local variable.
+   integer                                         :: size_         !< Length of the string, in the unit of width.
 
    if (allocated(self%raw)) then
-      if (width>len(self%raw)) then
+      size_ = measure(self%raw, by)
+      if (width>size_) then
          right_ = .false. ; if (present(right)) right_ = right
          filling_char_ = '0' ; if (present(filling_char)) filling_char_ = filling_char
          if (.not.right_) then
-            filled%raw = repeat(filling_char_, width-len(self%raw))//self%raw
+            filled%raw = repeat(filling_char_, width-size_)//self%raw
          else
-            filled%raw = self%raw//repeat(filling_char_, width-len(self%raw))
+            filled%raw = self%raw//repeat(filling_char_, width-size_)
          endif
       else
          filled%raw = self%raw
@@ -2619,7 +2651,7 @@ contains
    endif
    endfunction strjoin_characters_array
 
-   pure subroutine justify(self, lines, width)
+   pure subroutine justify(self, lines, width, by)
    !< Return the words of the string packed into fully justified lines of (at least) `width` characters.
    !<
    !< The words (separated by spaces) are greedily packed into lines; the blanks are evenly distributed between the words of each
@@ -2633,10 +2665,12 @@ contains
    !< @note This is a subroutine, like [[string:split]]: a function returning the lines would need an assignment to an
    !< unallocated array, that is not allowed for a type with a defined assignment.
    !<
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !<
    !<```fortran
    !< type(string)              :: astring
    !< type(string), allocatable :: lines(:)
-   !< logical                   :: test_passed(9)
+   !< logical                   :: test_passed(10)
    !< astring = 'This is an example of text justification.'
    !< call astring%justify(lines=lines, width=16)
    !< test_passed(1) = size(lines, dim=1)==3
@@ -2653,12 +2687,16 @@ contains
    !< astring = '   '
    !< call astring%justify(lines=lines, width=16)
    !< test_passed(9) = size(lines, dim=1)==0
+   !< astring = 'caf'//char(195)//char(169)//' au lait'
+   !< call astring%justify(lines=lines, width=4, by=SF_CHARS)
+   !< test_passed(10) = lines(1)//''=='caf'//char(195)//char(169).and.lines(2)//''=='au  '
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)  :: self      !< The string.
    type(string), allocatable, intent(out) :: lines(:)  !< Justified lines.
    integer,                   intent(in)  :: width     !< Width of the justified lines.
+   integer,         intent(in), optional  :: by        !< Unit of width: SF_BYTES (default) or SF_CHARS.
    type(string), allocatable              :: words(:)  !< Words of the string.
    type(string), allocatable              :: buffer(:) !< Lines buffer.
    character(kind=CK, len=:), allocatable :: line      !< Current line.
@@ -2685,11 +2723,11 @@ contains
    do while (last<Nw)
       first = last + 1
       last = first
-      length = len(words(first)%raw)
+      length = measure(words(first)%raw, by)
       do while (last<Nw)
-         if (length+1+len(words(last+1)%raw)>width) exit
+         if (length+1+measure(words(last+1)%raw, by)>width) exit
          last = last + 1
-         length = length + 1 + len(words(last)%raw)
+         length = length + 1 + measure(words(last)%raw, by)
       enddo
       gaps = last - first
       line = words(first)%raw
@@ -2697,7 +2735,7 @@ contains
          do g=1, gaps
             line = line//SPACE//words(first+g)%raw
          enddo
-         if (len(line)<width) line = line//repeat(SPACE, width-len(line))
+         if (measure(line, by)<width) line = line//repeat(SPACE, width-measure(line, by))
       else
          blanks = width - (length - gaps)
          do g=1, gaps
@@ -2770,35 +2808,42 @@ contains
    endif
    endfunction len_last_word
 
-   elemental function ljust(self, width, fill_char) result(justified)
+   elemental function ljust(self, width, fill_char, by) result(justified)
    !< Return the string left justified in a string of length `width`, padded with `fill_char` (default a space).
    !<
    !< @note As Python `str.ljust`: a string not shorter than `width` is returned unchanged.
    !<
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !<
    !<```fortran
    !< type(string) :: astring
    !< type(string) :: centered
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(4)
    !< astring = 'abc'
    !< test_passed(1) = astring%ljust(6, '.')//''=='abc...'
    !< centered = astring%ljust(6)
    !< test_passed(2) = centered%len()==6.and.centered//''=='abc'
    !< test_passed(3) = astring%ljust(2)//''=='abc'
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(4) = astring%ljust(5, '.', by=SF_CHARS)//''=='caf'//char(195)//char(169)//'.'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self       !< The string.
    integer,                   intent(in)           :: width      !< Width of the result.
    character(kind=CK, len=1), intent(in), optional :: fill_char  !< Fill character, default a space.
+   integer,                   intent(in), optional :: by         !< Unit of width: SF_BYTES (default) or SF_CHARS.
    type(string)                                    :: justified  !< The string justified.
    character(kind=CK, len=1)                       :: fill_char_ !< Fill character, local variable.
+   integer                                         :: size_      !< Length of the string, in the unit of width.
 
    if (allocated(self%raw)) then
+      size_ = measure(self%raw, by)
       fill_char_ = SPACE ; if (present(fill_char)) fill_char_ = fill_char
-      if (width<=len(self%raw)) then
+      if (width<=size_) then
          justified = self
       else
-         justified%raw = self%raw//repeat(fill_char_, width - len(self%raw))
+         justified%raw = self%raw//repeat(fill_char_, width - size_)
       endif
    endif
    endfunction ljust
@@ -3382,35 +3427,42 @@ contains
    endif
    endfunction reverse_words
 
-   elemental function rjust(self, width, fill_char) result(justified)
+   elemental function rjust(self, width, fill_char, by) result(justified)
    !< Return the string right justified in a string of length `width`, padded with `fill_char` (default a space).
    !<
    !< @note As Python `str.rjust`: a string not shorter than `width` is returned unchanged.
    !<
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !<
    !<```fortran
    !< type(string) :: astring
    !< type(string) :: centered
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(4)
    !< astring = 'abc'
    !< test_passed(1) = astring%rjust(6, '.')//''=='...abc'
    !< centered = astring%rjust(6)
    !< test_passed(2) = centered%len()==6.and.centered//''=='   abc'
    !< test_passed(3) = astring%rjust(2)//''=='abc'
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(4) = astring%rjust(5, '.', by=SF_CHARS)//''=='.'//'caf'//char(195)//char(169)
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
    class(string),             intent(in)           :: self       !< The string.
    integer,                   intent(in)           :: width      !< Width of the result.
    character(kind=CK, len=1), intent(in), optional :: fill_char  !< Fill character, default a space.
+   integer,                   intent(in), optional :: by         !< Unit of width: SF_BYTES (default) or SF_CHARS.
    type(string)                                    :: justified  !< The string justified.
    character(kind=CK, len=1)                       :: fill_char_ !< Fill character, local variable.
+   integer                                         :: size_      !< Length of the string, in the unit of width.
 
    if (allocated(self%raw)) then
+      size_ = measure(self%raw, by)
       fill_char_ = SPACE ; if (present(fill_char)) fill_char_ = fill_char
-      if (width<=len(self%raw)) then
+      if (width<=size_) then
          justified = self
       else
-         justified%raw = repeat(fill_char_, width - len(self%raw))//self%raw
+         justified%raw = repeat(fill_char_, width - size_)//self%raw
       endif
    endif
    endfunction rjust
@@ -7241,6 +7293,17 @@ contains
       safepos = utf8_byte_pos(raw, safepos)
    endif
    endfunction byte_safe_position
+
+   pure function measure(raw, by) result(size_)
+   !< Return the length of raw in the unit asked by `by`: bytes (SF_BYTES or absent) or characters (SF_CHARS).
+   character(kind=CK, len=*), intent(in)           :: raw   !< Bytes.
+   integer,                   intent(in), optional :: by    !< Unit asked.
+   integer                                         :: size_ !< Length.
+
+   size_ = len(raw)
+   if (.not.present(by)) return
+   if (by==SF_CHARS) size_ = utf8_units(raw)
+   endfunction measure
 
    pure function to_unit(raw, i, by) result(position)
    !< Return a byte position in the unit asked by `by`: unchanged for SF_BYTES (or absent), the character holding the
