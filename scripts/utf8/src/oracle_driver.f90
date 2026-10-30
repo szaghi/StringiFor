@@ -19,13 +19,16 @@ type(string),     allocatable :: tokens(:)!< List result.
 type(string)                  :: parts(3) !< Partition result.
 integer                       :: iostat   !< I/O status.
 integer                       :: nfield   !< Number of fields.
+integer(I4P),     allocatable :: codes(:) !< Codepoints.
+integer(I4P),     allocatable :: widths(:)!< Widths.
+integer                       :: k        !< Counter.
 
 do
   call get_line(input_unit, line, iostat)
   if (iostat /= 0) exit
   call split_fields(line, field, lens, nfield)
   if (nfield < 2) call fail('malformed line: '//line)
-  if (arg(1) /= 'from_codepoints') s = unhex(arg(2)) ! its argument is a list of integers
+  if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each') s = unhex(arg(2)) ! a list of integers
   select case (arg(1))
   case ('len')
     call put_int(s%len())
@@ -172,6 +175,17 @@ do
     call put_int(s%byte_pos(int_arg(3)))
   case ('char_pos')
     call put_int(s%char_pos(int_arg(3)))
+  case ('width')
+    call put_int(s%width())
+  case ('width_each')
+    codes = int_list(arg(2))
+    allocate(widths(size(codes)))
+    do k = 1, size(codes)
+      t = from_codepoints(codes(k:k))
+      widths(k) = t%width()
+    enddo
+    call put_int_list(widths)
+    deallocate(widths)
   case default
     call fail('unknown operation: '//arg(1))
   endselect

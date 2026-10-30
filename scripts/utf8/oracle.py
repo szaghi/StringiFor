@@ -25,6 +25,8 @@ Suites:
               sequences, and the whole codespace through from_codepoints
   escape      the C escape codecs (Phase 2 of #51): escape_c, unescape_c, escapes_error and the round trip; the
               reference is checked first against Python's unicode_escape codec on the escapes both understand
+  columns     display width (Phase 5 of #51): width and by=SF_COLUMNS; the reference applies the rules to the pinned
+              UCD 17.0.0 read codepoint by codepoint (gen_unicode_tables.naive_sets), on every Unicode scalar value
   positions   positions and lengths in characters (Phase 4 of #51): by=SF_CHARS and byte_pos/char_pos; the reference
               converts the byte results with its own split of the bytes into units
   units       the methods that work on units (Phase 3 of #51): the reference is Python str on the bytes decoded with
@@ -46,6 +48,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from corpus import POOL, RANDOM, SEED, cases, units  # noqa: E402
+
+_UCD_SETS: dict[str, set[int]] = {}
 
 Arg = bytes | int | list[int]
 Result = bytes | int | bool | list[bytes] | list[int]
@@ -821,7 +825,55 @@ def fills(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
     return [(d, w, rng.randint(0, 1)) for d, w in widths(data, rng)]
 
 
-EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra, "units": units_extra}
+def ucd_sets() -> dict[str, set[int]]:
+    """The width sets of the pinned UCD, read once (downloaded and verified by gen_unicode_tables if needed)."""
+    if not _UCD_SETS:
+        import gen_unicode_tables as ucd  # noqa: PLC0415 (only the columns suite needs it)
+
+        cache = ucd.ROOT / "build" / "utf8" / f"ucd-{ucd.DEFAULT_VERSION}"
+        _UCD_SETS.update(ucd.naive_sets(ucd.fetch(ucd.DEFAULT_VERSION, cache)))
+    return _UCD_SETS
+
+
+def unit_width(code: int) -> int:
+    """Display columns of a unit: code is its codepoint, or -byte for an ill-formed byte."""
+    sets = ucd_sets()
+    if code < 0:
+        return 1
+    if code < 32 or 127 <= code < 160:
+        return 0
+    if code in sets["ZERO_WIDTH_RANGES"]:
+        return 0
+    return 2 if code in sets["WIDE_RANGES"] else 1
+
+
+def display_width(data: bytes) -> int:
+    """Display columns of the bytes: the sum over their units."""
+    return sum(unit_width(code) for code in codepoints(data))
+
+
+def width_each(codes: list[int]) -> list[int]:
+    """Columns of each codepoint encoded alone (a non-scalar value encodes as U+FFFD)."""
+    return [display_width(from_codepoints([code])) for code in codes]
+
+
+def columns_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """Every Unicode scalar value, by blocks of 4096, and the 128 ill-formed bytes."""
+    calls: list[tuple[str, tuple[Arg, ...]]] = [
+        ("width_each", (list(range(-255, -127)),))
+    ]
+    for first in range(0, 0x110000, 4096):
+        block = [c for c in range(first, first + 4096) if not 0xD800 <= c <= 0xDFFF]
+        calls.append(("width_each", (block,)))
+    return calls
+
+
+EXTRA = {
+    "utf8": utf8_exhaustive,
+    "escape": escape_extra,
+    "units": units_extra,
+    "columns": columns_extra,
+}
 SELF_CHECKS = {"escape": check_escape_reference}
 
 
@@ -864,6 +916,10 @@ SUITES: dict[str, list[Op]] = {
         Op("from_codepoints", codepoint_lists, from_codepoints),
         Op("to_valid_utf8", single, to_valid_utf8),
         Op("to_valid_utf8_with", replacements_of, to_valid_utf8),
+    ],
+    "columns": [
+        Op("width", single, display_width),
+        Op("width_each", codepoint_lists, width_each),
     ],
     "positions": [
         Op("len_chars", single, lambda d: len(units(d))),

@@ -8,7 +8,8 @@ use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
                             utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
-                            utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units
+                            utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units, &
+                            utf8_unit_width, utf8_width
 
 implicit none
 private
@@ -18,7 +19,7 @@ save
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
 ! expose StingiFor objects
 public :: CK
-public :: SF_BYTES, SF_CHARS
+public :: SF_BYTES, SF_CHARS, SF_COLUMNS
 public :: from_codepoints
 public :: glob
 public :: strjoin
@@ -27,6 +28,7 @@ public :: string
 integer, parameter :: CK = selected_char_kind('DEFAULT') !< Default character kind.
 integer, parameter :: SF_BYTES = 1 !< Unit of the `by=` arguments: positions and lengths in bytes (the default).
 integer, parameter :: SF_CHARS = 2 !< Unit of the `by=` arguments: in characters (UTF-8 units).
+integer, parameter :: SF_COLUMNS = 3 !< Unit of the `by=` width arguments: in display columns of a terminal.
 
 type :: string
   !< OOP designed string class.
@@ -149,6 +151,7 @@ type :: string
     procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: unquote          !< Return the string unquoted, the inner doubled quotes undoubled.
     procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
+    procedure, pass(self) :: width => display_width !< Return the display width of the string, in terminal columns.
     procedure, pass(self) :: utf8_error       !< Return the position of the first ill-formed UTF-8 byte, 0 if none.
     procedure, pass(self) :: write_file       !< Write a single string stream into file.
     procedure, pass(self) :: write_line       !< Write line (record) to a connected unit.
@@ -1846,7 +1849,7 @@ contains
    !=> T <<<
    class(string), intent(in)              :: self      !< The string.
    integer,       intent(in), optional    :: tab_size  !< Columns between tab stops, default 8.
-   integer,       intent(in), optional    :: by        !< Unit of a column: SF_BYTES (default) or SF_CHARS.
+   integer,       intent(in), optional    :: by        !< Unit of a column: SF_BYTES (default), SF_CHARS, SF_COLUMNS.
    type(string)                           :: expanded  !< The string with the tabs expanded.
    character(kind=CK, len=:), allocatable :: buffer    !< Buffer, only its first length characters are used.
    integer                                :: tab_size_ !< Columns between tab stops, local variable.
@@ -1856,11 +1859,18 @@ contains
    integer                                :: c         !< Byte position.
    integer                                :: n         !< First byte of the next character (by=SF_CHARS).
    logical                                :: by_char   !< A column is a character.
+   logical                                :: by_column !< Columns are display columns.
+   integer(I4P)                           :: code      !< Codepoint of a character.
+   integer                                :: m         !< Bytes of a character.
 
    if (allocated(self%raw)) then
       tab_size_ = 8 ; if (present(tab_size)) tab_size_ = tab_size
       by_char = .false.
-      if (present(by)) by_char = by==SF_CHARS
+      by_column = .false.
+      if (present(by)) then
+         by_char = by==SF_CHARS
+         by_column = by==SF_COLUMNS
+      endif
       length = 0
       column = 0
       n = 0 ! by=SF_CHARS: the first byte of the next character
@@ -1877,7 +1887,13 @@ contains
             column = 0
          case default
             call append_to_buffer(buffer=buffer, length=length, piece=self%raw(c:c))
-            if (.not.by_char) then
+            if (by_column) then
+               if (c>=n) then ! the first byte of a character: its display width
+                  call utf8_decode(self%raw, c, code, m)
+                  column = column + utf8_unit_width(code)
+                  n = c + m
+               endif
+            elseif (.not.by_char) then
                column = column + 1
             elseif (c>=n) then ! the first byte of a character: one column for the whole character
                column = column + 1
@@ -4987,6 +5003,36 @@ contains
    endif
    endfunction upper
 
+   elemental function display_width(self) result(columns)
+   !< Return the display width of the string, in the columns of a terminal (as `wcswidth`), bound as `width()`.
+   !<
+   !< @note Each unit (a well-formed UTF-8 sequence, or a byte that is not part of one) takes: 0 columns for a C0 or C1
+   !< control or DEL, and for a zero-width character (General_Category Mn, Me, Cf except U+00AD, the Hangul jamo medial
+   !< vowels and final consonants); 2 columns for East_Asian_Width W and F; 1 column otherwise, an ill-formed byte
+   !< included. The tables come from the Unicode Character Database 17.0.0. Grapheme clusters are not considered: an emoji
+   !< ZWJ sequence counts each of its emoji.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(1) = astring%width()==4
+   !< astring = char(228)//char(189)//char(160)//char(229)//char(165)//char(189)
+   !< test_passed(2) = astring%width()==4
+   !< astring = 'e'//char(204)//char(129)
+   !< test_passed(3) = astring%width()==1
+   !< astring = 'a'//achar(9)//'b'
+   !< test_passed(4) = astring%width()==2
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self    !< The string.
+   integer                   :: columns !< Display width.
+
+   columns = 0
+   if (allocated(self%raw)) columns = utf8_width(self%raw)
+   endfunction display_width
+
    elemental function utf8_error(self) result(position)
    !< Return the byte position of the first byte that is not part of a well-formed UTF-8 sequence, 0 if there is none.
    !<
@@ -7292,7 +7338,8 @@ contains
    endfunction byte_safe_position
 
    pure function measure(raw, by) result(size_)
-   !< Return the length of raw in the unit asked by `by`: bytes (SF_BYTES or absent) or characters (SF_CHARS).
+   !< Return the length of raw in the unit asked by `by`: bytes (SF_BYTES or absent), characters (SF_CHARS) or display
+   !< columns (SF_COLUMNS).
    character(kind=CK, len=*), intent(in)           :: raw   !< Bytes.
    integer,                   intent(in), optional :: by    !< Unit asked.
    integer                                         :: size_ !< Length.
@@ -7300,6 +7347,7 @@ contains
    size_ = len(raw)
    if (.not.present(by)) return
    if (by==SF_CHARS) size_ = utf8_units(raw)
+   if (by==SF_COLUMNS) size_ = utf8_width(raw)
    endfunction measure
 
    pure function to_unit(raw, i, by) result(position)

@@ -6,6 +6,7 @@ module stringifor_utf8
 !< U+10FFFF, no truncated sequence) or a single byte that is not part of one. Every procedure works on units, so
 !< ill-formed input is never merged, dropped or rewritten unless a procedure says so.
 use penf, only : I4P, I8P
+use stringifor_unicode_tables, only : in_ranges, WIDE_RANGES, ZERO_WIDTH_RANGES
 
 implicit none
 private
@@ -25,6 +26,8 @@ public :: utf8_scan
 public :: utf8_subpart_len
 public :: utf8_unit_len
 public :: utf8_units
+public :: utf8_width
+public :: utf8_unit_width
 
 integer(I8P),     parameter :: HIGH_BITS = -9187201950435737472_I8P !< 8080808080808080: the high bit of 8 bytes.
 character(len=*), parameter :: REPLACEMENT_CHARACTER = char(239)//char(191)//char(189) !< U+FFFD in UTF-8.
@@ -304,6 +307,52 @@ contains
       i = i + n
    enddo
    endfunction utf8_scan
+
+   pure function utf8_unit_width(codepoint) result(columns)
+   !< Return the display width, in terminal columns, of a unit given its codepoint (-byte for an ill-formed byte).
+   !<
+   !< 0 for the C0 and C1 controls and DEL, and for the zero-width characters (Mn, Me, Cf except U+00AD, the Hangul
+   !< jamo medial vowels and final consonants); 2 for East_Asian_Width W and F; 1 otherwise, an ill-formed byte included.
+   integer(I4P), intent(in) :: codepoint !< Codepoint, or -byte.
+   integer                  :: columns   !< Display width.
+
+   columns = 1
+   if (codepoint < 0) return
+   if (codepoint < 32 .or. (codepoint >= 127 .and. codepoint < 160)) then
+      columns = 0
+   elseif (codepoint < 768) then ! below U+0300 nothing is zero-width nor wide but U+00AD (one column)
+      columns = 1
+   elseif (in_ranges(codepoint, ZERO_WIDTH_RANGES)) then
+      columns = 0
+   elseif (in_ranges(codepoint, WIDE_RANGES)) then
+      columns = 2
+   endif
+   endfunction utf8_unit_width
+
+   pure function utf8_width(raw) result(columns)
+   !< Return the display width of the bytes, in terminal columns: the sum of the widths of their units.
+   character(len=*), intent(in) :: raw     !< Bytes.
+   integer                      :: columns !< Display width.
+   integer                      :: i       !< Byte position.
+   integer                      :: j       !< End of a run of ASCII bytes.
+   integer                      :: k       !< Byte counter.
+   integer                      :: n       !< Unit length.
+   integer(I4P)                 :: cp      !< Codepoint of a unit.
+
+   columns = 0
+   i = 1
+   do while (i <= len(raw))
+      j = ascii_run(raw, i)
+      do k = i, j - 1 ! ASCII: one column, none for the controls
+         if (byte(raw(k:k)) >= 32 .and. byte(raw(k:k)) /= 127) columns = columns + 1
+      enddo
+      i = j
+      if (i > len(raw)) exit
+      call utf8_decode(raw, i, cp, n)
+      columns = columns + utf8_unit_width(cp)
+      i = i + n
+   enddo
+   endfunction utf8_width
 
    pure function utf8_byte_pos(raw, k) result(position)
    !< Return the byte position of the first byte of the k-th unit, len(raw)+1 for k one past the last unit, 0 for any

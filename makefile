@@ -94,7 +94,8 @@ $(DOBJ)stringifor_string_t.o: src/lib/stringifor_string_t.F90 \
 	@$(FC) $(OPTSC)  $< -o $@
 
 $(DOBJ)stringifor_utf8.o: src/lib/stringifor_utf8.F90 \
-	$(DOBJ)penf.o
+	$(DOBJ)penf.o \
+	$(DOBJ)stringifor_unicode_tables.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
