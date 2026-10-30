@@ -1,48 +1,36 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: line(3)
  integer :: iostat
- character(len=99) :: iomsg
  integer :: scratch
  integer :: l
  logical :: test_passed(6)
- line(1) = ' Hello World!   '
- line(2) = 'How are you?  '
- line(3) = '   All say: "Fine thanks"'
  open(newunit=scratch, status='SCRATCH')
- write(scratch, "(A)") line(1)%chars()
- write(scratch, "(A)") line(2)%chars()
- write(scratch, "(A)") line(3)%chars()
+ write(scratch, "(A)") 'first'
+ write(scratch, "(A)") ''
+ write(scratch, "(A)") 'third'
  rewind(scratch)
- l = 0
- iostat = 0
- do
- l = l + 1
- call astring%read_line(unit=scratch, iostat=iostat, iomsg=iomsg)
- if (iostat/=0.and..not.is_iostat_eor(iostat)) then
- exit
- else
- test_passed(l) = (astring==line(l))
- endif
- enddo
+ astring = 'untouched'
+ call astring%read_line(unit=scratch, iostat=iostat)
+ test_passed(1) = (iostat==0.and.astring=='first')
+ call astring%read_line(unit=scratch, iostat=iostat)
+ test_passed(2) = (iostat==0.and.astring%len()==0)
+ call astring%read_line(unit=scratch, iostat=iostat)
+ test_passed(3) = (iostat==0.and.astring=='third')
+ call astring%read_line(unit=scratch, iostat=iostat)
+ test_passed(4) = (is_iostat_end(iostat).and.astring=='third')
  close(scratch)
  open(newunit=scratch, status='SCRATCH', form='UNFORMATTED', access='STREAM')
- write(scratch) line(1)%chars()//new_line('a')
- write(scratch) line(2)%chars()//new_line('a')
- write(scratch) line(3)%chars()//new_line('a')
+ write(scratch) 'first'//new_line('a')//new_line('a')//'last, not terminated'
  rewind(scratch)
  l = 0
- iostat = 0
  do
+ call astring%read_line(unit=scratch, iostat=iostat, form='unformatted')
+ if (iostat/=0) exit
  l = l + 1
- call astring%read_line(unit=scratch, iostat=iostat, iomsg=iomsg, form='UnfORMatteD')
- if (iostat/=0.and..not.is_iostat_eor(iostat)) then
- exit
- else
- test_passed(l+3) = (astring==line(l))
- endif
  enddo
+ test_passed(5) = (l==3.and.astring=='last, not terminated')
+ test_passed(6) = is_iostat_end(iostat)
  close(scratch)
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

@@ -74,6 +74,7 @@ type :: string
     procedure, pass(self) :: encode           !< Encode string.
     procedure, pass(self) :: escape           !< Escape backslashes (or custom escape character).
     procedure, pass(self) :: escape_c         !< Return the string with C escapes for what is not printable.
+    procedure, pass(self) :: escape_xml       !< Return the string with the XML markup characters escaped.
     procedure, pass(self) :: escapes_error    !< Return the position of the first malformed C escape, 0 if none.
     procedure, pass(self) :: expand_tabs      !< Return a string with the tabs expanded to spaces.
     procedure, pass(self) :: extension        !< Return the extension of a string containing a file name.
@@ -148,6 +149,7 @@ type :: string
     procedure, pass(self) :: transliterate    !< Return a string with the characters of a set replaced by the ones of another.
     procedure, pass(self) :: unescape         !< Unescape double backslashes (or custom escaped character).
     procedure, pass(self) :: unescape_c       !< Return the string with its C escapes expanded.
+    procedure, pass(self) :: unescape_xml     !< Return the string with its XML references expanded.
     procedure, pass(self) :: unique           !< Reduce to one (unique) multiple occurrences of a substring into a string.
     procedure, pass(self) :: unquote          !< Return the string unquoted, the inner doubled quotes undoubled.
     procedure, pass(self) :: upper            !< Return a string with all uppercase characters.
@@ -156,6 +158,7 @@ type :: string
     procedure, pass(self) :: write_file       !< Write a single string stream into file.
     procedure, pass(self) :: write_line       !< Write line (record) to a connected unit.
     procedure, pass(self) :: write_lines      !< Write lines (records) to a connected unit.
+    procedure, pass(self) :: xml_error        !< Return the position of the first malformed XML reference, 0 if none.
     ! inquire methods
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
     procedure, pass(self) :: has_bom      !< Return true if the string starts with a UTF-8 byte order mark.
@@ -1785,6 +1788,92 @@ contains
       if (pass == 1) allocate(character(kind=CK, len=o) :: escaped%raw)
    enddo
    endfunction escape_c
+
+   elemental function escape_xml(self, attribute) result(escaped)
+   !< Return the string with the XML markup characters escaped: the inverse of [[string:unescape_xml]].
+   !<
+   !< @note `& < > " '` become `&amp; &lt; &gt; &quot; &apos;`, so the result can be the content of an element or the
+   !< value of an attribute, in single or double quotes. With `attribute=.true.` TAB, LF and CR also become `&#9; &#10;
+   !< &#13;`: a parser turns them into spaces in an attribute value, and a CR into a LF in an element. Every other byte
+   !< is kept, so `unescape_xml` gives back the same bytes, whatever they are; the C0 controls other than TAB, LF and CR
+   !< cannot be written in XML 1.0, not even as references, so a string holding one gives text that is not XML 1.0.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'a<b & "c"'
+   !< test_passed(1) = astring%escape_xml()=='a&lt;b &amp; &quot;c&quot;'
+   !< astring = 'it''s'//achar(10)
+   !< test_passed(2) = astring%escape_xml()=='it&apos;s'//achar(10)
+   !< test_passed(3) = astring%escape_xml(attribute=.true.)=='it&apos;s&#10;'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)           :: self       !< The string.
+   logical,       intent(in), optional :: attribute  !< Also escape TAB, LF and CR, for an attribute value.
+   type(string)                        :: escaped    !< Escaped string.
+   logical                             :: attribute_ !< Also escape TAB, LF and CR, local variable.
+   character(kind=CK, len=8)           :: markup     !< The bytes to escape.
+   integer                             :: i          !< Byte position in the string.
+   integer                             :: o          !< Byte position in the result.
+   integer                             :: pass       !< 1: measure the result, 2: fill it.
+   character(kind=CK, len=6)           :: token      !< What a byte becomes.
+   integer                             :: t          !< Length of the token.
+
+   if (.not.allocated(self%raw)) return
+   attribute_ = .false. ; if (present(attribute)) attribute_ = attribute
+   markup = '&<>"'//"'"//achar(9)//achar(10)//achar(13)
+   if (scan(self%raw, markup(1:merge(8, 5, attribute_))) == 0) then
+      escaped%raw = self%raw
+      return
+   endif
+   do pass=1, 2
+      o = 0
+      do i=1, len(self%raw)
+         t = 1
+         select case (self%raw(i:i))
+         case ('&')
+            token = '&amp;'
+            t = 5
+         case ('<')
+            token = '&lt;'
+            t = 4
+         case ('>')
+            token = '&gt;'
+            t = 4
+         case ('"')
+            token = '&quot;'
+            t = 6
+         case ("'")
+            token = '&apos;'
+            t = 6
+         case (achar(9))
+            token = self%raw(i:i)
+            if (attribute_) then
+               token = '&#9;'
+               t = 4
+            endif
+         case (achar(10))
+            token = self%raw(i:i)
+            if (attribute_) then
+               token = '&#10;'
+               t = 5
+            endif
+         case (achar(13))
+            token = self%raw(i:i)
+            if (attribute_) then
+               token = '&#13;'
+               t = 5
+            endif
+         case default
+            token = self%raw(i:i)
+         endselect
+         if (pass == 2) escaped%raw(o+1:o+t) = token(1:t)
+         o = o + t
+      enddo
+      if (pass == 1) allocate(character(kind=CK, len=o) :: escaped%raw)
+   enddo
+   endfunction escape_xml
 
    elemental function escapes_error(self) result(position)
    !< Return the byte position of the first malformed C escape, 0 if there is none (see [[string:unescape_c]]).
@@ -4916,6 +5005,61 @@ contains
    unescaped%raw = buffer(1:o)
    endfunction unescape_c
 
+   elemental function unescape_xml(self) result(unescaped)
+   !< Return the string with its XML references expanded: the inverse of [[string:escape_xml]].
+   !<
+   !< @note The references are the 5 predefined entities `&amp; &lt; &gt; &quot; &apos;` and the character references
+   !< `&#N;` (decimal) and `&#xH;` (hexadecimal, any number of digits), whose value must be a Unicode scalar value other
+   !< than 0; a character reference gives its **codepoint** encoded in UTF-8. Names are case-sensitive. A malformed
+   !< reference (see [[string:xml_error]]), as `&nbsp;` (an entity of HTML, not of XML), is kept as it is and the text
+   !< after its `&` is read normally. Nothing else changes: line ends are not normalized, and CDATA sections and markup
+   !< are not recognized.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = 'a&lt;b &amp; caf&#233;&#x21;'
+   !< test_passed(1) = astring%unescape_xml()=='a<b & caf'//char(195)//char(169)//'!'
+   !< astring = 'AT&T &nbsp; &#0;'
+   !< test_passed(2) = astring%unescape_xml()==astring
+   !< astring = 'x="'//char(255)//achar(10)//'"'
+   !< astring = astring%escape_xml(attribute=.true.)
+   !< test_passed(3) = astring%unescape_xml()=='x="'//char(255)//achar(10)//'"'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)              :: self      !< The string.
+   type(string)                           :: unescaped !< Unescaped string.
+   character(kind=CK, len=:), allocatable :: buffer    !< Result, at most as long as the string.
+   integer                                :: i         !< Byte position in the string.
+   integer                                :: o         !< Byte position in the result.
+   integer                                :: n         !< Length of a reference, 0 if malformed.
+   integer(I4P)                           :: value     !< Codepoint of a reference.
+
+   if (.not.allocated(self%raw)) return
+   if (index(self%raw, '&') == 0) then
+      unescaped%raw = self%raw
+      return
+   endif
+   allocate(character(kind=CK, len=len(self%raw)) :: buffer) ! every reference is at least as long as what it gives
+   i = 1
+   o = 0
+   do while (i <= len(self%raw))
+      n = 0
+      if (self%raw(i:i) == '&') call parse_xml_reference(self%raw, i, value, n)
+      if (n == 0) then ! a plain byte, or the ampersand of a malformed reference
+         o = o + 1
+         buffer(o:o) = self%raw(i:i)
+         i = i + 1
+      else
+         buffer(o+1:o+utf8_encoded_len(value)) = utf8_encode(value)
+         o = o + utf8_encoded_len(value)
+         i = i + n
+      endif
+   enddo
+   unescaped%raw = buffer(1:o)
+   endfunction unescape_xml
+
    elemental function unique(self, substring) result(uniq)
    !< Reduce to one (unique) multiple (sequential) occurrences of a substring into a string.
    !<
@@ -5065,6 +5209,49 @@ contains
    position = 0
    if (allocated(self%raw)) position = utf8_first_error(self%raw)
    endfunction utf8_error
+
+   elemental function xml_error(self) result(position)
+   !< Return the byte position of the first malformed XML reference, 0 if there is none (see [[string:unescape_xml]]).
+   !<
+   !< @note Malformed is an `&` that does not start a predefined entity (`&amp; &lt; &gt; &quot; &apos;`) or a character
+   !< reference (`&#N;`, `&#xH;`) whose value is a Unicode scalar value other than 0: a bare `&`, a missing `;`, an
+   !< entity of HTML or of a DTD (`&nbsp;`), `&#X41;` (the `x` must be lowercase), a surrogate, a value above U+10FFFF.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(3)
+   !< astring = '&lt;a&gt; &#x1F600;'
+   !< test_passed(1) = astring%xml_error()==0
+   !< astring = 'Q&amp;A, R&D'
+   !< test_passed(2) = astring%xml_error()==11
+   !< astring = '&#xD800;'
+   !< test_passed(3) = astring%xml_error()==1
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self     !< The string.
+   integer                   :: position !< Position of the ampersand of the first malformed reference, 0 if none.
+   integer                   :: i        !< Byte position.
+   integer                   :: n        !< Length of a reference, 0 if malformed.
+   integer(I4P)              :: value    !< Codepoint of a reference.
+
+   position = 0
+   if (.not.allocated(self%raw)) return
+   i = index(self%raw, '&')
+   if (i == 0) return
+   do while (i <= len(self%raw))
+      if (self%raw(i:i) == '&') then
+         call parse_xml_reference(self%raw, i, value, n)
+         if (n == 0) then
+            position = i
+            return
+         endif
+         i = i + n
+      else
+         i = i + 1
+      endif
+   enddo
+   endfunction xml_error
 
    subroutine write_file(self, file, form, iostat, iomsg, bom)
    !< Write a single string stream into file.
@@ -7610,6 +7797,59 @@ contains
    endselect
    n = 2
    endsubroutine parse_c_escape
+
+   pure subroutine parse_xml_reference(raw, i, value, n)
+   !< Parse the XML reference starting with the ampersand at byte i (see [[string:unescape_xml]]).
+   character(kind=CK, len=*), intent(in)  :: raw   !< Bytes.
+   integer,                   intent(in)  :: i     !< Position of the ampersand.
+   integer(I4P),              intent(out) :: value !< Codepoint.
+   integer,                   intent(out) :: n     !< Length of the reference, `&` and `;` included; 0 if malformed.
+   integer                                :: base  !< Base of a character reference: 10 or 16.
+   integer                                :: first !< Position of the first digit.
+   integer                                :: d     !< Byte position of a digit.
+   integer                                :: h     !< Digit value.
+
+   value = 0
+   n = 0
+   if (i + 3 > len(raw)) return ! the shortest reference is 4 bytes long
+   if (raw(i+1:i+1) /= '#') then
+      if (raw(i+1:i+3) == 'lt;') then
+         value = 60
+         n = 4
+      elseif (raw(i+1:i+3) == 'gt;') then
+         value = 62
+         n = 4
+      elseif (raw(i+1:min(i+4, len(raw))) == 'amp;') then
+         value = 38
+         n = 5
+      elseif (raw(i+1:min(i+5, len(raw))) == 'quot;') then
+         value = 34
+         n = 6
+      elseif (raw(i+1:min(i+5, len(raw))) == 'apos;') then
+         value = 39
+         n = 6
+      endif
+      return
+   endif
+   base = 10
+   first = i + 2
+   if (raw(i+2:i+2) == 'x') then
+      base = 16
+      first = i + 3
+   endif
+   d = first
+   do while (d <= len(raw))
+      h = index('0123456789abcdef', raw(d:d)) - 1
+      if (h < 0 .and. base == 16) h = index('0123456789ABCDEF', raw(d:d)) - 1
+      if (h < 0 .or. h >= base) exit
+      if (value <= 1114111) value = value * base + h ! saturates above U+10FFFF, at most 1114111 * 16 + 15
+      d = d + 1
+   enddo
+   if (d == first .or. d > len(raw)) return
+   if (raw(d:d) /= ';') return
+   if (value == 0 .or. value > 1114111 .or. (value >= 55296 .and. value <= 57343)) return
+   n = d - i + 1
+   endsubroutine parse_xml_reference
 
    pure subroutine read_hex(raw, first, digits, value, is_ok)
    !< Read exactly `digits` hexadecimal digits starting at byte `first`; false if they are not there.

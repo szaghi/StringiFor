@@ -1,10 +1,12 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(2)
- astring = 'the Quick Brown fox Jumps over the Lazy Dog.'
- test_passed(1) = astring%startcase()//''=='The Quick Brown Fox Jumps Over The Lazy Dog.'
- astring = '   '
- test_passed(2) = astring%startcase()//''==''
+ logical :: test_passed(4)
+ astring = 'bookkeeper  --  aa'
+ test_passed(1) = astring%squeeze()//''=='bokeper - a'
+ test_passed(2) = astring%squeeze(set=' -')//''=='bookkeeper - aa'
+ astring = 'n'//char(195)//char(169)//char(195)//char(169)//'e'
+ test_passed(3) = astring%squeeze()//''=='n'//char(195)//char(169)//'e'
+ test_passed(4) = astring%squeeze(set=char(195))//''==astring//''
  print '(L1)', all(test_passed)
 endprogram volatile_doctest
