@@ -54,8 +54,35 @@ Positions, lengths and widths count bytes by default, as the Fortran intrinsics,
 | `center`, `ljust`, `rjust`, `fill`, `justify`, `expand_tabs` | the width counts characters |
 | `byte_pos(char_pos)`, `char_pos(byte_pos)` | (always) convert a position from one unit to the other |
 
-A character counts as one, whatever its display width: a CJK character takes two columns in a terminal (display
-widths come later, [#51](https://github.com/szaghi/StringiFor/issues/51)).
+A character counts as one, whatever its display width: a CJK character takes two columns in a terminal, see
+[display width](#display-width) for `by=SF_COLUMNS`.
+
+## Display width
+
+`width()` gives the number of columns a string takes in a terminal, as C `wcswidth`, and the width methods take
+`by=SF_COLUMNS` to align text by columns:
+
+<<< @/examples/snippets/display_width.f90
+
+<<< @/examples/output/display_width.ansi{ansi}
+
+Each unit takes:
+
+| Columns | Units |
+|---|---|
+| 0 | C0 and C1 controls and DEL; zero-width characters: General_Category Mn, Me and Cf (but U+00AD, the soft hyphen), the Hangul jamo medial vowels and final consonants (U+1160..U+11FF, U+D7B0..U+D7FF) |
+| 2 | East_Asian_Width W and F (CJK, fullwidth forms, most emoji) |
+| 1 | everything else, a byte that is not part of a well-formed sequence included |
+
+The tables are generated from the Unicode Character Database 17.0.0 (`scripts/utf8/gen_unicode_tables.py`). Grapheme
+clusters are not considered: an emoji sequence joined by U+200D counts each of its emoji.
+
+Compared with the Python package [wcwidth](https://pypi.org/project/wcwidth/) 0.9.4, 5374 of the 1112064 scalar values
+differ (`python scripts/utf8/wcwidth_report.py` with wcwidth installed). 4796 of them are unassigned in Unicode 17.0,
+wcwidth following Unicode 18.0. The others are choices: wcwidth gives 0 to the spacing marks (Mc, 471 codepoints), to
+U+2028, U+2029 and the Hangul fillers U+3164 and U+FFA0, 1 to 13 visible format characters (Cf, such as U+0600), 2 to
+the 26 regional indicators U+1F1E6..U+1F1FF, and -1 (not printable) to the 64 controls.
+
 
 ## Checking and inspecting
 

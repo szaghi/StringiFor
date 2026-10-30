@@ -107,7 +107,8 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 
 A *unit* is a well-formed UTF-8 sequence or a single byte that is not part of one: see [Unicode and UTF-8](./unicode).
 Positions, lengths and widths count bytes; `len`, `index`, `scan`, `verify`, `slice`, `insert`, `len_last_word`,
-`center`, `ljust`, `rjust`, `fill`, `justify` and `expand_tabs` take `by=SF_CHARS` to count characters instead.
+`center`, `ljust`, `rjust`, `fill`, `justify` and `expand_tabs` take `by=SF_CHARS` to count characters instead; the
+width methods also take `by=SF_COLUMNS`, display columns.
 `reverse`, `match`, `scan`, `verify`, `squeeze`, `transliterate` and the `remove=` set of `strip`, `lstrip` and
 `rstrip` work on units; positions and lengths count bytes.
 
@@ -116,6 +117,7 @@ Positions, lengths and widths count bytes; `len`, `index`, `scan`, `verify`, `sl
 | `has_bom()` | `logical` | True if the string starts with a UTF-8 byte order mark (EF BB BF) |
 | `escape_c([ascii])` | `string` | C escapes for what is not printable ASCII (`ascii=.false.`: only controls and ill-formed bytes) |
 | `escapes_error()` | `integer` | Byte position of the first malformed C escape, 0 if none |
+| `width()` | `integer` | Display width in terminal columns (East Asian wide 2, zero-width 0, controls 0) |
 | `byte_pos(char_pos)` | `integer` | Byte position of the first byte of the character number `char_pos` |
 | `char_pos(byte_pos)` | `integer` | Number of the character holding the byte at `byte_pos` |
 | `codepoints()` | `integer(I4P)(:)` | Codepoints, one per unit; a byte not part of a well-formed sequence is minus its value |
@@ -224,6 +226,7 @@ Re-exported from PENF for convenience:
 |---|---|
 | `SF_BYTES` | `by=` unit: bytes, the default |
 | `SF_CHARS` | `by=` unit: characters (UTF-8 units) |
+| `SF_COLUMNS` | `by=` unit of the width methods: display columns |
 
 ## Character Kind Constant
 

@@ -1,0 +1,4 @@
+$ display_width
+|Ada.....| bytes, characters, columns: 3 3 3
+|José....| bytes, characters, columns: 5 4 4
+|你好....| bytes, characters, columns: 6 2 4

@@ -50,3 +50,4 @@ jobs:
         bash scripts/oracle.sh escape
         bash scripts/oracle.sh units
         bash scripts/oracle.sh positions
+        bash scripts/oracle.sh columns
