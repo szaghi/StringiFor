@@ -6,7 +6,7 @@ use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P
 ! use stringifor_string_t, only : adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify, CK, string
 use stringifor_string_t, only : adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify, CK, from_codepoints, glob, &
                                 SF_BYTES, SF_CHARS, SF_COLUMNS, &
-                                string, strjoin
+                                string, strjoin, strless, strless_natural, strless_nocase, strsort, strsort_less
 
 implicit none
 private
@@ -17,6 +17,8 @@ public :: SF_BYTES, SF_CHARS, SF_COLUMNS
 public :: from_codepoints
 public :: glob
 public :: strjoin
+public :: strless, strless_natural, strless_nocase
+public :: strsort, strsort_less
 public :: string
 ! expose StingiFor overloaded builtins and operators
 ! public :: adjustl, adjustr, count, index, len, len_trim, repeat, scan, trim, verify

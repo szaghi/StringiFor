@@ -1,20 +1,20 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: strings(3)
- logical :: test_passed(5)
- astring = 'Hello WorLD!'
- strings = astring%partition(sep='lo Wo')
- test_passed(1) = (strings(1)//''=='Hel'.and.strings(2)//''=='lo Wo'.and.strings(3)//''=='rLD!')
- strings = astring%partition(sep='Hello')
- test_passed(2) = (strings(1)//''==''.and.strings(2)//''=='Hello'.and.strings(3)//''==' WorLD!')
- astring = 'Hello WorLD!'
- strings = astring%partition()
- test_passed(3) = (strings(1)//''=='Hello'.and.strings(2)//''==' '.and.strings(3)//''=='WorLD!')
- strings = astring%partition(sep='xyz')
- test_passed(4) = (strings(1)//''=='Hello WorLD!'.and.strings(2)//''==''.and.strings(3)//''=='')
- astring = 'ab'
- strings = astring%partition(sep='ab')
- test_passed(5) = (strings(1)//''==''.and.strings(2)//''=='ab'.and.strings(3)//''=='')
+ logical :: test_passed(7)
+ astring = 'Hello World'
+ test_passed(1) = astring%len_last_word()==5
+ astring = '   fly me   to   the moon  '
+ test_passed(2) = astring%len_last_word()==4
+ astring = 'joyboy'
+ test_passed(3) = astring%len_last_word()==6
+ astring = 'src/lib/stringifor//'
+ test_passed(4) = astring%len_last_word(sep='/')==10
+ astring = '    '
+ test_passed(5) = astring%len_last_word()==0
+ call astring%free
+ test_passed(6) = astring%len_last_word()==0
+ astring = 'un caf'//char(195)//char(169)
+ test_passed(7) = astring%len_last_word()==5.and.astring%len_last_word(by=SF_CHARS)==4
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

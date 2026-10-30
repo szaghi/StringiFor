@@ -1,12 +1,14 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(3)
- astring = '&lt;a&gt; &#x1F600;'
- test_passed(1) = astring%xml_error()==0
- astring = 'Q&amp;A, R&D'
- test_passed(2) = astring%xml_error()==11
- astring = '&#xD800;'
- test_passed(3) = astring%xml_error()==1
+ logical :: test_passed(4)
+ astring = '"say ""hi"""'
+ test_passed(1) = astring%unquote()//''=='say "hi"'
+ astring = "'it''s'"
+ test_passed(2) = astring%unquote()//''=="it's"
+ astring = '"unbalanced'
+ test_passed(3) = astring%unquote()//''=='"unbalanced'
+ astring = '""'
+ test_passed(4) = astring%unquote()//''==''.and.astring%len()==2
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

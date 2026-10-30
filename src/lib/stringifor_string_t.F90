@@ -23,6 +23,8 @@ public :: SF_BYTES, SF_CHARS, SF_COLUMNS
 public :: from_codepoints
 public :: glob
 public :: strjoin
+public :: strless, strless_natural, strless_nocase
+public :: strsort, strsort_less
 public :: string
 
 integer, parameter :: CK = selected_char_kind('DEFAULT') !< Default character kind.
@@ -425,6 +427,16 @@ interface verify
   module procedure sverify_string_string, sverify_string_character, sverify_character_string
 endinterface verify
 
+
+abstract interface
+  pure function strsort_less(a, b) result(is_less)
+  !< Order of [[strsort]]: true if `a` is before `b`.
+  import :: CK
+  character(kind=CK, len=*), intent(in) :: a       !< A string.
+  character(kind=CK, len=*), intent(in) :: b       !< Another string.
+  logical                               :: is_less !< True if a is before b.
+  endfunction strsort_less
+endinterface
 contains
    ! public non TBP
 
@@ -482,6 +494,234 @@ contains
       i = i + n
    enddo
    endfunction from_codepoints
+
+   pure subroutine strsort(strings, index, less)
+   !< Sort an array of strings in place: a stable merge sort, O(n log n) comparisons.
+   !<
+   !< The order is `less`, a `pure logical function less(a, b)` of two characters (see [[strsort_less]]); by default
+   !< [[strless]], the byte order, which is the codepoint order for well-formed UTF-8. [[strless_nocase]] ignores the ASCII
+   !< case, [[strless_natural]] compares the runs of digits as numbers (`file2` before `file10`). Strings that are equal
+   !< for `less` keep their order. A not allocated string sorts as an empty one and stays not allocated.
+   !<
+   !< `index`, if passed, returns the permutation: the string now at position `i` was at position `index(i)`.
+   !<
+   !<```fortran
+   !< type(string) :: names(5)
+   !< integer      :: perm(5)
+   !< logical      :: test_passed(3)
+   !< names = [string('file10'), string('File2'), string('file2'), string('b'), string('file1')]
+   !< call strsort(names, index=perm)
+   !< test_passed(1) = all(names == [string('File2'), string('b'), string('file1'), string('file10'), string('file2')]).and. &
+   !<                  all(perm == [2, 4, 5, 1, 3])
+   !< call strsort(names, less=strless_natural)
+   !< test_passed(2) = all(names == [string('File2'), string('b'), string('file1'), string('file2'), string('file10')])
+   !< call strsort(names, less=strless_nocase)
+   !< test_passed(3) = all(names == [string('b'), string('file1'), string('file10'), string('File2'), string('file2')])
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   type(string), intent(in out)           :: strings(:) !< The strings, sorted on exit.
+   integer,      intent(out),    optional :: index(:)   !< Permutation: the string at i was at index(i); size(strings).
+   procedure(strsort_less),      optional :: less       !< Order, default byte order.
+   integer,      allocatable              :: order(:)   !< Permutation being sorted.
+   integer,      allocatable              :: merged(:)  !< Merge buffer.
+   logical,      allocatable              :: null(:)    !< The string was not allocated.
+   type(string), allocatable              :: sorted(:)  !< The strings in their new order.
+   integer                                :: n          !< Number of strings.
+   integer                                :: width      !< Length of the runs being merged.
+   integer                                :: first      !< First element of the left run.
+   integer                                :: middle     !< Last element of the left run.
+   integer                                :: last       !< Last element of the right run.
+   integer                                :: l          !< Position in the left run.
+   integer                                :: r          !< Position in the right run.
+   integer                                :: o          !< Position in the merge buffer.
+   integer                                :: i          !< Counter.
+   procedure(strsort_less),      pointer  :: is_less    !< The order used.
+
+   is_less => strless
+   if (present(less)) is_less => less
+   n = size(strings, dim=1)
+   allocate(order(n), merged(n), null(n))
+   order = [(i, i=1, n)]
+   do i=1, n
+      null(i) = .not.allocated(strings(i)%raw)
+      if (null(i)) strings(i)%raw = ''
+   enddo
+   width = 1
+   do while (width < n) ! bottom-up: merge the runs of length width two by two
+      first = 1
+      do while (first <= n)
+         middle = min(first + width - 1, n)
+         last = min(first + 2 * width - 1, n)
+         l = first
+         r = middle + 1
+         o = first
+         do while (l <= middle .and. r <= last)
+            if (is_less(strings(order(r))%raw, strings(order(l))%raw)) then ! the left element first on ties: stable
+               merged(o) = order(r)
+               r = r + 1
+            else
+               merged(o) = order(l)
+               l = l + 1
+            endif
+            o = o + 1
+         enddo
+         merged(o:o+middle-l) = order(l:middle)
+         o = o + middle - l + 1
+         merged(o:o+last-r) = order(r:last)
+         order(first:last) = merged(first:last)
+         first = first + 2 * width
+      enddo
+      width = 2 * width
+   enddo
+   allocate(sorted(n))
+   do i=1, n
+      if (.not.null(order(i))) call move_alloc(from=strings(order(i))%raw, to=sorted(i)%raw)
+   enddo
+   do i=1, n
+      if (allocated(strings(i)%raw)) deallocate(strings(i)%raw)
+      if (allocated(sorted(i)%raw)) call move_alloc(from=sorted(i)%raw, to=strings(i)%raw)
+   enddo
+   if (present(index)) index = order
+   endsubroutine strsort
+
+   pure function strless(a, b) result(is_less)
+   !< Return true if `a` is before `b` in byte order: the order of [[strsort]] by default.
+   !<
+   !< @note The bytes compare as unsigned values and a prefix is before the longer string, as Python `bytes` (the
+   !< intrinsic `<` pads the shorter string with blanks instead). For well-formed UTF-8 it is the codepoint order.
+   !<
+   !<```fortran
+   !< logical :: test_passed(3)
+   !< test_passed(1) = strless('a', 'a'//achar(9))
+   !< test_passed(2) = strless('z', char(195)//char(169))
+   !< test_passed(3) = .not.strless('ab', 'ab')
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   character(kind=CK, len=*), intent(in) :: a       !< A string.
+   character(kind=CK, len=*), intent(in) :: b       !< Another string.
+   logical                               :: is_less !< True if a is before b.
+   integer                               :: i       !< Byte counter.
+
+   do i=1, min(len(a), len(b))
+      if (a(i:i) /= b(i:i)) then
+         is_less = iand(ichar(a(i:i)), 255) < iand(ichar(b(i:i)), 255)
+         return
+      endif
+   enddo
+   is_less = len(a) < len(b)
+   endfunction strless
+
+   pure function strless_nocase(a, b) result(is_less)
+   !< Return true if `a` is before `b` in byte order with the ASCII letters lowercased: an order for [[strsort]].
+   !<
+   !< @note Strings that differ in the case of their letters only are equal, so [[strsort]] keeps their order.
+   !<
+   !<```fortran
+   !< logical :: test_passed(3)
+   !< test_passed(1) = strless_nocase('Apple', 'banana')
+   !< test_passed(2) = .not.strless_nocase('ABC', 'abc').and..not.strless_nocase('abc', 'ABC')
+   !< test_passed(3) = strless('Z', '_').and..not.strless_nocase('Z', '_') ! '_' is between 'Z' and 'z'
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   character(kind=CK, len=*), intent(in) :: a       !< A string.
+   character(kind=CK, len=*), intent(in) :: b       !< Another string.
+   logical                               :: is_less !< True if a is before b.
+   integer                               :: i       !< Byte counter.
+   integer                               :: ca      !< Byte of a, lowercased.
+   integer                               :: cb      !< Byte of b, lowercased.
+
+   do i=1, min(len(a), len(b))
+      ca = iand(ichar(a(i:i)), 255)
+      cb = iand(ichar(b(i:i)), 255)
+      if (ca >= 65 .and. ca <= 90) ca = ca + CASE_SHIFT
+      if (cb >= 65 .and. cb <= 90) cb = cb + CASE_SHIFT
+      if (ca /= cb) then
+         is_less = ca < cb
+         return
+      endif
+   enddo
+   is_less = len(a) < len(b)
+   endfunction strless_nocase
+
+   pure function strless_natural(a, b) result(is_less)
+   !< Return true if `a` is before `b` in natural order: an order for [[strsort]], with `file2` before `file10`.
+   !<
+   !< @note The strings are compared run by run, a run being a maximal sequence of ASCII digits or of other bytes. Two runs
+   !< of digits compare as numbers, of any size (`007` equals `7`); other runs compare in byte order, as [[strless]],
+   !< and a run of digits compares with another run by its first byte. When all the runs are equal the string with fewer
+   !< runs is first. Strings that differ only in leading zeros are equal, so [[strsort]] keeps their order.
+   !<
+   !<```fortran
+   !< logical :: test_passed(4)
+   !< test_passed(1) = strless_natural('file2', 'file10')
+   !< test_passed(2) = strless_natural('v1.9.1', 'v1.10.0')
+   !< test_passed(3) = .not.strless_natural('a007', 'a7').and..not.strless_natural('a7', 'a007')
+   !< test_passed(4) = strless_natural('x99999999999999999999998', 'x99999999999999999999999')
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   character(kind=CK, len=*), intent(in) :: a       !< A string.
+   character(kind=CK, len=*), intent(in) :: b       !< Another string.
+   logical                               :: is_less !< True if a is before b.
+   integer                               :: i       !< Start of the current run of a.
+   integer                               :: j       !< Start of the current run of b.
+   integer                               :: ie      !< End of the run of a.
+   integer                               :: je      !< End of the run of b.
+   integer                               :: is      !< First significant digit of a run of a.
+   integer                               :: js      !< First significant digit of a run of b.
+   integer                               :: k       !< Byte counter.
+
+   i = 1
+   j = 1
+   do while (i <= len(a) .and. j <= len(b))
+      ie = run_end(a, i)
+      je = run_end(b, j)
+      if (is_digit_char(a(i:i)) .and. is_digit_char(b(j:j))) then ! two numbers
+         is = i
+         do while (is < ie .and. a(is:is) == '0')
+            is = is + 1
+         enddo
+         js = j
+         do while (js < je .and. b(js:js) == '0')
+            js = js + 1
+         enddo
+         if (ie - is /= je - js) then ! more significant digits, larger number
+            is_less = ie - is < je - js
+            return
+         endif
+         do k=0, ie - is
+            if (a(is+k:is+k) /= b(js+k:js+k)) then
+               is_less = a(is+k:is+k) < b(js+k:js+k)
+               return
+            endif
+         enddo
+      elseif (a(i:ie) /= b(j:je) .or. ie - i /= je - j) then ! two runs, compared as bytes
+         is_less = strless(a(i:ie), b(j:je))
+         return
+      endif
+      i = ie + 1
+      j = je + 1
+   enddo
+   is_less = i > len(a) .and. j <= len(b)
+   contains
+      pure function run_end(raw, first) result(last)
+      !< Return the last byte of the run starting at first: a run of digits, or of other bytes.
+      character(kind=CK, len=*), intent(in) :: raw   !< Bytes.
+      integer,                   intent(in) :: first !< First byte of the run.
+      integer                               :: last  !< Last byte of the run.
+      logical                               :: digit !< The run is of digits.
+
+      digit = is_digit_char(raw(first:first))
+      last = first
+      do while (last < len(raw))
+         if (is_digit_char(raw(last+1:last+1)) .neqv. digit) exit
+         last = last + 1
+      enddo
+      endfunction run_end
+   endfunction strless_natural
 
    ! builtins replacements
    pure function sadjustl_character(s) result(adjusted)

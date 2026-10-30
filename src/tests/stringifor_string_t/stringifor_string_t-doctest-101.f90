@@ -1,15 +1,16 @@
 program volatile_doctest
 use stringifor_string_t
- type(string) :: astring
- logical :: test_passed(4)
- astring = 'caf'//char(92)//'u00e9'//char(92)//'t!'
- test_passed(1) = astring%unescape_c()=='caf'//char(195)//char(169)//achar(9)//'!'
- astring = char(92)//'x41'//char(92)//'101'//char(92)//char(92)
- test_passed(2) = astring%unescape_c()=='AA'//char(92)
- astring = char(92)//'q'//char(92)//'x4'
- test_passed(3) = astring%unescape_c()==astring
- astring = 'a'//char(255)//char(9)
- astring = astring%escape_c()
- test_passed(4) = astring%unescape_c()=='a'//char(255)//char(9)
+ use penf
+ type(string) :: astrings(3)
+ real(R8P) :: reals(3)
+ integer :: iostats(3)
+ logical :: test_passed(3)
+ astrings(1) = '3.4e9'
+ astrings(2) = '12'
+ astrings(3) = 'twelve'
+ call astrings%read_number(reals, iostat=iostats)
+ test_passed(1) = reals(1)==3.4e9_R8P.and.iostats(1)==0
+ test_passed(2) = reals(2)==12._R8P.and.iostats(2)==0
+ test_passed(3) = reals(3)/=reals(3).and.iostats(3)>0
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

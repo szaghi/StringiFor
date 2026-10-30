@@ -1,24 +1,38 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: strings(3)
+ type(string), allocatable :: alist_str(:)
+ character(len=:), allocatable :: files(:)
+ character(len=:), allocatable :: directory
+ integer :: file_unit
+ integer :: f
+ logical :: is_injected
  logical :: test_passed(5)
- strings(1) = 'one'
- strings(2) = 'two'
- strings(3) = 'three'
- test_passed(1) = (astring%join(array=strings)//''==strings(1)//strings(2)//strings(3))
- test_passed(2) = (astring%join(array=strings, sep='-')//''==strings(1)//'-'//strings(2)//'-'//strings(3))
- call strings(1)%free
- strings(2) = 'two'
- strings(3) = 'three'
- test_passed(3) = (astring%join(array=strings, sep='-')//''==strings(2)//'-'//strings(3))
- strings(1) = 'one'
- strings(2) = 'two'
- call strings(3)%free
- test_passed(4) = (astring%join(array=strings, sep='-')//''==strings(1)//'-'//strings(2))
- strings(1) = 'one'
- call strings(2)%free
- strings(3) = 'three'
- test_passed(5) = (astring%join(array=strings, sep='-')//''==strings(1)//'-'//strings(3))
+ files = [character(len=20) :: astring%tempname(prefix='glob test-'), astring%tempname(prefix='glob test-'), &
+ astring%tempname(prefix='-glob-')]
+ do f=1, size(files, dim=1)
+ open(newunit=file_unit, file=files(f))
+ close(unit=file_unit)
+ enddo
+ call astring%glob(pattern='glob test-*.tmp', list=alist_str)
+ test_passed(1) = size(alist_str, dim=1)==2
+ if (test_passed(1)) test_passed(1) = all(alist_str==files(1).or.alist_str==files(2))
+ call astring%glob(pattern=files(3), list=alist_str)
+ test_passed(2) = size(alist_str, dim=1)==1
+ call astring%glob(pattern='glob test-*; touch glob-injected', list=alist_str)
+ inquire(file='glob-injected', exist=is_injected)
+ test_passed(3) = size(alist_str, dim=1)==0.and..not.is_injected
+ do f=1, size(files, dim=1)
+ open(newunit=file_unit, file=files(f))
+ close(unit=file_unit, status='delete')
+ enddo
+ directory = astring%tempname(is_file=.false., prefix='glob-dir-')
+ call execute_command_line('mkdir '//directory)
+ call astring%glob(pattern=directory, list=alist_str)
+ test_passed(4) = size(alist_str, dim=1)==1
+ if (test_passed(4)) test_passed(4) = alist_str(1)==directory
+ call execute_command_line('rmdir '//directory)
+ call astring%glob(pattern='', list=alist_str)
+ test_passed(5) = size(alist_str, dim=1)==0
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

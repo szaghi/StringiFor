@@ -1,14 +1,14 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(4)
- astring = 'h'//char(195)//char(169)//char(228)//char(189)//char(160)
- test_passed(1) = all(astring%codepoints()==[104, 233, 20320])
- astring = 'a'//char(255)//char(192)//char(175)
- test_passed(2) = all(astring%codepoints()==[97, -255, -192, -175])
- astring = char(240)//char(159)//char(152)//char(128)
- test_passed(3) = all(astring%codepoints()==[128512])
- astring = ''
- test_passed(4) = size(astring%codepoints())==0
+ logical :: test_passed(5)
+ astring = 'bar/foo.tar.bz2'
+ test_passed(1) = astring%basename()//''=='foo.tar.bz2'
+ test_passed(2) = astring%basename(extension='.tar.bz2')//''=='foo'
+ test_passed(3) = astring%basename(strip_last_extension=.true.)//''=='foo.tar'
+ astring = '\bar\foo.tar.bz2'
+ test_passed(4) = astring%basename(sep='\')//''=='foo.tar.bz2'
+ astring = 'bar'
+ test_passed(5) = astring%basename(strip_last_extension=.true.)//''=='bar'
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

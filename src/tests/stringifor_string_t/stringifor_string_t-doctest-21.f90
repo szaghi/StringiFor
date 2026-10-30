@@ -1,6 +1,6 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- astring = 'Hello World!   '
- print "(L1)", astring%trim()==trim('Hello World!   ')
+ astring = 'x'
+ print "(L1)", astring%repeat(5)//''=='xxxxx'
 endprogram volatile_doctest

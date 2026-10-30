@@ -1,26 +1,23 @@
 program volatile_doctest
 use stringifor_string_t
- type(string) :: astring
- type(string), allocatable :: lines(:)
- logical :: test_passed(10)
- astring = 'This is an example of text justification.'
- call astring%justify(lines=lines, width=16)
- test_passed(1) = size(lines, dim=1)==3
- test_passed(2) = lines(1)//''=='This    is    an'
- test_passed(3) = lines(2)//''=='example  of text'
- test_passed(4) = lines(3)//''=='justification.  '
- astring = '  What must be   acknowledgment shall be '
- call astring%justify(lines=lines, width=16)
- test_passed(5) = lines(1)//''=='What   must   be'
- test_passed(6) = lines(2)//''=='acknowledgment  '
- test_passed(7) = lines(3)//''=='shall be        '
- call astring%justify(lines=lines, width=4)
- test_passed(8) = size(lines, dim=1)==6.and.lines(4)//''=='acknowledgment'
- astring = '   '
- call astring%justify(lines=lines, width=16)
- test_passed(9) = size(lines, dim=1)==0
- astring = 'caf'//char(195)//char(169)//' au lait'
- call astring%justify(lines=lines, width=4, by=SF_CHARS)
- test_passed(10) = lines(1)//''=='caf'//char(195)//char(169).and.lines(2)//''=='au  '
+ type(string) :: strings(3)
+ logical :: test_passed(5)
+ strings(1) = 'one'
+ strings(2) = 'two'
+ strings(3) = 'three'
+ test_passed(1) = (strjoin(array=strings)//''==strings(1)//strings(2)//strings(3))
+ test_passed(2) = (strjoin(array=strings, sep='-')//''==strings(1)//'-'//strings(2)//'-'//strings(3))
+ call strings(1)%free
+ strings(2) = 'two'
+ strings(3) = 'three'
+ test_passed(3) = (strjoin(array=strings, sep='-')//''==strings(2)//'-'//strings(3))
+ strings(1) = 'one'
+ strings(2) = 'two'
+ call strings(3)%free
+ test_passed(4) = (strjoin(array=strings, sep='-')//''==strings(1)//'-'//strings(2))
+ strings(1) = 'one'
+ call strings(2)%free
+ strings(3) = 'three'
+ test_passed(5) = (strjoin(array=strings, sep='-')//''==strings(1)//'-'//strings(3))
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

@@ -1,17 +1,10 @@
 program volatile_doctest
 use stringifor_string_t
- type(string) :: astring
- logical :: test_passed(6)
- astring = '   Hello World  !    '
- test_passed(1) = astring%count(substring=' ')==10
- astring = 'Hello World  !    '
- test_passed(2) = astring%count(substring=' ', ignore_isolated=.true.)==6
- astring = '    Hello World  !'
- test_passed(3) = astring%count(substring=' ', ignore_isolated=.true.)==6
- astring = '   Hello World  !    '
- test_passed(4) = astring%count(substring=' ', ignore_isolated=.true.)==8
- test_passed(5) = astring%count(substring='')==0
- astring = 'aaaa'
- test_passed(6) = astring%count('aa')==2.and.astring%count('aa', overlapping=.true.)==3
+ type(string) :: string1
+ logical :: test_passed(2)
+ string1 = 'llo'
+ test_passed(1) = scan(s='Hello World Hello!', set=string1)==scan(string='Hello World Hello!', set='llo')
+ test_passed(2) = scan(s='Hello World Hello!', set=string1, back=.true.)==scan(string='Hello World Hello!', &
+ set='llo', back=.true.)
  print '(L1)', all(test_passed)
 endprogram volatile_doctest
