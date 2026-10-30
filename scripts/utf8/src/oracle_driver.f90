@@ -1,0 +1,232 @@
+!< Driver of the oracle harness of the UTF-8 work (issue #51, step 0.2), run by scripts/utf8/oracle.py.
+!<
+!< Reads the calls from the standard input, one per line: the operation and its arguments separated by a TAB, strings in
+!< hexadecimal, integers in decimal. Writes one result per call: string in hexadecimal, integer in decimal, logical as T
+!< or F, list of strings as its items in hexadecimal separated by commas ("[]" if empty). Exits with status 2 on an
+!< unknown operation or a malformed line: the harness then stops instead of reporting mismatches.
+!<
+!< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
+program oracle_driver
+use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
+use stringifor, only : string
+implicit none
+character(len=:), allocatable :: line     !< Current line.
+character(len=:), allocatable :: field(:) !< Fields of the line (padded).
+integer,          allocatable :: lens(:)  !< Lengths of the fields.
+type(string)                  :: s        !< First argument.
+type(string)                  :: t        !< Second argument.
+type(string),     allocatable :: tokens(:)!< List result.
+type(string)                  :: parts(3) !< Partition result.
+integer                       :: iostat   !< I/O status.
+integer                       :: nfield   !< Number of fields.
+
+do
+  call get_line(input_unit, line, iostat)
+  if (iostat /= 0) exit
+  call split_fields(line, field, lens, nfield)
+  if (nfield < 2) call fail('malformed line: '//line)
+  s = unhex(arg(2))
+  select case (arg(1))
+  case ('len')
+    call put_int(s%len())
+  case ('index')
+    call put_int(s%index(unhex(arg(3))))
+  case ('index_back')
+    call put_int(s%index(unhex(arg(3)), back=.true.))
+  case ('count')
+    call put_int(s%count(unhex(arg(3))))
+  case ('count_overlapping')
+    call put_int(s%count(unhex(arg(3)), overlapping=.true.))
+  case ('replace')
+    t = s%replace(old=unhex(arg(3)), new=unhex(arg(4)))
+    call put_str(t)
+  case ('replace_count')
+    t = s%replace(old=unhex(arg(3)), new=unhex(arg(4)), count=int_arg(5))
+    call put_str(t)
+  case ('split')
+    call s%split(tokens=tokens, sep=unhex(arg(3)), keep_empty=.true.)
+    call put_list(tokens)
+  case ('partition')
+    parts = s%partition(sep=unhex(arg(3)))
+    call put_list(parts)
+  case ('start_with')
+    call put_logical(s%start_with(unhex(arg(3))))
+  case ('end_with')
+    call put_logical(s%end_with(unhex(arg(3))))
+  case ('upper')
+    call put_str(s%upper())
+  case ('lower')
+    call put_str(s%lower())
+  case ('eq')
+    t = unhex(arg(3))
+    call put_logical(s == t)
+  case ('lt')
+    t = unhex(arg(3))
+    call put_logical(s < t)
+  case ('concat')
+    t = unhex(arg(3))
+    write(output_unit, '(a)') hex(s//t)
+  case default
+    call fail('unknown operation: '//arg(1))
+  endselect
+enddo
+
+contains
+  function arg(i) result(value)
+  !< Return the field i, trimmed to its length.
+  integer, intent(in)           :: i     !< Field number.
+  character(len=:), allocatable :: value !< Field.
+
+  if (i > nfield) call fail('missing argument in line: '//line)
+  value = field(i)(1:lens(i))
+  endfunction arg
+
+  function int_arg(i) result(value)
+  !< Return the field i as an integer.
+  integer, intent(in)           :: i       !< Field number.
+  integer                       :: value   !< Integer value.
+  character(len=:), allocatable :: text    !< Field.
+  integer                       :: iostat_ !< I/O status.
+
+  text = arg(i)
+  read(text, *, iostat=iostat_) value
+  if (iostat_ /= 0) call fail('not an integer: '//arg(i))
+  endfunction int_arg
+
+  subroutine get_line(unit, line, iostat)
+  !< Read a whole line of any length.
+  integer,                       intent(in)  :: unit   !< Unit.
+  character(len=:), allocatable, intent(out) :: line   !< Line.
+  integer,                       intent(out) :: iostat !< I/O status (0, or end of file).
+  character(len=4096)                        :: buffer !< Chunk.
+  integer                                    :: nread  !< Characters read in the chunk.
+
+  line = ''
+  do
+    read(unit, '(a)', advance='no', iostat=iostat, size=nread) buffer
+    line = line//buffer(1:nread)
+    if (is_iostat_eor(iostat)) then
+      iostat = 0
+      exit
+    endif
+    if (iostat /= 0) exit
+  enddo
+  endsubroutine get_line
+
+  subroutine split_fields(line, field, lens, nfield)
+  !< Split a line at the TABs.
+  character(len=*),              intent(in)  :: line     !< Line.
+  character(len=:), allocatable, intent(out) :: field(:) !< Fields, padded to the longest.
+  integer,          allocatable, intent(out) :: lens(:)  !< Lengths of the fields.
+  integer,                       intent(out) :: nfield   !< Number of fields.
+  integer, allocatable                       :: starts(:)!< First character of each field.
+  integer                                    :: i        !< Counter.
+
+  nfield = count([(line(i:i) == achar(9), i=1, len(line))]) + 1
+  allocate(starts(nfield + 1), lens(nfield))
+  starts(1) = 1
+  nfield = 1
+  do i = 1, len(line)
+    if (line(i:i) == achar(9)) then
+      nfield = nfield + 1
+      starts(nfield) = i + 1
+    endif
+  enddo
+  starts(nfield + 1) = len(line) + 2
+  lens = starts(2:nfield + 1) - starts(1:nfield) - 1
+  allocate(character(len=max(1, maxval(lens))) :: field(nfield))
+  do i = 1, nfield
+    field(i) = line(starts(i):starts(i) + lens(i) - 1)
+  enddo
+  endsubroutine split_fields
+
+  function unhex(text) result(bytes)
+  !< Decode hexadecimal.
+  character(len=*), intent(in)  :: text    !< Hexadecimal.
+  character(len=:), allocatable :: bytes   !< Bytes.
+  integer                       :: i       !< Counter.
+  integer                       :: code    !< Byte value.
+  integer                       :: iostat_ !< I/O status.
+
+  if (mod(len(text), 2) /= 0) call fail('odd hexadecimal: '//text)
+  allocate(character(len=len(text) / 2) :: bytes)
+  do i = 1, len(bytes)
+    read(text(2 * i - 1:2 * i), '(z2)', iostat=iostat_) code
+    if (iostat_ /= 0) call fail('bad hexadecimal: '//text)
+    bytes(i:i) = achar(code)
+  enddo
+  endfunction unhex
+
+  function hex(bytes) result(text)
+  !< Encode in lowercase hexadecimal.
+  character(len=*), intent(in)  :: bytes  !< Bytes.
+  character(len=:), allocatable :: text   !< Hexadecimal.
+  character(len=*), parameter   :: digits = '0123456789abcdef' !< Digits.
+  integer                       :: i      !< Counter.
+  integer                       :: code   !< Byte value.
+
+  allocate(character(len=2 * len(bytes)) :: text)
+  do i = 1, len(bytes)
+    code = iachar(bytes(i:i))
+    text(2 * i - 1:2 * i) = digits(code / 16 + 1:code / 16 + 1)//digits(mod(code, 16) + 1:mod(code, 16) + 1)
+  enddo
+  endfunction hex
+
+  function raw(astring) result(bytes)
+  !< Return the bytes of a string, empty if it is not allocated.
+  type(string), intent(in)      :: astring !< String.
+  character(len=:), allocatable :: bytes   !< Bytes.
+
+  if (allocated(astring%raw)) then
+    bytes = astring%raw
+  else
+    bytes = ''
+  endif
+  endfunction raw
+
+  subroutine put_str(astring)
+  !< Write a string result.
+  type(string), intent(in) :: astring !< Result.
+
+  write(output_unit, '(a)') hex(raw(astring))
+  endsubroutine put_str
+
+  subroutine put_int(value)
+  !< Write an integer result.
+  integer, intent(in) :: value !< Result.
+
+  write(output_unit, '(i0)') value
+  endsubroutine put_int
+
+  subroutine put_logical(value)
+  !< Write a logical result.
+  logical, intent(in) :: value !< Result.
+
+  write(output_unit, '(l1)') value
+  endsubroutine put_logical
+
+  subroutine put_list(items)
+  !< Write a list result.
+  type(string), intent(in)      :: items(:) !< Result.
+  character(len=:), allocatable :: text     !< Encoded list.
+  integer                       :: i        !< Counter.
+
+  if (size(items) == 0) then
+    text = '[]'
+  else
+    text = hex(raw(items(1)))
+    do i = 2, size(items)
+      text = text//','//hex(raw(items(i)))
+    enddo
+  endif
+  write(output_unit, '(a)') text
+  endsubroutine put_list
+
+  subroutine fail(message)
+  !< Stop with status 2.
+  character(len=*), intent(in) :: message !< Reason.
+
+  write(error_unit, '(a)') 'oracle_driver: '//message
+  error stop 2
+  endsubroutine fail
+endprogram oracle_driver
