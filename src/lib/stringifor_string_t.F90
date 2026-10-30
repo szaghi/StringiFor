@@ -5528,9 +5528,12 @@ contains
    !< Any other character matches itself: the match is case-sensitive, there is no escape character (match a wildcard with a
    !< one-character class, `[*]`) and a leading dot is not special. A not allocated string matches nothing.
    !<
+   !< A character is a unit, a well-formed UTF-8 sequence or a byte that is not part of one: `?` and a class match one
+   !< unit, and a range compares codepoints (an ill-formed byte b counts as U+DC00+b, as Python's surrogateescape).
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(9)
+   !< logical      :: test_passed(11)
    !< astring = 'data/report-2026.csv'
    !< test_passed(1) = astring%match('*.csv')
    !< test_passed(2) = astring%match('data/report-????.csv')
@@ -5544,6 +5547,9 @@ contains
    !< test_passed(8) = astring%match('*').and..not.astring%match('?')
    !< astring = '[x]'
    !< test_passed(9) = astring%match('[[]x]').and.astring%match('[[]x[]]').and..not.astring%match('[]x]*')
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(10) = astring%match('caf?').and..not.astring%match('caf??')
+   !< test_passed(11) = astring%match('caf['//char(195)//char(160)//'-'//char(195)//char(191)//']')
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -5555,15 +5561,17 @@ contains
    integer                               :: star_s    !< Character of the string matched by the last star.
    integer                               :: star_p    !< Position of the last star in the pattern.
    integer                               :: token_len !< Length of the pattern token matching a character.
+   integer                               :: n         !< Bytes of the current unit of the string.
 
    is_match = .false.
    if (.not.allocated(self%raw)) return
-   ! the classic backtracking on the last star: every other token matches exactly one character
+   ! the classic backtracking on the last star: every other token matches exactly one unit
    s = 1
    p = 1
    star_p = 0
    star_s = 0
    do while (s<=len(self%raw))
+      n = unit_length(self%raw, s)
       if (p<=len(pattern)) then
          if (pattern(p:p)=='*') then
             star_p = p
@@ -5571,16 +5579,16 @@ contains
             p = p + 1
             cycle
          endif
-         token_len = match_token(pattern=pattern, p=p, c=self%raw(s:s))
+         token_len = match_token(pattern=pattern, p=p, c=self%raw(s:s+n-1))
          if (token_len>0) then
             p = p + token_len
-            s = s + 1
+            s = s + n
             cycle
          endif
       endif
       if (star_p==0) return
-      p = star_p + 1     ! let the last star match one more character
-      star_s = star_s + 1
+      p = star_p + 1     ! let the last star match one more unit
+      star_s = star_s + unit_length(self%raw, star_s)
       s = star_s
    enddo
    do while (p<=len(pattern))
@@ -6880,20 +6888,25 @@ contains
    endfunction upper_char
 
    pure function match_token(pattern, p, c) result(token_len)
-   !< Return the length of the token of a wildcard pattern starting at p if it matches the character c, 0 otherwise.
+   !< Return the length of the token of a wildcard pattern starting at p if it matches the unit c, 0 otherwise.
    !<
-   !< The token is `?`, a class `[seq]` or `[!seq]`, or a plain character, see [[string:match]]; `*` is handled by the caller.
+   !< The token is `?`, a class `[seq]` or `[!seq]`, or a plain unit, see [[string:match]]; `*` is handled by the caller. A
+   !< unit is a well-formed UTF-8 sequence or a byte that is not part of one; a range compares codepoints, an ill-formed
+   !< byte b counting as U+DC00+b (as Python's surrogateescape).
    !<
    !< @note The doctest is not necessary, this being tested by [[string:match]].
    character(kind=CK, len=*), intent(in) :: pattern    !< Wildcard pattern.
    integer,                   intent(in) :: p          !< Position of the token into the pattern.
-   character(kind=CK, len=1), intent(in) :: c          !< Character to match.
+   character(kind=CK, len=*), intent(in) :: c          !< Unit to match.
    integer                               :: token_len  !< Length of the token if it matches c, 0 otherwise.
-   integer                               :: first      !< First character of the set of a class.
+   integer                               :: first      !< First byte of the set of a class.
    integer                               :: last       !< Position of the closing bracket of a class.
-   integer                               :: i          !< Character counter into the set.
+   integer                               :: i          !< Byte position into the set.
+   integer                               :: m          !< Bytes of a unit of the pattern.
+   integer                               :: high       !< Position of the upper end of a range.
+   integer                               :: code       !< Range code of c.
    logical                               :: is_negated !< The class is negated.
-   logical                               :: is_member  !< The character is a member of the set.
+   logical                               :: is_member  !< The unit is a member of the set.
 
    token_len = 0
    select case(pattern(p:p))
@@ -6908,30 +6921,64 @@ contains
             first = first + 1
          endif
       endif
-      ! the first character of the set is a member even if it is a ']': the closing bracket is searched after it
+      ! the first unit of the set is a member even if it is a ']': the closing bracket is searched after it
       last = 0
-      if (first<len(pattern)) last = index(pattern(first+1:), ']')
+      if (first<=len(pattern)) then
+         m = unit_length(pattern, first)
+         if (first+m<=len(pattern)) last = index(pattern(first+m:), ']')
+         if (last>0) last = first + m - 1 + last
+      endif
       if (last==0) then ! no closing bracket: a plain '['
          if (c=='[') token_len = 1
          return
       endif
-      last = first + last
+      code = range_code(c, 1)
       is_member = .false.
       i = first
       do while (i<last.and..not.is_member)
-         if (i+2<last.and.pattern(i+1:i+1)=='-') then ! a range
-            is_member = iachar(c)>=iachar(pattern(i:i)).and.iachar(c)<=iachar(pattern(i+2:i+2))
-            i = i + 3
-         else
-            is_member = c==pattern(i:i)
-            i = i + 1
+         m = unit_length(pattern, i)
+         high = i + m + 1
+         is_member = .false.
+         if (high<last.and.pattern(i+m:i+m)=='-') then
+            if (high+unit_length(pattern, high)-1<last) then ! a range
+               is_member = code>=range_code(pattern, i).and.code<=range_code(pattern, high)
+               i = high + unit_length(pattern, high)
+               cycle
+            endif
          endif
+         is_member = pattern(i:i+m-1)==c
+         i = i + m
       enddo
       if (is_member.neqv.is_negated) token_len = last - p + 1
    case default
-      if (c==pattern(p:p)) token_len = 1
+      m = unit_length(pattern, p)
+      if (pattern(p:p+m-1)==c) token_len = m
    endselect
    endfunction match_token
+
+   pure function unit_length(raw, i) result(n)
+   !< Return the length of the unit starting at byte i: 1 for ASCII, else the length of the well-formed sequence, or 1.
+   character(kind=CK, len=*), intent(in) :: raw !< Bytes.
+   integer,                   intent(in) :: i   !< Position of the first byte.
+   integer                               :: n   !< Length of the unit.
+
+   n = 1
+   if (iand(ichar(raw(i:i)), 255)>127) n = utf8_unit_len(raw, i)
+   endfunction unit_length
+
+   pure function range_code(raw, i) result(code)
+   !< Return the code of the unit starting at byte i for the ranges of [[string:match]]: its codepoint, U+DC00+b for an
+   !< ill-formed byte b (as Python's surrogateescape).
+   character(kind=CK, len=*), intent(in) :: raw  !< Bytes.
+   integer,                   intent(in) :: i    !< Position of the first byte.
+   integer                               :: code !< Code.
+   integer(I4P)                          :: cp   !< Codepoint, or -byte.
+   integer                               :: n    !< Length of the unit.
+
+   call utf8_decode(raw, i, cp, n)
+   code = cp
+   if (cp<0) code = 56320 - cp
+   endfunction range_code
 
    pure function shell_escape(raw) result(escaped)
    !< Return raw with a backslash before every character that the POSIX shell could take as syntax.

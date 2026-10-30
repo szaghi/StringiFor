@@ -33,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import codecs
+import fnmatch
 import random
 import subprocess
 import sys
@@ -551,7 +552,54 @@ def translations(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
     return calls
 
 
-EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra}
+def patterns(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, pattern): data with some units turned into ?, *, classes (ranges, negation) or other units."""
+    pieces = units(data)
+    pool = [unit for unit, _ in POOL] + [b"]", b"-", b"!", b"["]
+    calls: list[tuple[Arg, ...]] = []
+    for _ in range(3):
+        out = []
+        for piece in pieces:
+            pick = rng.random()
+            if pick < 0.55:
+                out.append(piece)
+            elif pick < 0.65:
+                out.append(b"?")
+            elif pick < 0.75:
+                out.append(b"*")
+            elif pick < 0.92:
+                members = [piece] if rng.random() < 0.7 else []
+                members += [rng.choice(pool) for _ in range(rng.randint(0, 2))]
+                if rng.random() < 0.4:
+                    low, high = sorted(
+                        rng.sample([piece, *[rng.choice(pool) for _ in range(2)]], 2)
+                    )
+                    members.append(low + b"-" + high)
+                rng.shuffle(members)
+                out.append(
+                    b"["
+                    + (b"!" if rng.random() < 0.25 else b"")
+                    + b"".join(members)
+                    + b"]"
+                )
+            else:
+                out.append(rng.choice(pool))
+        calls.append((data, b"".join(out)))
+    return calls
+
+
+def units_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """Calls of match on short ASCII strings and patterns made of the characters that make wildcards tricky."""
+    rng = random.Random(SEED)
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for _ in range(3000):
+        data = bytes(rng.choice(b"ab-]![") for _ in range(rng.randint(0, 5)))
+        pattern = bytes(rng.choice(b"ab-]![*?") for _ in range(rng.randint(0, 7)))
+        calls.append(("match", (data, pattern)))
+    return calls
+
+
+EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra, "units": units_extra}
 SELF_CHECKS = {"escape": check_escape_reference}
 
 
@@ -613,6 +661,7 @@ SUITES: dict[str, list[Op]] = {
         Op("lstrip_remove", unit_sets, lambda d, m: raw(text(d).lstrip(text(m)))),
         Op("rstrip_remove", unit_sets, lambda d, m: raw(text(d).rstrip(text(m)))),
         Op("reverse", single, lambda d: raw(text(d)[::-1])),
+        Op("match", patterns, lambda d, p: fnmatch.fnmatchcase(text(d), text(p))),
         Op("squeeze", runs, squeeze),
         Op("squeeze_set", run_sets, squeeze),
         Op("transliterate", translations, transliterate),
