@@ -2756,10 +2756,13 @@ contains
    pure function partition(self, sep) result(partitions)
    !< Split string at separator and return the 3 parts (before, the separator and after).
    !<
+   !< @note As Python `str.partition`: if the separator is not found the parts are the string and two null strings. The
+   !< default separator is a space.
+   !<
    !<```fortran
    !< type(string) :: astring
    !< type(string) :: strings(3)
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(5)
    !< astring = 'Hello WorLD!'
    !< strings = astring%partition(sep='lo Wo')
    !< test_passed(1) = (strings(1)//''=='Hel'.and.strings(2)//''=='lo Wo'.and.strings(3)//''=='rLD!')
@@ -2768,6 +2771,11 @@ contains
    !< astring = 'Hello WorLD!'
    !< strings = astring%partition()
    !< test_passed(3) = (strings(1)//''=='Hello'.and.strings(2)//''==' '.and.strings(3)//''=='WorLD!')
+   !< strings = astring%partition(sep='xyz')
+   !< test_passed(4) = (strings(1)//''=='Hello WorLD!'.and.strings(2)//''==''.and.strings(3)//''=='')
+   !< astring = 'ab'
+   !< strings = astring%partition(sep='ab')
+   !< test_passed(5) = (strings(1)//''==''.and.strings(2)//''=='ab'.and.strings(3)//''=='')
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -2782,9 +2790,8 @@ contains
       sep_ = SPACE ; if (present(sep)) sep_ = sep
 
       partitions(1) = self
-      partitions(2) = sep_
+      partitions(2) = ''
       partitions(3) = ''
-      if (len(sep_)>=len(self%raw)) return
       c = index(self%raw, sep_)
       if (c>0) then
          partitions(1)%raw = self%raw(1:c-1)

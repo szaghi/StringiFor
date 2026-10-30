@@ -151,14 +151,7 @@ def split(data: bytes, sep: bytes) -> list[bytes]:
 
 
 def partition(data: bytes, sep: bytes) -> list[bytes]:
-    """StringiFor 1.8.0 partition, pinned as it is (not Python's): see the owner decision in issue #51.
-
-    It differs from Python's in two cases: when sep is absent the second part is sep, not empty; when sep is not
-    shorter than the string no search is made, so 'a' partitioned at 'a' gives ('a', 'a', '') instead of
-    ('', 'a', ''). Python's result is list(data.partition(sep)).
-    """
-    if len(sep) >= len(data) or sep not in data:
-        return [data, sep, b""]
+    """Python partition (StringiFor follows it since 1.10.0)."""
     return list(data.partition(sep))
 
 

@@ -2,6 +2,14 @@
 title: Changelog
 ---
 
+## Upgrading to 1.10.0
+
+- **`partition` follows Python `str.partition`.** If the separator is not found the parts are the string and two null
+  strings: the second part was the separator, so a caller could not tell whether it was found. A separator as long as
+  the string, or longer, is searched too: `'ab'%partition('ab')` gives `''`, `'ab'`, `''` (it gave `'ab'`, `'ab'`, `''`).
+- **Assigning a part of a string to the string itself** (`astring = astring%raw(2:)`) read freed memory and could give
+  wrong data, depending on the platform; it is now safe.
+
 ## Upgrading to 1.9.0
 
 Release 1.9.0 reads UTF-8 text as characters ([Unicode and UTF-8](./unicode)). On ASCII text nothing changes. On
