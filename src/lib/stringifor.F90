@@ -156,7 +156,8 @@ contains
          l = l + 1
       enddo
       if (present(skip_bom)) then
-         if (skip_bom.and.lines(1)%has_bom()) lines(1) = lines(1)%raw(4:)
+         ! an intrinsic assignment to the component: the defined one would free raw before reading the part of it
+         if (skip_bom.and.lines(1)%has_bom()) lines(1)%raw = lines(1)%raw(4:)
       endif
    endif
    if (present(iostat)) iostat = iostat_
