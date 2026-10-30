@@ -2,11 +2,10 @@ program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
  logical :: test_passed(3)
- astring = '+++ab-++cre-++cre-ab+++++'
- test_passed(1) = astring%unique(substring='+')//''=='+ab-+cre-+cre-ab+'
- astring = 'ab   '
- test_passed(2) = astring%unique()//''=='ab '
- astring = 'abab'
- test_passed(3) = astring%unique(substring='')//''=='abab'
+ astring = '^\\s \\d+\\s*'
+ test_passed(1) = (astring%unescape(to_unescape='\')//''=='^\s \d+\s*')
+ test_passed(2) = (astring%unescape(to_unescape='s')//''=='^\s \\d+\s*')
+ astring = '^|\s |\d+|\s*'
+ test_passed(3) = (astring%unescape(to_unescape='\', unesc='|')//''=='^\s \d+\s*')
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

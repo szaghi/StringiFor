@@ -1,12 +1,12 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(5)
- astring = 'Hello WorLD!'
- test_passed(1) = astring%end_with(suffix='LD!').eqv..true.
- test_passed(2) = astring%end_with(suffix='lD!').eqv..false.
- test_passed(3) = astring%end_with(suffix='orLD!', start=5).eqv..true.
- test_passed(4) = astring%end_with(suffix='orLD!', start=8, end=12).eqv..true.
- test_passed(5) = astring%end_with(suffix='!').eqv..true.
+ logical :: test_passed(3)
+ astring = 'caf'//char(195)//char(169)
+ test_passed(1) = astring%utf8_error()==0
+ astring = 'ab'//char(237)//char(160)//char(128)
+ test_passed(2) = astring%utf8_error()==3
+ astring = 'x'//char(228)//char(189)
+ test_passed(3) = astring%utf8_error()==2
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

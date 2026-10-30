@@ -12,6 +12,8 @@ private
 public :: REPLACEMENT_CHARACTER
 public :: ascii_run
 public :: is_ascii
+public :: utf8_byte_pos
+public :: utf8_char_pos
 public :: utf8_decode
 public :: utf8_encode
 public :: utf8_encoded_len
@@ -302,6 +304,69 @@ contains
       i = i + n
    enddo
    endfunction utf8_scan
+
+   pure function utf8_byte_pos(raw, k) result(position)
+   !< Return the byte position of the first byte of the k-th unit, len(raw)+1 for k one past the last unit, 0 for any
+   !< other k out of range.
+   character(len=*), intent(in) :: raw      !< Bytes.
+   integer,          intent(in) :: k        !< Ordinal of the unit.
+   integer                      :: position !< Byte position.
+   integer                      :: i        !< Byte position.
+   integer                      :: j        !< End of a run of ASCII bytes.
+   integer                      :: u        !< Units before byte i.
+
+   position = 0
+   if (k < 1) return
+   u = 0
+   i = 1
+   do while (i <= len(raw))
+      j = ascii_run(raw, i) ! the ASCII bytes i..j-1 are the units u+1..u+j-i
+      if (k <= u + j - i) then
+         position = i + k - u - 1
+         return
+      endif
+      u = u + j - i
+      i = j
+      if (i > len(raw)) exit
+      u = u + 1
+      if (u == k) then
+         position = i
+         return
+      endif
+      i = i + utf8_unit_len(raw, i)
+   enddo
+   if (k == u + 1) position = len(raw) + 1
+   endfunction utf8_byte_pos
+
+   pure function utf8_char_pos(raw, b) result(k)
+   !< Return the ordinal of the unit holding byte b, the number of units + 1 for b = len(raw)+1, 0 for any other b out
+   !< of range.
+   character(len=*), intent(in) :: raw !< Bytes.
+   integer,          intent(in) :: b   !< Byte position.
+   integer                      :: k   !< Ordinal of the unit.
+   integer                      :: i   !< Byte position.
+   integer                      :: j   !< End of a run of ASCII bytes.
+   integer                      :: n   !< Unit length.
+
+   k = 0
+   if (b < 1 .or. b > len(raw) + 1) return
+   i = 1
+   do while (i <= len(raw))
+      j = ascii_run(raw, i)
+      if (b < j) then
+         k = k + b - i + 1
+         return
+      endif
+      k = k + j - i
+      i = j
+      if (i > len(raw)) exit
+      n = utf8_unit_len(raw, i)
+      k = k + 1
+      if (b < i + n) return
+      i = i + n
+   enddo
+   k = k + 1 ! b = len(raw) + 1
+   endfunction utf8_char_pos
 
    pure function ascii_run(raw, i) result(j)
    !< Return the position of the first non-ASCII byte at or after byte i, len(raw)+1 if there is none.

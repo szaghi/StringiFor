@@ -8,7 +8,7 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
-use stringifor, only : from_codepoints, I4P, scan, string, verify
+use stringifor, only : from_codepoints, I4P, scan, SF_CHARS, string, verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
 character(len=:), allocatable :: field(:) !< Fields of the line (padded).
@@ -136,6 +136,22 @@ do
     call put_str(s%transliterate(unhex(arg(3)), unhex(arg(4))))
   case ('match')
     call put_logical(s%match(unhex(arg(3))))
+  case ('len_chars')
+    call put_int(s%len(by=SF_CHARS))
+  case ('index_chars')
+    call put_int(s%index(unhex(arg(3)), by=SF_CHARS))
+  case ('index_back_chars')
+    call put_int(s%index(unhex(arg(3)), back=.true., by=SF_CHARS))
+  case ('index_occurrence_chars')
+    call put_int(s%index(unhex(arg(3)), occurrence=int_arg(4), by=SF_CHARS))
+  case ('scan_chars')
+    call put_int(s%scan(unhex(arg(3)), by=SF_CHARS))
+  case ('verify_back_chars')
+    call put_int(s%verify(unhex(arg(3)), back=.true., by=SF_CHARS))
+  case ('byte_pos')
+    call put_int(s%byte_pos(int_arg(3)))
+  case ('char_pos')
+    call put_int(s%char_pos(int_arg(3)))
   case default
     call fail('unknown operation: '//arg(1))
   endselect

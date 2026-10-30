@@ -6,8 +6,9 @@ use, intrinsic :: ieee_arithmetic, only : ieee_quiet_nan, ieee_value
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
-use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_decode, utf8_encode, utf8_encoded_len, utf8_first_error, &
-                            utf8_in_set, utf8_nth_unit, utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units
+use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
+                            utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
+                            utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units
 
 implicit none
 private
@@ -17,12 +18,15 @@ save
 public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
 ! expose StingiFor objects
 public :: CK
+public :: SF_BYTES, SF_CHARS
 public :: from_codepoints
 public :: glob
 public :: strjoin
 public :: string
 
 integer, parameter :: CK = selected_char_kind('DEFAULT') !< Default character kind.
+integer, parameter :: SF_BYTES = 1 !< Unit of the `by=` arguments: positions and lengths in bytes (the default).
+integer, parameter :: SF_CHARS = 2 !< Unit of the `by=` arguments: in characters (UTF-8 units).
 
 type :: string
   !< OOP designed string class.
@@ -50,6 +54,8 @@ type :: string
     procedure, pass(self) :: camelcase        !< Return a string with all words capitalized without spaces.
     procedure, pass(self) :: capitalize       !< Return a string with its first character capitalized and the rest lowercased.
     procedure, pass(self) :: center           !< Return the string centered in a given width.
+    procedure, pass(self) :: byte_pos         !< Return the byte position of the first byte of a character.
+    procedure, pass(self) :: char_pos         !< Return the character holding a byte.
     procedure, pass(self) :: chars            !< Return the raw characters data.
     procedure, pass(self) :: codepoints       !< Return the codepoints of the string, one per unit.
     generic               :: colorize => &
@@ -720,7 +726,7 @@ contains
    endif
    endfunction scount
 
-   elemental function sindex_string_string(self, substring, back, occurrence) result(i)
+   elemental function sindex_string_string(self, substring, back, occurrence, by) result(i)
    !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
    !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
    !< the start of the last occurrence rather than the first.
@@ -748,6 +754,7 @@ contains
    type(string),  intent(in)           :: substring  !< Searched substring.
    logical,       intent(in), optional :: back       !< Start of the last occurrence rather than the first.
    integer,       intent(in), optional :: occurrence !< Number of the occurrence, default 1.
+   integer,       intent(in), optional :: by         !< Unit of the result: SF_BYTES (default) or SF_CHARS.
    integer                             :: i          !< Result of the search.
 
    i = 0
@@ -757,10 +764,11 @@ contains
       else
          i = index(string=self%raw, substring=substring%raw, back=back)
       endif
+      i = to_unit(self%raw, i, by)
    endif
    endfunction sindex_string_string
 
-   elemental function sindex_string_character(self, substring, back, occurrence) result(i)
+   elemental function sindex_string_character(self, substring, back, occurrence, by) result(i)
    !< Return the position of the start of the first occurrence of string `substring` as a substring in `string`, counting from one.
    !< If `substring` is not present in `string`, zero is returned. If the back argument is present and true, the return value is
    !< the start of the last occurrence rather than the first.
@@ -778,6 +786,7 @@ contains
    character(kind=CK, len=*), intent(in)           :: substring  !< Searched substring.
    logical,                   intent(in), optional :: back       !< Start of the last occurrence rather than the first.
    integer,                   intent(in), optional :: occurrence !< Number of the occurrence, default 1.
+   integer,                   intent(in), optional :: by         !< Unit of the result: SF_BYTES (default) or SF_CHARS.
    integer                                         :: i          !< Result of the search.
 
    i = 0
@@ -787,25 +796,36 @@ contains
       else
          i = index(string=self%raw, substring=substring, back=back)
       endif
+      i = to_unit(self%raw, i, by)
    endif
    endfunction sindex_string_character
 
-   elemental function slen(self) result(l)
-   !< Return the length of a string.
+   elemental function slen(self, by) result(l)
+   !< Return the length of a string, in bytes or, with `by=SF_CHARS`, in characters.
+   !<
+   !< @note A character is a unit: a well-formed UTF-8 sequence, or a byte that is not part of one.
    !<
    !<```fortran
    !< type(string) :: astring
+   !< logical      :: test_passed(3)
    !< astring = 'Hello World!   '
-   !< print "(L1)", astring%len()==len('Hello World!   ')
+   !< test_passed(1) = astring%len()==len('Hello World!   ')
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(2) = astring%len()==5
+   !< test_passed(3) = astring%len(by=SF_CHARS)==4
+   !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string), intent(in) :: self !< The string.
-   integer                   :: l    !< String length.
+   class(string), intent(in)           :: self !< The string.
+   integer,       intent(in), optional :: by   !< Unit of the result: SF_BYTES (default) or SF_CHARS.
+   integer                             :: l    !< String length.
 
+   l = 0
    if (allocated(self%raw)) then
       l = len(string=self%raw)
-   else
-      l = 0
+      if (present(by)) then
+         if (by==SF_CHARS) l = utf8_units(self%raw)
+      endif
    endif
    endfunction slen
 
@@ -868,7 +888,7 @@ contains
    repeated%raw = repeat(string=rstring, ncopies=ncopies)
    endfunction srepeat_character_string
 
-   elemental function sscan_string_string(self, set, back) result(i)
+   elemental function sscan_string_string(self, set, back, by) result(i)
    !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is in `set`.
    !<
    !<```fortran
@@ -885,16 +905,18 @@ contains
    class(string), intent(in)           :: self  !< The string.
    type(string),  intent(in)           :: set   !< Searched set.
    logical,       intent(in), optional :: back  !< Start of the last occurrence rather than the first.
+   integer,       intent(in), optional :: by    !< Unit of the result: SF_BYTES (default) or SF_CHARS.
    integer                             :: i     !< Result of the search.
 
    if (allocated(self%raw).and.allocated(set%raw)) then
      i = utf8_scan(raw=self%raw, set=set%raw, back=back, inside=.true.)
+     i = to_unit(self%raw, i, by)
    else
      i = 0
    endif
    endfunction sscan_string_string
 
-   elemental function sscan_string_character(self, set, back) result(i)
+   elemental function sscan_string_character(self, set, back, by) result(i)
    !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is in `set`.
    !<
    !< @note The string and the set are made of units: a well-formed UTF-8 sequence, or a byte that is not part of one. A
@@ -916,10 +938,12 @@ contains
    class(string),             intent(in)           :: self  !< The string.
    character(kind=CK, len=*), intent(in)           :: set   !< Searched set.
    logical,                   intent(in), optional :: back  !< Start of the last occurrence rather than the first.
+   integer,                   intent(in), optional :: by    !< Unit of the result: SF_BYTES (default) or SF_CHARS.
    integer                                         :: i     !< Result of the search.
 
    if (allocated(self%raw)) then
      i = utf8_scan(raw=self%raw, set=set, back=back, inside=.true.)
+     i = to_unit(self%raw, i, by)
    else
      i = 0
    endif
@@ -941,7 +965,7 @@ contains
    if (allocated(trimmed%raw)) trimmed%raw = trim(trimmed%raw)
    endfunction strim
 
-   elemental function sverify_string_string(self, set, back) result(i)
+   elemental function sverify_string_string(self, set, back, by) result(i)
    !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is not
    !< in `set`. If all characters of `string` are found in `set`, the result is zero.
    !<
@@ -959,16 +983,18 @@ contains
    class(string), intent(in)           :: self  !< The string.
    type(string),  intent(in)           :: set   !< Searched set.
    logical,       intent(in), optional :: back  !< Start of the last occurrence rather than the first.
+   integer,       intent(in), optional :: by    !< Unit of the result: SF_BYTES (default) or SF_CHARS.
    integer                             :: i     !< Result of the search.
 
    if (allocated(self%raw).and.allocated(set%raw)) then
      i = utf8_scan(raw=self%raw, set=set%raw, back=back, inside=.false.)
+     i = to_unit(self%raw, i, by)
    else
      i = 0
    endif
    endfunction sverify_string_string
 
-   elemental function sverify_string_character(self, set, back) result(i)
+   elemental function sverify_string_character(self, set, back, by) result(i)
    !< Return the leftmost (if `back` is either absent or equals false, otherwise the rightmost) character of string that is not
    !< in `set`. If all characters of `string` are found in `set`, the result is zero.
    !<
@@ -991,10 +1017,12 @@ contains
    class(string),             intent(in)           :: self  !< The string.
    character(kind=CK, len=*), intent(in)           :: set   !< Searched set.
    logical,                   intent(in), optional :: back  !< Start of the last occurrence rather than the first.
+   integer,                   intent(in), optional :: by    !< Unit of the result: SF_BYTES (default) or SF_CHARS.
    integer                                         :: i     !< Result of the search.
 
    if (allocated(self%raw)) then
      i = utf8_scan(raw=self%raw, set=set, back=back, inside=.false.)
+     i = to_unit(self%raw, i, by)
    else
      i = 0
    endif
@@ -1209,6 +1237,62 @@ contains
       i = i + n
    enddo
    endfunction codepoints
+
+   elemental function byte_pos(self, char_pos) result(position)
+   !< Return the byte position of the first byte of the character number `char_pos`.
+   !<
+   !< @note A character is a unit: a well-formed UTF-8 sequence, or a byte that is not part of one. One past the last
+   !< character gives `len+1`; any other position out of the string gives 0. The inverse is [[string:char_pos]].
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = 'caf'//char(195)//char(169)//'!'
+   !< test_passed(1) = astring%byte_pos(4)==4
+   !< test_passed(2) = astring%byte_pos(5)==6
+   !< test_passed(3) = astring%byte_pos(6)==7
+   !< test_passed(4) = astring%byte_pos(7)==0
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self     !< The string.
+   integer,       intent(in) :: char_pos !< Character number.
+   integer                   :: position !< Byte position.
+
+   if (allocated(self%raw)) then
+      position = utf8_byte_pos(self%raw, char_pos)
+   else
+      position = merge(1, 0, char_pos==1)
+   endif
+   endfunction byte_pos
+
+   elemental function char_pos(self, byte_pos) result(position)
+   !< Return the number of the character holding the byte at `byte_pos`.
+   !<
+   !< @note A character is a unit: a well-formed UTF-8 sequence, or a byte that is not part of one. `len+1` gives the
+   !< number of characters + 1; any other position out of the string gives 0. The inverse is [[string:byte_pos]].
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = 'caf'//char(195)//char(169)//'!'
+   !< test_passed(1) = astring%char_pos(4)==4
+   !< test_passed(2) = astring%char_pos(5)==4
+   !< test_passed(3) = astring%char_pos(6)==5
+   !< test_passed(4) = astring%char_pos(7)==6
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self     !< The string.
+   integer,       intent(in) :: byte_pos !< Byte position.
+   integer                   :: position !< Character number.
+
+   if (allocated(self%raw)) then
+      position = utf8_char_pos(self%raw, byte_pos)
+   else
+      position = merge(1, 0, byte_pos==1)
+   endif
+   endfunction char_pos
 
    pure function chars(self) result(raw)
    !< Return the raw characters data.
@@ -7086,6 +7170,19 @@ contains
       if (pattern(p:p+m-1)==c) token_len = m
    endselect
    endfunction match_token
+
+   pure function to_unit(raw, i, by) result(position)
+   !< Return a byte position in the unit asked by `by`: unchanged for SF_BYTES (or absent), the character holding the
+   !< byte for SF_CHARS; 0 stays 0.
+   character(kind=CK, len=*), intent(in)           :: raw      !< Bytes.
+   integer,                   intent(in)           :: i        !< Byte position, 0 for none.
+   integer,                   intent(in), optional :: by       !< Unit asked.
+   integer                                         :: position !< Position in that unit.
+
+   position = i
+   if (.not.present(by).or.i==0) return
+   if (by==SF_CHARS) position = utf8_char_pos(raw, i)
+   endfunction to_unit
 
    pure function unit_length(raw, i) result(n)
    !< Return the length of the unit starting at byte i: 1 for ASCII, else the length of the well-formed sequence, or 1.

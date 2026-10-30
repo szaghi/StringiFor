@@ -25,6 +25,8 @@ Suites:
               sequences, and the whole codespace through from_codepoints
   escape      the C escape codecs (Phase 2 of #51): escape_c, unescape_c, escapes_error and the round trip; the
               reference is checked first against Python's unicode_escape codec on the escapes both understand
+  positions   positions and lengths in characters (Phase 4 of #51): by=SF_CHARS and byte_pos/char_pos; the reference
+              converts the byte results with its own split of the bytes into units
   units       the methods that work on units (Phase 3 of #51): the reference is Python str on the bytes decoded with
               surrogateescape, so each byte that is not part of a well-formed sequence is one character (rule R3)
 """
@@ -657,6 +659,55 @@ def units_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+def unit_starts(data: bytes) -> list[int]:
+    """1-based byte position of the first byte of each unit, then len+1."""
+    starts, at = [], 1
+    for piece in units(data):
+        starts.append(at)
+        at += len(piece)
+    return [*starts, at]
+
+
+def char_pos(data: bytes, b: int) -> int:
+    """Unit holding byte b; len+1 gives the number of units + 1; 0 out of range."""
+    starts = unit_starts(data)
+    if b < 1 or b > len(data) + 1:
+        return 0
+    return max(k for k, start in enumerate(starts, 1) if start <= b)
+
+
+def byte_pos(data: bytes, k: int) -> int:
+    """First byte of unit k; units + 1 gives len+1; 0 out of range."""
+    starts = unit_starts(data)
+    return starts[k - 1] if 1 <= k <= len(starts) else 0
+
+
+def in_chars(data: bytes, i: int) -> int:
+    """A byte result (0: none) in characters."""
+    return char_pos(data, i) if i else 0
+
+
+def byte_positions(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, b) with b around and inside the string."""
+    return [
+        (data, b)
+        for b in {
+            0,
+            1,
+            len(data),
+            len(data) + 1,
+            len(data) + 2,
+            rng.randint(1, len(data) + 1),
+        }
+    ]
+
+
+def char_positions(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, k) with k around and inside the units."""
+    n = len(units(data))
+    return [(data, k) for k in {0, 1, n, n + 1, n + 2, rng.randint(1, n + 1)}]
+
+
 EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra, "units": units_extra}
 SELF_CHECKS = {"escape": check_escape_reference}
 
@@ -700,6 +751,28 @@ SUITES: dict[str, list[Op]] = {
         Op("from_codepoints", codepoint_lists, from_codepoints),
         Op("to_valid_utf8", single, to_valid_utf8),
         Op("to_valid_utf8_with", replacements_of, to_valid_utf8),
+    ],
+    "positions": [
+        Op("len_chars", single, lambda d: len(units(d))),
+        Op("index_chars", any_needles, lambda d, n: in_chars(d, find(d, n))),
+        Op("index_back_chars", any_needles, lambda d, n: in_chars(d, rfind(d, n))),
+        Op(
+            "index_occurrence_chars",
+            occurrences,
+            lambda d, n, k: in_chars(d, occurrence(d, n, k, back=False)),
+        ),
+        Op(
+            "scan_chars",
+            unit_sets,
+            lambda d, m: in_chars(d, unit_search(d, m, back=False, inside=True)),
+        ),
+        Op(
+            "verify_back_chars",
+            unit_sets,
+            lambda d, m: in_chars(d, unit_search(d, m, back=True, inside=False)),
+        ),
+        Op("byte_pos", char_positions, byte_pos),
+        Op("char_pos", byte_positions, char_pos),
     ],
     "units": [
         Op("scan", unit_sets, lambda d, m: unit_search(d, m, back=False, inside=True)),
@@ -758,6 +831,11 @@ KNOWN_COMPILER_ISSUES: dict[
             "nvfortran 26.9: index(c, '') is 0 for a zero-length variable c (the standard "
             "gives 1), so start_with('', '') is false",
             lambda name, call: name == "start_with" and call == (b"", b""),
+        ),
+        (
+            "nvfortran 26.9: index(string, substring) with assumed-length dummies is wrong when the substring holds a "
+            "NUL byte (a reduced case gives 12 for 17)",
+            lambda name, call: name.startswith("index") and b"\x00" in call[1],
         ),
     ],
 }
