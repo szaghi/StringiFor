@@ -1167,12 +1167,13 @@ contains
    !< @note As Python `str.center`: a string not shorter than `width` is returned unchanged; when the padding is odd the extra
    !< fill character goes on the left if `width` is odd, on the right otherwise.
    !<
-   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes, with `by=SF_COLUMNS` the
+   !< display columns of a terminal (see [[string:width]]).
    !<
    !<```fortran
    !< type(string) :: astring
    !< type(string) :: centered
-   !< logical      :: test_passed(5)
+   !< logical      :: test_passed(6)
    !< astring = 'abc'
    !< test_passed(1) = astring%center(7, '*')//''=='**abc**'
    !< centered = astring%center(6)
@@ -1182,6 +1183,8 @@ contains
    !< test_passed(4) = astring%center(5, '-')//''=='--ab-'
    !< astring = 'caf'//char(195)//char(169)
    !< test_passed(5) = astring%center(6, '*', by=SF_CHARS)//''=='*'//'caf'//char(195)//char(169)//'*'
+   !< astring = char(228)//char(189)//char(160)
+   !< test_passed(6) = astring%center(6, '*', by=SF_COLUMNS)//''=='**'//char(228)//char(189)//char(160)//'**'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -1832,7 +1835,8 @@ contains
    !< @note As Python `str.expandtabs`: the column restarts after a new line or a carriage return; a `tab_size` not positive
    !< removes the tabs.
    !<
-   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes, with `by=SF_COLUMNS` the
+   !< display columns of a terminal (see [[string:width]]).
    !<
    !<```fortran
    !< type(string) :: astring
@@ -1934,7 +1938,8 @@ contains
    !<
    !< @note A string already as wide as (or wider than) `width` is returned unchanged.
    !<
-   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes, with `by=SF_COLUMNS` the
+   !< display columns of a terminal (see [[string:width]]).
    !<
    !<```fortran
    !< type(string) :: astring
@@ -2678,7 +2683,8 @@ contains
    !< @note This is a subroutine, like [[string:split]]: a function returning the lines would need an assignment to an
    !< unallocated array, that is not allowed for a type with a defined assignment.
    !<
-   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes, with `by=SF_COLUMNS` the
+   !< display columns of a terminal (see [[string:width]]).
    !<
    !<```fortran
    !< type(string)              :: astring
@@ -2826,7 +2832,8 @@ contains
    !<
    !< @note As Python `str.ljust`: a string not shorter than `width` is returned unchanged.
    !<
-   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes, with `by=SF_COLUMNS` the
+   !< display columns of a terminal (see [[string:width]]).
    !<
    !<```fortran
    !< type(string) :: astring
@@ -3445,7 +3452,8 @@ contains
    !<
    !< @note As Python `str.rjust`: a string not shorter than `width` is returned unchanged.
    !<
-   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes.
+   !< @note With `by=SF_CHARS` the width counts characters (UTF-8 units) instead of bytes, with `by=SF_COLUMNS` the
+   !< display columns of a terminal (see [[string:width]]).
    !<
    !<```fortran
    !< type(string) :: astring

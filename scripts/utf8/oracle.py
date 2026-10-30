@@ -773,13 +773,13 @@ def insertions(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
     ]
 
 
-def justify_units(data: bytes, width: int) -> list[bytes]:
+def justify_units(data: bytes, width: int, size_of=None) -> list[bytes]:
     """StringiFor justify(lines, width, by=SF_CHARS): words packed in lines of width characters, the blanks spread
     from the left; the last line, and a line of one word, padded on the right."""
     words = split_collapse(data, b" ") if data.rstrip(b" ") else []
 
     def size(text_: bytes) -> int:
-        return len(units(text_))
+        return size_of(text_) if size_of else len(units(text_))
 
     lines, last = [], 0
     while last < len(words):
@@ -857,6 +857,42 @@ def width_each(codes: list[int]) -> list[int]:
     return [display_width(from_codepoints([code])) for code in codes]
 
 
+def pad_columns(data: bytes, width: int, how: str, fill: bytes = b"*") -> bytes:
+    """center, ljust, rjust (and fill, with "0") with the width in display columns."""
+    margin = width - display_width(data)
+    if margin <= 0:
+        return data
+    if how == "left":
+        return data + fill * margin
+    if how == "right":
+        return fill * margin + data
+    left = margin // 2 + (margin & width & 1)
+    return fill * left + data + fill * (margin - left)
+
+
+def expand_tabs_columns(data: bytes, tab: int) -> bytes:
+    """expand_tabs with tab stops every tab display columns; LF and CR reset the column."""
+    out, column = [], 0
+    for code, piece in zip(codepoints(data), units(data), strict=True):
+        if piece == b"\t":
+            if tab > 0:
+                out.append(b" " * (tab - column % tab))
+                column += tab - column % tab
+        elif piece in (b"\n", b"\r"):
+            out.append(piece)
+            column = 0
+        else:
+            out.append(piece)
+            column += unit_width(code)
+    return b"".join(out)
+
+
+def column_widths(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, width) around the display width."""
+    n = display_width(data)
+    return [(data, w) for w in {0, n - 1, n, n + 1, n + rng.randint(2, 9)} if w >= 0]
+
+
 def columns_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     """Every Unicode scalar value, by blocks of 4096, and the 128 ill-formed bytes."""
     calls: list[tuple[str, tuple[Arg, ...]]] = [
@@ -920,6 +956,18 @@ SUITES: dict[str, list[Op]] = {
     "columns": [
         Op("width", single, display_width),
         Op("width_each", codepoint_lists, width_each),
+        Op("center_columns", column_widths, lambda d, w: pad_columns(d, w, "center")),
+        Op("ljust_columns", column_widths, lambda d, w: pad_columns(d, w, "left")),
+        Op("rjust_columns", column_widths, lambda d, w: pad_columns(d, w, "right")),
+        Op(
+            "fill_columns", column_widths, lambda d, w: pad_columns(d, w, "right", b"0")
+        ),
+        Op("expand_tabs_columns", with_tabs, expand_tabs_columns),
+        Op(
+            "justify_columns",
+            column_widths,
+            lambda d, w: justify_units(d, w, display_width),
+        ),
     ],
     "positions": [
         Op("len_chars", single, lambda d: len(units(d))),

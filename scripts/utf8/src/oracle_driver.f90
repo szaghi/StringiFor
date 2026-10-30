@@ -8,7 +8,7 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
-use stringifor, only : from_codepoints, I4P, scan, SF_CHARS, string, verify
+use stringifor, only : from_codepoints, I4P, scan, SF_CHARS, SF_COLUMNS, string, verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
 character(len=:), allocatable :: field(:) !< Fields of the line (padded).
@@ -177,6 +177,19 @@ do
     call put_int(s%char_pos(int_arg(3)))
   case ('width')
     call put_int(s%width())
+  case ('center_columns')
+    call put_str(s%center(int_arg(3), '*', by=SF_COLUMNS))
+  case ('ljust_columns')
+    call put_str(s%ljust(int_arg(3), '*', by=SF_COLUMNS))
+  case ('rjust_columns')
+    call put_str(s%rjust(int_arg(3), '*', by=SF_COLUMNS))
+  case ('fill_columns')
+    call put_str(s%fill(int_arg(3), by=SF_COLUMNS))
+  case ('expand_tabs_columns')
+    call put_str(s%expand_tabs(int_arg(3), by=SF_COLUMNS))
+  case ('justify_columns')
+    call s%justify(tokens, int_arg(3), by=SF_COLUMNS)
+    call put_list(tokens)
   case ('width_each')
     codes = int_list(arg(2))
     allocate(widths(size(codes)))
