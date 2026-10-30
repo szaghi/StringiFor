@@ -29,6 +29,9 @@ Suites:
               UCD 17.0.0 read codepoint by codepoint (gen_unicode_tables.naive_sets), on every Unicode scalar value
   positions   positions and lengths in characters (Phase 4 of #51): by=SF_CHARS and byte_pos/char_pos; the reference
               converts the byte results with its own split of the bytes into units
+  whitespace  Unicode whitespace (Phase 7 of #51): is_space, strip, lstrip, rstrip and compact, ASCII and with
+              unicode=.true.; the reference is White_Space of the pinned UCD 17.0.0, checked against Python's
+              str.isspace (which adds U+001C..U+001F), on spaced corpus strings and on every scalar value
   xml         XML escaping (Phase 6 of #51): escape_xml, unescape_xml, xml_error and the round trip, on every byte and
               every 2-byte string too; the reference is checked first against xml.sax.saxutils and against expat, which
               must read every escaped string back and reject every malformed reference
@@ -1137,14 +1140,132 @@ def columns_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+ASCII_SPACE = " \t\n\x0b\x0c\r"
+
+
+def white_space() -> str:
+    """The characters with the White_Space property in the pinned UCD."""
+    return "".join(chr(code) for code in sorted(ucd_sets()["WHITE_SPACE_RANGES"]))
+
+
+def is_space(data: bytes, unicode: bool = False) -> bool:
+    """True if every unit is whitespace (ASCII, or White_Space); false for a null string."""
+    chars = text(data)
+    spaces = white_space() if unicode else ASCII_SPACE
+    return bool(chars) and all(char in spaces for char in chars)
+
+
+def strip_space(data: bytes, side: str, unicode: bool, remove: bytes = b" ") -> bytes:
+    """strip, lstrip, rstrip with whitespace=.true.: the set is remove plus the whitespace, as units."""
+    chars = text(remove) + ASCII_SPACE + (white_space() if unicode else "")
+    method = {"both": str.strip, "left": str.lstrip, "right": str.rstrip}[side]
+    return raw(method(text(data), chars))
+
+
+def compact_space(data: bytes, unicode: bool = False, sep: bytes = b" ") -> bytes:
+    """sep.join of the words: runs of units that are not whitespace (ASCII, or White_Space)."""
+    spaces = white_space() if unicode else ASCII_SPACE
+    words, word = [], []
+    for char in text(data):
+        if char in spaces:
+            if word:
+                words.append("".join(word))
+            word = []
+        else:
+            word.append(char)
+    if word:
+        words.append("".join(word))
+    return raw(text(sep).join(words))
+
+
+def space_each(codes: list[int]) -> list[int]:
+    """1 if the codepoint encoded alone is White_Space, 0 if not (a non-scalar value encodes as U+FFFD)."""
+    return [int(is_space(from_codepoints([code]), unicode=True)) for code in codes]
+
+
+# Whitespace-like units: the White_Space characters, characters that look like spaces but are not White_Space
+# (U+001C..U+001F, which Python's str.isspace accepts, U+180E, U+200B, U+2060, U+FEFF), ill-formed bytes and truncated
+# sequences of whitespace characters.
+SPACE_LIKE = [
+    *(c.encode() for c in ASCII_SPACE),
+    *(
+        chr(c).encode()
+        for c in (
+            0x85,
+            0xA0,
+            0x1680,
+            0x2000,
+            0x2005,
+            0x200A,
+            0x2028,
+            0x2029,
+            0x202F,
+            0x205F,
+            0x3000,
+        )
+    ),
+    *(chr(c).encode() for c in (0x1C, 0x1F, 0x180E, 0x200B, 0x2060, 0xFEFF)),
+    b"\x85",
+    b"\xa0",
+    b"\xc2",
+    b"\xe3\x80",
+    b"\xe2\x80",
+]
+
+
+def spaced(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data with whitespace-like units around and inside it,) and (a run of them only,)."""
+
+    def run() -> bytes:
+        return b"".join(rng.choice(SPACE_LIKE) for _ in range(rng.randint(0, 4)))
+
+    pieces = units(data)
+    for _ in range(rng.randint(0, 3)):
+        pieces.insert(rng.randint(0, len(pieces)), run())
+    return [(data,), (run() + b"".join(pieces) + run(),), (run(),)]
+
+
+def spaced_sets(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (spaced data, a set of units to remove or a separator)."""
+    members = [b"", b"a", b"x-", "é".encode(), b"\xff", "　".encode()]
+    return [(d[0], rng.choice(members)) for d in spaced(data, rng)]
+
+
+def check_space_reference() -> list[str]:
+    """Check White_Space against Python's str.isspace: they differ on U+001C..U+001F only (Python adds them)."""
+    ours = {ord(c) for c in white_space()}
+    python = {code for code in range(0x110000) if chr(code).isspace()}
+    if python - ours != {0x1C, 0x1D, 0x1E, 0x1F} or ours - python:
+        return [
+            f"White_Space {sorted(ours ^ python)} differs from str.isspace beyond U+001C..U+001F"
+        ]
+    if set(ASCII_SPACE) != {c for c in white_space() if c < "\x80"}:
+        return ["the ASCII whitespace is not the ASCII part of White_Space"]
+    return []
+
+
+def whitespace_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """White_Space of every Unicode scalar value, in blocks."""
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for first in range(0, 0x110000, 4096):
+        block = [c for c in range(first, first + 4096) if not 0xD800 <= c <= 0xDFFF]
+        calls.append(("space_each", (block,)))
+    return calls
+
+
 EXTRA = {
     "utf8": utf8_exhaustive,
     "escape": escape_extra,
     "units": units_extra,
     "columns": columns_extra,
     "xml": xml_extra,
+    "whitespace": whitespace_extra,
 }
-SELF_CHECKS = {"escape": check_escape_reference, "xml": check_xml_reference}
+SELF_CHECKS = {
+    "escape": check_escape_reference,
+    "xml": check_xml_reference,
+    "whitespace": check_space_reference,
+}
 
 
 SUITES: dict[str, list[Op]] = {
@@ -1281,6 +1402,32 @@ SUITES: dict[str, list[Op]] = {
         Op("escapes_error", single, escapes_error),
         Op("escape_roundtrip", single, lambda d: d),
         Op("escape_roundtrip_utf8", single, lambda d: d),
+    ],
+    "whitespace": [
+        Op("is_space", spaced, is_space),
+        Op("is_space_unicode", spaced, lambda d: is_space(d, unicode=True)),
+        Op("strip_ws", spaced, lambda d: strip_space(d, "both", unicode=False)),
+        Op("lstrip_ws", spaced, lambda d: strip_space(d, "left", unicode=False)),
+        Op("rstrip_ws", spaced, lambda d: strip_space(d, "right", unicode=False)),
+        Op("strip_ws_unicode", spaced, lambda d: strip_space(d, "both", unicode=True)),
+        Op("lstrip_ws_unicode", spaced, lambda d: strip_space(d, "left", unicode=True)),
+        Op(
+            "rstrip_ws_unicode", spaced, lambda d: strip_space(d, "right", unicode=True)
+        ),
+        Op("strip_unicode_alone", spaced, lambda d: raw(text(d).strip(" "))),
+        Op(
+            "strip_remove_ws_unicode",
+            spaced_sets,
+            lambda d, m: strip_space(d, "both", unicode=True, remove=m),
+        ),
+        Op("compact", spaced, compact_space),
+        Op("compact_unicode", spaced, lambda d: compact_space(d, unicode=True)),
+        Op(
+            "compact_sep_unicode",
+            spaced_sets,
+            lambda d, m: compact_space(d, unicode=True, sep=m),
+        ),
+        Op("space_each", codepoint_lists, space_each),
     ],
     "xml": [
         Op("escape_xml", single, escape_xml),

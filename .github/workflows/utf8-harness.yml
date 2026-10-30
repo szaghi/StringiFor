@@ -52,3 +52,4 @@ jobs:
         bash scripts/oracle.sh positions
         bash scripts/oracle.sh columns
         bash scripts/oracle.sh xml
+        bash scripts/oracle.sh whitespace
