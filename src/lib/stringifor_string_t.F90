@@ -6,8 +6,8 @@ use, intrinsic :: ieee_arithmetic, only : ieee_quiet_nan, ieee_value
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
-use stringifor_utf8, only : REPLACEMENT_CHARACTER, utf8_decode, utf8_encode, utf8_encoded_len, utf8_first_error, &
-                            utf8_scan, utf8_subpart_len, utf8_unit_len, utf8_units
+use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_decode, utf8_encode, utf8_encoded_len, utf8_first_error, &
+                            utf8_in_set, utf8_nth_unit, utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units
 
 implicit none
 private
@@ -3185,13 +3185,18 @@ contains
    elemental function reverse(self) result(reversed)
    !< Return a reversed string.
    !<
+   !< @note The units are reversed, a unit being a well-formed UTF-8 sequence or a byte that is not part of one: the bytes
+   !< of a character keep their order, so the result of a well-formed string is well-formed.
+   !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(2)
+   !< logical      :: test_passed(3)
    !< astring = 'abcdefghilmnopqrstuvz'
    !< test_passed(1) = (astring%reverse()//''=='zvutsrqponmlihgfedcba')
    !< astring = '0123456789'
    !< test_passed(2) = (astring%reverse()//''=='9876543210')
+   !< astring = 'ab'//char(228)//char(189)//char(160)//char(195)//char(169)
+   !< test_passed(3) = (astring%reverse()//''==char(195)//char(169)//char(228)//char(189)//char(160)//'ba')
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -3199,12 +3204,17 @@ contains
    type(string)              :: reversed !< The reversed string.
    integer                   :: length   !< Length of the string.
    integer                   :: c        !< Counter.
+   integer                   :: n        !< Bytes of a unit.
 
    if (allocated(self%raw)) then
       reversed = self
       length = len(self%raw)
-      do c=1, length
-         reversed%raw(c:c) = self%raw(length-c+1:length-c+1)
+      c = 1
+      do while (c<=length)
+         n = 1
+         if (iand(ichar(self%raw(c:c)), 255)>127) n = utf8_unit_len(self%raw, c)
+         reversed%raw(length-c-n+2:length-c+1) = self%raw(c:c+n-1)
+         c = c + n
       enddo
    endif
    endfunction reverse
@@ -3714,14 +3724,18 @@ contains
    elemental function squeeze(self, set) result(squeezed)
    !< Return a string with every run of a repeated character reduced to one, only for the characters of `set` if passed.
    !<
-   !< @note As `tr -s`. To reduce the runs of a substring see [[string:unique]].
+   !< @note As `tr -s`. To reduce the runs of a substring see [[string:unique]]. A character is a unit, a well-formed
+   !< UTF-8 sequence or a byte that is not part of one, and `set` is a set of units.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(2)
+   !< logical      :: test_passed(4)
    !< astring = 'bookkeeper  --  aa'
    !< test_passed(1) = astring%squeeze()//''=='bokeper - a'
    !< test_passed(2) = astring%squeeze(set=' -')//''=='bookkeeper - aa'
+   !< astring = 'n'//char(195)//char(169)//char(195)//char(169)//'e'
+   !< test_passed(3) = astring%squeeze()//''=='n'//char(195)//char(169)//'e'
+   !< test_passed(4) = astring%squeeze(set=char(195))//''==astring//''
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -3730,24 +3744,35 @@ contains
    type(string)                                    :: squeezed !< The squeezed string.
    character(kind=CK, len=:), allocatable          :: buffer   !< Buffer, the result being never longer than the string.
    integer                                         :: length   !< Length of the result.
-   integer                                         :: c        !< Character counter.
-   logical                                         :: is_run   !< The character repeats the previous one and is squeezed.
+   integer                                         :: c        !< Byte position of the current unit.
+   integer                                         :: n        !< Bytes of the current unit.
+   integer                                         :: p        !< Byte position of the previous unit.
+   integer                                         :: m        !< Bytes of the previous unit (0: none).
+   logical                                         :: is_run   !< The unit repeats the previous one and is squeezed.
 
    if (allocated(self%raw)) then
       allocate(character(kind=CK, len=len(self%raw)) :: buffer)
       length = 0
-      do c=1, len(self%raw)
+      m = 0
+      p = 1
+      c = 1
+      do while (c<=len(self%raw))
+         n = 1
+         if (iand(ichar(self%raw(c:c)), 255)>127) n = utf8_unit_len(self%raw, c)
          is_run = .false.
-         if (c>1) then
-            if (self%raw(c:c)==self%raw(c-1:c-1)) then
+         if (m==n) then
+            if (self%raw(c:c+n-1)==self%raw(p:p+m-1)) then
                is_run = .true.
-               if (present(set)) is_run = index(set, self%raw(c:c))>0
+               if (present(set)) is_run = utf8_in_set(self%raw, c, n, set)
             endif
          endif
          if (.not.is_run) then
-            length = length + 1
-            buffer(length:length) = self%raw(c:c)
+            buffer(length+1:length+n) = self%raw(c:c+n-1)
+            length = length + n
          endif
+         p = c
+         m = n
+         c = c + n
       enddo
       squeezed%raw = buffer(1:length)
    endif
@@ -4490,15 +4515,21 @@ contains
    !< Return a string with every character of `old_set` replaced by the character at the same position in `new_set`.
    !<
    !< @note As GNU `tr`: if `new_set` is shorter than `old_set` its last character replaces the remaining ones, if it is null
-   !< the characters of `old_set` are deleted. A character repeated in `old_set` is replaced as its first occurrence.
+   !< the characters of `old_set` are deleted. A character repeated in `old_set` is replaced as its first occurrence. A
+   !< character is a unit, a well-formed UTF-8 sequence or a byte that is not part of one: `old_set` and `new_set` are
+   !< sequences of units, and the result can be longer than the string.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(5)
    !< astring = 'hello world'
    !< test_passed(1) = astring%transliterate('lo', 'LO')//''=='heLLO wOrLd'
    !< test_passed(2) = astring%transliterate('elo', 'x')//''=='hxxxx wxrxd'
    !< test_passed(3) = astring%transliterate('lo', '')//''=='he wrd'
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(4) = astring%transliterate(char(195)//char(169), 'e')//''=='cafe'
+   !< test_passed(5) = astring%transliterate('a'//char(195)//char(169), char(206)//char(177)//'E')//''== &
+   !<                  'c'//char(206)//char(177)//'fE'
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -4508,10 +4539,14 @@ contains
    type(string)                           :: transliterated !< The transliterated string.
    character(kind=CK, len=:), allocatable :: buffer         !< Buffer, the result being never longer than the string.
    integer                                :: length         !< Length of the result.
-   integer                                :: c              !< Character counter.
-   integer                                :: i              !< Position into old_set.
+   integer                                :: c              !< Byte position of the current unit.
+   integer                                :: n              !< Bytes of the current unit.
+   integer                                :: i              !< Ordinal of the unit in old_set.
+   integer                                :: first          !< Position of the replacing unit in new_set.
+   integer                                :: m              !< Bytes of the replacing unit.
 
-   if (allocated(self%raw)) then
+   if (.not.allocated(self%raw)) return
+   if (is_ascii(old_set//new_set)) then ! ASCII sets: one byte for one byte, a non-ASCII unit kept
       allocate(character(kind=CK, len=len(self%raw)) :: buffer)
       length = 0
       do c=1, len(self%raw)
@@ -4524,8 +4559,26 @@ contains
             buffer(length:length) = new_set(min(i, len(new_set)):min(i, len(new_set)))
          endif
       enddo
-      transliterated%raw = buffer(1:length)
+   else ! sets of units: a unit replaced by one of up to 4 bytes
+      allocate(character(kind=CK, len=4*len(self%raw)) :: buffer)
+      length = 0
+      c = 1
+      do while (c<=len(self%raw))
+         n = 1
+         if (iand(ichar(self%raw(c:c)), 255)>127) n = utf8_unit_len(self%raw, c)
+         i = utf8_unit_index(self%raw, c, n, old_set)
+         if (i==0) then
+            buffer(length+1:length+n) = self%raw(c:c+n-1)
+            length = length + n
+         elseif (len(new_set)>0) then
+            call utf8_nth_unit(new_set, i, first, m)
+            buffer(length+1:length+m) = new_set(first:first+m-1)
+            length = length + m
+         endif
+         c = c + n
+      enddo
    endif
+   transliterated%raw = buffer(1:length)
    endfunction transliterate
 
    elemental function unescape(self, to_unescape, unesc) result(unescaped)

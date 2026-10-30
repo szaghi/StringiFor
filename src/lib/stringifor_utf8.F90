@@ -10,11 +10,14 @@ use penf, only : I4P
 implicit none
 private
 public :: REPLACEMENT_CHARACTER
+public :: is_ascii
 public :: utf8_decode
 public :: utf8_encode
 public :: utf8_encoded_len
 public :: utf8_first_error
 public :: utf8_in_set
+public :: utf8_nth_unit
+public :: utf8_unit_index
 public :: utf8_scan
 public :: utf8_subpart_len
 public :: utf8_unit_len
@@ -186,6 +189,57 @@ contains
    enddo
    endfunction utf8_units
 
+   pure function utf8_unit_index(raw, i, n, set) result(k)
+   !< Return the ordinal of the first unit of set equal to the unit raw(i:i+n-1), 0 if there is none.
+   character(len=*), intent(in) :: raw !< Bytes.
+   integer,          intent(in) :: i   !< Position of the unit.
+   integer,          intent(in) :: n   !< Length of the unit.
+   character(len=*), intent(in) :: set !< Set of units.
+   integer                      :: k   !< Ordinal of the unit in the set, 0 if absent.
+   integer                      :: j   !< Byte position in the set.
+   integer                      :: m   !< Length of a unit of the set.
+   integer                      :: u   !< Unit counter.
+
+   k = 0
+   u = 0
+   j = 1
+   do while (j <= len(set))
+      u = u + 1
+      m = 1
+      if (byte(set(j:j)) > 127) m = utf8_unit_len(set, j)
+      if (m == n) then
+         if (set(j:j+m-1) == raw(i:i+n-1)) then
+            k = u
+            return
+         endif
+      endif
+      j = j + m
+   enddo
+   endfunction utf8_unit_index
+
+   pure subroutine utf8_nth_unit(set, k, first, n)
+   !< Return the position and the length of the k-th unit of set (of its last unit if it has less than k), n=0 if the
+   !< set is empty.
+   character(len=*), intent(in)  :: set   !< Set of units.
+   integer,          intent(in)  :: k     !< Ordinal of the unit.
+   integer,          intent(out) :: first !< Position of its first byte.
+   integer,          intent(out) :: n     !< Its length, 0 if the set is empty.
+   integer                       :: j     !< Byte position in the set.
+   integer                       :: u     !< Unit counter.
+
+   first = 1
+   n = 0
+   u = 0
+   j = 1
+   do while (j <= len(set) .and. u < k)
+      u = u + 1
+      first = j
+      n = 1
+      if (byte(set(j:j)) > 127) n = utf8_unit_len(set, j)
+      j = j + n
+   enddo
+   endsubroutine utf8_nth_unit
+
    pure function utf8_in_set(raw, i, n, set) result(found)
    !< Return true if the unit raw(i:i+n-1) is one of the units of set.
    character(len=*), intent(in) :: raw   !< Bytes.
@@ -248,7 +302,6 @@ contains
    enddo
    endfunction utf8_scan
 
-   ! private
    pure function is_ascii(text) result(ascii)
    !< Return true if every byte of text is ASCII.
    character(len=*), intent(in) :: text  !< Bytes.
@@ -262,6 +315,7 @@ contains
    ascii = .true.
    endfunction is_ascii
 
+   ! private
    elemental function byte(c) result(value)
    !< Return the value 0..255 of a byte (`ichar` may be signed above 127 on some processors).
    character(len=1), intent(in) :: c     !< Byte.

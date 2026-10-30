@@ -501,6 +501,56 @@ def unit_sets(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
     return [(data, members) for members in sets]
 
 
+def squeeze(data: bytes, members: bytes | None = None) -> bytes:
+    """Runs of a repeated unit reduced to one, only for the units of members if given."""
+    chars, out = text(data), []
+    wanted = None if members is None else set(text(members))
+    for i, char in enumerate(chars):
+        if i > 0 and char == chars[i - 1] and (wanted is None or char in wanted):
+            continue
+        out.append(char)
+    return raw("".join(out))
+
+
+def transliterate(data: bytes, old: bytes, new: bytes) -> bytes:
+    """Each unit of old replaced by the unit at the same position of new (its last one if shorter), deleted if new
+    is empty; a unit repeated in old is replaced as its first occurrence."""
+    old_chars, new_chars, table = text(old), text(new), {}
+    for i, char in enumerate(old_chars):
+        table.setdefault(
+            char, new_chars[min(i, len(new_chars) - 1)] if new_chars else ""
+        )
+    return raw("".join(table.get(char, char) for char in text(data)))
+
+
+def with_runs(data: bytes, rng: random.Random) -> bytes:
+    """Data with some of its units repeated, so that runs occur."""
+    pieces = units(data)
+    return b"".join(
+        p * (rng.randint(2, 3) if rng.random() < 0.4 else 1) for p in pieces
+    )
+
+
+def run_sets(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data with runs, set)."""
+    return [(with_runs(data, rng), members) for _, members in unit_sets(data, rng)]
+
+
+def runs(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data with runs,)."""
+    return [(with_runs(data, rng),)]
+
+
+def translations(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, old, new): old from the units of data and of the pool, new longer, shorter or empty."""
+    calls: list[tuple[Arg, ...]] = []
+    for _, old in unit_sets(data, rng):
+        n_new = rng.choice([0, 1, len(text(old)), len(text(old)) + 2])
+        new = b"".join(rng.choice(POOL)[0] for _ in range(n_new))
+        calls.append((data, old, new))
+    return calls
+
+
 EXTRA = {"utf8": utf8_exhaustive, "escape": escape_extra}
 SELF_CHECKS = {"escape": check_escape_reference}
 
@@ -562,6 +612,10 @@ SUITES: dict[str, list[Op]] = {
         Op("strip_remove", unit_sets, lambda d, m: raw(text(d).strip(text(m)))),
         Op("lstrip_remove", unit_sets, lambda d, m: raw(text(d).lstrip(text(m)))),
         Op("rstrip_remove", unit_sets, lambda d, m: raw(text(d).rstrip(text(m)))),
+        Op("reverse", single, lambda d: raw(text(d)[::-1])),
+        Op("squeeze", runs, squeeze),
+        Op("squeeze_set", run_sets, squeeze),
+        Op("transliterate", translations, transliterate),
     ],
     "escape": [
         Op("escape_c", single, escape_c),

@@ -113,6 +113,14 @@ do
     call put_str(s%lstrip(remove=unhex(arg(3))))
   case ('rstrip_remove')
     call put_str(s%rstrip(remove=unhex(arg(3))))
+  case ('reverse')
+    call put_str(s%reverse())
+  case ('squeeze')
+    call put_str(s%squeeze())
+  case ('squeeze_set')
+    call put_str(s%squeeze(set=unhex(arg(3))))
+  case ('transliterate')
+    call put_str(s%transliterate(unhex(arg(3)), unhex(arg(4))))
   case default
     call fail('unknown operation: '//arg(1))
   endselect
