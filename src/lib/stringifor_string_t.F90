@@ -3649,14 +3649,23 @@ contains
    !<
    !< @note The split is performed in chunks of `#chunks` to avoid excessive memory consumption.
    !<
+   !< @note As [[string:split]], a string made only of separators has no tokens (`tokens` is allocated with size 0) and a
+   !< null string has one null token.
+   !<
    !<```fortran
    !< type(string)              :: astring
    !< type(string), allocatable :: strings(:)
-   !< logical                   :: test_passed(1)
+   !< logical                   :: test_passed(3)
    !< astring = '-1-2-3-4-5-6-7-8-'
    !< call astring%split_chunked(tokens=strings, sep='-', chunks=3)
    !< test_passed(1) = (strings(1)//''=='1'.and.strings(2)//''=='2'.and.strings(3)//''=='3'.and.strings(4)//''=='4'.and. &
    !<                   strings(5)//''=='5'.and.strings(6)//''=='6'.and.strings(7)//''=='7'.and.strings(8)//''=='8')
+   !< astring = '--'
+   !< call astring%split_chunked(tokens=strings, sep='-', chunks=2)
+   !< test_passed(2) = size(strings)==0
+   !< astring = ''
+   !< call astring%split_chunked(tokens=strings, sep='-', chunks=2)
+   !< test_passed(3) = size(strings)==1
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -3677,6 +3686,7 @@ contains
      if (self%end_with(suffix=sep_)) Nt = Nt - 1
      t = 0
      call self%split(tokens=tokens, sep=sep_, max_tokens=chunks)
+     if (size(tokens, dim=1)==0) return ! only separators: no token
      do
        t = size(tokens, dim=1)
        if (t > Nt) exit
@@ -4940,7 +4950,9 @@ contains
       start_           = 1             ; if (present(start))           start_           = start
       end_             = len(self%raw) ; if (present(end))             end_             = end
       ignore_null_eof_ = .false.       ; if (present(ignore_null_eof)) ignore_null_eof_ = ignore_null_eof
-      if (ignore_null_eof_.and.(self%raw(end_:end_) == char(0))) end_ = end_ - 1
+      if (ignore_null_eof_.and.end_>0) then ! .and. does not short-circuit: raw(0:0) would be read
+         if (self%raw(end_:end_) == char(0)) end_ = end_ - 1
+      endif
       if (len(suffix) <= len(self%raw(start_:end_))) then
          end_with = self%raw(end_-len(suffix)+1:end_) == suffix
       endif
