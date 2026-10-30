@@ -111,6 +111,7 @@ A *unit* is a well-formed UTF-8 sequence or a single byte that is not part of on
 
 | Method | Returns | Description |
 |--------|---------|-------------|
+| `has_bom()` | `logical` | True if the string starts with a UTF-8 byte order mark (EF BB BF) |
 | `escape_c([ascii])` | `string` | C escapes for what is not printable ASCII (`ascii=.false.`: only controls and ill-formed bytes) |
 | `escapes_error()` | `integer` | Byte position of the first malformed C escape, 0 if none |
 | `codepoints()` | `integer(I4P)(:)` | Codepoints, one per unit; a byte not part of a well-formed sequence is minus its value |
@@ -144,19 +145,19 @@ string does not hold a suitable number the result is 0 for an integer kind and a
 
 | Method | Description |
 |--------|-------------|
-| `read_file(file[, is_fast][, form][, iostat][, iomsg])` | Read entire file into this string |
+| `read_file(file[, is_fast][, form][, iostat][, iomsg][, skip_bom])` | Read entire file into this string; `skip_bom=.true.` drops a leading UTF-8 BOM |
 | `read_line(unit[, form][, iostat][, iomsg])` | Read one line from connected unit |
-| `read_lines(unit[, form][, iostat][, iomsg])` | Read all lines from connected unit |
-| `write_file(file[, form][, iostat][, iomsg])` | Write this string to file |
+| `read_lines(unit[, form][, iostat][, iomsg][, skip_bom])` | Read all lines from connected unit; `skip_bom` as `read_file` |
+| `write_file(file[, form][, iostat][, iomsg][, bom])` | Write this string to file; `bom=.true.` starts it with a UTF-8 BOM |
 | `write_line(unit[, form][, iostat][, iomsg])` | Write one line to connected unit |
 | `write_lines(unit[, form][, iostat][, iomsg])` | Write all lines to connected unit |
 
 ## File I/O Subroutines (module-level)
 
 ```fortran
-call read_file(file, lines[, form][, iostat][, iomsg])
-call read_lines(unit, lines[, form][, iostat][, iomsg])
-call write_file(file, lines[, form][, iostat][, iomsg])
+call read_file(file, lines[, form][, iostat][, iomsg][, skip_bom])
+call read_lines(unit, lines[, form][, iostat][, iomsg][, skip_bom])
+call write_file(file, lines[, form][, iostat][, iomsg][, bom])
 call write_lines(unit, lines[, form][, iostat][, iomsg])
 ```
 

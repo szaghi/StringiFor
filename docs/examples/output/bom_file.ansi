@@ -1,0 +1,4 @@
+$ bom_file
+has a BOM: T, starts with key: F
+has a BOM: F, starts with key: T
+key = value|

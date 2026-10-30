@@ -196,6 +196,19 @@ The first form is a subroutine of the module, the second a method reading the fi
 
 `iostat` is zero for every line read, empty ones included, and not zero at the end of the file.
 
+## Read a file saved by a Windows editor
+
+<<< @/examples/snippets/bom_file-read.f90
+
+<<< @/examples/output/bom_file.ansi{ansi}
+
+<<< @/examples/output/bom_file-od.ansi{ansi}
+
+Some editors start a UTF-8 file with a byte order mark, the bytes EF BB BF (`357 273 277` in octal): read as is, they
+are the first three characters of the first line, so a key or a number there is not found. `skip_bom=.true.` drops
+them (the module subroutines `read_file` and `read_lines` take it too), `has_bom()` tells whether a string starts with
+them, and `write_file(..., bom=.true.)` writes them.
+
 ## Write a file
 
 <<< @/examples/snippets/writefile.f90

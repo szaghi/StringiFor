@@ -8,7 +8,7 @@ use stringifor
  character(len=99) :: iomsg
  integer :: scratch
  integer :: l
- logical :: test_passed(8)
+ logical :: test_passed(10)
  line(1) = ' Hello World!   '
  line(2) = 'How are you?  '
  line(3) = '   All say: "Fine thanks"'
@@ -27,6 +27,11 @@ use stringifor
  do l=1, size(strings, dim=1)
  test_passed(l+5) = (strings(l)==line(l))
  enddo
+ call write_file(file='write_file_test.tmp', lines=line, bom=.true.)
+ call read_file(file='write_file_test.tmp', lines=strings)
+ test_passed(9) = strings(1)%has_bom()
+ call read_file(file='write_file_test.tmp', lines=strings, skip_bom=.true.)
+ test_passed(10) = strings(1)==line(1).and.size(strings, dim=1)==3
  open(newunit=scratch, file='write_file_test.tmp')
  close(scratch, status='DELETE')
  print '(L1)', all(test_passed)

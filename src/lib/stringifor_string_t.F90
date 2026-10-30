@@ -149,6 +149,7 @@ type :: string
     procedure, pass(self) :: write_lines      !< Write lines (records) to a connected unit.
     ! inquire methods
     procedure, pass(self) :: end_with     !< Return true if a string ends with a specified suffix.
+    procedure, pass(self) :: has_bom      !< Return true if the string starts with a UTF-8 byte order mark.
     procedure, pass(self) :: is_allocated !< Return true if the string is allocated.
     procedure, pass(self) :: is_alnum     !< Return true if all characters in the string are letters or digits.
     procedure, pass(self) :: is_alpha     !< Return true if all characters in the string are letters.
@@ -309,6 +310,7 @@ character(kind=CK, len=1),  parameter :: SPACE          = ' '                   
 character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
 character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)                     !< Backslash character.
+character(kind=CK, len=3),  parameter :: BOM            = char(239)//char(187)//char(191) !< UTF-8 byte order mark, U+FEFF.
 
 interface glob
   !< Overloading glob procedure.
@@ -2819,7 +2821,7 @@ contains
    endif
    endfunction quote
 
-   subroutine read_file(self, file, is_fast, form, iostat, iomsg)
+   subroutine read_file(self, file, is_fast, form, iostat, iomsg, skip_bom)
    !< Read a file as a single string stream.
    !<
    !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
@@ -2828,6 +2830,8 @@ contains
    !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
    !<
    !< @note *Fast* file reading allows a very efficient reading of streamed file, but it dumps file as single streamed string.
+   !<
+   !< @note With `skip_bom=.true.` a leading UTF-8 byte order mark (EF BB BF, see [[string:has_bom]]) is dropped.
    !<
    !<```fortran
    !< type(string)              :: astring
@@ -2876,6 +2880,7 @@ contains
    character(len=*), intent(in),    optional :: form       !< Format of unit.
    integer,          intent(out),   optional :: iostat     !< IO status code.
    character(len=*), intent(inout), optional :: iomsg      !< IO status message.
+   logical,          intent(in),    optional :: skip_bom   !< Drop a leading UTF-8 byte order mark.
    logical                                   :: is_fast_   !< Flag to enable (super) fast file reading, local variable.
    type(string)                              :: form_      !< Format of unit, local variable.
    integer                                   :: iostat_    !< IO status code, local variable.
@@ -2896,6 +2901,9 @@ contains
             allocate(character(kind=CK, len=filesize):: self%raw)
             read(unit=unit, iostat=iostat_, iomsg=iomsg_) self%raw
             close(unit)
+            if (present(skip_bom)) then
+               if (skip_bom.and.self%has_bom()) self%raw = self%raw(4:)
+            endif
          endif
       else
          form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
@@ -2906,7 +2914,7 @@ contains
             open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
                  iomsg=iomsg_, iostat=iostat_, err=10)
          endselect
-         call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
+         call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_, skip_bom=skip_bom)
          10 close(unit)
       endif
    else
@@ -3062,13 +3070,15 @@ contains
    if (present(iomsg)) iomsg = iomsg_
    endsubroutine read_line
 
-   subroutine read_lines(self, unit, form, iostat, iomsg)
+   subroutine read_lines(self, unit, form, iostat, iomsg, skip_bom)
    !< Read (all) lines (records) from a connected unit as a single ascii stream.
    !<
    !< @note All the lines are stored into the string self as a single ascii stream. Each line (record) is separated by a `new_line`
    !< character. The line is read as an ascii stream read until the eor is reached.
    !<
    !< @note The connected unit is rewinded. At a successful exit current record is at eof, at the beginning otherwise.
+   !<
+   !< @note With `skip_bom=.true.` a leading UTF-8 byte order mark (EF BB BF, see [[string:has_bom]]) is dropped.
    !<
    !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
    !<
@@ -3115,6 +3125,7 @@ contains
    character(len=*), intent(in),    optional :: form      !< Format of unit.
    integer,          intent(out),   optional :: iostat    !< IO status code.
    character(len=*), intent(inout), optional :: iomsg     !< IO status message.
+   logical,          intent(in),    optional :: skip_bom  !< Drop a leading UTF-8 byte order mark.
    integer                                   :: iostat_   !< IO status code, local variable.
    character(len=:), allocatable             :: iomsg_    !< IO status message, local variable.
    character(kind=CK, len=:), allocatable    :: lines     !< Lines storage, a buffer of which only lines_len chars are used.
@@ -3133,6 +3144,9 @@ contains
       call append_to_buffer(buffer=lines, length=lines_len, piece=new_line('a'))
    enddo
    if (lines_len>0) self%raw = lines(1:lines_len)
+   if (present(skip_bom)) then
+      if (skip_bom.and.self%has_bom()) self%raw = self%raw(4:)
+   endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg)) iomsg = iomsg_
    endsubroutine read_lines
@@ -4809,10 +4823,12 @@ contains
    if (allocated(self%raw)) position = utf8_first_error(self%raw)
    endfunction utf8_error
 
-   subroutine write_file(self, file, form, iostat, iomsg)
+   subroutine write_file(self, file, form, iostat, iomsg, bom)
    !< Write a single string stream into file.
    !<
    !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
+   !<
+   !< @note With `bom=.true.` the file starts with a UTF-8 byte order mark (EF BB BF), unless the string starts with one.
    !<
    !<```fortran
    !< type(string)              :: astring
@@ -4852,6 +4868,7 @@ contains
    character(len=*), intent(in),    optional :: form    !< Format of unit.
    integer,          intent(out),   optional :: iostat  !< IO status code.
    character(len=*), intent(inout), optional :: iomsg   !< IO status message.
+   logical,          intent(in),    optional :: bom     !< Start the file with a UTF-8 byte order mark (if the string has none).
    type(string)                              :: form_   !< Format of unit, local variable.
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=:), allocatable             :: iomsg_  !< IO status message, local variable.
@@ -4865,6 +4882,9 @@ contains
    case('UNFORMATTED')
       open(newunit=unit, file=file, action='WRITE', form='UNFORMATTED', access='STREAM', iomsg=iomsg_, iostat=iostat_, err=10)
    endselect
+   if (present(bom)) then
+      if (bom.and..not.self%has_bom()) call write_bom(unit=unit, form=form_%chars(), iostat=iostat_, iomsg=iomsg_)
+   endif
    call self%write_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_)
    10 close(unit)
    if (present(iostat)) iostat = iostat_
@@ -4986,6 +5006,49 @@ contains
 
    is_allocated = allocated(self%raw)
    endfunction is_allocated
+
+   elemental function has_bom(self)
+   !< Return true if the string starts with a UTF-8 byte order mark (the bytes EF BB BF, U+FEFF).
+   !<
+   !< @note Some editors, mostly on Windows, start UTF-8 files with it; [[string:read_file]] and [[string:read_lines]] drop
+   !< it with `skip_bom=.true.`, [[string:write_file]] writes it with `bom=.true.`.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< integer      :: scratch
+   !< logical      :: test_passed(7)
+   !< astring = char(239)//char(187)//char(191)//'text'
+   !< test_passed(1) = astring%has_bom()
+   !< astring = 'text'
+   !< test_passed(2) = .not.astring%has_bom()
+   !< astring = ''
+   !< test_passed(3) = .not.astring%has_bom()
+   !< astring = 'line one'//new_line('a')//'line two'
+   !< call astring%write_file(file='has_bom_test.tmp', bom=.true.)
+   !< call astring%read_file(file='has_bom_test.tmp')
+   !< test_passed(4) = astring%has_bom()
+   !< call astring%read_file(file='has_bom_test.tmp', skip_bom=.true.)
+   !< test_passed(5) = astring%start_with('line one').and.(.not.astring%has_bom())
+   !< call astring%read_file(file='has_bom_test.tmp', is_fast=.true., skip_bom=.true.)
+   !< test_passed(6) = astring%start_with('line one')
+   !< call astring%write_file(file='has_bom_test.tmp', bom=.true.) ! a string without a BOM: written once
+   !< astring = char(239)//char(187)//char(191)//'x'
+   !< call astring%write_file(file='has_bom_test.tmp', bom=.true.) ! a string with a BOM: not doubled
+   !< call astring%read_file(file='has_bom_test.tmp', skip_bom=.true.)
+   !< test_passed(7) = astring%start_with('x')
+   !< open(newunit=scratch, file='has_bom_test.tmp')
+   !< close(scratch, status='delete')
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self    !< The string.
+   logical                   :: has_bom !< Result of the test.
+
+   has_bom = .false.
+   if (allocated(self%raw)) then
+      if (len(self%raw)>=3) has_bom = self%raw(1:3)==BOM
+   endif
+   endfunction has_bom
 
    elemental function is_alnum(self)
    !< Return true if all characters in the string are letters or digits.
@@ -7119,6 +7182,20 @@ contains
    enddo
    replaced(r:) = raw(c:)
    endfunction replace_substring
+
+   subroutine write_bom(unit, form, iostat, iomsg)
+   !< Write a UTF-8 byte order mark at the start of the current record (formatted) or of the stream (unformatted).
+   integer,          intent(in)    :: unit   !< Logical unit.
+   character(len=*), intent(in)    :: form   !< Format of unit, FORMATTED or UNFORMATTED.
+   integer,          intent(out)   :: iostat !< IO status code.
+   character(len=*), intent(inout) :: iomsg  !< IO status message.
+
+   if (form=='UNFORMATTED') then
+      write(unit, iostat=iostat, iomsg=iomsg) BOM
+   else
+      write(unit, '(A)', advance='no', iostat=iostat, iomsg=iomsg) BOM
+   endif
+   endsubroutine write_bom
 
    pure subroutine squeeze_bytes(raw, squeezed, set)
    !< Return the bytes with every run of a repeated byte reduced to one, only for the bytes of `set` if passed: the byte

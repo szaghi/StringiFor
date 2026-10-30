@@ -25,7 +25,7 @@ public :: read_file, read_lines, write_file, write_lines
 public :: I1P, I2P, I4P, I8P, R4P, R8P, R16P
 
 contains
-   subroutine read_file(file, lines, form, iostat, iomsg)
+   subroutine read_file(file, lines, form, iostat, iomsg, skip_bom)
    !< Read a file as a single string stream.
    !<
    !< The lines are returned as an array of strings that are read until the eof is reached.
@@ -75,6 +75,7 @@ contains
    character(len=*), intent(in),    optional  :: form       !< Format of unit.
    integer,          intent(out),   optional  :: iostat     !< IO status code.
    character(len=*), intent(inout), optional  :: iomsg      !< IO status message.
+   logical,          intent(in),    optional  :: skip_bom   !< Drop a leading UTF-8 byte order mark from the first line.
    type(string)                               :: form_      !< Format of unit, local variable.
    integer                                    :: iostat_    !< IO status code, local variable.
    character(len=:), allocatable              :: iomsg_     !< IO status message, local variable.
@@ -92,14 +93,14 @@ contains
          open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
               iomsg=iomsg_, iostat=iostat_, err=10)
       endselect
-      call read_lines(unit=unit, lines=lines, form=form, iomsg=iomsg_, iostat=iostat_)
+      call read_lines(unit=unit, lines=lines, form=form, iomsg=iomsg_, iostat=iostat_, skip_bom=skip_bom)
       10 close(unit)
    endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg)) iomsg = iomsg_
    endsubroutine read_file
 
-   subroutine read_lines(unit, lines, form, iostat, iomsg)
+   subroutine read_lines(unit, lines, form, iostat, iomsg, skip_bom)
    !< Read lines (records) from a connected-formatted unit.
    !<
    !< @note The connected unit is rewinded. At a successful exit current record is at eof, at the beginning otherwise.
@@ -115,6 +116,7 @@ contains
    character(len=*), intent(in),    optional  :: form     !< Format of unit.
    integer,          intent(out),   optional  :: iostat   !< IO status code.
    character(len=*), intent(inout), optional  :: iomsg    !< IO status message.
+   logical,          intent(in),    optional  :: skip_bom !< Drop a leading UTF-8 byte order mark from the first line.
    type(string)                               :: form_    !< Format of unit, local variable.
    integer                                    :: iostat_  !< IO status code, local variable.
    character(len=:), allocatable              :: iomsg_   !< IO status message, local variable.
@@ -153,12 +155,15 @@ contains
          endif
          l = l + 1
       enddo
+      if (present(skip_bom)) then
+         if (skip_bom.and.lines(1)%has_bom()) lines(1) = lines(1)%raw(4:)
+      endif
    endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg)) iomsg = iomsg_
    endsubroutine read_lines
 
-   subroutine write_file(file, lines, form, iostat, iomsg)
+   subroutine write_file(file, lines, form, iostat, iomsg, bom)
    !< Write a single string stream into file.
    !<
    !< @note For unformatted read only `access='stream'` is supported with new_line as line terminator.
@@ -172,7 +177,7 @@ contains
    !< character(len=99)         :: iomsg
    !< integer                   :: scratch
    !< integer                   :: l
-   !< logical                   :: test_passed(8)
+   !< logical                   :: test_passed(10)
    !< line(1) = ' Hello World!   '
    !< line(2) = 'How are you?  '
    !< line(3) = '   All say: "Fine thanks"'
@@ -191,6 +196,11 @@ contains
    !< do l=1, size(strings, dim=1)
    !<   test_passed(l+5) = (strings(l)==line(l))
    !< enddo
+   !< call write_file(file='write_file_test.tmp', lines=line, bom=.true.)
+   !< call read_file(file='write_file_test.tmp', lines=strings)
+   !< test_passed(9) = strings(1)%has_bom()
+   !< call read_file(file='write_file_test.tmp', lines=strings, skip_bom=.true.)
+   !< test_passed(10) = strings(1)==line(1).and.size(strings, dim=1)==3
    !< open(newunit=scratch, file='write_file_test.tmp')
    !< close(scratch, status='DELETE')
    !< print '(L1)', all(test_passed)
@@ -201,10 +211,12 @@ contains
    character(len=*), intent(in),    optional :: form      !< Format of unit.
    integer,          intent(out),   optional :: iostat    !< IO status code.
    character(len=*), intent(inout), optional :: iomsg     !< IO status message.
+   logical,          intent(in),    optional :: bom       !< Start the file with a UTF-8 byte order mark (if lines(1) has none).
    type(string)                              :: form_     !< Format of unit, local variable.
    integer                                   :: iostat_   !< IO status code, local variable.
    character(len=:), allocatable             :: iomsg_    !< IO status message, local variable.
    integer                                   :: unit      !< Logical unit.
+   character(kind=CK, len=3), parameter      :: BOM_BYTES = char(239)//char(187)//char(191) !< UTF-8 byte order mark.
 
    iomsg_ = repeat(' ', 99) ; if (present(iomsg)) iomsg_ = iomsg
    form_ = 'FORMATTED' ; if (present(form)) form_ = form ; form_ = form_%upper()
@@ -214,6 +226,15 @@ contains
    case('UNFORMATTED')
       open(newunit=unit, file=file, action='WRITE', form='UNFORMATTED', access='STREAM', iomsg=iomsg_, iostat=iostat_, err=10)
    endselect
+   if (present(bom).and.size(lines, dim=1)>0) then
+      if (bom.and..not.lines(1)%has_bom()) then
+         if (form_%chars()=='UNFORMATTED') then
+            write(unit, iostat=iostat_, iomsg=iomsg_) BOM_BYTES
+         else
+            write(unit, '(A)', advance='no', iostat=iostat_, iomsg=iomsg_) BOM_BYTES
+         endif
+      endif
+   endif
    call write_lines(unit=unit, lines=lines, form=form, iomsg=iomsg_, iostat=iostat_)
    10 close(unit)
    if (present(iostat)) iostat = iostat_

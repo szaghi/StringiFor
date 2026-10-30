@@ -1,13 +1,11 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: anotherstring
- type(string) :: notallocated
- logical :: test_passed(2)
- astring = 'hello'
- anotherstring = astring
- test_passed(1) = astring%chars()==anotherstring%chars()
- anotherstring = notallocated
- test_passed(2) = .not.anotherstring%is_allocated()
+ logical :: test_passed(4)
+ astring = 'Hello WorLD!'
+ test_passed(1) = astring%start_with(prefix='Hello').eqv..true.
+ test_passed(2) = astring%start_with(prefix='hell').eqv..false.
+ test_passed(3) = astring%start_with(prefix='llo Wor', start=3).eqv..true.
+ test_passed(4) = astring%start_with(prefix='lo W', start=4, end=7).eqv..true.
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

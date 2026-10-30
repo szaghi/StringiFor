@@ -1,0 +1,4 @@
+$ od -c windows.txt
+0000000 357 273 277   k   e   y       =       v   a   l   u   e  \n   o
+0000020   t   h   e   r       =       1  \n
+0000031
