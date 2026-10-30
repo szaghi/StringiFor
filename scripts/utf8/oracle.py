@@ -162,6 +162,62 @@ def partition(data: bytes, sep: bytes) -> list[bytes]:
     return list(data.partition(sep))
 
 
+def collapse(data: bytes, sep: bytes) -> bytes:
+    """Runs of consecutive separators reduced to one (StringiFor unique)."""
+    out, i = [], 0
+    while i < len(data):
+        if data.startswith(sep, i):
+            out.append(sep)
+            i += len(sep)
+            while data.startswith(sep, i):
+                i += len(sep)
+        else:
+            out.append(data[i : i + 1])
+            i += 1
+    return b"".join(out)
+
+
+def split_collapse(data: bytes, sep: bytes) -> list[bytes]:
+    """StringiFor split without keep_empty, as documented and implemented in 1.8.0: separators collapsed; no
+    separator gives the string itself; only separators give no token; a blank head or tail field is no token."""
+    uniq = collapse(data, sep)
+    if uniq.count(sep) == 0:
+        return [data]
+    if uniq == sep:
+        return []
+    fields = uniq.split(sep)
+    head, inner, tail = fields[0], fields[1:-1], fields[-1]
+    return (
+        ([head] if head.strip(b" ") else [])
+        + inner
+        + ([tail] if tail.strip(b" ") else [])
+    )
+
+
+def occurrence(data: bytes, needle: bytes, n: int, back: bool) -> int:
+    """Position of the n-th non-overlapping occurrence, counted from the left (from the right if back), 0 if none."""
+    found, end, start = 0, len(data), 0
+    for _ in range(n):
+        found = data.rfind(needle, 0, end) if back else data.find(needle, start)
+        if found < 0:
+            return 0
+        end, start = found, found + len(needle)
+    return found + 1
+
+
+def occurrences(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, needle, n) with non-empty needles and n in 1..3."""
+    return [
+        (data, needle, rng.randint(1, 3))
+        for data, needle in nonempty_needles(data, rng)
+    ]
+
+
+def chunked(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data, sep, chunks) with chunks in 1..4."""
+    return [(data, sep, rng.randint(1, 4)) for data, sep in nonempty_needles(data, rng)]
+
+
 def padded(left: bytes, right: bytes) -> tuple[bytes, bytes]:
     """Fortran comparison: the shorter operand is padded with blanks (deviation from Python, documented)."""
     width = max(len(left), len(right))
@@ -613,6 +669,18 @@ SUITES: dict[str, list[Op]] = {
         Op("replace", replacements, replace),
         Op("replace_count", counted_replacements, replace_count),
         Op("split", nonempty_needles, split),
+        Op("split_collapse", nonempty_needles, split_collapse),
+        Op("split_chunked", chunked, lambda d, s, c: split_collapse(d, s)),
+        Op(
+            "index_occurrence",
+            occurrences,
+            lambda d, s, n: occurrence(d, s, n, back=False),
+        ),
+        Op(
+            "index_occurrence_back",
+            occurrences,
+            lambda d, s, n: occurrence(d, s, n, back=True),
+        ),
         Op("partition", nonempty_needles, partition),
         Op("start_with", any_needles, lambda d, p: d.startswith(p)),
         Op("end_with", any_needles, lambda d, s: d.endswith(s)),
