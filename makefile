@@ -40,7 +40,7 @@ MKDIRS  = $(DOBJ) $(DMOD) $(DEXE)
 MAKELIB = ar -rcs $(DEXE)libstringifor.a $(DOBJ)*.o ; ranlib $(DEXE)libstringifor.a
 
 #the objects of the library and of its dependencies
-LIBOBJ = $(addprefix $(DOBJ),stringifor.o stringifor_string_t.o stringifor_unicode_tables.o stringifor_utf8.o befor64.o befor64_pack_data_m.o face.o penf.o \
+LIBOBJ = $(addprefix $(DOBJ),stringifor.o stringifor_regex.o stringifor_string_t.o stringifor_unicode_tables.o stringifor_utf8.o befor64.o befor64_pack_data_m.o face.o penf.o \
            penf_allocatable_memory.o penf_b_size.o penf_stringify.o penf_global_parameters_variables.o)
 
 #the tests: every program found in a directory of src/tests, no list to maintain
@@ -81,7 +81,15 @@ $(foreach testdir,$(TESTDIRS),$(eval $(call TESTRULE,$(testdir))))
 #compiling rules
 $(DOBJ)stringifor.o: src/lib/stringifor.F90 \
 	$(DOBJ)penf.o \
+	$(DOBJ)stringifor_regex.o \
 	$(DOBJ)stringifor_string_t.o
+	@echo $(COTEXT)
+	@$(FC) $(OPTSC)  $< -o $@
+
+$(DOBJ)stringifor_regex.o: src/lib/stringifor_regex.F90 \
+	$(DOBJ)penf.o \
+	$(DOBJ)stringifor_string_t.o \
+	$(DOBJ)stringifor_utf8.o
 	@echo $(COTEXT)
 	@$(FC) $(OPTSC)  $< -o $@
 
