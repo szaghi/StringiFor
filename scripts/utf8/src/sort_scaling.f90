@@ -1,9 +1,10 @@
 !< Scaling check of strsort (issue #51, step 9.3), built by scripts/utf8/build.sh.
 !<
 !< Times strsort on n = 2**10 .. 2**18 strings of 4 kinds (random, sorted, reversed, all equal) and prints the time of
-!< one comparison step, t / (n log2 n). An O(n log n) sort keeps it about constant; a quadratic one multiplies it by
-!< n / log2 n, about 2,000 times from the smallest to the largest n. Exits with status 1 if, for some kind, the largest
-!< value is more than 4 times the smallest.
+!< one comparison step, t / (n log2 n). An O(n log n) sort keeps it about constant, up to the cache misses of large
+!< random inputs (up to 5 times on a shared CI runner); a quadratic one multiplies it by n / log2 n, about 140 times from
+!< the smallest to the largest n. Exits with status 1 if, for some kind, the largest value is more than 16 times the
+!< smallest.
 program sort_scaling
 use, intrinsic :: iso_fortran_env, only : int64, output_unit, real64
 use stringifor, only : string, strsort
@@ -23,7 +24,7 @@ do k = 1, size(KINDS)
     step(k, p) = best_time(trim(KINDS(k)), n) / (real(n, real64) * p) * 1.e9_real64
     write(output_unit, '(a,",",i0,",",f8.3)') trim(KINDS(k)), n, step(k, p)
   enddo
-  if (maxval(step(k, :)) > 4 * minval(step(k, :))) then
+  if (maxval(step(k, :)) > 16 * minval(step(k, :))) then
     write(output_unit, '(a)') 'sort_scaling: '//trim(KINDS(k))//' does not scale as n log n'
     status = 1
   endif
