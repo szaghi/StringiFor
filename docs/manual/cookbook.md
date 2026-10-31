@@ -140,6 +140,33 @@ is not a number instead of returning 0 or NaN.
 `overlapping=.true.`. `index(substring, occurrence=k)` is the k-th occurrence, counted from the end with `back=.true.`,
 0 if there are fewer.
 
+## Read the settings of a key = value file
+
+<<< @/examples/snippets/regex_keyvalue.f90
+
+<<< @/examples/output/regex_keyvalue.ansi{ansi}
+
+`match` anchors the pattern at the start of each line; `[^#]*?` is lazy, so the trailing blanks and the comment are
+left to the rest of the pattern. See [Regular Expressions](/guide/regex).
+
+## Extract the numbers of a text
+
+<<< @/examples/snippets/regex_numbers.f90
+
+<<< @/examples/output/regex_numbers.ansi{ansi}
+
+`re_findall` returns the text of every match; the pattern takes a sign, a fraction and an exponent, and `(?:...)`
+groups without capturing, so `findall` returns the whole matches.
+
+## Rename files that follow a pattern
+
+<<< @/examples/snippets/regex_rename.f90
+
+<<< @/examples/output/regex_rename.ansi{ansi}
+
+`sub` rebuilds the name from the groups `\1` to `\4`; `nsub` tells whether the pattern matched, so the other names are
+left alone. To rename for real, pass the two names to `rename` (a common extension) or to `execute_command_line`.
+
 ## Get the text between two tags
 
 <<< @/examples/snippets/tags.f90

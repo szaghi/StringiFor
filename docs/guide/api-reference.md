@@ -190,6 +190,29 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 | `free()` | Deallocate `raw` member |
 | `strjoin(array[, sep][, is_trim][, is_col])` | Join 1D or 2D arrays with separator; `is_trim` applies to character arrays, `is_col` to 2D ones |
 
+## Regular Expressions
+
+`type(regex)` and `type(regex_match)`, see [Regular Expressions](./regex). The subject is a `character` or a `string`.
+
+| Method of `regex` | Returns | Description |
+|--------|---------|-------------|
+| `compile(pattern[, flags][, iostat][, iomsg])` | (subroutine) | Compile a pattern; flags `i`, `m`, `s`; the error position in `iostat` |
+| `search(subject[, start])` | `regex_match` | Leftmost match from the byte `start` |
+| `match(subject[, start])` | `regex_match` | Match starting at `start` |
+| `fullmatch(subject[, start])` | `regex_match` | Match from `start` to the end |
+| `finditer(subject[, start])` | `regex_match(:)` | All the matches, left to right |
+| `findall(subject[, group])` | `string(:)` | Text of a group of every match |
+| `split(subject[, maxsplit])` | `string(:)` | Pieces between the matches, group texts included |
+| `sub(repl, subject[, count][, nsub][, iostat][, iomsg])` | `string` | Matches replaced by a template (`\1`, `\g<name>`, `\g<0>`) |
+| `group_count()`, `group_index(name)`, `is_compiled()` | `integer`, `integer`, `logical` | Number of groups, number of a named group, compiled |
+
+| Member of `regex_match` | Returns | Description |
+|--------|---------|-------------|
+| `found` | `logical` | True if there is a match |
+| `span(group)` | `integer(2)` | First and last byte of a group (number or name); `[0, -1]` if it did not match |
+| `group(group)` | `string` | Text of a group (number or name); not allocated if it did not match |
+| `groups()` | `string(:)` | Texts of the groups 1..n |
+
 ## Module-Level Procedures
 
 | Procedure | Description |
@@ -197,6 +220,9 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 | `from_codepoints(codes)` | String encoded in UTF-8 from codepoints, the inverse of `codepoints()` |
 | `glob(self, pattern, list)` | Glob search returning matching paths; `self` is a `string` |
 | `strjoin(array[, sep][, is_trim][, is_col])` | Join arrays of strings or characters |
+| `re_search(subject, pattern[, flags][, start])`, `re_fullmatch(subject, pattern[, flags])` | Match a pattern (a character or a compiled `regex`) |
+| `re_findall(subject, pattern[, flags][, group])`, `re_split(subject, pattern[, flags][, maxsplit])` | All the matches, the pieces between them |
+| `re_sub(subject, pattern, repl[, flags][, count])` | Replace the matches of a pattern |
 | `strsort(strings[, index][, less])` | Sort an array of strings in place (subroutine): stable merge sort, `index` the permutation, `less` the order |
 | `strless(a, b)`, `strless_nocase(a, b)`, `strless_natural(a, b)` | Orders for `strsort`: byte (the default), ASCII case ignored, natural (`file2` before `file10`) |
 | `read_file`, `read_lines` | File reading subroutines |

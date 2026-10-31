@@ -1,0 +1,4 @@
+$ regex_keyvalue
+cfl=[0.8]
+scheme=[WENO5]
+line 5 is not a setting: bad line

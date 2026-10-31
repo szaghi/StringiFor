@@ -21,6 +21,7 @@ const docs = [
       { text: '4. Numbers',                   link: '/manual/tutorial/04-numbers' },
       { text: '5. Files and paths',           link: '/manual/tutorial/05-files' },
       { text: '6. A polished report',         link: '/manual/tutorial/06-report' },
+      { text: '7. Patterns',                  link: '/manual/tutorial/07-patterns' },
     ],
   },
   {
@@ -37,6 +38,7 @@ const docs = [
       { text: 'String Manipulation', link: '/guide/string-manipulation' },
       { text: 'Numbers',             link: '/guide/numbers' },
       { text: 'Unicode and UTF-8',   link: '/guide/unicode' },
+      { text: 'Regular Expressions', link: '/guide/regex' },
       { text: 'Files and Paths',     link: '/guide/advanced' },
       { text: 'Methods Summary',     link: '/guide/api-reference' },
     ],

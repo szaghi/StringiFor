@@ -1,0 +1,8 @@
+$ regex_tour
+T ann@example.org  10 24
+ann example.org
+1: ann
+2: bob
+write to ann at example.org or bob at test.net
+a|b|c|
+error at byte 5: missing ), unterminated group opened at byte 1

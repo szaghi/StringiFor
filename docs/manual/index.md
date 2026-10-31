@@ -21,6 +21,7 @@ run; every output shown is the real output of that program.
 | [4. Numbers](./tutorial/04-numbers) | `is_number`, `is_integer`, `is_real`, `to_number`, `read_number`, numbers assigned to strings, `hex` |
 | [5. Files and paths](./tutorial/05-files) | `read_file`, `write_file`, `basedir`, `basename`, `extension`, `match` |
 | [6. A polished report](./tutorial/06-report) | `ljust`, `rjust`, `slice`, `justify`, `colorize` |
+| [7. Patterns](./tutorial/07-patterns) | `regex`, `search`, `group`, `finditer`, `sub` |
 
 ```mermaid
 flowchart LR

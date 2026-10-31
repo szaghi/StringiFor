@@ -39,4 +39,4 @@ The whole program:
 Reference: [String Manipulation](/guide/string-manipulation), [Files and Paths](/guide/advanced#colours-for-the-terminal).
 :::
 
-Next: the [cookbook](../cookbook), short recipes for everyday tasks.
+Next: [7. Patterns](./07-patterns).
