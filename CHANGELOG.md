@@ -4,6 +4,19 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.11.0] — 2026-10-31
+### Added
+- **regex**: Regular expressions, a Pike VM linear in the subject
+
+- **regex**: Finditer, findall, split, sub and the re_* procedures
+
+
+### Documentation
+- **regex**: Regular expressions guide, tutorial chapter and recipes
+
+- **readme**: Regular expressions and UTF-8 in the features
+
+
 ## [1.10.0] — 2026-10-30
 ### Added
 - **utf8**: Positions and lengths in characters with by=SF_CHARS
