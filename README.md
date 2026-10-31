@@ -10,7 +10,7 @@
 [![License](https://img.shields.io/badge/license-GPLv3%20%7C%20BSD%20%7C%20MIT-blue.svg)](#copyrights)
 
 > A string type for modern Fortran with the methods you miss from Python: split, join, replace, strip, slice, justify,
-> cast to and from numbers, read and write files.
+> regular expressions, cast to and from numbers, read and write files, UTF-8 aware.
 > One type, one module, pure Fortran 2008.
 
 <img src="docs/examples/images/quickstart.svg" alt="a terminal session of a StringiFor program: upper case, snake case, reversed words, justified text, version comparison, hexadecimal, number detection" width="760">
@@ -34,6 +34,10 @@
 <tr>
 <td width="50%"><b>⚖️ Comparisons that know more</b><br><sub>Longest common prefix of many strings, version numbers compared field by field, <code>start_with</code>, <code>end_with</code>, <code>count</code>. <a href="https://szaghi.github.io/StringiFor/guide/string-manipulation#comparing">Comparing</a></sub></td>
 <td width="50%"><b>🎨 Encoding and colours</b><br><sub>Base64 <code>encode</code> and <code>decode</code>, <code>escape</code> and <code>unescape</code>, ANSI colours and styles for the terminal. <a href="https://szaghi.github.io/StringiFor/guide/advanced#encoding">Encoding</a> · <a href="https://szaghi.github.io/StringiFor/guide/advanced#colours-for-the-terminal">Colours</a></sub></td>
+</tr>
+<tr>
+<td width="50%"><b>🔍 Regular expressions</b><br><sub><code>regex</code>: <code>search</code>, <code>match</code>, groups by number or name, <code>findall</code>, <code>split</code>, <code>sub</code> with templates. The results of Python's <code>re</code>, in time linear in the text whatever the pattern: no catastrophic backtracking. <a href="https://szaghi.github.io/StringiFor/guide/regex">Regular expressions</a></sub></td>
+<td width="50%"><b>🌐 UTF-8 and Unicode</b><br><sub>Methods that never cut a character in two; lengths and positions in characters or display columns with <code>by=</code>; check and repair UTF-8, C and XML escapes, Unicode whitespace, byte order marks, <code>strsort</code>. <a href="https://szaghi.github.io/StringiFor/guide/unicode">Unicode and UTF-8</a></sub></td>
 </tr>
 <tr>
 <td width="50%"><b>⚡ Elemental by design</b><br><sub>Almost every method is <code>pure</code> or <code>elemental</code>: apply it to a whole array of strings in one statement, use it in pure procedures. <a href="https://szaghi.github.io/StringiFor/manual/cookbook#a-method-on-every-element-of-an-array">Arrays of strings</a></sub></td>

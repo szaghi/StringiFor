@@ -4,7 +4,7 @@ layout: home
 hero:
   name: StringiFor
   text: Strings Fortran Manipulator
-  tagline: "A string type for modern Fortran with the methods you miss from Python: split, join, replace, strip, slice, justify, cast to and from numbers, read and write files. One type, one module, pure Fortran 2008."
+  tagline: "A string type for modern Fortran with the methods you miss from Python: split, join, replace, strip, slice, justify, regular expressions, cast to and from numbers, read and write files, UTF-8 aware. One type, one module, pure Fortran 2008."
   actions:
     - theme: brand
       text: Tutorial
@@ -63,6 +63,16 @@ features:
     details: "Base64 encode and decode, escape and unescape, ANSI colours and styles for the terminal."
     link: /guide/advanced#colours-for-the-terminal
     linkText: Colours
+  - icon: 🔍
+    title: Regular expressions
+    details: "regex: search, match, groups by number or name, findall, split, sub with templates. The results of Python's re, in time linear in the text whatever the pattern: no catastrophic backtracking."
+    link: /guide/regex
+    linkText: Regular expressions
+  - icon: 🌐
+    title: UTF-8 and Unicode
+    details: "Methods that never cut a character in two; lengths and positions in characters or display columns with by=; check and repair UTF-8, C and XML escapes, Unicode whitespace, byte order marks, strsort."
+    link: /guide/unicode
+    linkText: Unicode and UTF-8
   - icon: ⚡
     title: Elemental by design
     details: "Almost every method is pure or elemental: apply it to a whole array of strings in one statement, use it in pure procedures."
