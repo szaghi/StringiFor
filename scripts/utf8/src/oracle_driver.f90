@@ -8,8 +8,8 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
-use stringifor, only : from_codepoints, I4P, scan, SF_CHARS, SF_COLUMNS, string, strless_natural, strless_nocase, strsort, &
-                       verify
+use stringifor, only : from_codepoints, I4P, regex, regex_match, scan, SF_CHARS, SF_COLUMNS, string, strless_natural, &
+                       strless_nocase, strsort, verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
 character(len=:), allocatable :: field(:) !< Fields of the line (padded).
@@ -24,6 +24,9 @@ integer(I4P),     allocatable :: codes(:) !< Codepoints.
 integer(I4P),     allocatable :: widths(:)!< Widths.
 integer                       :: k        !< Counter.
 integer,          allocatable :: perm(:)  !< Permutation of a sort.
+type(regex)                   :: re       !< A regex.
+type(regex_match)             :: found    !< A match.
+integer                       :: status   !< Status of a compilation.
 
 do
   call get_line(input_unit, line, iostat)
@@ -264,6 +267,22 @@ do
     tokens = str_list(arg(2))
     call strsort(tokens)
     call put_null_list(tokens)
+  case ('re_search', 're_match', 're_fullmatch') ! pattern, flags, subject, start
+    call re%compile(raw(s), flags=unhex(arg(3)), iostat=status)
+    if (status /= 0) then
+      write(output_unit, '(a)') 'E'
+      cycle
+    endif
+    t = unhex(arg(4))
+    select case (arg(1))
+    case ('re_search')
+      found = re%search(t, start=int_arg(5))
+    case ('re_match')
+      found = re%match(t, start=int_arg(5))
+    case default
+      found = re%fullmatch(t, start=int_arg(5))
+    endselect
+    call put_match(found)
   case ('width_each')
     codes = int_list(arg(2))
     allocate(widths(size(codes)))
@@ -523,6 +542,25 @@ contains
   if (size(items) == 0) text = '[]'
   write(output_unit, '(a)') text
   endsubroutine put_null_list
+
+  subroutine put_match(found)
+  !< Write a match: "-" if none, else the first and last byte of each group 0..n, separated by commas.
+  type(regex_match), intent(in) :: found !< The match.
+  integer                       :: g     !< Group counter.
+  character(len=:), allocatable :: text  !< Encoded match.
+  character(len=24)             :: pair  !< One group.
+
+  if (.not.found%found) then
+    write(output_unit, '(a)') '-'
+    return
+  endif
+  text = ''
+  do g = 0, ubound(found%spans, dim=2)
+    write(pair, '(i0,",",i0)') found%spans(:, g)
+    text = text//merge(',', ' ', g > 0)//trim(pair)
+  enddo
+  write(output_unit, '(a)') trim(adjustl(text))
+  endsubroutine put_match
 
   subroutine fail(message)
   !< Stop with status 2.

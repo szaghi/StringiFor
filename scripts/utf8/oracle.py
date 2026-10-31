@@ -29,6 +29,9 @@ Suites:
               UCD 17.0.0 read codepoint by codepoint (gen_unicode_tables.naive_sets), on every Unicode scalar value
   positions   positions and lengths in characters (Phase 4 of #51): by=SF_CHARS and byte_pos/char_pos; the reference
               converts the byte results with its own split of the bytes into units
+  regex       regular expressions (Phase 10 of #51): search, match and fullmatch of random patterns of the supported
+              syntax on random subjects and on the corpus, against Python's re with re.ASCII on the subject decoded
+              with surrogateescape; a pattern StringiFor rejects and Python accepts is allowed and counted
   sort        strsort (Phase 9 of #51): byte, caseless and natural order, the permutation, stability on duplicates,
               not allocated strings; the reference is Python's stable sorted with a key, and byte order is checked to
               be codepoint order on well-formed UTF-8
@@ -65,7 +68,7 @@ from corpus import POOL, RANDOM, SEED, cases, units  # noqa: E402
 _UCD_SETS: dict[str, set[int]] = {}
 
 Arg = bytes | int | list[int] | list[bytes] | list[bytes | None]
-Result = bytes | int | bool | list[bytes] | list[int] | list[bytes | None]
+Result = bytes | int | bool | str | list[bytes] | list[int] | list[bytes | None]
 
 
 @dataclass(frozen=True)
@@ -1365,6 +1368,267 @@ def sort_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+# Regular expressions (Phase 10): the reference is Python's re, with re.ASCII, on the subject decoded with
+# surrogateescape (each ill-formed byte b is the character U+DC00 + b, as StringiFor's code of that unit).
+REGEX_FLAGS = {"i": re.IGNORECASE, "m": re.MULTILINE, "s": re.DOTALL}
+HEXDIGITS = set(b"0123456789abcdefABCDEF")
+
+
+def to_python_pattern(pattern: bytes) -> str:
+    """Translate a StringiFor pattern for Python: \\z is \\Z, \\xHH above 7F (a byte) is \\udcHH."""
+    out, i = [], 0
+    while i < len(pattern):
+        if pattern[i] == 0x5C and i + 1 < len(pattern):
+            nxt = pattern[i + 1 : i + 2]
+            if nxt == b"z":
+                out.append(b"\\Z")
+                i += 2
+                continue
+            if (
+                nxt == b"x"
+                and len(pattern) >= i + 4
+                and all(c in HEXDIGITS for c in pattern[i + 2 : i + 4])
+            ):
+                value = int(pattern[i + 2 : i + 4], 16)
+                out.append(b"\\x%02x" % value if value < 0x80 else b"\\udc%02x" % value)
+                i += 4
+                continue
+            out.append(pattern[i : i + 2])
+            i += 2
+            continue
+        out.append(pattern[i : i + 1])
+        i += 1
+    return b"".join(out).decode("utf-8", "surrogateescape")
+
+
+def char_offsets(data: bytes) -> list[int]:
+    """1-based byte position of each character of data decoded with surrogateescape, and len + 1 at the end."""
+    offsets, position = [], 1
+    for unit in units(data):
+        offsets.append(position)
+        position += len(unit)
+    offsets.append(position)
+    return offsets
+
+
+def regex_run(
+    pattern: bytes, flags: bytes, subject: bytes, start: int, how: str
+) -> str | list[int]:
+    """The match as the driver writes it: "E" on a compile error, "-" if none, else the byte spans of all groups."""
+    mode = re.ASCII
+    for letter in flags.decode():
+        mode |= REGEX_FLAGS[letter]
+    try:
+        compiled = re.compile(to_python_pattern(pattern), mode)
+    except (re.error, OverflowError, RecursionError):
+        return "E"
+    offsets = char_offsets(subject)
+    pos = offsets.index(start) if start in offsets else len(offsets) - 1
+    method = {
+        "search": compiled.search,
+        "match": compiled.match,
+        "fullmatch": compiled.fullmatch,
+    }[how]
+    found = method(text(subject), pos)
+    if found is None:
+        return "-"
+    spans = []
+    for group in range(compiled.groups + 1):
+        first, end = found.span(group)
+        spans += [0, -1] if first < 0 else [offsets[first], offsets[end] - 1]
+    return spans
+
+
+REGEX_ATOMS = [
+    b"a",
+    b"b",
+    b"A",
+    b"x",
+    b"-",
+    b" ",
+    b"\n",
+    "é".encode(),
+    "\U0001f600".encode(),
+    b"\xff",
+    b".",
+    b"\\d",
+    b"\\w",
+    b"\\s",
+    b"\\D",
+    b"\\W",
+    b"\\S",
+    b"\\.",
+    b"\\-",
+    b"\\xff",
+    b"\\x41",
+    b"\\u00e9",
+    b"[ab]",
+    b"[^a]",
+    b"[a-c]",
+    b"[\\d_]",
+    b"[\\W]",
+    b"[^\\s]",
+    b"[]a]",
+    b"[-a]",
+    b"[a-]",
+    "[é-\U0001f600]".encode(),
+    b"[\\x80-\\xff]",
+    b"[^\\n]",
+    b"[A-Z]",
+    b"^",
+    b"$",
+    b"\\b",
+    b"\\B",
+    b"\\A",
+    b"\\z",
+]
+REGEX_QUANTIFIERS = [
+    b"*",
+    b"+",
+    b"?",
+    b"{2}",
+    b"{1,}",
+    b"{,2}",
+    b"{0,1}",
+    b"{1,3}",
+    b"{0}",
+    b"{",
+]
+REGEX_SUBJECT_UNITS = [
+    b"a",
+    b"b",
+    b"A",
+    b"x",
+    b"-",
+    b" ",
+    b"\n",
+    b"_",
+    b"1",
+    "é".encode(),
+    "\U0001f600".encode(),
+    b"\xff",
+    b"\xe9",
+    b"\x00",
+    b".",
+]
+
+
+def random_pattern(rng: random.Random, depth: int = 0) -> bytes:
+    """A random pattern of the supported syntax (and, at times, of a malformed one)."""
+    items = []
+    for _ in range(rng.randint(1, 4)):
+        pick = rng.random()
+        if pick < 0.2 and depth < 3:
+            opener = rng.choice([b"(", b"(?:", b"(?P<g%d>" % rng.randrange(100)])
+            item = opener + random_pattern(rng, depth + 1) + b")"
+        else:
+            item = rng.choice(REGEX_ATOMS)
+        if rng.random() < 0.35:
+            item += rng.choice(REGEX_QUANTIFIERS)
+            if rng.random() < 0.3:
+                item += b"?"
+        items.append(item)
+    pattern = b"".join(items)
+    if rng.random() < 0.25:
+        pattern += b"|" + random_pattern(rng, depth + 1)
+    if depth == 0 and rng.random() < 0.05:
+        pattern = (
+            rng.choice(
+                [b"(", b")", b"[", b"\\", b"*", b"a{2,1}", b"\\q", b"(?=a)", b"\\1"]
+            )
+            + pattern
+        )
+    return pattern
+
+
+def random_subject(rng: random.Random) -> bytes:
+    """A random subject over units the patterns use."""
+    return b"".join(rng.choice(REGEX_SUBJECT_UNITS) for _ in range(rng.randint(0, 10)))
+
+
+REGEX_FIXED = [
+    (b"(|a)*", b"aa"),
+    (b"(|a)+", b"aa"),
+    (b"(a|)*", b"aa"),
+    (b"(a*)*", b"aab"),
+    (b"(a*?)*", b"aa"),
+    (b"(a?)*?$", b"aa"),
+    (b"(?:a|())*", b"aa"),
+    (b"a|ab", b"ab"),
+    (b"(a+)(b*)", b"aaab"),
+    (b"(a+?)(b*)", b"aaab"),
+    (b"x*", b"abxd"),
+    (b"\\bfoo\\b", b"a foo."),
+    (b"^a$", b"a\n"),
+    (b"a$", b"a\nb"),
+    (b"(?m)^b", b"a\nb"),
+    (b"(?s)a.b", b"a\nb"),
+    (b"(?i)[a-c]+", b"xAbC"),
+    (b"(?i)\xc3\xa9", "É".encode()),
+    (b"\\x41\\xff", b"A\xff"),
+    (b".", b"\xe2\x82"),
+    (b"[^a]+", b"\xff\xfe"),
+    (b"(a)|b", b"b"),
+    (b"(?P<x>\\w+)=(?P<y>\\d*)", b"k=12;"),
+    (b"a{2,3}?", b"aaaa"),
+    (b"a{,2}", b"aaa"),
+    (b"a{", b"a{"),
+    (b"x{}", b"x{}"),
+    (b"\\d+\\.?\\d*", b"v1.25"),
+]
+
+
+def regex_calls(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (pattern, flags, subject, start): a random pattern on the corpus string and on random subjects."""
+    calls = []
+    for subject in (data, random_subject(rng), random_subject(rng)):
+        pattern = random_pattern(rng)
+        flags = b"".join(f for f in (b"i", b"m", b"s") if rng.random() < 0.2)
+        starts = char_offsets(subject)
+        calls.append((pattern, flags, subject, 1))
+        calls.append((pattern, flags, subject, rng.choice(starts)))
+    return calls
+
+
+def regex_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """The classic cases on the three ways of matching, and many random patterns on random subjects."""
+    rng = random.Random(SEED)
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for pattern, subject in REGEX_FIXED:
+        for name in ("re_search", "re_match", "re_fullmatch"):
+            calls.append((name, (pattern, b"", subject, 1)))
+    for _ in range(6000):
+        pattern, subject = random_pattern(rng), random_subject(rng)
+        flags = b"".join(f for f in (b"i", b"m", b"s") if rng.random() < 0.2)
+        calls.append(
+            (
+                rng.choice(["re_search", "re_search", "re_match", "re_fullmatch"]),
+                (pattern, flags, subject, 1),
+            )
+        )
+    return calls
+
+
+def check_regex_reference() -> list[str]:
+    """The translation keeps the meaning: a few patterns with the expected Python result."""
+    failures = []
+    cases_ = [
+        (b"\\xff", b"\xff", [1, 1]),
+        (b"\\x41", b"A", [1, 1]),
+        (b"a\\z", b"a\n", "-"),
+        (b"a$", b"a\n", [1, 1]),
+        (b".", "\U0001f600".encode(), [1, 4]),
+        (b"[\\x80-\\xff]+", b"\x80\xff", [1, 2]),
+    ]
+    for pattern, subject, expected in cases_:
+        got = regex_run(pattern, b"", subject, 1, "search")
+        if got != expected:
+            failures.append(
+                f"reference: {pattern!r} on {subject!r} gives {got!r}, not {expected!r}"
+            )
+    return failures
+
+
 EXTRA = {
     "utf8": utf8_exhaustive,
     "escape": escape_extra,
@@ -1373,12 +1637,14 @@ EXTRA = {
     "xml": xml_extra,
     "whitespace": whitespace_extra,
     "sort": sort_extra,
+    "regex": regex_extra,
 }
 SELF_CHECKS = {
     "escape": check_escape_reference,
     "xml": check_xml_reference,
     "whitespace": check_space_reference,
     "sort": check_sort_reference,
+    "regex": check_regex_reference,
 }
 
 
@@ -1517,6 +1783,17 @@ SUITES: dict[str, list[Op]] = {
         Op("escape_roundtrip", single, lambda d: d),
         Op("escape_roundtrip_utf8", single, lambda d: d),
     ],
+    "regex": [
+        Op(
+            "re_search", regex_calls, lambda p, f, d, s: regex_run(p, f, d, s, "search")
+        ),
+        Op("re_match", regex_calls, lambda p, f, d, s: regex_run(p, f, d, s, "match")),
+        Op(
+            "re_fullmatch",
+            regex_calls,
+            lambda p, f, d, s: regex_run(p, f, d, s, "fullmatch"),
+        ),
+    ],
     "sort": [
         Op("strsort", sort_lists, lambda items: sort_with(items, "bytes")),
         Op("strsort_index", sort_lists, sort_index),
@@ -1605,6 +1882,8 @@ def encode_arg(arg: Arg) -> str:
 
 def encode_result(result: Result) -> str:
     """Encode a result as the driver writes it."""
+    if isinstance(result, str):
+        return result
     if isinstance(result, bool):
         return "T" if result else "F"
     if isinstance(result, int):
@@ -1665,12 +1944,17 @@ def run(args: argparse.Namespace) -> int:
     reference = {op.name: op.reference for op in SUITES[args.suite]}
     mismatches: Counter[str] = Counter()
     known: Counter[str] = Counter()
+    stricter: Counter[str] = Counter()
     per_op: Counter[str] = Counter(name for name, _ in calls)
     shown = 0
     for (name, call), got in zip(calls, results, strict=True):
         expected = encode_result(reference[name](*call))
         reason = known_issue(args.compiler, name, call) if got != expected else None
-        if reason is not None:
+        if args.suite == "regex" and got == "E" and expected != "E":
+            stricter[name] += (
+                1  # a pattern StringiFor rejects and Python accepts: allowed, counted
+            )
+        elif reason is not None:
             known[reason] += 1
         elif got != expected:
             mismatches[name] += 1
@@ -1682,6 +1966,8 @@ def run(args: argparse.Namespace) -> int:
                 )
     for name in per_op:
         print(f"{name:20s} {per_op[name]:7d} calls {mismatches[name]:6d} mismatches")
+    if stricter:
+        print(f"patterns rejected by StringiFor only: {sum(stricter.values())} call(s)")
     for reason, n in known.items():
         print(f"KNOWN COMPILER ISSUE ({n} calls): {reason}")
     total = sum(mismatches.values())
