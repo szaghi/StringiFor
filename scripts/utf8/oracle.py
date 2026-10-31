@@ -1606,6 +1606,103 @@ def regex_extra() -> list[tuple[str, tuple[Arg, ...]]]:
                 (pattern, flags, subject, 1),
             )
         )
+        name = rng.choice(["re_findall", "re_split", "re_sub", "re_subn"])
+        count = rng.choice([0, 0, 1, 3])
+        calls.append(
+            (name, (pattern, flags, subject, count, rng.choice(REGEX_TEMPLATES)))
+        )
+    return calls
+
+
+def regex_compiled(pattern: bytes, flags: bytes) -> re.Pattern[str] | None:
+    """The Python pattern, None if it does not compile."""
+    mode = re.ASCII
+    for letter in flags.decode():
+        mode |= REGEX_FLAGS[letter]
+    try:
+        return re.compile(to_python_pattern(pattern), mode)
+    except (re.error, OverflowError, RecursionError):
+        return None
+
+
+def regex_findall(pattern: bytes, flags: bytes, subject: bytes) -> str | list[bytes]:
+    """findall: group 1 if there is exactly one group, else 0; a group that did not match is empty."""
+    compiled = regex_compiled(pattern, flags)
+    if compiled is None:
+        return "E"
+    group = 1 if compiled.groups == 1 else 0
+    return [raw(m.group(group) or "") for m in compiled.finditer(text(subject))]
+
+
+def regex_split(
+    pattern: bytes, flags: bytes, subject: bytes, maxsplit: int
+) -> str | list[bytes | None]:
+    """split, a group that did not match is None (a not allocated string)."""
+    compiled = regex_compiled(pattern, flags)
+    if compiled is None:
+        return "E"
+    return [
+        None if piece is None else raw(piece)
+        for piece in compiled.split(text(subject), maxsplit)
+    ]
+
+
+def regex_sub(
+    pattern: bytes,
+    flags: bytes,
+    subject: bytes,
+    count: int,
+    template: bytes,
+    nsub: bool,
+) -> str | bytes | int:
+    """sub (the result) or subn (the number of replacements); "E" if the pattern or the template is malformed."""
+    compiled = regex_compiled(pattern, flags)
+    if compiled is None:
+        return "E"
+    try:
+        result, n = compiled.subn(text(template), text(subject), count)
+    except (re.error, IndexError):
+        return "E"
+    return n if nsub else raw(result)
+
+
+BS = b"\\"
+REGEX_TEMPLATES = [
+    b"-",
+    b"",
+    b"[" + BS + b"g<0>]",
+    b"<" + BS + b"1>",
+    BS + b"g<1>" + BS + b"g<1>",
+    BS + b"n",
+    BS + BS,
+    BS + b"-",
+    BS + b"q",
+    BS + b"9",
+    BS + b"g<g5>",
+    BS + b"g<x",
+    BS + b"0",
+    "\u00e9".encode(),
+    BS + b"g<2>",
+    b"a" + BS + b"tb",
+    BS + b"12",
+]
+
+
+def regex_op_calls(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (pattern, flags, subject, count or maxsplit, template)."""
+    calls = []
+    for subject in (data, random_subject(rng)):
+        pattern = random_pattern(rng)
+        flags = b"".join(f for f in (b"i", b"m", b"s") if rng.random() < 0.2)
+        calls.append(
+            (
+                pattern,
+                flags,
+                subject,
+                rng.choice([0, 0, 1, 2]),
+                rng.choice(REGEX_TEMPLATES),
+            )
+        )
     return calls
 
 
@@ -1792,6 +1889,18 @@ SUITES: dict[str, list[Op]] = {
             "re_fullmatch",
             regex_calls,
             lambda p, f, d, s: regex_run(p, f, d, s, "fullmatch"),
+        ),
+        Op("re_findall", regex_op_calls, lambda p, f, d, n, _: regex_findall(p, f, d)),
+        Op("re_split", regex_op_calls, lambda p, f, d, n, _: regex_split(p, f, d, n)),
+        Op(
+            "re_sub",
+            regex_op_calls,
+            lambda p, f, d, n, t: regex_sub(p, f, d, n, t, nsub=False),
+        ),
+        Op(
+            "re_subn",
+            regex_op_calls,
+            lambda p, f, d, n, t: regex_sub(p, f, d, n, t, nsub=True),
         ),
     ],
     "sort": [

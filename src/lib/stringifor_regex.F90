@@ -19,6 +19,11 @@ private
 public :: regex
 public :: regex_match
 public :: string ! the type of the texts the regexes return
+public :: re_findall
+public :: re_fullmatch
+public :: re_search
+public :: re_split
+public :: re_sub
 
 integer, parameter :: MAX_PROGRAM = 100000 !< Largest program, in instructions.
 integer, parameter :: MAX_DEPTH = 200      !< Deepest nesting of groups.
@@ -87,12 +92,24 @@ type :: regex
     generic               :: search => search_character, search_string       !< Search the leftmost match.
     generic               :: match => match_character, match_string          !< Match at the start.
     generic               :: fullmatch => fullmatch_character, fullmatch_string !< Match the whole subject.
+    generic               :: finditer => finditer_character, finditer_string !< Return all the matches.
+    generic               :: findall => findall_character, findall_string    !< Return the text of a group of all the matches.
+    generic               :: split => split_character, split_string          !< Split the subject at the matches.
+    generic               :: sub => sub_character, sub_string                !< Replace the matches.
     procedure, pass(self), private :: search_character    !< Search the leftmost match in a character.
     procedure, pass(self), private :: search_string       !< Search the leftmost match in a string.
     procedure, pass(self), private :: match_character     !< Match at the start of a character.
     procedure, pass(self), private :: match_string        !< Match at the start of a string.
     procedure, pass(self), private :: fullmatch_character !< Match the whole character.
     procedure, pass(self), private :: fullmatch_string    !< Match the whole string.
+    procedure, pass(self), private :: finditer_character  !< All the matches in a character.
+    procedure, pass(self), private :: finditer_string     !< All the matches in a string.
+    procedure, pass(self), private :: findall_character   !< Group texts of all the matches in a character.
+    procedure, pass(self), private :: findall_string      !< Group texts of all the matches in a string.
+    procedure, pass(self), private :: split_character     !< Split a character.
+    procedure, pass(self), private :: split_string        !< Split a string.
+    procedure, pass(self), private :: sub_character       !< Replace the matches in a character.
+    procedure, pass(self), private :: sub_string          !< Replace the matches in a string.
 endtype regex
 
 type :: regex_match
@@ -110,6 +127,27 @@ type :: regex_match
     procedure, pass(self), private :: group_number !< Text of a group by number.
     procedure, pass(self), private :: group_name   !< Text of a group by name.
 endtype regex_match
+
+interface re_search
+  !< Overloading of re_search for character and string subjects, character and compiled patterns.
+  module procedure re_search_cc, re_search_cr, re_search_sc, re_search_sr
+endinterface re_search
+interface re_fullmatch
+  !< Overloading of re_fullmatch for character and string subjects, character and compiled patterns.
+  module procedure re_fullmatch_cc, re_fullmatch_cr, re_fullmatch_sc, re_fullmatch_sr
+endinterface re_fullmatch
+interface re_findall
+  !< Overloading of re_findall for character and string subjects, character and compiled patterns.
+  module procedure re_findall_cc, re_findall_cr, re_findall_sc, re_findall_sr
+endinterface re_findall
+interface re_split
+  !< Overloading of re_split for character and string subjects, character and compiled patterns.
+  module procedure re_split_cc, re_split_cr, re_split_sc, re_split_sr
+endinterface re_split
+interface re_sub
+  !< Overloading of re_sub for character and string subjects, character and compiled patterns.
+  module procedure re_sub_cc, re_sub_cr, re_sub_sc, re_sub_sr
+endinterface re_sub
 
 type :: parser
   !< State of the parser and of the compiler of a pattern.
@@ -388,6 +426,289 @@ contains
     found = run(self, '', start, anchored=.true., full=.true., advance=.false.)
   endif
   endfunction fullmatch_string
+
+  pure function finditer_character(self, subject, start) result(matches)
+  !< Return all the matches, left to right and not overlapping, from the byte `start` (default 1).
+  !<
+  !< @note As Python `finditer`: after an empty match the next one may not be empty at the same position, and an empty
+  !< match is allowed right after a non-empty one.
+  !<
+  !<```fortran
+  !< type(regex)                    :: re
+  !< type(regex_match), allocatable :: m(:)
+  !< logical                        :: test_passed(3)
+  !< call re%compile('\d+')
+  !< m = re%finditer('a1 b22 c333')
+  !< test_passed(1) = size(m)==3.and.m(3)%group(0)=='333'.and.all(m(2)%span(0)==[5, 6])
+  !< call re%compile('x*')
+  !< m = re%finditer('axb')
+  !< test_passed(2) = size(m)==4 ! '' at 1, 'x' at 2, '' at 3 (after a non-empty match), '' at the end
+  !< test_passed(3) = all(m(3)%span(0)==[3, 2]).and.all(m(4)%span(0)==[4, 3])
+  !< print '(L1)', all(test_passed)
+  !<```
+  !=> T <<<
+  class(regex),     intent(in)           :: self       !< The regex.
+  character(len=*), intent(in)           :: subject    !< The subject.
+  integer,          intent(in), optional :: start      !< First byte of the search, default 1.
+  type(regex_match), allocatable         :: matches(:) !< The matches.
+  integer                                :: n          !< Number of matches.
+
+  call all_matches(self, subject, start, 0, matches, n)
+  matches = matches(1:n)
+  endfunction finditer_character
+
+  pure function finditer_string(self, subject, start) result(matches)
+  !< Return all the matches, left to right; see [[regex:finditer_character]].
+  !<
+  !< @note The doctest is not necessary, this being tested by [[regex:finditer_character]].
+  class(regex),  intent(in)           :: self       !< The regex.
+  type(string),  intent(in)           :: subject    !< The subject.
+  integer,       intent(in), optional :: start      !< First byte of the search, default 1.
+  type(regex_match), allocatable      :: matches(:) !< The matches.
+
+  if (allocated(subject%raw)) then
+    matches = self%finditer_character(subject%raw, start)
+  else
+    matches = self%finditer_character('', start)
+  endif
+  endfunction finditer_string
+
+  pure function findall_character(self, subject, group) result(texts)
+  !< Return the text of a group of every match, left to right (see [[regex:finditer_character]]).
+  !<
+  !< @note The group is by default 1 if the regex has exactly one capturing group, else 0 (the whole match), as Python
+  !< `findall` for 0 or 1 group; with more groups Python returns tuples, here one group is chosen with `group`. A group
+  !< that did not match gives an empty string.
+  !<
+  !<```fortran
+  !< type(regex)               :: re
+  !< type(string), allocatable :: t(:)
+  !< logical                   :: test_passed(3)
+  !< call re%compile('-?\d+(?:\.\d+)?')
+  !< t = re%findall('x=1.5, y=-2, z=30')
+  !< test_passed(1) = size(t)==3.and.t(2)=='-2'
+  !< call re%compile('(\w+)=')
+  !< t = re%findall('x=1.5, y=-2')
+  !< test_passed(2) = size(t)==2.and.t(1)=='x'.and.t(2)=='y'
+  !< t = re%findall('x=1.5, y=-2', group=0)
+  !< test_passed(3) = t(2)=='y='
+  !< print '(L1)', all(test_passed)
+  !<```
+  !=> T <<<
+  class(regex),     intent(in)           :: self     !< The regex.
+  character(len=*), intent(in)           :: subject  !< The subject.
+  integer,          intent(in), optional :: group    !< Group, default 1 if there is one group, else 0.
+  type(string), allocatable              :: texts(:) !< Texts of the group.
+  type(regex_match), allocatable         :: matches(:) !< The matches.
+  integer                                :: n        !< Number of matches.
+  integer                                :: g        !< Group.
+  integer                                :: k        !< Counter.
+
+  g = merge(1, 0, self%ngroups == 1)
+  if (present(group)) g = group
+  call all_matches(self, subject, 1, 0, matches, n)
+  allocate(texts(n))
+  do k = 1, n
+    texts(k) = matches(k)%group(g)
+    if (.not.allocated(texts(k)%raw)) texts(k)%raw = ''
+  enddo
+  endfunction findall_character
+
+  pure function findall_string(self, subject, group) result(texts)
+  !< Return the text of a group of every match; see [[regex:findall_character]].
+  !<
+  !< @note The doctest is not necessary, this being tested by [[regex:findall_character]].
+  class(regex),  intent(in)           :: self     !< The regex.
+  type(string),  intent(in)           :: subject  !< The subject.
+  integer,       intent(in), optional :: group    !< Group, default 1 if there is one group, else 0.
+  type(string), allocatable           :: texts(:) !< Texts of the group.
+
+  if (allocated(subject%raw)) then
+    texts = self%findall_character(subject%raw, group)
+  else
+    texts = self%findall_character('', group)
+  endif
+  endfunction findall_string
+
+  pure function split_character(self, subject, maxsplit) result(pieces)
+  !< Return the subject split at the matches, at most `maxsplit` times (default, or 0: no limit).
+  !<
+  !< @note As Python `re.split`: the texts of the groups of each match are inserted between the pieces (a group that did
+  !< not match is a not allocated string), and an empty match splits too.
+  !<
+  !<```fortran
+  !< type(regex)               :: re
+  !< type(string), allocatable :: p(:)
+  !< logical                   :: test_passed(3)
+  !< call re%compile('\s*[,;]\s*')
+  !< p = re%split('a , b;c ;  d')
+  !< test_passed(1) = size(p)==4.and.p(4)=='d'
+  !< p = re%split('a , b;c ;  d', maxsplit=1)
+  !< test_passed(2) = size(p)==2.and.p(2)=='b;c ;  d'
+  !< call re%compile('([,;])')
+  !< p = re%split('a,b;c')
+  !< test_passed(3) = size(p)==5.and.p(2)==','.and.p(4)==';'
+  !< print '(L1)', all(test_passed)
+  !<```
+  !=> T <<<
+  class(regex),     intent(in)           :: self      !< The regex.
+  character(len=*), intent(in)           :: subject   !< The subject.
+  integer,          intent(in), optional :: maxsplit  !< Most splits, default 0: no limit.
+  type(string), allocatable              :: pieces(:) !< The pieces.
+  type(regex_match), allocatable         :: matches(:) !< The matches.
+  integer                                :: n         !< Number of matches.
+  integer                                :: k         !< Counter.
+  integer                                :: g         !< Group counter.
+  integer                                :: o         !< Pieces so far.
+  integer                                :: last      !< First byte of the next piece.
+  integer                                :: limit     !< Most splits, 0 if none.
+
+  limit = 0 ; if (present(maxsplit)) limit = max(0, maxsplit)
+  call all_matches(self, subject, 1, limit, matches, n)
+  allocate(pieces(n * (self%ngroups + 1) + 1))
+  o = 0
+  last = 1
+  do k = 1, n
+    o = o + 1
+    pieces(o)%raw = subject(last:matches(k)%spans(1, 0) - 1)
+    do g = 1, self%ngroups
+      o = o + 1
+      if (allocated(matches(k)%texts(g)%raw)) pieces(o)%raw = matches(k)%texts(g)%raw
+    enddo
+    last = matches(k)%spans(2, 0) + 1
+  enddo
+  o = o + 1
+  pieces(o)%raw = subject(last:)
+  endfunction split_character
+
+  pure function split_string(self, subject, maxsplit) result(pieces)
+  !< Return the subject split at the matches; see [[regex:split_character]].
+  !<
+  !< @note The doctest is not necessary, this being tested by [[regex:split_character]].
+  class(regex),  intent(in)           :: self      !< The regex.
+  type(string),  intent(in)           :: subject   !< The subject.
+  integer,       intent(in), optional :: maxsplit  !< Most splits, default 0: no limit.
+  type(string), allocatable           :: pieces(:) !< The pieces.
+
+  if (allocated(subject%raw)) then
+    pieces = self%split_character(subject%raw, maxsplit)
+  else
+    pieces = self%split_character('', maxsplit)
+  endif
+  endfunction split_string
+
+  function sub_character(self, repl, subject, count, nsub, iostat, iomsg) result(replaced)
+  !< Return the subject with the matches replaced by the template `repl`, at most `count` of them (default, or 0: all).
+  !<
+  !< @note In the template `\1`..`\99` and `\g<n>` are the text of a group, `\g<name>` of a named group, `\g<0>` the
+  !< whole match; a group that did not match gives an empty text. `\\ \n \t \r \f \v \a \b` are escapes, a backslash
+  !< before any other character that is not an ASCII letter or a digit stays. `nsub` returns the number of replacements
+  !< (Python `subn`). A malformed template (an unknown escape, a group that does not exist) sets `iostat` to the byte
+  !< position of the error in `repl` and returns the subject unchanged; without `iostat` the program stops.
+  !<
+  !<```fortran
+  !< type(regex)  :: re
+  !< type(string) :: s
+  !< integer      :: n
+  !< logical      :: test_passed(3)
+  !< call re%compile('(?P<y>\d{4})-(?P<m>\d\d)-(?P<d>\d\d)')
+  !< s = re%sub('\g<d>/\g<m>/\g<y>', 'from 2026-10-30 to 2026-11-02', nsub=n)
+  !< test_passed(1) = s=='from 30/10/2026 to 02/11/2026'.and.n==2
+  !< call re%compile('\s+')
+  !< s = re%sub(' ', '  too   many spaces ', count=2)
+  !< test_passed(2) = s==' too many spaces '
+  !< s = re%sub('\q', 'a b', iostat=n)
+  !< test_passed(3) = n==1.and.s=='a b'
+  !< print '(L1)', all(test_passed)
+  !<```
+  !=> T <<<
+  class(regex),     intent(in)              :: self     !< The regex.
+  character(len=*), intent(in)              :: repl     !< Template of the replacement.
+  character(len=*), intent(in)              :: subject  !< The subject.
+  integer,          intent(in),    optional :: count    !< Most replacements, default 0: all.
+  integer,          intent(out),   optional :: nsub     !< Number of replacements.
+  integer,          intent(out),   optional :: iostat   !< Byte position of an error in repl, 0 if none.
+  character(len=*), intent(inout), optional :: iomsg    !< Message of the error.
+  type(string)                              :: replaced !< The subject with the replacements.
+  type(regex_match), allocatable            :: matches(:) !< The matches.
+  integer,           allocatable            :: piece_group(:) !< Group of each piece of the template, -1 for a text.
+  type(string),      allocatable            :: piece_text(:)  !< Text of each piece of the template.
+  character(len=:),  allocatable            :: buffer   !< Result being built.
+  character(len=:),  allocatable            :: message  !< Message of an error.
+  integer                                   :: error    !< Position of an error.
+  integer                                   :: n        !< Number of matches.
+  integer                                   :: length   !< Length of the result so far.
+  integer                                   :: last     !< First byte not yet copied.
+  integer                                   :: k        !< Counter.
+  integer                                   :: q        !< Piece counter.
+  integer                                   :: limit    !< Most replacements, 0 if none.
+
+  if (present(nsub)) nsub = 0
+  call parse_template(self, repl, piece_group, piece_text, error, message)
+  if (present(iostat)) then
+    iostat = error
+    if (present(iomsg) .and. error /= 0) iomsg = message
+  elseif (error /= 0) then
+    write(error_unit, '(a)') 'stringifor_regex: '//message
+    error stop 'stringifor_regex: malformed template'
+  endif
+  replaced%raw = subject
+  if (error /= 0) return
+  limit = 0 ; if (present(count)) limit = max(0, count)
+  call all_matches(self, subject, 1, limit, matches, n)
+  if (present(nsub)) nsub = n
+  if (n == 0) return
+  allocate(character(len=max(16, len(subject))) :: buffer)
+  length = 0
+  last = 1
+  do k = 1, n
+    call append(subject(last:matches(k)%spans(1, 0) - 1))
+    do q = 1, size(piece_group)
+      if (piece_group(q) < 0) then
+        call append(piece_text(q)%raw)
+      elseif (allocated(matches(k)%texts(piece_group(q))%raw)) then
+        call append(matches(k)%texts(piece_group(q))%raw)
+      endif
+    enddo
+    last = matches(k)%spans(2, 0) + 1
+  enddo
+  call append(subject(last:))
+  replaced%raw = buffer(1:length)
+  contains
+    subroutine append(piece)
+    !< Append a piece to the result, doubling the buffer when it is full: the total time is linear.
+    character(len=*), intent(in)  :: piece !< Piece.
+    character(len=:), allocatable :: grown !< Buffer, grown.
+
+    if (length + len(piece) > len(buffer)) then
+      allocate(character(len=max(2 * len(buffer), length + len(piece))) :: grown)
+      grown(1:length) = buffer(1:length)
+      call move_alloc(from=grown, to=buffer)
+    endif
+    buffer(length+1:length+len(piece)) = piece
+    length = length + len(piece)
+    endsubroutine append
+  endfunction sub_character
+
+  function sub_string(self, repl, subject, count, nsub, iostat, iomsg) result(replaced)
+  !< Return the subject with the matches replaced; see [[regex:sub_character]].
+  !<
+  !< @note The doctest is not necessary, this being tested by [[regex:sub_character]].
+  class(regex),     intent(in)              :: self     !< The regex.
+  character(len=*), intent(in)              :: repl     !< Template of the replacement.
+  type(string),     intent(in)              :: subject  !< The subject.
+  integer,          intent(in),    optional :: count    !< Most replacements, default 0: all.
+  integer,          intent(out),   optional :: nsub     !< Number of replacements.
+  integer,          intent(out),   optional :: iostat   !< Byte position of an error in repl, 0 if none.
+  character(len=*), intent(inout), optional :: iomsg    !< Message of the error.
+  type(string)                              :: replaced !< The subject with the replacements.
+
+  if (allocated(subject%raw)) then
+    replaced = self%sub_character(repl, subject%raw, count, nsub, iostat, iomsg)
+  else
+    replaced = self%sub_character(repl, '', count, nsub, iostat, iomsg)
+  endif
+  endfunction sub_string
 
   ! public methods of regex_match
   pure function span_number(self, group) result(span)
@@ -758,6 +1079,549 @@ contains
   enddo
   if (self%class_negated(k)) inside = .not.inside
   endfunction in_class
+
+  pure subroutine all_matches(self, subject, start, limit, matches, n)
+  !< Find the matches left to right from the byte start, at most limit of them (0: no limit), as Python's finditer: the
+  !< search goes on at the end of each match, and after an empty match the next one may not be empty at that position.
+  type(regex),       intent(in)           :: self       !< The regex.
+  character(len=*),  intent(in)           :: subject    !< The subject.
+  integer,           intent(in), optional :: start      !< First byte, default 1.
+  integer,           intent(in)           :: limit      !< Most matches, 0 if no limit.
+  type(regex_match), intent(out), allocatable :: matches(:) !< The matches, the first n used.
+  integer,           intent(out)          :: n          !< Number of matches.
+  type(regex_match), allocatable          :: grown(:)   !< Matches, grown.
+  type(regex_match)                       :: found      !< A match.
+  integer                                 :: pos        !< Where the next search starts.
+  logical                                 :: advance    !< The previous match was empty.
+
+  allocate(matches(8))
+  n = 0
+  pos = 1 ; if (present(start)) pos = max(1, start)
+  advance = .false.
+  do while (pos <= len(subject) + 1)
+    if (limit > 0 .and. n >= limit) exit
+    found = run(self, subject, pos, anchored=.false., full=.false., advance=advance)
+    if (.not.found%found) exit
+    if (n == size(matches)) then
+      allocate(grown(2 * n))
+      grown(1:n) = matches(1:n)
+      call move_alloc(from=grown, to=matches)
+    endif
+    n = n + 1
+    matches(n) = found
+    advance = found%spans(2, 0) < found%spans(1, 0) ! an empty match
+    pos = found%spans(2, 0) + 1
+  enddo
+  endsubroutine all_matches
+
+  pure subroutine parse_template(self, repl, piece_group, piece_text, error, message)
+  !< Parse a replacement template into pieces: a text (group -1) or the text of a group.
+  type(regex),      intent(in)               :: self           !< The regex.
+  character(len=*), intent(in)               :: repl           !< Template.
+  integer,          intent(out), allocatable :: piece_group(:) !< Group of each piece, -1 for a text.
+  type(string),     intent(out), allocatable :: piece_text(:)  !< Text of each piece.
+  integer,          intent(out)              :: error          !< Position of the first error, 0 if none.
+  character(len=:), intent(out), allocatable :: message        !< Message of the error.
+  character(len=:), allocatable              :: text           !< Text being collected.
+  integer                                    :: i              !< Position in the template.
+  integer                                    :: close          !< End of a \g<...>.
+  integer                                    :: g              !< Group.
+  integer                                    :: digits         !< Digits of a \N reference.
+
+  allocate(piece_group(0), piece_text(0))
+  error = 0
+  message = ''
+  text = ''
+  i = 1
+  do while (i <= len(repl))
+    if (repl(i:i) /= BACKSLASH) then
+      text = text//repl(i:i)
+      i = i + 1
+      cycle
+    endif
+    if (i == len(repl)) then
+      error = i
+      message = 'bad escape (end of template)'
+      return
+    endif
+    select case (repl(i+1:i+1))
+    case ('g')
+      if (repl(i+2:min(i+2, len(repl))) /= '<') then
+        error = i
+        message = 'missing < after '//BACKSLASH//'g'
+        return
+      endif
+      close = index(repl(i+3:), '>')
+      if (close == 0) then
+        error = i
+        message = 'missing >, unterminated name'
+        return
+      endif
+      close = i + 2 + close
+      if (verify(repl(i+3:close-1), '0123456789') == 0 .and. close > i + 3) then
+        g = to_int(repl(i+3:close-1))
+      elseif (is_identifier(repl(i+3:close-1))) then
+        g = self%group_index(repl(i+3:close-1))
+        if (g == 0) then
+          error = i
+          message = 'unknown group name '//repl(i+3:close-1)
+          return
+        endif
+      else
+        error = i
+        message = 'bad character in group name'
+        return
+      endif
+      if (g > self%ngroups) then
+        error = i
+        message = 'invalid group reference'
+        return
+      endif
+      call add_piece(piece_group, piece_text, text, g)
+      i = close + 1
+    case ('0')
+      error = i
+      message = 'octal escapes are not supported'
+      return
+    case ('1':'9')
+      digits = 1
+      if (i + 2 <= len(repl)) then
+        if (repl(i+2:i+2) >= '0' .and. repl(i+2:i+2) <= '9') digits = 2
+      endif
+      if (digits == 2 .and. i + 3 <= len(repl)) then
+        if (index('01234567', repl(i+1:i+1)) > 0 .and. index('01234567', repl(i+2:i+2)) > 0 .and. &
+            index('01234567', repl(i+3:i+3)) > 0) then
+          error = i
+          message = 'octal escapes are not supported'
+          return
+        endif
+      endif
+      g = to_int(repl(i+1:i+digits))
+      if (g > self%ngroups) then
+        error = i
+        message = 'invalid group reference'
+        return
+      endif
+      call add_piece(piece_group, piece_text, text, g)
+      i = i + 1 + digits
+    case ('n')
+      text = text//achar(10)
+      i = i + 2
+    case ('t')
+      text = text//achar(9)
+      i = i + 2
+    case ('r')
+      text = text//achar(13)
+      i = i + 2
+    case ('f')
+      text = text//achar(12)
+      i = i + 2
+    case ('v')
+      text = text//achar(11)
+      i = i + 2
+    case ('a')
+      text = text//achar(7)
+      i = i + 2
+    case ('b')
+      text = text//achar(8)
+      i = i + 2
+    case (BACKSLASH)
+      text = text//BACKSLASH
+      i = i + 2
+    case default
+      if (verify(repl(i+1:i+1), 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') == 0) then
+        error = i
+        message = 'bad escape '//repl(i:i+1)
+        return
+      endif
+      text = text//repl(i:i+1) ! any other escape is kept as it is
+      i = i + 2
+    endselect
+  enddo
+  if (len(text) > 0) call add_piece(piece_group, piece_text, text, -1)
+  endsubroutine parse_template
+
+  pure subroutine add_piece(piece_group, piece_text, text, group)
+  !< Close the text collected so far as a piece, if any, then add the group (if group >= 0) as a piece.
+  integer,          intent(inout), allocatable :: piece_group(:) !< Group of each piece, -1 for a text.
+  type(string),     intent(inout), allocatable :: piece_text(:)  !< Text of each piece.
+  character(len=:), intent(inout), allocatable :: text           !< Text collected, emptied.
+  integer,          intent(in)                 :: group          !< Group, -1 to close the text only.
+  type(string)                                 :: piece          !< A piece.
+
+  if (len(text) > 0) then
+    piece%raw = text
+    piece_group = [piece_group, -1]
+    piece_text = [piece_text, piece]
+    text = ''
+  endif
+  if (group < 0) return
+  piece%raw = ''
+  piece_group = [piece_group, group]
+  piece_text = [piece_text, piece]
+  endsubroutine add_piece
+
+  pure function to_int(digits) result(value)
+  !< Return the value of decimal digits, saturated above MAX_GROUPS + 1.
+  character(len=*), intent(in) :: digits !< Digits.
+  integer                      :: value  !< Value.
+  integer                      :: j      !< Counter.
+
+  value = 0
+  do j = 1, len(digits)
+    value = min(MAX_GROUPS + 1, value * 10 + (ichar(digits(j:j)) - ichar('0')))
+  enddo
+  endfunction to_int
+
+  ! module procedures
+  function re_search_cc(subject, pattern, flags, start) result(found)
+  !< Search the leftmost match of a pattern in a subject (see [[regex:search_character]]).
+  !<
+  !< @note A character pattern is compiled at each call (a malformed one stops the program): compile it once with
+  !< [[regex:compile]] and pass the regex to repeat the search.
+  !<
+  !<```fortran
+  !< type(regex_match) :: m
+  !< logical           :: test_passed(2)
+  !< m = re_search('key = 42', '(\w+)\s*=\s*(\d+)')
+  !< test_passed(1) = m%group(1)=='key'.and.m%group(2)=='42'
+  !< m = re_search('KEY=1', 'key=(\d)', flags='i')
+  !< test_passed(2) = m%group(1)=='1'
+  !< print '(L1)', all(test_passed)
+  !<```
+  !=> T <<<
+  character(len=*), intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: start !< First byte of the search, default 1.
+  type(regex_match)                      :: found   !< The match.
+  type(regex)                            :: re      !< The compiled pattern.
+
+  call re%compile(pattern, flags)
+  found = re%search(subject, start)
+  endfunction re_search_cc
+
+  function re_search_cr(subject, pattern, start) result(found)
+  !< Search the leftmost match of a pattern in a subject (see [[regex:search_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_search_cc]].
+  character(len=*), intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  integer,          intent(in), optional :: start !< First byte of the search, default 1.
+  type(regex_match)                      :: found   !< The match.
+
+  found = pattern%search(subject, start)
+  endfunction re_search_cr
+
+  function re_search_sc(subject, pattern, flags, start) result(found)
+  !< Search the leftmost match of a pattern in a subject (see [[regex:search_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_search_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: start !< First byte of the search, default 1.
+  type(regex_match)                      :: found   !< The match.
+  type(regex)                            :: re      !< The compiled pattern.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  call re%compile(pattern, flags)
+  found = re%search(chars, start)
+  endfunction re_search_sc
+
+  function re_search_sr(subject, pattern, start) result(found)
+  !< Search the leftmost match of a pattern in a subject (see [[regex:search_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_search_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  integer,          intent(in), optional :: start !< First byte of the search, default 1.
+  type(regex_match)                      :: found   !< The match.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  found = pattern%search(chars, start)
+  endfunction re_search_sr
+
+  function re_fullmatch_cc(subject, pattern, flags) result(found)
+  !< Match a pattern against a whole subject (see [[regex:fullmatch_character]]).
+  !<
+  !< @note A character pattern is compiled at each call (a malformed one stops the program): compile it once with
+  !< [[regex:compile]] and pass the regex to repeat the search.
+  !<
+  !<```fortran
+  !< logical :: test_passed(2)
+  !< type(regex_match) :: m
+  !< m = re_fullmatch('2026-10-30', '\d{4}-\d\d-\d\d')
+  !< test_passed(1) = m%found
+  !< m = re_fullmatch('2026-10-30 ', '\d{4}-\d\d-\d\d')
+  !< test_passed(2) = .not.m%found
+  !< print '(L1)', all(test_passed)
+  !<```
+  !=> T <<<
+  character(len=*), intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  type(regex_match)                      :: found   !< The match.
+  type(regex)                            :: re      !< The compiled pattern.
+
+  call re%compile(pattern, flags)
+  found = re%fullmatch(subject)
+  endfunction re_fullmatch_cc
+
+  function re_fullmatch_cr(subject, pattern) result(found)
+  !< Match a pattern against a whole subject (see [[regex:fullmatch_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_fullmatch_cc]].
+  character(len=*), intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  type(regex_match)                      :: found   !< The match.
+
+  found = pattern%fullmatch(subject)
+  endfunction re_fullmatch_cr
+
+  function re_fullmatch_sc(subject, pattern, flags) result(found)
+  !< Match a pattern against a whole subject (see [[regex:fullmatch_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_fullmatch_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  type(regex_match)                      :: found   !< The match.
+  type(regex)                            :: re      !< The compiled pattern.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  call re%compile(pattern, flags)
+  found = re%fullmatch(chars)
+  endfunction re_fullmatch_sc
+
+  function re_fullmatch_sr(subject, pattern) result(found)
+  !< Match a pattern against a whole subject (see [[regex:fullmatch_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_fullmatch_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  type(regex_match)                      :: found   !< The match.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  found = pattern%fullmatch(chars)
+  endfunction re_fullmatch_sr
+
+  function re_findall_cc(subject, pattern, flags, group) result(found)
+  !< Return the text of a group of every match of a pattern in a subject (see [[regex:findall_character]]).
+  !<
+  !< @note A character pattern is compiled at each call (a malformed one stops the program): compile it once with
+  !< [[regex:compile]] and pass the regex to repeat the search.
+  !<
+  !<```fortran
+  !< type(string), allocatable :: words(:)
+  !< words = re_findall('one, two;three', '\w+')
+  !< print '(L1)', size(words)==3.and.words(3)=='three'
+  !<```
+  !=> T <<<
+  character(len=*), intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: group !< Group, default 1 if there is one group, else 0.
+  type(string), allocatable              :: found(:) !< Texts of the group.
+  type(regex)                            :: re      !< The compiled pattern.
+
+  call re%compile(pattern, flags)
+  found = re%findall(subject, group)
+  endfunction re_findall_cc
+
+  function re_findall_cr(subject, pattern, group) result(found)
+  !< Return the text of a group of every match of a pattern in a subject (see [[regex:findall_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_findall_cc]].
+  character(len=*), intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  integer,          intent(in), optional :: group !< Group, default 1 if there is one group, else 0.
+  type(string), allocatable              :: found(:) !< Texts of the group.
+
+  found = pattern%findall(subject, group)
+  endfunction re_findall_cr
+
+  function re_findall_sc(subject, pattern, flags, group) result(found)
+  !< Return the text of a group of every match of a pattern in a subject (see [[regex:findall_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_findall_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: group !< Group, default 1 if there is one group, else 0.
+  type(string), allocatable              :: found(:) !< Texts of the group.
+  type(regex)                            :: re      !< The compiled pattern.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  call re%compile(pattern, flags)
+  found = re%findall(chars, group)
+  endfunction re_findall_sc
+
+  function re_findall_sr(subject, pattern, group) result(found)
+  !< Return the text of a group of every match of a pattern in a subject (see [[regex:findall_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_findall_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  integer,          intent(in), optional :: group !< Group, default 1 if there is one group, else 0.
+  type(string), allocatable              :: found(:) !< Texts of the group.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  found = pattern%findall(chars, group)
+  endfunction re_findall_sr
+
+  function re_split_cc(subject, pattern, flags, maxsplit) result(found)
+  !< Split a subject at the matches of a pattern (see [[regex:split_character]]).
+  !<
+  !< @note A character pattern is compiled at each call (a malformed one stops the program): compile it once with
+  !< [[regex:compile]] and pass the regex to repeat the search.
+  !<
+  !<```fortran
+  !< type(string), allocatable :: fields(:)
+  !< fields = re_split('a1b22c', '\d+')
+  !< print '(L1)', size(fields)==3.and.fields(2)=='b'
+  !<```
+  !=> T <<<
+  character(len=*), intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: maxsplit !< Most splits, default 0: no limit.
+  type(string), allocatable              :: found(:) !< The pieces.
+  type(regex)                            :: re      !< The compiled pattern.
+
+  call re%compile(pattern, flags)
+  found = re%split(subject, maxsplit)
+  endfunction re_split_cc
+
+  function re_split_cr(subject, pattern, maxsplit) result(found)
+  !< Split a subject at the matches of a pattern (see [[regex:split_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_split_cc]].
+  character(len=*), intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  integer,          intent(in), optional :: maxsplit !< Most splits, default 0: no limit.
+  type(string), allocatable              :: found(:) !< The pieces.
+
+  found = pattern%split(subject, maxsplit)
+  endfunction re_split_cr
+
+  function re_split_sc(subject, pattern, flags, maxsplit) result(found)
+  !< Split a subject at the matches of a pattern (see [[regex:split_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_split_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: maxsplit !< Most splits, default 0: no limit.
+  type(string), allocatable              :: found(:) !< The pieces.
+  type(regex)                            :: re      !< The compiled pattern.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  call re%compile(pattern, flags)
+  found = re%split(chars, maxsplit)
+  endfunction re_split_sc
+
+  function re_split_sr(subject, pattern, maxsplit) result(found)
+  !< Split a subject at the matches of a pattern (see [[regex:split_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_split_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  integer,          intent(in), optional :: maxsplit !< Most splits, default 0: no limit.
+  type(string), allocatable              :: found(:) !< The pieces.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  found = pattern%split(chars, maxsplit)
+  endfunction re_split_sr
+
+  function re_sub_cc(subject, pattern, repl, flags, count) result(found)
+  !< Return a subject with the matches of a pattern replaced by a template (see [[regex:sub_character]]).
+  !<
+  !< @note A character pattern is compiled at each call (a malformed one stops the program): compile it once with
+  !< [[regex:compile]] and pass the regex to repeat the search.
+  !<
+  !<```fortran
+  !< type(string) :: s
+  !< s = re_sub('x=1, y=22', '(\w)=(\d+)', '\2=\1')
+  !< print '(L1)', s=='1=x, 22=y'
+  !<```
+  !=> T <<<
+  character(len=*), intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in)           :: repl !< Template of the replacement (see [[regex:sub_character]]).
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: count !< Most replacements, default 0: all.
+  type(string)                           :: found   !< The subject with the replacements.
+  type(regex)                            :: re      !< The compiled pattern.
+
+  call re%compile(pattern, flags)
+  found = re%sub(repl, subject, count)
+  endfunction re_sub_cc
+
+  function re_sub_cr(subject, pattern, repl, count) result(found)
+  !< Return a subject with the matches of a pattern replaced by a template (see [[regex:sub_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_sub_cc]].
+  character(len=*), intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  character(len=*), intent(in)           :: repl !< Template of the replacement (see [[regex:sub_character]]).
+  integer,          intent(in), optional :: count !< Most replacements, default 0: all.
+  type(string)                           :: found   !< The subject with the replacements.
+
+  found = pattern%sub(repl, subject, count)
+  endfunction re_sub_cr
+
+  function re_sub_sc(subject, pattern, repl, flags, count) result(found)
+  !< Return a subject with the matches of a pattern replaced by a template (see [[regex:sub_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_sub_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  character(len=*), intent(in)           :: pattern !< The pattern.
+  character(len=*), intent(in)           :: repl !< Template of the replacement (see [[regex:sub_character]]).
+  character(len=*), intent(in), optional :: flags   !< Flags: letters i, m, s.
+  integer,          intent(in), optional :: count !< Most replacements, default 0: all.
+  type(string)                           :: found   !< The subject with the replacements.
+  type(regex)                            :: re      !< The compiled pattern.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  call re%compile(pattern, flags)
+  found = re%sub(repl, chars, count)
+  endfunction re_sub_sc
+
+  function re_sub_sr(subject, pattern, repl, count) result(found)
+  !< Return a subject with the matches of a pattern replaced by a template (see [[regex:sub_character]]).
+  !<
+  !< @note The doctest is not necessary, this being tested by [[re_sub_cc]].
+  type(string),     intent(in)           :: subject !< The subject.
+  type(regex),      intent(in)           :: pattern !< The compiled pattern.
+  character(len=*), intent(in)           :: repl !< Template of the replacement (see [[regex:sub_character]]).
+  integer,          intent(in), optional :: count !< Most replacements, default 0: all.
+  type(string)                           :: found   !< The subject with the replacements.
+  character(len=:), allocatable          :: chars   !< The subject, empty if not allocated.
+
+  chars = ''
+  if (allocated(subject%raw)) chars = subject%raw
+  found = pattern%sub(repl, chars, count)
+  endfunction re_sub_sr
+
 
   ! parser
   pure subroutine fail(p, pos, message)

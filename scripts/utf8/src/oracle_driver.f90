@@ -26,6 +26,7 @@ integer                       :: k        !< Counter.
 integer,          allocatable :: perm(:)  !< Permutation of a sort.
 type(regex)                   :: re       !< A regex.
 type(regex_match)             :: found    !< A match.
+integer                       :: nsub     !< Number of replacements.
 integer                       :: status   !< Status of a compilation.
 
 do
@@ -283,6 +284,30 @@ do
       found = re%fullmatch(t, start=int_arg(5))
     endselect
     call put_match(found)
+  case ('re_findall', 're_split', 're_sub', 're_subn') ! pattern, flags, subject, number[, template]
+    call re%compile(raw(s), flags=unhex(arg(3)), iostat=status)
+    if (status /= 0) then
+      write(output_unit, '(a)') 'E'
+      cycle
+    endif
+    t = unhex(arg(4))
+    select case (arg(1))
+    case ('re_findall')
+      tokens = re%findall(t)
+      call put_list(tokens)
+    case ('re_split')
+      tokens = re%split(t, maxsplit=int_arg(5))
+      call put_null_list(tokens)
+    case default
+      t = re%sub(unhex(arg(6)), t, count=int_arg(5), nsub=nsub, iostat=status)
+      if (status /= 0) then
+        write(output_unit, '(a)') 'E'
+      elseif (arg(1) == 're_sub') then
+        call put_str(t)
+      else
+        call put_int(nsub)
+      endif
+    endselect
   case ('width_each')
     codes = int_list(arg(2))
     allocate(widths(size(codes)))
