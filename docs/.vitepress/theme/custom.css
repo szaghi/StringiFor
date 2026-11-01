@@ -1,4 +1,4 @@
-/* StringiFor palette: violet, magenta, amber (the same as public/logo.svg). */
+/* StringiFor palette: violet, magenta, amber (public/logo.svg has brighter tints, for its dark tile). */
 :root {
   --vp-c-brand-1: #5b3fd6;
   --vp-c-brand-2: #6d52e0;

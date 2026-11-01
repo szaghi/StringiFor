@@ -1,20 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="StringiFor">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#5b3fd6"/>
-      <stop offset="0.55" stop-color="#d6409f"/>
-      <stop offset="1" stop-color="#f59e42"/>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="12" y1="12" x2="52" y2="52">
+      <stop offset="0" stop-color="#6d4bff"/>
+      <stop offset="0.55" stop-color="#e0409f"/>
+      <stop offset="1" stop-color="#ffa63d"/>
     </linearGradient>
+    <clipPath id="a"><polygon points="0,0 64,0 64,11.50 0,47.50"/></clipPath>
+    <clipPath id="b"><polygon points="0,52.50 64,16.50 64,64 0,64"/></clipPath>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <!-- a string: a thread curved into an S, with its characters as beads -->
-  <path d="M46 15 C 40 10, 22 9, 19 20 C 16 31, 46 32, 45 44 C 44 55, 24 55, 17 49" fill="none" stroke="#ffffff"
-        stroke-width="3.4" stroke-linecap="round"/>
-  <g fill="#ffffff">
-    <circle cx="46" cy="15" r="4.6"/>
-    <circle cx="19.6" cy="19.5" r="4.6"/>
-    <circle cx="32" cy="32" r="4.6"/>
-    <circle cx="44.8" cy="44.5" r="4.6"/>
-    <circle cx="17" cy="49" r="4.6"/>
+  <rect width="64" height="64" rx="15" fill="#14121f"/>
+  <g fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round">
+    <g clip-path="url(#a)"><path d="M48 16 H25.5 A8 8 0 0 0 25.5 32 H38.5 A8 8 0 0 1 38.5 48 H16" transform="translate(-4 0)"/></g>
+    <g clip-path="url(#b)"><path d="M48 16 H25.5 A8 8 0 0 0 25.5 32 H38.5 A8 8 0 0 1 38.5 48 H16" transform="translate(4 0)"/></g>
   </g>
 </svg>

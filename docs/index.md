@@ -6,7 +6,7 @@ hero:
   text: Strings Fortran Manipulator
   image:
     src: /logo.svg
-    alt: the StringiFor logo, a thread with beads curved into an S
+    alt: the StringiFor logo, an S cut on the diagonal with its two halves displaced
   tagline: "A string type for modern Fortran with the methods you miss from Python: split, join, replace, strip, slice, justify, regular expressions, cast to and from numbers, read and write files, UTF-8 aware. One type, one module, pure Fortran 2008."
   actions:
     - theme: brand
