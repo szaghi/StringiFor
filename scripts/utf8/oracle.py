@@ -2219,15 +2219,15 @@ KNOWN_COMPILER_ISSUES: dict[
             lambda name, call: name.startswith("index") and b"\x00" in call[1],
         ),
         (
-            "nvfortran 26.9: the read statement flushes a subnormal R4P to zero; it only serves strings of more than "
-            "18 digits here",
+            "nvfortran 26.9: the read statement flushes a subnormal R4P to zero; it only serves the few strings of more "
+            "than 18 digits not settled on the first 18",
             lambda name, call: name == "to_r4" and over_18_digits(call[0]),
         ),
     ],
     "ifx": [
         (
             "ifx 2025.3: the read statement is not correctly rounded on some ties, and fails on an overflow; it only "
-            "serves strings of more than 18 digits here",
+            "serves the few strings of more than 18 digits not settled on the first 18",
             lambda name, call: name in ("to_r4", "to_r8") and over_18_digits(call[0]),
         ),
     ],

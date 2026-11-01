@@ -5164,6 +5164,7 @@ contains
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
    logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: truncated !< Digits were dropped past the 18th.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
    integer                                   :: special  !< Kind of a special value (nan, inf).
@@ -5174,9 +5175,9 @@ contains
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
       call parse_number_fast(raw=self%raw, is_integer=.false., negative=negative, mantissa=mantissa, exponent=exponent, &
-                             is_ok=is_fast)
+                             is_ok=is_fast, truncated=truncated)
       if (is_fast) then ! mantissa<=2**24 and |exponent|<=10: one exact operation, correctly rounded (Clinger)
-         if (mantissa<=16777216_I8P.and.abs(exponent)<=10) then
+         if (.not.truncated.and.mantissa<=16777216_I8P.and.abs(exponent)<=10) then
             number = real(mantissa, kind=R4P)
             if (exponent>=0) then
                number = number * P10_R4P(exponent)
@@ -5188,9 +5189,12 @@ contains
             return
          endif
          number = decimal_to_r4(mantissa, exponent) ! correctly rounded, whatever the digits and the power of ten
-         if (negative) number = -number
-         if (present(iostat)) iostat = 0
-         return
+         ! digits dropped: the number is between mantissa and mantissa+1, settled if both round to the same real
+         if (.not.truncated.or.number==decimal_to_r4(mantissa + 1_I8P, exponent)) then
+            if (negative) number = -number
+            if (present(iostat)) iostat = 0
+            return
+         endif
       endif
       call parse_special_number(raw=self%raw, special=special, negative=negative)
       if (special/=0) then
@@ -5244,6 +5248,7 @@ contains
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
    logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: truncated !< Digits were dropped past the 18th.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
    integer                                   :: special  !< Kind of a special value (nan, inf).
@@ -5254,9 +5259,9 @@ contains
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
       call parse_number_fast(raw=self%raw, is_integer=.false., negative=negative, mantissa=mantissa, exponent=exponent, &
-                             is_ok=is_fast)
+                             is_ok=is_fast, truncated=truncated)
       if (is_fast) then ! mantissa<=2**53 and |exponent|<=22: one exact operation, correctly rounded (Clinger)
-         if (mantissa<=9007199254740992_I8P.and.abs(exponent)<=22) then
+         if (.not.truncated.and.mantissa<=9007199254740992_I8P.and.abs(exponent)<=22) then
             number = real(mantissa, kind=R8P)
             if (exponent>=0) then
                number = number * P10_R8P(exponent)
@@ -5268,9 +5273,12 @@ contains
             return
          endif
          number = decimal_to_r8(mantissa, exponent) ! correctly rounded, whatever the digits and the power of ten
-         if (negative) number = -number
-         if (present(iostat)) iostat = 0
-         return
+         ! digits dropped: the number is between mantissa and mantissa+1, settled if both round to the same real
+         if (.not.truncated.or.number==decimal_to_r8(mantissa + 1_I8P, exponent)) then
+            if (negative) number = -number
+            if (present(iostat)) iostat = 0
+            return
+         endif
       endif
       call parse_special_number(raw=self%raw, special=special, negative=negative)
       if (special/=0) then
@@ -7793,13 +7801,15 @@ contains
       endfunction is_word
    endsubroutine parse_special_number
 
-   pure subroutine parse_number_fast(raw, is_integer, negative, mantissa, exponent, is_ok)
+   pure subroutine parse_number_fast(raw, is_integer, negative, mantissa, exponent, is_ok, truncated)
    !< Parse a plain decimal number, `[blanks][sign]digits[.digits][e|E|d|D[sign]digits][blanks]` (only the integer part if
    !< `is_integer`), into its sign, its digits as an integer and its decimal exponent. After a decimal point the exponent
    !< can also be a sign and exactly 3 digits, without the letter, the form E and ES edit descriptors write (`1.5-301`).
    !<
-   !< `is_ok` is false for anything else, and for more than 18 significant digits: the caller then falls back to the read
-   !< statement. The accepted strings are a subset of the ones accepted by [[string:is_number]] and by the read statement.
+   !< `is_ok` is false for anything else: the caller then falls back to the read statement. The accepted strings are a subset
+   !< of the ones accepted by [[string:is_number]] and by the read statement. An integer of more than 18 significant digits
+   !< is not accepted; a real keeps the first 18, the exponent accounts for the others, and `truncated` tells whether any
+   !< of those dropped was not zero: the number is then between mantissa and mantissa + 1, times the power of ten.
    !<
    !< @note The doctest is not necessary, this being tested by [[string:read_number]] and by the differential test.
    character(kind=CK, len=*), intent(in)  :: raw          !< Raw characters data.
@@ -7807,7 +7817,8 @@ contains
    logical,                   intent(out) :: negative     !< The number is negative.
    integer(I8P),              intent(out) :: mantissa     !< Significant digits, as an integer.
    integer,                   intent(out) :: exponent     !< Decimal exponent: the number is mantissa * 10**exponent.
-   logical,                   intent(out) :: is_ok        !< The string is a plain decimal number of at most 18 digits.
+   logical,                   intent(out) :: is_ok        !< The string is a plain decimal number.
+   logical,                   intent(out), optional :: truncated !< Digits that are not zero were dropped.
    integer                                :: c            !< Character counter.
    integer                                :: d            !< Value of a digit.
    integer                                :: digits       !< Significant digits read.
@@ -7816,9 +7827,12 @@ contains
    logical                                :: has_digit    !< A digit has been read.
    logical                                :: exp_negative !< The exponent field is negative.
    logical                                :: has_point    !< A decimal point has been read.
+   logical                                :: dropped      !< Digits that are not zero were dropped.
    logical                                :: no_letter    !< The exponent has no letter, as in 1.5-301.
 
    has_point = .false.
+   dropped = .false.
+   if (present(truncated)) truncated = .false.
    negative = .false.
    mantissa = 0_I8P
    exponent = 0
@@ -7841,8 +7855,13 @@ contains
       has_digit = .true.
       if (mantissa>0.or.d>0) then ! the leading zeros are not significant
          digits = digits + 1
-         if (digits>18) return
-         mantissa = mantissa * 10 + d
+         if (digits>18) then
+            if (is_integer) return
+            dropped = dropped.or.d>0
+            exponent = exponent + 1
+         else
+            mantissa = mantissa * 10 + d
+         endif
       endif
       c = c + 1
    enddo
@@ -7856,8 +7875,12 @@ contains
             has_digit = .true.
             if (mantissa>0.or.d>0) then ! the leading zeros are not significant
                digits = digits + 1
-               if (digits>18) return
-               mantissa = mantissa * 10 + d
+               if (digits>18) then
+                  dropped = dropped.or.d>0
+                  exponent = exponent + 1 ! this digit does not move the point
+               else
+                  mantissa = mantissa * 10 + d
+               endif
             endif
             exponent = exponent - 1
             c = c + 1
@@ -7899,6 +7922,7 @@ contains
       c = c + 1
    enddo
    is_ok = .true.
+   if (present(truncated)) truncated = dropped
    endsubroutine parse_number_fast
 
    pure function find_occurrence(raw, substring, occurrence, back) result(pos)
