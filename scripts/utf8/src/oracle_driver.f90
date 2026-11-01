@@ -7,7 +7,7 @@
 !<
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
-use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, output_unit
+use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, int32, int64, output_unit, real32, real64
 use stringifor, only : from_codepoints, I4P, regex, regex_match, scan, SF_CHARS, SF_COLUMNS, string, strless_natural, &
                        strless_nocase, strsort, verify
 implicit none
@@ -28,6 +28,8 @@ type(regex)                   :: re       !< A regex.
 type(regex_match)             :: found    !< A match.
 integer                       :: nsub     !< Number of replacements.
 integer                       :: status   !< Status of a compilation.
+real(real64)                  :: r8       !< A number.
+real(real32)                  :: r4       !< A number.
 
 do
   call get_line(input_unit, line, iostat)
@@ -37,6 +39,28 @@ do
   if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each'.and.arg(1) /= 'space_each'.and.index(arg(1), 'strsort') /= 1) &
     s = unhex(arg(2)) ! a list of integers, or of strings
   select case (arg(1))
+  case ('to_r8')
+    call s%read_number(r8, iostat=status)
+    if (status /= 0) then
+      write(output_unit, '(a)') 'E'
+    elseif (r8 /= r8) then
+      write(output_unit, '(a)') 'nan'
+    else
+      write(output_unit, '(z16.16)') transfer(r8, 1_int64)
+    endif
+  case ('to_r4')
+    call s%read_number(r4, iostat=status)
+    if (status /= 0) then
+      write(output_unit, '(a)') 'E'
+    elseif (r4 /= r4) then
+      write(output_unit, '(a)') 'nan'
+    else
+      write(output_unit, '(z8.8)') transfer(r4, 1_int32)
+    endif
+  case ('is_real')
+    call put_logical(s%is_real())
+  case ('is_number')
+    call put_logical(s%is_number())
   case ('len')
     call put_int(s%len())
   case ('index')

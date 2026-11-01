@@ -2,7 +2,7 @@
 module stringifor_string_t
 !< StringiFor, definition of `string` type.
 use, intrinsic :: iso_fortran_env, only : iostat_eor
-use, intrinsic :: ieee_arithmetic, only : ieee_quiet_nan, ieee_value
+use, intrinsic :: ieee_arithmetic, only : ieee_positive_inf, ieee_quiet_nan, ieee_value
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
@@ -320,6 +320,8 @@ real(R8P), parameter :: P10_R8P(0:22) = [1.e0_R8P,  1.e1_R8P,  1.e2_R8P,  1.e3_R
                                          1.e21_R8P, 1.e22_R8P] !< 1e0..1e22.
 real(R4P), parameter :: P10_R4P(0:10) = [1.e0_R4P, 1.e1_R4P, 1.e2_R4P, 1.e3_R4P, 1.e4_R4P, 1.e5_R4P, &
                                          1.e6_R4P, 1.e7_R4P, 1.e8_R4P, 1.e9_R4P, 1.e10_R4P] !< 1e0..1e10.
+integer,                    parameter :: SPECIAL_NAN    = 1                            !< A string holding a NaN.
+integer,                    parameter :: SPECIAL_INF    = 2                            !< A string holding an infinity.
 character(kind=CK, len=1),  parameter :: SPACE          = ' '                          !< Space character.
 character(kind=CK, len=1),  parameter :: TAB            = achar(9)                     !< Tab character.
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
@@ -4943,6 +4945,7 @@ contains
    logical                                   :: is_fast  !< The fast path applies.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: special  !< Kind of a special value (nan, inf).
    integer                                   :: exponent !< Decimal exponent of the number.
 
    number = ieee_value(number, ieee_quiet_nan)
@@ -4964,6 +4967,17 @@ contains
             return
          endif
       endif
+      call parse_special_number(raw=self%raw, special=special, negative=negative)
+      if (special/=0) then
+         if (special==SPECIAL_NAN) then
+            number = ieee_value(number, ieee_quiet_nan)
+         else
+            number = ieee_value(number, ieee_positive_inf)
+         endif
+         if (negative) number = -number
+         if (present(iostat)) iostat = 0
+         return
+      endif
       iomsg_ = 'the string is not a number'
       if (self%is_number()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -4982,17 +4996,19 @@ contains
    !<
    !<```fortran
    !< use penf
-   !< type(string) :: astrings(3)
-   !< real(R8P)    :: reals(3)
-   !< integer      :: iostats(3)
-   !< logical      :: test_passed(3)
+   !< type(string) :: astrings(4)
+   !< real(R8P)    :: reals(4)
+   !< integer      :: iostats(4)
+   !< logical      :: test_passed(4)
    !< astrings(1) = '3.4e9'
    !< astrings(2) = '12'
    !< astrings(3) = 'twelve'
+   !< astrings(4) = '1.5-101'
    !< call astrings%read_number(reals, iostat=iostats)
    !< test_passed(1) = reals(1)==3.4e9_R8P.and.iostats(1)==0
    !< test_passed(2) = reals(2)==12._R8P.and.iostats(2)==0
    !< test_passed(3) = reals(3)/=reals(3).and.iostats(3)>0
+   !< test_passed(4) = reals(4)==1.5e-101_R8P.and.iostats(4)==0
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
@@ -5005,6 +5021,7 @@ contains
    logical                                   :: is_fast  !< The fast path applies.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
+   integer                                   :: special  !< Kind of a special value (nan, inf).
    integer                                   :: exponent !< Decimal exponent of the number.
 
    number = ieee_value(number, ieee_quiet_nan)
@@ -5025,6 +5042,17 @@ contains
             if (present(iostat)) iostat = 0
             return
          endif
+      endif
+      call parse_special_number(raw=self%raw, special=special, negative=negative)
+      if (special/=0) then
+         if (special==SPECIAL_NAN) then
+            number = ieee_value(number, ieee_quiet_nan)
+         else
+            number = ieee_value(number, ieee_positive_inf)
+         endif
+         if (negative) number = -number
+         if (present(iostat)) iostat = 0
+         return
       endif
       iomsg_ = 'the string is not a number'
       if (self%is_number()) then
@@ -5048,12 +5076,25 @@ contains
    integer,          intent(out),   optional :: iostat  !< IO status code: 0 on success, positive otherwise.
    character(len=*), intent(inout), optional :: iomsg   !< IO status message, set on failure.
    integer                                   :: iostat_ !< IO status code, local variable.
+   integer                                   :: special  !< Kind of a special value (nan, inf).
+   logical                                   :: negative !< The number is negative.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
 
    number = ieee_value(number, ieee_quiet_nan)
    iostat_ = 1
    iomsg_ = 'the string is not allocated'
    if (allocated(self%raw)) then
+      call parse_special_number(raw=self%raw, special=special, negative=negative)
+      if (special/=0) then
+         if (special==SPECIAL_NAN) then
+            number = ieee_value(number, ieee_quiet_nan)
+         else
+            number = ieee_value(number, ieee_positive_inf)
+         endif
+         if (negative) number = -number
+         if (present(iostat)) iostat = 0
+         return
+      endif
       iomsg_ = 'the string is not a number'
       if (self%is_number()) then
          read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
@@ -6105,13 +6146,23 @@ contains
    logical                             :: has_real_marker   !< Check the presence of decimal point or exponent.
    integer                             :: stage             !< Stages counter.
    integer                             :: c                 !< Character counter.
+   integer                             :: exp_digits        !< Digits of an exponent without its letter.
+   integer                             :: special           !< Kind of a special value (nan, inf).
+   logical                             :: negative          !< A special value is negative.
 
    is_real = .false.
+   exp_digits = 0
    stage = 0
    has_leading_digit = .false.
    has_real_marker = .false.
    if (allocated(self%raw)) then
       allow_spaces_ = .true. ; if (present(allow_spaces)) allow_spaces_ = allow_spaces
+      call parse_special_number(raw=self%raw, special=special, negative=negative)
+      if (special/=0) then
+         is_real = allow_spaces_.or.(index(SPACE//TAB, self%raw(1:1))==0 &
+                                     .and.index(SPACE//TAB, self%raw(len(self%raw):len(self%raw)))==0)
+         return
+      endif
       is_real = .true.
       do c=1, len(self%raw)
          select case(self%raw(c:c))
@@ -6123,6 +6174,9 @@ contains
             case(2:4, 7)
                is_real = allow_spaces_
                stage = 8
+            case(9)
+               is_real = allow_spaces_.and.exp_digits==3
+               stage = 8
             case default
                is_real = .false.
             endselect
@@ -6132,6 +6186,9 @@ contains
                stage = 1
             case(5)
                stage = 6
+            case(3:4) ! an exponent without its letter, as Fortran writes 1.5-301
+               is_real = stage==4.or.has_leading_digit
+               stage = 9
             case default
                is_real = .false.
             endselect
@@ -6144,6 +6201,9 @@ contains
                stage = 4
             case(5:6)
                stage = 7
+            case(9)
+               exp_digits = exp_digits + 1
+               is_real = exp_digits<=3
             case default
                continue
             endselect
@@ -6175,6 +6235,8 @@ contains
          is_real = .true.
       case(3)
          is_real = has_leading_digit
+      case(9)
+         is_real = exp_digits==3
       case(8)
          is_real = has_real_marker
       case default
@@ -7442,9 +7504,70 @@ contains
    endsubroutine write_unformatted
 
    ! non type-bound-procedures
+   pure subroutine parse_special_number(raw, special, negative)
+   !< Recognize `[blanks][sign]nan[(chars)][blanks]` and `[blanks][sign]inf|infinity[blanks]`, in any case, the special values
+   !< the read statement accepts. `special` is SPECIAL_NAN, SPECIAL_INF, or 0 for anything else.
+   !<
+   !< @note The doctest is not necessary, this being tested by [[string:read_number]] and by the oracle.
+   character(kind=CK, len=*), intent(in)  :: raw      !< Raw characters data.
+   integer,                   intent(out) :: special  !< Kind of the special value.
+   logical,                   intent(out) :: negative !< The value is negative.
+   integer                                :: first    !< First byte of the word.
+   integer                                :: last     !< Last byte of the word.
+   integer                                :: c        !< Character counter.
+   integer                                :: code     !< Code of a character.
+
+   special = 0
+   negative = .false.
+   first = 1
+   last = len(raw)
+   do while (first<=last)
+      if (raw(first:first)/=SPACE.and.raw(first:first)/=TAB) exit
+      first = first + 1
+   enddo
+   if (first>last) return
+   do while (raw(last:last)==SPACE.or.raw(last:last)==TAB)
+      last = last - 1
+   enddo
+   if (raw(first:first)=='+'.or.raw(first:first)=='-') then
+      negative = raw(first:first)=='-'
+      first = first + 1
+   endif
+   if (last-first<2) return
+   if (index('nNiI', raw(first:first))==0) return ! the common answer, without building the lower case word
+   if (is_word(raw(first:last), 'inf').or.is_word(raw(first:last), 'infinity')) then
+      special = SPECIAL_INF
+   elseif (is_word(raw(first:first+2), 'nan')) then
+      if (last==first+2) then
+         special = SPECIAL_NAN
+      elseif (raw(first+3:first+3)=='('.and.raw(last:last)==')') then
+         do c=first+4, last-1
+            code = iachar(raw(c:c))
+            if (.not.((code>=48.and.code<=57).or.(code>=65.and.code<=90).or.(code>=97.and.code<=122).or.code==95)) return
+         enddo
+         special = SPECIAL_NAN
+      endif
+   endif
+   contains
+      pure function is_word(text, word) result(same)
+      !< Compare with a lower case word, ignoring the ASCII case of the text.
+      character(kind=CK, len=*), intent(in) :: text !< The text.
+      character(len=*),          intent(in) :: word !< The lower case word.
+      logical                               :: same !< They are the same word.
+      integer                               :: i    !< Counter.
+
+      same = len(text)==len(word)
+      if (.not.same) return
+      do i=1, len(word)
+         same = same.and.(text(i:i)==word(i:i).or.iachar(text(i:i))==iachar(word(i:i))-CASE_SHIFT)
+      enddo
+      endfunction is_word
+   endsubroutine parse_special_number
+
    pure subroutine parse_number_fast(raw, is_integer, negative, mantissa, exponent, is_ok)
    !< Parse a plain decimal number, `[blanks][sign]digits[.digits][e|E|d|D[sign]digits][blanks]` (only the integer part if
-   !< `is_integer`), into its sign, its digits as an integer and its decimal exponent.
+   !< `is_integer`), into its sign, its digits as an integer and its decimal exponent. After a decimal point the exponent
+   !< can also be a sign and exactly 3 digits, without the letter, the form E and ES edit descriptors write (`1.5-301`).
    !<
    !< `is_ok` is false for anything else, and for more than 18 significant digits: the caller then falls back to the read
    !< statement. The accepted strings are a subset of the ones accepted by [[string:is_number]] and by the read statement.
@@ -7460,9 +7583,13 @@ contains
    integer                                :: d            !< Value of a digit.
    integer                                :: digits       !< Significant digits read.
    integer                                :: exp_value    !< Value of the exponent field.
+   integer                                :: d_count      !< Digits of the exponent field.
    logical                                :: has_digit    !< A digit has been read.
    logical                                :: exp_negative !< The exponent field is negative.
+   logical                                :: has_point    !< A decimal point has been read.
+   logical                                :: no_letter    !< The exponent has no letter, as in 1.5-301.
 
+   has_point = .false.
    negative = .false.
    mantissa = 0_I8P
    exponent = 0
@@ -7492,6 +7619,7 @@ contains
    enddo
    if (.not.is_integer.and.c<=len(raw)) then
       if (raw(c:c)=='.') then
+         has_point = .true.
          c = c + 1
          do while (c<=len(raw)) ! digits after the decimal point
             d = iachar(raw(c:c)) - iachar('0')
@@ -7509,8 +7637,9 @@ contains
    endif
    if (.not.has_digit) return
    if (.not.is_integer.and.c<=len(raw)) then
-      if (index('eEdD', raw(c:c))>0) then
-         c = c + 1
+      no_letter = has_point.and.(raw(c:c)=='+'.or.raw(c:c)=='-')
+      if (no_letter.or.index('eEdD', raw(c:c))>0) then
+         if (.not.no_letter) c = c + 1
          exp_negative = .false.
          if (c<=len(raw)) then
             if (raw(c:c)=='+'.or.raw(c:c)=='-') then
@@ -7519,16 +7648,19 @@ contains
             endif
          endif
          exp_value = 0
+         d_count = 0
          has_digit = .false.
          do while (c<=len(raw))
             d = iachar(raw(c:c)) - iachar('0')
             if (d<0.or.d>9) exit
             has_digit = .true.
+            d_count = d_count + 1
             if (exp_value>99999) return
             exp_value = exp_value * 10 + d
             c = c + 1
          enddo
          if (.not.has_digit) return
+         if (no_letter.and.d_count/=3) return
          if (exp_negative) exp_value = -exp_value
          exponent = exponent + exp_value
       endif

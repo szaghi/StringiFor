@@ -51,13 +51,16 @@ import argparse
 import codecs
 import fnmatch
 import itertools
+import os
 import random
 import re
+import struct
 import subprocess
 import sys
 from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
+from fractions import Fraction
 from pathlib import Path
 from xml.etree import ElementTree
 from xml.sax import saxutils
@@ -1726,7 +1729,144 @@ def check_regex_reference() -> list[str]:
     return failures
 
 
+# ---------------------------------------------------------------------------------------------------- numbers suite
+NUMBER_RE = re.compile(
+    rb"[ \t]*([+-]?)(?:(\d+\.?\d*|\.\d+)(?:[eEdD]([+-]?\d+)|(?<=[.\d])([+-]\d{3}))?)[ \t]*\Z"
+)
+SPECIAL_RE = re.compile(
+    rb"[ \t]*([+-]?)(?:(inf|infinity)|(nan(?:\([0-9A-Za-z_]*\))?))[ \t]*\Z", re.IGNORECASE
+)
+NUMBERS_DEFAULT = 200_000
+
+
+def parse_number(data: bytes) -> tuple[str, int, Fraction | None] | None:
+    """Return (kind, sign, value) of a number string: kind is finite, inf or nan; None if it is not a number."""
+    found = SPECIAL_RE.match(data)
+    if found:
+        sign = -1 if found[1] == b"-" else 1
+        return ("inf", sign, None) if found[2] else ("nan", sign, None)
+    found = NUMBER_RE.match(data)
+    if not found:
+        return None
+    mantissa = found[2].decode()
+    letterless = found[4]
+    if letterless and "." not in mantissa:
+        return None
+    exponent = int(found[3] or letterless or 0)
+    whole, _, fraction = mantissa.partition(".")
+    value = Fraction(int((whole + fraction) or "0")) * Fraction(10) ** (exponent - len(fraction))
+    return "finite", -1 if found[1] == b"-" else 1, value
+
+
+def round_binary(value: Fraction, bits: int, min_exponent: int, max_exponent: int) -> tuple[int, int] | None:
+    """Round a positive value to (m, e), value ~ m * 2**e, half to even; None on overflow."""
+    e = value.numerator.bit_length() - value.denominator.bit_length() - bits
+    while value >= Fraction(2) ** (e + bits):
+        e += 1
+    while value < Fraction(2) ** (e + bits - 1):
+        e -= 1
+    e = max(e, min_exponent)
+    scaled = value / Fraction(2) ** e
+    m = round(scaled)  # round() of a Fraction is half to even
+    if m == 2**bits:
+        m, e = 2 ** (bits - 1), e + 1
+    return None if e > max_exponent else (m, e)
+
+
+def number_bits(data: bytes, width: int) -> str:
+    """Return the bits of the correctly rounded number, nan, or E if it is not a number."""
+    parsed = parse_number(data)
+    if parsed is None:
+        return "E"
+    kind, sign, value = parsed
+    if kind == "nan":
+        return "nan"
+    bits, min_exponent, max_exponent, fraction_bits, exponent_bias = (
+        (53, -1074, 971, 52, 1023) if width == 64 else (24, -149, 104, 23, 127)
+    )
+    infinity = ((1 << (width - fraction_bits - 1)) - 1) << fraction_bits
+    code = infinity
+    if kind == "finite":
+        if value == 0:
+            code = 0
+        else:
+            rounded = round_binary(value, bits, min_exponent, max_exponent)
+            if rounded is not None:
+                m, e = rounded
+                if m < 1 << (bits - 1):
+                    code = m
+                else:
+                    code = ((e - min_exponent + 1) << fraction_bits) | (m & ((1 << fraction_bits) - 1))
+    if sign < 0:
+        code |= 1 << (width - 1)
+    return f"{code:0{width // 4}X}"
+
+
+def is_real_reference(data: bytes) -> bool:
+    """Return whether the string is a real: a number with a point or an exponent, or a special value."""
+    parsed = parse_number(data)
+    return parsed is not None and (parsed[0] != "finite" or bool(re.search(rb"[.eEdD]", data)))
+
+
+def is_number_reference(data: bytes) -> bool:
+    """Return whether the string is a number."""
+    return parse_number(data) is not None
+
+
+def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """Return the calls of the numbers suite: hard reals, bounds, midpoints, the forms accepted and the rejected."""
+    rng = random.Random(SEED)
+    total = int(os.environ.get("SF_ORACLE_NUMBERS", NUMBERS_DEFAULT))
+    texts = [
+        "0.1", "1e23", "8.41e21", "2.2250738585072014e-308", "2.2250738585072011e-308", "5e-324", "2.4703282292062328e-324",
+        "2.4703282292062327e-324", "4.9406564584124654e-324", "1.7976931348623157e308", "1.7976931348623158e308",
+        "1.7976931348623159e308", "1e308", "1e309", "1e-400", "0e999", "-0.0", "-0e-999", "9007199254740993.0",
+        "9007199254740992.5", "16777217.0", "16777219.0", "1.17549435e-38", "1.4e-45", "7e-46", "7.1e-46", "3.4028235e38",
+        "3.4028236e38", "3.40282367e38", "1.5-301", "1.5+301", "-.5-101", "5.-101", "1.5-301 ", " \t1.5-301", "1.5d-301", "1.5D+3",
+        "12", "+12", "-12 ", "1.", ".5", "+.5", "1e5", "1E5", "1d5", "1.5e+3", "1.5e-3",
+        "12x", "1.5.6", "1-2", "2026-11", "2026-11-01", "1.5-30", "1.5-3011", "1.5-30x", "", "   ", "e5", ".", "+", "-", "1e", "1e+",
+        "nan", "NaN", "NAN", "-nan", "+nan", " nan ", "nan()", "nan(abc_1)", "NaN(0)", "nan(", "nan)", "nan(a b)", "nanx", "na", "n",
+        "inf", "Inf", "INF", "-inf", "+Infinity", "INFINITY", " inf\t", "infi", "infinit", "infinityy", "in", "i",
+    ]
+    fractions = [str(n) for n in (2**53 + 1, 2**53 + 3, 2**54 + 2, 2**24 + 1, 2**24 + 3, 2**25 + 2)]
+    texts += [f + ".0" for f in fractions]
+    while len(texts) < total:
+        k = rng.randrange(8)
+        if k == 0:  # any double, shortest
+            texts.append(repr(struct.unpack(">d", rng.getrandbits(64).to_bytes(8, "big"))[0]))
+        elif k == 1:  # any double, 17 digits, as a program writes it
+            value = struct.unpack(">d", rng.getrandbits(64).to_bytes(8, "big"))[0]
+            texts.append(f"{value:.16e}")
+        elif k == 2:  # any float, 9 digits
+            value = struct.unpack(">f", rng.getrandbits(32).to_bytes(4, "big"))[0]
+            texts.append(f"{value:.8e}")
+        elif k == 3:  # up to 18 digits, any exponent: the Eisel-Lemire path
+            digits = "".join(rng.choice("0123456789") for _ in range(rng.randint(1, 18)))
+            at = rng.randint(0, len(digits))
+            texts.append(f"{digits[:at]}.{digits[at:]}e{rng.randint(-360, 330)}")
+        elif k == 4:  # up to 18 digits around the bounds of the binary32
+            digits = "".join(rng.choice("0123456789") for _ in range(rng.randint(1, 18)))
+            texts.append(f"{digits}e{rng.randint(-70, 45)}")
+        elif k == 5:  # a midpoint of two doubles or two floats of at most 18 digits
+            width = rng.choice((53, 24))
+            n = (2 * rng.getrandbits(width - 1) + 1) | (1 << width)
+            texts.append(f"{n << rng.randint(0, 59 - width)}.0" if width == 53 else f"{n << rng.randint(0, 30)}.0")
+        elif k == 6:  # the exponent without its letter
+            texts.append(f"{rng.random() * 9 + 1:.{rng.randint(0, 16)}f}{rng.choice('+-')}{rng.randint(100, 330)}")
+        else:  # more than 18 digits: read
+            digits = "".join(rng.choice("0123456789") for _ in range(rng.randint(19, 30)))
+            texts.append(f"{digits[0]}.{digits[1:]}e{rng.randint(-340, 320)}")
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for text in texts:
+        data = text.encode()
+        calls += [("to_r8", (data,)), ("to_r4", (data,))]
+        if "e" not in text[1:] or rng.random() < 0.1:
+            calls += [("is_real", (data,)), ("is_number", (data,))]
+    return calls
+
+
 EXTRA = {
+    "numbers": numbers_extra,
     "utf8": utf8_exhaustive,
     "escape": escape_extra,
     "units": units_extra,
@@ -1746,6 +1886,12 @@ SELF_CHECKS = {
 
 
 SUITES: dict[str, list[Op]] = {
+    "numbers": [
+        Op("to_r8", lambda d, r: [], lambda d: number_bits(d, 64)),
+        Op("to_r4", lambda d, r: [], lambda d: number_bits(d, 32)),
+        Op("is_real", lambda d, r: [], is_real_reference),
+        Op("is_number", lambda d, r: [], is_number_reference),
+    ],
     "invariant": [
         Op("len", single, len),
         Op("index", any_needles, find),
