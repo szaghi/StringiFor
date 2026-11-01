@@ -405,6 +405,10 @@ contains
    !< The reference is the v1.6.0 algorithm: the read statement on a string accepted by is_number (is_integer for the integer
    !< kinds). The strings are numbers made of blanks, signs, leading zeros, up to 20 integer and fraction digits and exponents up
    !< to 999, integers at the limits of the kinds, and random junk.
+   !<
+   !< read_number no longer uses the read statement for most reals, and a compiler's read is not always correctly rounded: the
+   !< reals may differ from it by one unit in the last place, or below the normal range. Exact rounding is checked against
+   !< exact arithmetic by `bash scripts/oracle.sh numbers`.
    logical                       :: is_ok      !< Check result.
    type(string)                  :: astring    !< A random string.
    character(len=:), allocatable :: chars      !< The random string.
@@ -427,13 +431,23 @@ contains
       call astring%read_number(real8, iostat=iostat)
       ref_iostat = 1
       if (astring%is_number()) read(chars, *, iostat=ref_iostat) ref_real8
-      if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
-      if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.transfer(real8, 1_I8P)==transfer(ref_real8, 1_I8P)
+      if (iostat==0.and.ref_iostat/=0) then ! a compiler's read may fail past the range of the kind (ifx)
+         is_ok = is_ok.and.(abs(real8)<tiny(real8).or.abs(real8)>huge(real8))
+      elseif ((iostat==0).neqv.(ref_iostat==0)) then
+         is_ok = .false.
+      elseif (iostat==0) then
+         is_ok = is_ok.and.close_r8(real8, ref_real8)
+      endif
       call astring%read_number(real4, iostat=iostat)
       ref_iostat = 1
       if (astring%is_number()) read(chars, *, iostat=ref_iostat) ref_real4
-      if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
-      if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.transfer(real4, 1_I4P)==transfer(ref_real4, 1_I4P)
+      if (iostat==0.and.ref_iostat/=0) then ! a compiler's read may fail past the range of the kind (ifx)
+         is_ok = is_ok.and.(abs(real4)<tiny(real4).or.abs(real4)>huge(real4))
+      elseif ((iostat==0).neqv.(ref_iostat==0)) then
+         is_ok = .false.
+      elseif (iostat==0) then
+         is_ok = is_ok.and.close_r4(real4, ref_real4)
+      endif
       call astring%read_number(int1, iostat=iostat)
       ref_iostat = 1
       if (astring%is_integer()) read(chars, *, iostat=ref_iostat) ref_int1
@@ -450,6 +464,26 @@ contains
       endif
    enddo
    endfunction check_read_number
+
+   elemental function close_r8(a, b) result(is_close)
+   !< Return true if two reals of the same sign are at most one unit in the last place apart, or both below the normal range.
+   real(R8P), intent(in) :: a        !< First real.
+   real(R8P), intent(in) :: b        !< Second real.
+   logical               :: is_close !< Check result.
+
+   is_close = transfer(a, 1_I8P)==transfer(b, 1_I8P).or.abs(transfer(a, 1_I8P) - transfer(b, 1_I8P))==1_I8P &
+              .or.(abs(a)<tiny(a).and.abs(b)<tiny(b))
+   endfunction close_r8
+
+   elemental function close_r4(a, b) result(is_close)
+   !< Return true if two reals of the same sign are at most one unit in the last place apart, or both below the normal range.
+   real(R4P), intent(in) :: a        !< First real.
+   real(R4P), intent(in) :: b        !< Second real.
+   logical               :: is_close !< Check result.
+
+   is_close = transfer(a, 1_I4P)==transfer(b, 1_I4P).or.abs(transfer(a, 1_I4P) - transfer(b, 1_I4P))==1_I4P &
+              .or.(abs(a)<tiny(a).and.abs(b)<tiny(b))
+   endfunction close_r4
 
    function random_number_string() result(chars)
    !< Return a random string looking like a number, sometimes a limit of the integer kinds, sometimes junk.
