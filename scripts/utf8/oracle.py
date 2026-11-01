@@ -58,7 +58,7 @@ import struct
 import subprocess
 import sys
 from collections import Counter
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
@@ -1813,6 +1813,93 @@ def is_number_reference(data: bytes) -> bool:
     return parse_number(data) is not None
 
 
+def shortest_r8_reference(code: bytes) -> str:
+    """Return Python's repr of the double with those bits."""
+    return repr(struct.unpack(">d", code)[0])
+
+
+def shortest_r4_reference(code: bytes) -> str:
+    """Return the shortest closest decimal of the float with those bits, found by exact search, in the layout of repr."""
+    value = struct.unpack(">f", code)[0]
+    if value != value or value in (float("inf"), float("-inf")) or value == 0:
+        return repr(value)
+    exact = abs(Fraction(value))
+    target = f"{struct.unpack('>I', struct.pack('>f', abs(value)))[0]:08X}"
+    for precision in range(1, 10):
+        text = f"{float(exact):.{precision - 1}e}"
+        scale = Fraction(10) ** (int(text.split("e")[1]) - precision + 1)
+        low = int(exact / scale)
+        best = None
+        for m in (low, low + 1):
+            candidate = Fraction(m) * scale
+            if candidate and float32_bits(candidate) == target:
+                distance = abs(candidate - exact)
+                if best is None or distance < best[0] or (distance == best[0] and m % 2 == 0):
+                    best = (distance, m)
+        if best is not None:
+            return layout_repr(value < 0, best[1], int(text.split("e")[1]) - precision + 1)
+    raise AssertionError(code)
+
+
+def float32_bits(value: Fraction) -> str:
+    """Return the bits of the binary32 nearest to a positive value."""
+    rounded = round_binary(value, 24, -149, 104)
+    if rounded is None:
+        return "7F800000"
+    m, e = rounded
+    return f"{m if m < 1 << 23 else ((e + 150) << 23) | (m & ((1 << 23) - 1)):08X}"
+
+
+def layout_repr(negative: bool, digits: int, exponent: int) -> str:
+    """Return digits * 10**exponent in the layout of repr."""
+    while digits % 10 == 0:
+        digits //= 10
+        exponent += 1
+    text = str(digits)
+    point = len(text) + exponent
+    if -3 <= point <= 16:
+        if point <= 0:
+            body = "0." + "0" * -point + text
+        elif point >= len(text):
+            body = text + "0" * (point - len(text)) + ".0"
+        else:
+            body = text[:point] + "." + text[point:]
+    else:
+        body = text[0] + ("." + text[1:] if len(text) > 1 else "") + f"e{point - 1:+03d}"
+    return "-" + body if negative else body
+
+
+def levenshtein(first: Sequence, second: Sequence) -> int:
+    """Return the Levenshtein distance, on the full table."""
+    table = [[0] * (len(second) + 1) for _ in range(len(first) + 1)]
+    for i in range(len(first) + 1):
+        table[i][0] = i
+    for j in range(len(second) + 1):
+        table[0][j] = j
+    for i in range(1, len(first) + 1):
+        for j in range(1, len(second) + 1):
+            table[i][j] = min(table[i - 1][j] + 1, table[i][j - 1] + 1, table[i - 1][j - 1] + (first[i - 1] != second[j - 1]))
+    return table[-1][-1]
+
+
+def edit_pairs(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Return the data, cut to a size the full table can take, with an edited copy and an unrelated string."""
+    pieces = units(data)[:60]
+    data = b"".join(pieces)
+    edited = list(pieces)
+    for _ in range(rng.randint(0, 5)):
+        action = rng.randrange(3)
+        at = rng.randint(0, len(edited))
+        if action == 0:
+            edited.insert(at, rng.choice(POOL)[0])
+        elif edited and at < len(edited):
+            if action == 1:
+                del edited[at]
+            else:
+                edited[at] = rng.choice(POOL)[0]
+    return [(data, b"".join(edited)), (data, b""), (b"", data), (data, b"kitten")]
+
+
 def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     """Return the calls of the numbers suite: hard reals, bounds, midpoints, the forms accepted and the rejected."""
     rng = random.Random(SEED)
@@ -1862,6 +1949,17 @@ def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
         calls += [("to_r8", (data,)), ("to_r4", (data,))]
         if "e" not in text[1:] or rng.random() < 0.1:
             calls += [("is_real", (data,)), ("is_number", (data,))]
+    specials8 = [0, 1 << 63, 0x7FF << 52, 0xFFF << 52, 0x7FF8 << 48, 1, (1 << 52) - 1, 1 << 52, (0x7FF << 52) - 1, 3 << 52]
+    specials4 = [0, 1 << 31, 0xFF << 23, 0x1FF << 23, 0x7FC << 20, 1, (1 << 23) - 1, 1 << 23, (0xFF << 23) - 1]
+    specials8 += [(e << 52) for e in range(1, 2047)]  # the powers of 2: the rounding interval is asymmetric
+    specials4 += [(e << 23) for e in range(1, 255)]
+    specials8 += [struct.unpack(">Q", struct.pack(">d", float(10**e)))[0] for e in range(23)]
+    specials8 += [struct.unpack(">Q", struct.pack(">d", float(n)))[0] for n in (9007199254740993, 2**53, 123456789012345678)]
+    for _ in range(total // 2):
+        specials8.append(rng.getrandbits(64))
+        specials4.append(rng.getrandbits(32))
+    calls += [("shortest_r8", (c.to_bytes(8, "big"),)) for c in specials8]
+    calls += [("shortest_r4", (c.to_bytes(4, "big"),)) for c in specials4[: max(len(specials4) // 10, 5000)]]
     return calls
 
 
@@ -1886,10 +1984,16 @@ SELF_CHECKS = {
 
 
 SUITES: dict[str, list[Op]] = {
+    "edit": [
+        Op("edit_distance", edit_pairs, lambda d, t: levenshtein(d, t)),
+        Op("edit_distance_chars", edit_pairs, lambda d, t: levenshtein(units(d), units(t))),
+    ],
     "numbers": [
         Op("to_r8", lambda d, r: [], lambda d: number_bits(d, 64)),
         Op("to_r4", lambda d, r: [], lambda d: number_bits(d, 32)),
         Op("is_real", lambda d, r: [], is_real_reference),
+        Op("shortest_r8", lambda d, r: [], lambda c: shortest_r8_reference(c)),
+        Op("shortest_r4", lambda d, r: [], lambda c: shortest_r4_reference(c)),
         Op("is_number", lambda d, r: [], is_number_reference),
     ],
     "invariant": [
@@ -2095,6 +2199,11 @@ SUITES: dict[str, list[Op]] = {
 
 # Results that are wrong because of a compiler, not of StringiFor: compiler -> [(reason, predicate)].
 # They are counted and shown apart, never silently: remove an entry when the compiler is fixed.
+def over_18_digits(data: bytes) -> bool:
+    """Return whether a number string has more than 18 digits, not counting the leading zeros."""
+    return len(re.split(rb"[eEdD+-]", data.strip().lstrip(b"+-"))[0].replace(b".", b"").lstrip(b"0")) > 18
+
+
 KNOWN_COMPILER_ISSUES: dict[
     str, list[tuple[str, Callable[[str, tuple[Arg, ...]], bool]]]
 ] = {
@@ -2108,6 +2217,18 @@ KNOWN_COMPILER_ISSUES: dict[
             "nvfortran 26.9: index(string, substring) with assumed-length dummies is wrong when the substring holds a "
             "NUL byte (a reduced case gives 12 for 17)",
             lambda name, call: name.startswith("index") and b"\x00" in call[1],
+        ),
+        (
+            "nvfortran 26.9: the read statement flushes a subnormal R4P to zero; it only serves strings of more than "
+            "18 digits here",
+            lambda name, call: name == "to_r4" and over_18_digits(call[0]),
+        ),
+    ],
+    "ifx": [
+        (
+            "ifx 2025.3: the read statement is not correctly rounded on some ties, and fails on an overflow; it only "
+            "serves strings of more than 18 digits here",
+            lambda name, call: name in ("to_r4", "to_r8") and over_18_digits(call[0]),
         ),
     ],
 }

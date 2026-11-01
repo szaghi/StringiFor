@@ -8,7 +8,7 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, int32, int64, output_unit, real32, real64
-use stringifor, only : from_codepoints, I4P, regex, regex_match, scan, SF_CHARS, SF_COLUMNS, string, strless_natural, &
+use stringifor, only : from_codepoints, I4P, regex, regex_match, scan, shortest, SF_CHARS, SF_COLUMNS, string, strless_natural, &
                        strless_nocase, strsort, verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
@@ -29,6 +29,9 @@ type(regex_match)             :: found    !< A match.
 integer                       :: nsub     !< Number of replacements.
 integer                       :: status   !< Status of a compilation.
 real(real64)                  :: r8       !< A number.
+character(len=16)             :: word     !< Bits of a number, in hexadecimal.
+integer(int64)                :: bits8    !< Bits of a number.
+integer(int32)                :: bits4    !< Bits of a number.
 real(real32)                  :: r4       !< A number.
 
 do
@@ -36,7 +39,7 @@ do
   if (iostat /= 0) exit
   call split_fields(line, field, lens, nfield)
   if (nfield < 2) call fail('malformed line: '//line)
-  if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each'.and.arg(1) /= 'space_each'.and.index(arg(1), 'strsort') /= 1) &
+  if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each'.and.index(arg(1), 'shortest') /= 1.and.arg(1) /= 'space_each'.and.index(arg(1), 'strsort') /= 1) &
     s = unhex(arg(2)) ! a list of integers, or of strings
   select case (arg(1))
   case ('to_r8')
@@ -57,6 +60,20 @@ do
     else
       write(output_unit, '(z8.8)') transfer(r4, 1_int32)
     endif
+  case ('shortest_r8')
+    word = arg(2)
+    read(word, '(z16)') bits8
+    t = shortest(transfer(bits8, 1._real64))
+    write(output_unit, '(a)') t%chars()
+  case ('shortest_r4')
+    word = arg(2)
+    read(word, '(z8)') bits4
+    t = shortest(transfer(bits4, 1._real32))
+    write(output_unit, '(a)') t%chars()
+  case ('edit_distance')
+    call put_int(s%edit_distance(unhex(arg(3))))
+  case ('edit_distance_chars')
+    call put_int(s%edit_distance(unhex(arg(3)), by=SF_CHARS))
   case ('is_real')
     call put_logical(s%is_real())
   case ('is_number')

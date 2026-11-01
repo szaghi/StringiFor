@@ -1,21 +1,12 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- type(string) :: hexed
- logical :: test_passed(7)
- astring = 26
- test_passed(1) = astring%hex()//''=='1a'
- astring = -1
- test_passed(2) = astring%hex(bits=32)//''=='ffffffff'
- test_passed(3) = astring%hex()//''=='ffffffffffffffff'
- astring = 0
- test_passed(4) = astring%hex()//''=='0'
- astring = '255'
- test_passed(5) = astring%hex(uppercase=.true.)//''=='FF'
- astring = 4096
- test_passed(6) = astring%hex(bits=8)//''=='0'
- astring = 'not a number'
- hexed = astring%hex()
- test_passed(7) = hexed%is_allocated().eqv..false.
+ type(string), allocatable :: alist_str(:)
+ character(len=:), allocatable :: alist_chr(:)
+ logical :: test_passed(2)
+ call astring%glob(pattern='no-file-has-this-name-*', list=alist_str)
+ test_passed(1) = allocated(alist_str).and.size(alist_str, dim=1)==0
+ call astring%glob(pattern='no-file-has-this-name-*', list=alist_chr)
+ test_passed(2) = allocated(alist_chr).and.size(alist_chr, dim=1)==0
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

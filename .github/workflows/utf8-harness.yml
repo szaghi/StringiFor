@@ -48,6 +48,7 @@ jobs:
     - name: Run the oracle suites
       run: |
         bash scripts/oracle.sh numbers
+        bash scripts/oracle.sh edit
         bash scripts/oracle.sh invariant
         bash scripts/oracle.sh invariant --self-test
         bash scripts/oracle.sh utf8

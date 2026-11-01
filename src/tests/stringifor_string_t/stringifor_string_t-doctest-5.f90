@@ -1,8 +1,15 @@
 program volatile_doctest
 use stringifor_string_t
- logical :: test_passed(3)
- test_passed(1) = strless('a', 'a'//achar(9))
- test_passed(2) = strless('z', char(195)//char(169))
- test_passed(3) = .not.strless('ab', 'ab')
+ type(string) :: astring
+ logical :: test_passed(4)
+ astring = from_codepoints([104, 233, 20320])
+ test_passed(1) = astring%raw=='h'//char(195)//char(169)//char(228)//char(189)//char(160)
+ astring = from_codepoints([97, -255])
+ test_passed(2) = astring%raw=='a'//char(255)
+ astring = from_codepoints([55296])
+ test_passed(3) = astring%raw==char(239)//char(191)//char(189)
+ astring = 'x'//char(192)//char(175)//'y'
+ astring = from_codepoints(astring%codepoints())
+ test_passed(4) = astring%raw=='x'//char(192)//char(175)//'y'
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

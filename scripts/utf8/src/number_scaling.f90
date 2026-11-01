@@ -1,7 +1,8 @@
 !< Timing check of the number parsing, built by scripts/utf8/build.sh.
 !<
 !< Times to_number and the read statement on 17 digit doubles of any exponent, and on plain numbers, in ns per number.
-!< Exits with status 1 if to_number is not at least 4 times faster than read on either.
+!< Exits with status 1 if to_number is not at least 1.5 times faster than read on either: the margin depends on the
+!< compiler's read (10 times with gfortran and 2 with nvfortran).
 program number_scaling
 use, intrinsic :: iso_fortran_env, only : int64, output_unit, real64
 use stringifor, only : R8P, string
@@ -29,7 +30,7 @@ do k = 1, 2
   slow(k) = time_read()
   write(output_unit, '(a,i0,a,f0.1,a,f0.1,a)') 'input ', k, ': to_number ', fast(k), ' ns, read ', slow(k), ' ns'
 enddo
-if (any(fast * 4 > slow)) error stop 'number_scaling: to_number is not 4 times faster than read'
+if (any(fast * 1.5_real64 > slow)) error stop 'number_scaling: to_number is not faster than read'
 
 contains
   function time_to_number() result(ns)

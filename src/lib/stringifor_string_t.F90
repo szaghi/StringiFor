@@ -6,7 +6,7 @@ use, intrinsic :: ieee_arithmetic, only : ieee_positive_inf, ieee_quiet_nan, iee
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
-use stringifor_numbers, only : decimal_to_r4, decimal_to_r8
+use stringifor_numbers, only : decimal_to_r4, decimal_to_r8, shortest_digits
 use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
                             utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
                             utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units, &
@@ -22,6 +22,7 @@ public :: adjustl, adjustr, count, index, len_trim, repeat, scan, trim, verify
 public :: CK
 public :: SF_BYTES, SF_CHARS, SF_COLUMNS
 public :: from_codepoints
+public :: shortest
 public :: glob
 public :: strjoin
 public :: strless, strless_natural, strless_nocase
@@ -74,6 +75,9 @@ type :: string
                              compare_version_character !< Compare two version numbers, return -1, 0 or 1.
     procedure, pass(self) :: compact          !< Return the words of the string separated by one separator, whitespace collapsed.
     procedure, pass(self) :: decode           !< Decode string.
+    generic               :: edit_distance => &
+                             edit_distance_character, &
+                             edit_distance_string !< Return the Levenshtein distance from another string.
     procedure, pass(self) :: encode           !< Encode string.
     procedure, pass(self) :: escape           !< Escape backslashes (or custom escape character).
     procedure, pass(self) :: escape_c         !< Return the string with C escapes for what is not printable.
@@ -257,6 +261,8 @@ type :: string
     procedure, private, pass(self) :: to_real_R4P      !< Cast string to real.
     procedure, private, pass(self) :: to_real_R8P      !< Cast string to real.
     procedure, private, pass(self) :: to_real_R16P     !< Cast string to real.
+    procedure, private, pass(self) :: edit_distance_character !< Levenshtein distance from a character.
+    procedure, private, pass(self) :: edit_distance_string    !< Levenshtein distance from a string.
     procedure, private, pass(self) :: read_number_I1P  !< Cast string to integer, with an error status.
 #ifndef _NVF
     procedure, private, pass(self) :: read_number_I2P  !< Cast string to integer, with an error status.
@@ -328,6 +334,11 @@ character(kind=CK, len=1),  parameter :: TAB            = achar(9)              
 character(kind=CK, len=1),  parameter :: UIX_DIR_SEP    = char(47)                     !< Unix/Linux directories separator (/).
 character(kind=CK, len=1),  parameter :: BACKSLASH      = char(92)                     !< Backslash character.
 character(kind=CK, len=3),  parameter :: BOM            = char(239)//char(187)//char(191) !< UTF-8 byte order mark, U+FEFF.
+
+interface shortest
+  !< Shortest text of a real that reads back as exactly that number.
+  module procedure shortest_R4P, shortest_R8P
+endinterface shortest
 
 interface glob
   !< Overloading glob procedure.
@@ -456,6 +467,215 @@ contains
 
    string_%raw = c
    endfunction string_
+
+   elemental function edit_distance_string(self, other, by) result(distance)
+   !< Return the Levenshtein distance from another string: the fewest insertions, deletions and substitutions between them.
+   !<
+   !< @note The cost is the product of the two lengths, the memory the shorter of them. A string not allocated is empty.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: another
+   !< logical      :: test_passed(4)
+   !< astring = 'kitten'
+   !< another = 'sitting'
+   !< test_passed(1) = astring%edit_distance(another)==3
+   !< test_passed(2) = astring%edit_distance('kitten')==0
+   !< astring = 'caf'//char(195)//char(169)
+   !< test_passed(3) = astring%edit_distance('cafe')==2
+   !< test_passed(4) = astring%edit_distance('cafe', by=SF_CHARS)==1
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)           :: self     !< The string.
+   type(string),  intent(in)           :: other    !< The other string.
+   integer,       intent(in), optional :: by       !< Unit of the distance: SF_BYTES (default) or SF_CHARS.
+   integer                             :: distance !< The distance.
+
+   if (allocated(other%raw)) then
+      distance = self%edit_distance_character(other%raw, by)
+   else
+      distance = self%edit_distance_character('', by)
+   endif
+   endfunction edit_distance_string
+
+   elemental function edit_distance_character(self, other, by) result(distance)
+   !< Return the Levenshtein distance from a character. See [[string:edit_distance]].
+   !<
+   !< @note The doctest is not necessary, this being tested by the string one.
+   class(string),             intent(in)           :: self     !< The string.
+   character(kind=CK, len=*), intent(in)           :: other    !< The other string.
+   integer,                   intent(in), optional :: by       !< Unit of the distance: SF_BYTES (default) or SF_CHARS.
+   integer                                         :: distance !< The distance.
+   integer(I4P), allocatable                       :: a(:)     !< Units of the string.
+   integer(I4P), allocatable                       :: b(:)     !< Units of the other.
+   integer                                         :: i        !< Counter.
+   type(string)                                    :: wrapped  !< The other, as a string.
+
+   by_units: block
+      logical :: chars !< Count in characters.
+
+      chars = .false.
+      if (present(by)) chars = by==SF_CHARS
+      if (chars) then
+         if (allocated(self%raw)) then
+            a = self%codepoints()
+         else
+            allocate(a(0))
+         endif
+         wrapped%raw = other
+         b = wrapped%codepoints()
+      else
+         if (allocated(self%raw)) then
+            a = [(iachar(self%raw(i:i)), i=1, len(self%raw))]
+         else
+            allocate(a(0))
+         endif
+         b = [(iachar(other(i:i)), i=1, len(other))]
+      endif
+   endblock by_units
+   if (size(a)<size(b)) then
+      distance = levenshtein(b, a)
+   else
+      distance = levenshtein(a, b)
+   endif
+   contains
+      pure function levenshtein(long, short) result(cost)
+      !< Return the distance, keeping one row as long as the shorter sequence.
+      integer(I4P), intent(in) :: long(:)  !< The longer sequence.
+      integer(I4P), intent(in) :: short(:) !< The shorter sequence.
+      integer                  :: cost     !< The distance.
+      integer                  :: row(0:size(short)) !< Distances from the prefix of long.
+      integer                  :: diagonal !< The previous row, one column to the left.
+      integer                  :: above    !< The previous row, this column.
+      integer                  :: l        !< Counter.
+      integer                  :: m        !< Counter.
+
+      row = [(m, m=0, size(short))]
+      do l=1, size(long)
+         diagonal = row(0)
+         row(0) = l
+         do m=1, size(short)
+            above = row(m)
+            row(m) = min(above + 1, row(m-1) + 1, diagonal + merge(0, 1, long(l)==short(m)))
+            diagonal = above
+         enddo
+      enddo
+      cost = row(size(short))
+      endfunction levenshtein
+   endfunction edit_distance_character
+
+   elemental function shortest_R8P(number) result(astring)
+   !< Return the shortest text that reads back as exactly this number, in the layout of Python's `repr`.
+   !<
+   !< @note Assigning a real to a string writes all the digits of the kind: `+0.10000000000000001E+000`. This writes `0.1`.
+   !< Plain notation for a decimal exponent from -4 to 15, otherwise `1e+23`; `nan`, `inf` and `-inf` for the special values.
+   !<
+   !<```fortran
+   !< use penf
+   !< type(string) :: astring
+   !< logical      :: test_passed(4)
+   !< astring = shortest(0.1_R8P)
+   !< test_passed(1) = astring%raw=='0.1'
+   !< astring = shortest(1.e23_R8P)
+   !< test_passed(2) = astring%raw=='1e+23'
+   !< astring = shortest(100._R8P)
+   !< test_passed(3) = astring%raw=='100.0'
+   !< test_passed(4) = astring%to_number(1._R8P)==100._R8P
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   real(R8P), intent(in) :: number  !< The number.
+   type(string)          :: astring !< The text.
+   integer(I8P)          :: bits    !< Bits of the number.
+   integer(I8P)          :: digits  !< Decimal digits.
+   integer               :: biased  !< Biased exponent.
+   integer               :: exponent !< Decimal exponent.
+
+   bits = transfer(number, bits)
+   biased = int(ibits(bits, 52, 11))
+   if (biased==2047.or.iand(bits, huge(bits))==0_I8P) then
+      call shortest_special(biased==2047, ibits(bits, 0, 52)/=0_I8P, btest(bits, 63), astring)
+      return
+   endif
+   call shortest_digits(ibits(bits, 0, 52), biased, 52, digits, exponent)
+   call shortest_layout(digits, exponent, btest(bits, 63), astring)
+   endfunction shortest_R8P
+
+   elemental function shortest_R4P(number) result(astring)
+   !< Return the shortest text that reads back as exactly this number, in the layout of Python's `repr`.
+   !<
+   !< @note The doctest is not necessary, this being tested by the R8P one and by the oracle.
+   real(R4P), intent(in) :: number  !< The number.
+   type(string)          :: astring !< The text.
+   integer(I4P)          :: bits    !< Bits of the number.
+   integer(I8P)          :: digits  !< Decimal digits.
+   integer               :: biased  !< Biased exponent.
+   integer               :: exponent !< Decimal exponent.
+
+   bits = transfer(number, bits)
+   biased = ibits(bits, 23, 8)
+   if (biased==255.or.iand(bits, huge(bits))==0_I4P) then
+      call shortest_special(biased==255, ibits(bits, 0, 23)/=0_I4P, btest(bits, 31), astring)
+      return
+   endif
+   call shortest_digits(int(ibits(bits, 0, 23), I8P), biased, 23, digits, exponent)
+   call shortest_layout(digits, exponent, btest(bits, 31), astring)
+   endfunction shortest_R4P
+
+   pure subroutine shortest_special(not_finite, has_fraction, negative, astring)
+   !< Return the text of a zero, an infinity or a NaN.
+   logical,      intent(in)  :: not_finite   !< An infinity or a NaN, else a zero.
+   logical,      intent(in)  :: has_fraction !< With a not finite: a NaN.
+   logical,      intent(in)  :: negative     !< The sign bit.
+   type(string), intent(out) :: astring      !< The text.
+
+   if (not_finite.and.has_fraction) then
+      astring%raw = 'nan'
+   elseif (not_finite) then
+      astring%raw = merge('-inf', ' inf', negative)
+      astring%raw = trim(adjustl(astring%raw))
+   else
+      astring%raw = merge('-0.0', ' 0.0', negative)
+      astring%raw = trim(adjustl(astring%raw))
+   endif
+   endsubroutine shortest_special
+
+   pure subroutine shortest_layout(digits, exponent, negative, astring)
+   !< Lay out digits * 10**exponent as Python's `repr` does.
+   integer(I8P), intent(in)  :: digits   !< Decimal digits, no trailing zeros.
+   integer,      intent(in)  :: exponent !< Decimal exponent.
+   logical,      intent(in)  :: negative !< The sign bit.
+   type(string), intent(out) :: astring  !< The text.
+   character(len=20)         :: text     !< The digits.
+   character(len=:), allocatable :: body !< The text without its sign.
+   integer                   :: n        !< Number of digits.
+   integer                   :: point    !< Decimal exponent of the first digit, plus 1.
+   integer                   :: magnitude !< Absolute value of the exponent field.
+   character(len=8)          :: field    !< The exponent field.
+
+   write(text, '(i0)') digits
+   n = len_trim(text)
+   point = n + exponent
+   if (point>=-3.and.point<=16) then
+      if (point<=0) then
+         body = '0.'//repeat('0', -point)//text(1:n)
+      elseif (point>=n) then
+         body = text(1:n)//repeat('0', point-n)//'.0'
+      else
+         body = text(1:point)//'.'//text(point+1:n)
+      endif
+   else
+      magnitude = abs(point - 1)
+      write(field, '(i0)') magnitude
+      if (magnitude<10) field = '0'//trim(field)
+      body = text(1:1)
+      if (n>1) body = body//'.'//text(2:n)
+      body = body//'e'//merge('-', '+', point - 1<0)//trim(field)
+   endif
+   if (negative) body = '-'//body
+   astring%raw = body
+   endsubroutine shortest_layout
 
    pure function from_codepoints(codes) result(astring)
    !< Return a string given its codepoints, encoded in UTF-8: the inverse of [[string:codepoints]].

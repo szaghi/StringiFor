@@ -5,12 +5,13 @@ module stringifor_numbers
 !< Fortran has no unsigned integer, and a signed overflow is not allowed: the 64 bit words are handled as bit patterns,
 !< and the arithmetic on them goes through 32 bit limbs that cannot overflow.
 use penf, only : I4P, I8P, R4P, R8P
-use stringifor_number_tables, only : POW5_TABLE
+use stringifor_number_tables, only : POW10_TABLE, POW5_TABLE
 
 implicit none
 private
 public :: decimal_to_r4
 public :: decimal_to_r8
+public :: shortest_digits
 
 integer(I8P), parameter :: LOW32 = 4294967295_I8P !< The low 32 bits.
 
@@ -48,6 +49,135 @@ contains
   endif
   number = transfer(int(bits, I4P), number)
   endfunction decimal_to_r4
+
+  elemental subroutine shortest_digits(fraction, biased, mantissa_bits, digits, exponent)
+  !< Return the shortest decimal digits * 10**exponent that reads back as the binary float, the closest of them if more
+  !< than one (Schubfach: Giulietti, The Schubfach way to render doubles, 2020). Finite and not zero; no trailing zeros.
+  !<
+  !< The float is given by its fields, so one kernel serves R4P and R8P: every step only relies on the 128 bits of the power.
+  integer(I8P), intent(in)  :: fraction      !< Stored mantissa.
+  integer,      intent(in)  :: biased        !< Biased exponent.
+  integer,      intent(in)  :: mantissa_bits !< Bits of the stored mantissa.
+  integer(I8P), intent(out) :: digits        !< Decimal digits.
+  integer,      intent(out) :: exponent      !< Decimal exponent.
+  integer(I8P)              :: c             !< Integer significand.
+  integer(I8P)              :: cbl           !< 4 c of the lower bound of the rounding interval.
+  integer(I8P)              :: cb            !< 4 c.
+  integer(I8P)              :: cbr           !< 4 c of the upper bound of the rounding interval.
+  integer(I8P)              :: vbl           !< Lower bound, scaled.
+  integer(I8P)              :: vb            !< The number, scaled.
+  integer(I8P)              :: vbr           !< Upper bound, scaled.
+  integer(I8P)              :: lower         !< First value inside the interval.
+  integer(I8P)              :: upper         !< Last value inside the interval.
+  integer(I8P)              :: s             !< Candidate at the scale of 10**k.
+  integer(I8P)              :: sp            !< Candidate at the scale of 10**(k+1).
+  integer                   :: q             !< Binary exponent.
+  integer                   :: k             !< Decimal scale.
+  integer                   :: h             !< Shift of the bounds.
+  logical                   :: closer        !< The lower bound is closer, at a power of 2.
+  logical                   :: even          !< The bounds read back as the number.
+  logical                   :: u_inside      !< The candidate below is inside.
+  logical                   :: w_inside      !< The candidate above is inside.
+
+  if (biased/=0) then
+    c = ior(shiftl(1_I8P, mantissa_bits), fraction)
+    q = biased - (2**(BIAS_BITS(mantissa_bits) - 1) - 1) - mantissa_bits
+    if (q<=0.and.q>-mantissa_bits - 1) then ! a small integer: exactly itself
+      if (iand(c, shiftl(1_I8P, -q) - 1_I8P)==0_I8P) then
+        digits = shiftr(c, -q)
+        exponent = 0
+        call strip_zeros(digits, exponent)
+        return
+      endif
+    endif
+  else
+    c = fraction
+    q = 1 - (2**(BIAS_BITS(mantissa_bits) - 1) - 1) - mantissa_bits
+  endif
+  even = iand(c, 1_I8P)==0_I8P
+  closer = fraction==0_I8P.and.biased>1
+  cbl = 4 * c - 2 + merge(1_I8P, 0_I8P, closer)
+  cb = 4 * c
+  cbr = 4 * c + 2
+  k = floor_shift(q * 1262611 - merge(524031, 0, closer), 22)
+  h = q + floor_shift(-k * 1741647, 19) + 1
+  vbl = round_to_odd(POW10_TABLE(1, -k), POW10_TABLE(2, -k), shiftl(cbl, h))
+  vb = round_to_odd(POW10_TABLE(1, -k), POW10_TABLE(2, -k), shiftl(cb, h))
+  vbr = round_to_odd(POW10_TABLE(1, -k), POW10_TABLE(2, -k), shiftl(cbr, h))
+  lower = vbl + merge(0_I8P, 1_I8P, even)
+  upper = vbr - merge(0_I8P, 1_I8P, even)
+  s = vb / 4_I8P
+  if (s>=10_I8P) then
+    sp = s / 10_I8P
+    u_inside = lower<=40_I8P * sp
+    w_inside = 40_I8P * sp + 40_I8P<=upper
+    if (u_inside.neqv.w_inside) then
+      digits = sp + merge(1_I8P, 0_I8P, w_inside)
+      exponent = k + 1
+      call strip_zeros(digits, exponent)
+      return
+    endif
+  endif
+  u_inside = lower<=4_I8P * s
+  w_inside = 4_I8P * s + 4_I8P<=upper
+  if (u_inside.neqv.w_inside) then
+    digits = s + merge(1_I8P, 0_I8P, w_inside)
+  elseif (vb>4_I8P * s + 2_I8P.or.(vb==4_I8P * s + 2_I8P.and.iand(s, 1_I8P)/=0_I8P)) then
+    digits = s + 1_I8P
+  else
+    digits = s
+  endif
+  exponent = k
+  call strip_zeros(digits, exponent)
+  endsubroutine shortest_digits
+
+  elemental function floor_shift(value, bits) result(shifted)
+  !< Return floor(value / 2**bits): nvfortran has no SHIFTA, and a right shift of a negative number needs the floor.
+  integer, intent(in) :: value   !< The value.
+  integer, intent(in) :: bits    !< The bits of the shift.
+  integer             :: shifted !< The result.
+
+  shifted = (value - modulo(value, 2**bits)) / 2**bits
+  endfunction floor_shift
+
+  elemental function BIAS_BITS(mantissa_bits) result(bits)
+  !< Return the bits of the exponent field of a format.
+  integer, intent(in) :: mantissa_bits !< Bits of the stored mantissa.
+  integer             :: bits          !< Bits of the exponent.
+
+  bits = merge(11, 8, mantissa_bits==52)
+  endfunction BIAS_BITS
+
+  elemental subroutine strip_zeros(digits, exponent)
+  !< Move the trailing zeros of the digits to the exponent.
+  integer(I8P), intent(inout) :: digits   !< Decimal digits, not zero.
+  integer,      intent(inout) :: exponent !< Decimal exponent.
+
+  do while (mod(digits, 10_I8P)==0_I8P)
+    digits = digits / 10_I8P
+    exponent = exponent + 1
+  enddo
+  endsubroutine strip_zeros
+
+  elemental function round_to_odd(g_high, g_low, cp) result(rounded)
+  !< Return the high word of g * cp (g of 128 bits) with its lowest bit set if any bit below is set.
+  integer(I8P), intent(in) :: g_high  !< High word of g.
+  integer(I8P), intent(in) :: g_low   !< Low word of g.
+  integer(I8P), intent(in) :: cp      !< The multiplier.
+  integer(I8P)             :: rounded !< Result.
+  integer(I8P)             :: x_high  !< High word of g_low * cp.
+  integer(I8P)             :: x_low   !< Low word of g_low * cp.
+  integer(I8P)             :: y_high  !< High word of g_high * cp.
+  integer(I8P)             :: y_low   !< Low word of g_high * cp.
+  integer(I8P)             :: carry   !< Carry.
+
+  call multiply(g_low, cp, x_high, x_low)
+  call multiply(g_high, cp, y_high, y_low)
+  call add(y_low, x_high, y_low, carry)
+  call add(y_high, carry, y_high, carry)
+  rounded = y_high
+  if (ior(shiftr(y_low, 1), 0_I8P)/=0_I8P) rounded = ior(rounded, 1_I8P)
+  endfunction round_to_odd
 
   elemental function eisel_lemire(digits, q, mantissa_bits, bias, infinity, even_min, even_max) result(bits)
   !< Return the bits of the positive binary float nearest to digits * 10**q, of the format with those parameters.
@@ -87,7 +217,7 @@ contains
   top = int(shiftr(upper, 63))
   shift = top + 64 - mantissa_bits - 3
   mantissa = shiftr(upper, shift)
-  power2 = shifta(217706 * q, 16) + 63 + top - lz + bias
+  power2 = floor_shift(217706 * q, 16) + 63 + top - lz + bias
   if (power2<=0) then ! subnormal, or zero
     if (1 - power2>=64) then
       bits = 0_I8P

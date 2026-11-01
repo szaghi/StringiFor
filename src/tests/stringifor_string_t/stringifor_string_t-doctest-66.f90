@@ -1,26 +1,33 @@
 program volatile_doctest
 use stringifor_string_t
- type(string) :: astring
- type(string), allocatable :: lines(:)
- logical :: test_passed(10)
- astring = 'This is an example of text justification.'
- call astring%justify(lines=lines, width=16)
- test_passed(1) = size(lines, dim=1)==3
- test_passed(2) = lines(1)//''=='This    is    an'
- test_passed(3) = lines(2)//''=='example  of text'
- test_passed(4) = lines(3)//''=='justification.  '
- astring = '  What must be   acknowledgment shall be '
- call astring%justify(lines=lines, width=16)
- test_passed(5) = lines(1)//''=='What   must   be'
- test_passed(6) = lines(2)//''=='acknowledgment  '
- test_passed(7) = lines(3)//''=='shall be        '
- call astring%justify(lines=lines, width=4)
- test_passed(8) = size(lines, dim=1)==6.and.lines(4)//''=='acknowledgment'
- astring = '   '
- call astring%justify(lines=lines, width=16)
- test_passed(9) = size(lines, dim=1)==0
- astring = 'caf'//char(195)//char(169)//' au lait'
- call astring%justify(lines=lines, width=4, by=SF_CHARS)
- test_passed(10) = lines(1)//''=='caf'//char(195)//char(169).and.lines(2)//''=='au  '
+ type(string), allocatable :: strings_arr(:, :)
+ logical :: test_passed(5)
+
+ strings_arr = reshape( source = &
+ [string('one'), string('two'), string('three'), &
+ string('ONE'), string('TWO'), string('THREE')], &
+ shape = [3, 2] )
+
+ test_passed(1) = all( strjoin(array=strings_arr) == &
+ reshape([string('onetwothree'), string('ONETWOTHREE')], &
+ shape = [2]) )
+
+ test_passed(2) = all( strjoin(array=strings_arr, sep='_') == &
+ reshape([string('one_two_three'), string('ONE_TWO_THREE')], &
+ shape = [2]) )
+
+ test_passed(3) = all( strjoin(array=strings_arr, is_col=.false.) == &
+ reshape([string('oneONE'), string('twoTWO'), string('threeTHREE')], &
+ shape = [3]) )
+
+ test_passed(4) = all( strjoin(array=strings_arr, sep='_', is_col=.false.) == &
+ reshape([string('one_ONE'), string('two_TWO'), string('three_THREE')], &
+ shape = [3]) )
+
+ call strings_arr(2, 1)%free
+ test_passed(5) = all( strjoin(array=strings_arr, sep='_', is_col=.false.) == &
+ reshape([string('one_ONE'), string('TWO'), string('three_THREE')], &
+ shape = [3]) )
+
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

@@ -1,12 +1,6 @@
 program volatile_doctest
 use stringifor_string_t
- type(string) :: string1
- logical :: test_passed(4)
- string1 = 'Hello World Hello!'
- test_passed(1) = string1%verify(set='llo')==verify(string='Hello World Hello!', set='llo')
- test_passed(2) = string1%verify(set='llo', back=.true.)==verify(string='Hello World Hello!', set='llo', back=.true.)
- string1 = 'a'//char(195)//char(169)
- test_passed(3) = string1%verify(set='a', back=.true.)==2
- test_passed(4) = string1%verify(set='a'//char(195)//char(169))==0
- print '(L1)', all(test_passed)
+ type(string) :: astring
+ astring = 'Hello World!   '
+ print "(L1)", astring%trim()==trim('Hello World!   ')
 endprogram volatile_doctest

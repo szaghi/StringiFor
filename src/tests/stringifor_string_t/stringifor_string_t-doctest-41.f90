@@ -1,12 +1,14 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
+ type(string) :: prefix
  logical :: test_passed(4)
- astring = '  one'//achar(9)//' two'//new_line('a')//'three  '
- test_passed(1) = astring%compact()//''=='one two three'
- test_passed(2) = astring%compact(sep=', ')//''=='one, two, three'
- test_passed(3) = astring%compact(sep='')//''=='onetwothree'
- astring = 'one'//char(227)//char(128)//char(128)//'two'//char(194)//char(160)
- test_passed(4) = astring%compact(unicode=.true.)//''=='one two'
+ astring = 'flower'
+ test_passed(1) = astring%common_prefix('flow')//''=='flow'
+ test_passed(2) = astring%common_prefix('flight')//''=='fl'
+ test_passed(3) = astring%common_prefix('dog')//''==''
+ call astring%free
+ prefix = astring%common_prefix('flow')
+ test_passed(4) = prefix%is_allocated().eqv..false.
  print '(L1)', all(test_passed)
 endprogram volatile_doctest
