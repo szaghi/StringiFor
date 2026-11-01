@@ -6,6 +6,7 @@ use, intrinsic :: ieee_arithmetic, only : ieee_positive_inf, ieee_quiet_nan, iee
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
+use stringifor_numbers, only : decimal_to_r4, decimal_to_r8
 use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
                             utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
                             utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units, &
@@ -4966,6 +4967,10 @@ contains
             if (present(iostat)) iostat = 0
             return
          endif
+         number = decimal_to_r4(mantissa, exponent) ! correctly rounded, whatever the digits and the power of ten
+         if (negative) number = -number
+         if (present(iostat)) iostat = 0
+         return
       endif
       call parse_special_number(raw=self%raw, special=special, negative=negative)
       if (special/=0) then
@@ -5042,6 +5047,10 @@ contains
             if (present(iostat)) iostat = 0
             return
          endif
+         number = decimal_to_r8(mantissa, exponent) ! correctly rounded, whatever the digits and the power of ten
+         if (negative) number = -number
+         if (present(iostat)) iostat = 0
+         return
       endif
       call parse_special_number(raw=self%raw, special=special, negative=negative)
       if (special/=0) then

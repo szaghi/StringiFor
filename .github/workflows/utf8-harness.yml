@@ -36,6 +36,9 @@ jobs:
     - name: Check the generated Unicode tables against the pinned UCD
       run: python3 -I scripts/utf8/gen_unicode_tables.py --check
 
+    - name: Check the generated number tables
+      run: python3 -I scripts/utf8/gen_number_tables.py --check
+
     - name: Build the library and the harness drivers
       run: bash scripts/utf8/build.sh
 
@@ -62,3 +65,6 @@ jobs:
 
     - name: Check that the regular expressions are linear in the subject (no ReDoS)
       run: build/utf8/gfortran/bin/regex_scaling
+
+    - name: Check the number parsing is faster than read
+      run: build/utf8/gfortran/bin/number_scaling

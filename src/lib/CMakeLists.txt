@@ -11,6 +11,8 @@ add_library(${LIB}
         stringifor.F90
         stringifor_regex.F90
         stringifor_string_t.F90
+        stringifor_number_tables.F90
+        stringifor_numbers.F90
         stringifor_unicode_tables.F90
         stringifor_utf8.F90
 )
