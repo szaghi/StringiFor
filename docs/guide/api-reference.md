@@ -38,6 +38,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `center(width[, fill_char])` | Centered in `width` characters, as Python `str.center` |
 | `colorize([color_fg][, color_bg][, style])` | ANSI terminal colorization via FACE; returns `character` |
 | `common_prefix(other)` / `common_prefix(array)` | Longest common prefix shared with another string/character, or with all elements of a string array |
+| `edit_distance(other[, by])` | Levenshtein distance from another string or character, in bytes or with `by=SF_CHARS` in characters |
 | `compact([sep][, unicode])` | Words separated by one `sep` (default space), whitespace runs collapsed and the ends removed; `unicode=.true.`: Unicode White_Space |
 | `decode(codec)` | Decode; `codec='base64'` is the only codec available, an unknown one gives a not allocated string |
 | `encode(codec)` | Encode; `codec='base64'` is the only codec available, an unknown one gives a not allocated string |
@@ -135,6 +136,8 @@ width methods also take `by=SF_COLUMNS`, display columns.
 |--------|-------------|
 | `to_number(kind)` | Cast string to the numeric kind of the `kind` argument |
 | `read_number(number[, iostat][, iomsg])` | Cast string to the kind of `number`, reporting a failure in `iostat`/`iomsg` (elemental subroutine) |
+
+The module procedure `shortest(number)` (`R4P`, `R8P`) returns a `string`, the shortest text that reads back as exactly `number`.
 
 The `kind` argument selects the return type — pass any literal of the target PENF kind:
 

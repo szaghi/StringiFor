@@ -248,6 +248,30 @@ Check first: on a string that is not a number `to_number` gives 0 (integer kinds
 
 A real is written with all the significant digits of its kind. `hex` reads the integer in the string.
 
+## Write a real as briefly as it reads back
+
+<<< @/examples/snippets/shortest_text.f90
+
+<<< @/examples/output/shortest_text.ansi{ansi}
+
+`shortest` gives the fewest digits that read back as exactly that number; the assignment gives all the digits of the kind.
+
+## Read reals written by Fortran, infinities and NaNs
+
+<<< @/examples/snippets/number_forms.f90
+
+<<< @/examples/output/number_forms.ansi{ansi}
+
+`1.5-101` is how E and ES edit descriptors write a three digit exponent. `2026-11` stays not a number.
+
+## Suggest the nearest word
+
+<<< @/examples/snippets/did_you_mean.f90
+
+<<< @/examples/output/did_you_mean.ansi{ansi}
+
+`edit_distance` counts the insertions, deletions and substitutions, in bytes or, with `by=SF_CHARS`, in characters.
+
 ## Read a whole file
 
 <<< @/examples/snippets/readfile.f90

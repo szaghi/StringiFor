@@ -50,9 +50,22 @@ value is ignored, pass any constant of the wanted kind (`1_I4P`, `1._R8P`). A ca
 integer string, a cast to an integer kind an integer string.
 
 A plain decimal number (a sign, at most 18 significant digits, a decimal point, an exponent) is converted without the
-`read` statement when the result is exact: any integer in the range of the kind, and a real whose digits and power of ten
-are exact in the kind (up to 15 digits and `1e22` for `R8P`), a single correctly rounded operation. Every other string goes
-through `read`: the result is the same, the plain numbers are about twenty times faster.
+`read` statement, and correctly rounded: any integer in the range of the kind, and any `R4P` or `R8P` real, by one exact
+operation when the digits and the power of ten are exact in the kind and by the Eisel-Lemire algorithm otherwise. About 50
+ns per number with gfortran, against about 500 ns for `read`. `R16P` and strings of more digits go through `read`, so
+those results are the compiler's (ifx and nvfortran are not always correctly rounded there).
+
+### The forms of a real
+
+<<< @/examples/snippets/number_forms.f90
+
+<<< @/examples/output/number_forms.ansi{ansi}
+
+- The exponent letter can be `e`, `E`, `d` or `D`. After a decimal point it can also be missing, with a sign and exactly 3
+  digits: `1.5-101` is what the E and ES edit descriptors write for a three digit exponent. `read` also takes `1-2` as
+  `1e-2`; here it is not a number, or `2026-11` would be one.
+- `nan`, `nan(chars)`, `inf` and `infinity`, in any case and with a sign, are reals, for `is_real` and `is_number` too.
+- Past the range of the kind, the result is an infinity or a zero with `iostat` 0.
 
 ::: warning
 On a string that does not hold a suitable number the result is 0 for an integer kind and a quiet NaN for a real kind:
@@ -75,8 +88,14 @@ gets the same value as `to_number`, 0 or NaN. It is elemental: on an array of st
 
 <<< @/examples/output/number_string.ansi{ansi}
 
+<<< @/examples/snippets/shortest_text.f90
+
+<<< @/examples/output/shortest_text.ansi{ansi}
+
 - An integer is written with its sign; a real with its sign and all the significant digits of its kind, so the string
   holds the nearest representable value. For another layout, write the number with a format into a character.
+- `shortest(number)`, a module procedure for `R4P` and `R8P`, returns the shortest text that reads back as exactly that
+  number, the closest of them if more than one, in the layout of Python's `repr`. The assignment keeps its format.
 - `hex([bits][, uppercase])` returns the hexadecimal representation of the integer in the string, or a string not
   allocated if it is not an integer. A negative number is in two's complement on `bits` bits (default 64); the number
   is truncated to its lowest `bits` bits.

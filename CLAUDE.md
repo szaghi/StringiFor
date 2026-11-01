@@ -88,7 +88,7 @@ Doctests gotchas:
 UTF-8 harness (issue #51; `docs/guide/contributing.md`, section *UTF-8 harness*): `bash scripts/oracle.sh SUITE`
 (methods against a Python reference over a byte-string corpus), `bash scripts/bench.sh run|compare` (timings against
 `scripts/utf8/baselines/`, pinned to one CPU), `python3 -I scripts/utf8/gen_unicode_tables.py [--check]` (the generated
-`src/lib/stringifor_unicode_tables.F90`: never edit it by hand). The drivers live in `scripts/utf8/src/`, outside
+`src/lib/stringifor_unicode_tables.F90`: never edit it by hand). `python3 -I scripts/utf8/gen_number_tables.py [--check]` does the same for `src/lib/stringifor_number_tables.F90`; `build/utf8/gfortran/bin/number_scaling` times the number parsing against `read`. The drivers live in `scripts/utf8/src/`, outside
 `src/`, so FoBiS, make and CMake never build them; `scripts/utf8/build.sh` compiles the library sources itself (any
 `FC`, `-D_NVF` added for nvfortran). Compiler defects found by the oracle go in `KNOWN_COMPILER_ISSUES`
 (`scripts/utf8/oracle.py`), never into the reference.

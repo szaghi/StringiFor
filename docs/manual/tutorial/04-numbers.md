@@ -42,7 +42,8 @@ integer in the string.
 <<< @/examples/output/report_4.ansi{ansi}
 
 An integer keeps its sign, a real is written with all the significant digits of its kind: a string holds the number
-exactly as it is. When you want a layout, print the number with a format, as `report` does for the highest price.
+exactly as it is. When you want a layout, print the number with a format, as `report` does for the highest price. For the
+shortest text that reads back as the same number, `0.1` and not `+0.10000000000000001E+000`, use `shortest(number)`.
 
 The whole program:
 
@@ -50,7 +51,7 @@ The whole program:
 
 ::: tip What you learned
 `is_number`, `is_integer`, `is_real`; `to_number(kind=...)` and `read_number` with an error status; numbers assigned
-to strings; `hex`.
+to strings; `shortest`; `hex`.
 Reference: [Numbers](/guide/numbers).
 :::
 

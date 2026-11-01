@@ -1,0 +1,7 @@
+$ number_forms
+   1.5-101 T   1.5000-101
+     1.5d3 T   1.5000E+03
+       inf T     Infinity
+ -Infinity T    -Infinity
+       nan T          NaN
+   2026-11 F          NaN
