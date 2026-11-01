@@ -4,6 +4,43 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.11.1] — 2026-11-01
+### Added
+- **numbers**: Read the exponent without its letter, nan and inf
+
+- **numbers**: Convert any number of up to 18 digits without read
+
+- **numbers**: Shortest text of a real, and edit_distance
+
+- **numbers**: Settle reals of more than 18 digits on the first 18
+
+
+### Documentation
+- **examples**: Animated sessions of regex, UTF-8 and numbers
+
+- **tutorial**: Chapter 8, Unicode text
+
+- **cookbook**: Recipes for sorting, escapes, chunked split and regex calls
+
+- **readme**: Show the regex, UTF-8 and numbers sessions
+
+- **site**: Project logo, colour palette, GitHub link and animated sessions
+
+- **site**: A new logo, an S cut on the diagonal
+
+- **regex**: Warn that nvfortran reads backslashes in patterns
+
+- **numbers**: Forms of a real, Eisel-Lemire, shortest and edit_distance
+
+
+### Fixed
+- **numbers**: Settle long reals exactly, without read
+
+- **numbers**: Report an integer past the range of its kind
+
+- **numbers**: Reject malformed numbers and read integer exponents exactly
+
+
 ## [1.11.0] — 2026-10-31
 ### Added
 - **regex**: Regular expressions, a Pike VM linear in the subject
