@@ -1808,6 +1808,11 @@ def is_real_reference(data: bytes) -> bool:
     return parsed is not None and (parsed[0] != "finite" or bool(re.search(rb"[.eEdD]", data)))
 
 
+def is_integer_reference(data: bytes) -> bool:
+    """Return whether the string is an integer, with the optional exponent is_integer documents."""
+    return re.fullmatch(rb"[ \t]*[+-]?\d+(?:[eE]\+?\d+)?[ \t]*", data) is not None
+
+
 def is_number_reference(data: bytes) -> bool:
     """Return whether the string is a number."""
     return parse_number(data) is not None
@@ -1871,16 +1876,21 @@ def layout_repr(negative: bool, digits: int, exponent: int) -> str:
 
 def integer_reference(data: bytes, bits: int) -> str:
     """Return the integer of a plain integer string in the range of a kind of those bits, else E."""
-    found = re.fullmatch(rb"[ \t]*([+-]?\d+)[ \t]*", data)
+    found = re.fullmatch(rb"[ \t]*([+-]?\d+)(?:[eE]\+?(\d+))?[ \t]*", data)
     if not found:
         return "E"
     value = int(found[1])
+    power = int(found[2] or 0)
+    if value and power > 40:
+        return "E"
+    value *= 10 ** (power if value else 0)
     return str(value) if -(2 ** (bits - 1)) <= value < 2 ** (bits - 1) else "E"
 
 
 def integer_texts(rng: random.Random, total: int) -> list[str]:
     """Return integer strings: the limits of the kinds and their neighbours, long digit runs, and malformed ones."""
-    texts = ["", " ", "+", "-", "1x", "--1", "1.5", "0", "-0", "+0", "000", "0000000000000000000000000000012"]
+    texts = ["12e3", "12E+2", "1e400", "0e999", "1e18", "9e18", "1e19", "-1e2", "1e2", "127e0", "128e0", "1E+0", "1e", "1e+", "1e-2", "1 2", "1e2 3"]
+    texts += ["", " ", "+", "-", "1x", "--1", "1.5", "0", "-0", "+0", "000", "0000000000000000000000000000012"]
     for bits in (8, 16, 32, 64):
         for limit in (2 ** (bits - 1), -(2 ** (bits - 1))):
             for offset in (-2, -1, 0, 1, 2):
@@ -1984,6 +1994,12 @@ def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
             calls += [("is_real", (data,)), ("is_number", (data,))]
     for text in integer_texts(rng, max(total // 20, 2000)):
         calls += [(name, (text.encode(),)) for name in ("to_i1", "to_i4", "to_i8")]
+    fuzz = ["1 2", "1.5 2", "1e5 6", ".e5", ".E+5", "+.e5", ". 5", "1 .5", "1. 5", "- 1", "1e 5", "1.5-301 2"]
+    for _ in range(max(total // 10, 5000)):
+        fuzz.append("".join(rng.choice("0123456789+-.eEdD \t") for _ in range(rng.randint(0, 8))))
+    for text in fuzz:
+        data = text.encode()
+        calls += [(name, (data,)) for name in ("is_integer", "is_real", "is_number", "to_r8")]
     specials8 = [0, 1 << 63, 0x7FF << 52, 0xFFF << 52, 0x7FF8 << 48, 1, (1 << 52) - 1, 1 << 52, (0x7FF << 52) - 1, 3 << 52]
     specials4 = [0, 1 << 31, 0xFF << 23, 0x1FF << 23, 0x7FC << 20, 1, (1 << 23) - 1, 1 << 23, (0xFF << 23) - 1]
     specials8 += [(e << 52) for e in range(1, 2047)]  # the powers of 2: the rounding interval is asymmetric
@@ -2029,6 +2045,7 @@ SUITES: dict[str, list[Op]] = {
         Op("to_i1", lambda d, r: [], lambda d: integer_reference(d, 8)),
         Op("to_i4", lambda d, r: [], lambda d: integer_reference(d, 32)),
         Op("to_i8", lambda d, r: [], lambda d: integer_reference(d, 64)),
+        Op("is_integer", lambda d, r: [], is_integer_reference),
         Op("is_real", lambda d, r: [], is_real_reference),
         Op("shortest_r8", lambda d, r: [], lambda c: shortest_r8_reference(c)),
         Op("shortest_r4", lambda d, r: [], lambda c: shortest_r4_reference(c)),

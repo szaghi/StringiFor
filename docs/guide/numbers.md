@@ -32,7 +32,7 @@ title: Numbers
 
 | Method | True if the string is |
 |---|---|
-| `is_integer([allow_spaces])` | an integer, with an optional sign |
+| `is_integer([allow_spaces])` | an integer, with an optional sign and an optional positive exponent (`12e3`) |
 | `is_real([allow_spaces])` | a real: digits with a decimal point or an exponent (or both); an integer is not a real |
 | `is_number([allow_spaces])` | an integer or a real |
 | `is_digit()` | made of digits only |
@@ -55,7 +55,8 @@ operation when the digits and the power of ten are exact in the kind and by the 
 ns per number with gfortran, against about 500 ns for `read`. A real of more digits is settled on its first 18 when both
 ways of rounding them give the same result, and otherwise by comparing all its digits exactly. So `R4P` and `R8P` do not
 depend on the compiler. `R16P` goes through `read`, so its results are the compiler's.
-An integer past the range of the kind is a failure: `iostat` is positive, the result 0.
+An integer past the range of the kind is a failure: `iostat` is positive, the result 0. Whatever `is_integer` accepts,
+`12e3` included, an integer kind reads, with every compiler.
 
 ### The forms of a real
 

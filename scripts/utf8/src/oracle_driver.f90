@@ -86,6 +86,8 @@ do
   case ('to_i8')
     call s%read_number(i8, iostat=status)
     call put_integer(i8, status)
+  case ('is_integer')
+    call put_logical(s%is_integer())
   case ('is_real')
     call put_logical(s%is_real())
   case ('is_number')

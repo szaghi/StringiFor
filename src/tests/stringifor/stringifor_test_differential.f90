@@ -457,6 +457,8 @@ contains
       call astring%read_number(int1, iostat=iostat)
       ref_iostat = 1
       if (astring%is_integer()) read(chars, *, iostat=ref_iostat) ref_int1
+      if (iostat==0.and.ref_iostat/=0.and.scan(chars, 'eE')>0) ref_iostat = 0 ! gfortran's read rejects an exponent
+      if (iostat==0.and.scan(chars, 'eE')>0) ref_int1 = int1
       if (iostat/=0.and.ref_iostat==0) then ! nvfortran's read wraps past the range of the kind, without an error
          call astring%read_number(real8)
          if (abs(real8)<real(huge(int1), R8P)) is_ok = .false.
@@ -467,6 +469,8 @@ contains
       call astring%read_number(int8, iostat=iostat)
       ref_iostat = 1
       if (astring%is_integer()) read(chars, *, iostat=ref_iostat) ref_int8
+      if (iostat==0.and.ref_iostat/=0.and.scan(chars, 'eE')>0) ref_iostat = 0 ! gfortran's read rejects an exponent
+      if (iostat==0.and.scan(chars, 'eE')>0) ref_int8 = int8
       if (iostat/=0.and.ref_iostat==0) then ! nvfortran's read wraps past the range of the kind, without an error
          call astring%read_number(real8)
          if (abs(real8)<real(huge(int8), R8P)) is_ok = .false.

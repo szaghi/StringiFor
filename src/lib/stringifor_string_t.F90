@@ -4990,7 +4990,7 @@ contains
       else
          call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
       endif
-      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+      if (is_fast) then ! exact: the read statement rejects an exponent (gfortran) or wraps past the range (nvfortran)
          if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I1P)
             if (present(iostat)) iostat = 0
@@ -5001,10 +5001,6 @@ contains
          return
       endif
       iomsg_ = 'the string is not an integer'
-      if (self%is_integer()) then
-         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
-         if (iostat_/=0) number = 0_I1P
-      endif
    endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
@@ -5042,7 +5038,7 @@ contains
       else
          call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
       endif
-      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+      if (is_fast) then ! exact: the read statement rejects an exponent (gfortran) or wraps past the range (nvfortran)
          if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I2P)
             if (present(iostat)) iostat = 0
@@ -5053,10 +5049,6 @@ contains
          return
       endif
       iomsg_ = 'the string is not an integer'
-      if (self%is_integer()) then
-         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
-         if (iostat_/=0) number = 0_I2P
-      endif
    endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
@@ -5115,7 +5107,7 @@ contains
       else
          call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
       endif
-      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+      if (is_fast) then ! exact: the read statement rejects an exponent (gfortran) or wraps past the range (nvfortran)
          if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I4P)
             if (present(iostat)) iostat = 0
@@ -5126,10 +5118,6 @@ contains
          return
       endif
       iomsg_ = 'the string is not an integer'
-      if (self%is_integer()) then
-         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
-         if (iostat_/=0) number = 0_I4P
-      endif
    endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
@@ -5166,7 +5154,7 @@ contains
       else
          call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
       endif
-      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+      if (is_fast) then ! exact: the read statement rejects an exponent (gfortran) or wraps past the range (nvfortran)
          if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I8P)
             if (present(iostat)) iostat = 0
@@ -5177,10 +5165,6 @@ contains
          return
       endif
       iomsg_ = 'the string is not an integer'
-      if (self%is_integer()) then
-         read(self%raw, *, iostat=iostat_, iomsg=iomsg_) number
-         if (iostat_/=0) number = 0_I8P
-      endif
    endif
    if (present(iostat)) iostat = iostat_
    if (present(iomsg).and.iostat_/=0) iomsg = iomsg_
@@ -6184,7 +6168,9 @@ contains
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(6)
+   !< logical      :: test_passed(7)
+   !< astring = '1 2'
+   !< test_passed(7) = astring%is_integer().eqv..false.
    !< astring = '   -1212112 '
    !< test_passed(1) = astring%is_integer().eqv..true.
    !< astring = '   -1212112'
@@ -6245,6 +6231,8 @@ contains
                stage = 2
             case(3:4)
                stage = 5
+            case(6) ! digits after the blanks that end the number
+               is_integer = .false.
             case default
                continue
             endselect
@@ -6451,7 +6439,7 @@ contains
                is_real = allow_spaces_
                continue
             case(2:4, 7)
-               is_real = allow_spaces_
+               is_real = allow_spaces_.and.(stage/=3.or.has_leading_digit) ! a point alone is not a number
                stage = 8
             case(9)
                is_real = allow_spaces_.and.exp_digits==3
@@ -6483,6 +6471,8 @@ contains
             case(9)
                exp_digits = exp_digits + 1
                is_real = exp_digits<=3
+            case(8) ! digits after the blanks that end the number
+               is_real = .false.
             case default
                continue
             endselect
@@ -6497,6 +6487,7 @@ contains
          case('e','E','d','D')
             select case(stage)
             case(2:4)
+               is_real = stage/=3.or.has_leading_digit ! a point alone is not a mantissa
                stage = 5
                has_real_marker = .true.
             case default
@@ -7784,8 +7775,8 @@ contains
 
    ! non type-bound-procedures
    pure subroutine parse_long_integer(raw, is_plain, number, fits)
-   !< Parse `[blanks][sign]digits[blanks]` of any length: the value if it fits in I8P, whose lowest value has no positive
-   !< counterpart, so the digits accumulate on the negative side.
+   !< Parse an integer as [[string:is_integer]] accepts it, `[blanks][sign]digits[e|E[+]digits][blanks]`, of any length: the
+   !< value if it fits in I8P, whose lowest value has no positive counterpart, so it accumulates on the negative side.
    !<
    !< @note The doctest is not necessary, this being tested by the oracle.
    character(kind=CK, len=*), intent(in)  :: raw      !< Raw characters data.
@@ -7796,6 +7787,7 @@ contains
    logical                                :: negative !< The number is negative.
    integer                                :: c        !< Character counter.
    integer                                :: d        !< Value of a digit.
+   integer                                :: power    !< Value of the exponent.
 
    is_plain = .false.
    number = 0_I8P
@@ -7824,6 +7816,32 @@ contains
       endif
       c = c + 1
    enddo
+   if (.not.is_plain) return
+   if (c<=len(raw)) then
+      if (raw(c:c)=='e'.or.raw(c:c)=='E') then
+         c = c + 1
+         if (c<=len(raw)) then
+            if (raw(c:c)=='+') c = c + 1
+         endif
+         power = 0
+         is_plain = .false.
+         do while (c<=len(raw))
+            d = iachar(raw(c:c)) - iachar('0')
+            if (d<0.or.d>9) exit
+            is_plain = .true.
+            if (power<=99) power = power * 10 + d ! past any kind: it saturates
+            c = c + 1
+         enddo
+         if (.not.is_plain) return
+         if (number/=0_I8P) then
+            do d=1, power
+               if (number<LOWEST / 10_I8P) fits = .false.
+               if (.not.fits) exit
+               number = number * 10_I8P
+            enddo
+         endif
+      endif
+   endif
    do while (c<=len(raw))
       if (raw(c:c)/=SPACE.and.raw(c:c)/=TAB) then
          is_plain = .false.

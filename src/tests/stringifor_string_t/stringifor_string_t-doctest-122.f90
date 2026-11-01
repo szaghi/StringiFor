@@ -1,7 +1,9 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(6)
+ logical :: test_passed(7)
+ astring = '1 2'
+ test_passed(7) = astring%is_integer().eqv..false.
  astring = '   -1212112 '
  test_passed(1) = astring%is_integer().eqv..true.
  astring = '   -1212112'
