@@ -1,0 +1,5 @@
+call re%compile('(?P<y>\d{4})-(?P<m>\d\d)(-\d\d)?')
+print '(A,I0,A,I0)', 'groups: ', re%group_count(), ', m is number ', re%group_index('m')
+m = re%search('2026-10')
+g = m%groups()
+print '(3A,L2)', g(1)%chars(), ' ', g(2)%chars(), g(3)%is_allocated()

@@ -1,0 +1,11 @@
+$ regex_calls
+key 42
+1=x, 22=y
+re_fullmatch 2026-10-31: T
+fullmatch on 2026-10-31: F
+search on 2026-10-31:    T
+groups: 3, m is number 2
+2026 10 F
+NAME  10  13
+T
+2 F

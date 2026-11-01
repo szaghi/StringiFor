@@ -96,6 +96,15 @@ the empty fields, as in a CSV record, pass `keep_empty=.true.`.
 `keep_empty=.true.` keeps the empty cell in its column, and `read_number` reports, with a positive `iostat`, a cell that
 is not a number instead of returning 0 or NaN.
 
+## Split a very long string
+
+<<< @/examples/snippets/split_big.f90
+
+<<< @/examples/output/split_big.ansi{ansi}
+
+`split_chunked` gives the tokens of `split`, working through the string in `chunks` pieces, which saves memory on very
+long strings. Repeated separators are collapsed.
+
 ## Split once, at the first separator
 
 <<< @/examples/snippets/partition.f90
@@ -166,6 +175,38 @@ groups without capturing, so `findall` returns the whole matches.
 
 `sub` rebuilds the name from the groups `\1` to `\4`; `nsub` tells whether the pattern matched, so the other names are
 left alone. To rename for real, pass the two names to `rename` (a common extension) or to `execute_command_line`.
+
+## Search or replace once, without compiling
+
+<<< @/examples/snippets/regex_calls-oneoff.f90
+
+<<< @/examples/output/regex_calls.ansi{ansi}
+
+`re_search`, `re_fullmatch`, `re_findall`, `re_split` and `re_sub` take the subject first and the pattern as a character,
+compiled at each call: in a loop, compile a `regex` once and pass it instead. A malformed pattern stops the program;
+compile it yourself with `iostat` to handle the error.
+
+## Check that a whole string has a shape
+
+<<< @/examples/snippets/regex_calls-whole.f90
+
+`search` finds the pattern anywhere, `match` only at the start, `fullmatch` and `re_fullmatch` only on the whole string:
+that is the one for validating input.
+
+## Work with the groups of a match
+
+<<< @/examples/snippets/regex_calls-groups.f90
+
+`group_count` and `group_index` ask the regex; `groups` returns the texts of all the groups of a match, and a group that
+did not take part is a not allocated string, not an empty one.
+
+## Ignore case, match lines, and catch a bad pattern
+
+<<< @/examples/snippets/regex_calls-flags.f90
+
+`i` ignores the ASCII case, `m` makes `^` and `$` match at each line, `s` lets the dot match a line feed; they go in
+`flags`, or at the start of the pattern. With `iostat` a malformed pattern gives the byte of the error and leaves the
+regex not compiled (`is_compiled`), and such a regex matches nothing.
 
 ## Get the text between two tags
 
@@ -323,6 +364,20 @@ The last line is left-justified and padded; a word longer than the width stays a
 
 Fields of digits are compared as integers of any size, the others as text. It is not semantic versioning: `1.0.0-rc1` is greater than `1.0.0`.
 
+## Sort an array of strings
+
+<<< @/examples/snippets/sorting-orders.f90
+
+<<< @/examples/snippets/sorting-permutation.f90
+
+<<< @/examples/snippets/sorting-custom.f90
+
+<<< @/examples/output/sorting.ansi{ansi}
+
+`strsort` is a stable sort in place. `less` chooses the order: `strless`, the default, is byte order; `strless_natural`
+puts `run2` before `run10`; `strless_nocase` ignores the ASCII case; or write your own pure function with the interface
+`strsort_less`. `index` returns the permutation, so that other arrays can follow the strings.
+
 ## Encode and decode in base64
 
 <<< @/examples/snippets/encode_base64.f90
@@ -334,6 +389,29 @@ Fields of digits are compared as integers of any size, the others as text. It is
 <<< @/examples/snippets/escape.f90
 
 <<< @/examples/output/escape.ansi{ansi}
+
+## Escape text for XML or HTML
+
+<<< @/examples/snippets/xml_escape-write.f90
+
+<<< @/examples/snippets/xml_escape-read.f90
+
+<<< @/examples/output/xml_escape.ansi{ansi}
+
+`escape_xml` protects `& < > " '`; pass `attribute=.true.` for an attribute value, so that its line ends survive.
+`unescape_xml` reads the entities back, and `xml_error` gives the byte of the first malformed reference: `&nbsp;` is one,
+as XML does not define it.
+
+## Log any bytes readably
+
+<<< @/examples/snippets/c_escapes-log.f90
+
+<<< @/examples/snippets/c_escapes-errors.f90
+
+<<< @/examples/output/c_escapes.ansi{ansi}
+
+`escape_c` writes any bytes as printable ASCII and `unescape_c` reads them back exactly; `escapes_error` gives the byte
+of the first malformed escape. See [8. Unicode text](./tutorial/08-unicode).
 
 ## Print in colour
 
