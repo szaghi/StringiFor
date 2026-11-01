@@ -1909,7 +1909,7 @@ def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
         "2.4703282292062327e-324", "4.9406564584124654e-324", "1.7976931348623157e308", "1.7976931348623158e308",
         "1.7976931348623159e308", "1e308", "1e309", "1e-400", "0e999", "-0.0", "-0e-999", "9007199254740993.0",
         "9007199254740992.5", "16777217.0", "16777219.0", "1.17549435e-38", "1.4e-45", "7e-46", "7.1e-46", "3.4028235e38",
-        "3.4028236e38", "3.40282367e38", "1.5-301", "1.5+301", "-.5-101", "5.-101", "1.5-301 ", " \t1.5-301", "1.5d-301", "1.5D+3",
+        "3.4028236e38", "3.40282367e38", "1e100000", "1e-100000", "1e999999", "1.5e-999999", "0e999999", "1.5-301", "1.5+301", "-.5-101", "5.-101", "1.5-301 ", " \t1.5-301", "1.5d-301", "1.5D+3",
         "12", "+12", "-12 ", "1.", ".5", "+.5", "1e5", "1E5", "1d5", "1.5e+3", "1.5e-3",
         "12x", "1.5.6", "1-2", "2026-11", "2026-11-01", "1.5-30", "1.5-3011", "1.5-30x", "", "   ", "e5", ".", "+", "-", "1e", "1e+",
         "nan", "NaN", "NAN", "-nan", "+nan", " nan ", "nan()", "nan(abc_1)", "NaN(0)", "nan(", "nan)", "nan(a b)", "nanx", "na", "n",
@@ -1918,7 +1918,7 @@ def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     fractions = [str(n) for n in (2**53 + 1, 2**53 + 3, 2**54 + 2, 2**24 + 1, 2**24 + 3, 2**25 + 2)]
     texts += [f + ".0" for f in fractions]
     while len(texts) < total:
-        k = rng.randrange(8)
+        k = rng.randrange(9)
         if k == 0:  # any double, shortest
             texts.append(repr(struct.unpack(">d", rng.getrandbits(64).to_bytes(8, "big"))[0]))
         elif k == 1:  # any double, 17 digits, as a program writes it
@@ -1940,6 +1940,16 @@ def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
             texts.append(f"{n << rng.randint(0, 59 - width)}.0" if width == 53 else f"{n << rng.randint(0, 30)}.0")
         elif k == 6:  # the exponent without its letter
             texts.append(f"{rng.random() * 9 + 1:.{rng.randint(0, 16)}f}{rng.choice('+-')}{rng.randint(100, 330)}")
+        elif k == 7:  # the exact midpoint of two floats, or just off it: only all the digits settle these
+            width, low_exponent, high_exponent = rng.choice(((53, -1074, 960), (24, -149, 100)))
+            m = rng.getrandbits(width) | 1
+            value = Fraction(m) * Fraction(2) ** rng.randint(low_exponent - 1, high_exponent)
+            digits = str(value.numerator * 5 ** max(0, value.denominator.bit_length() - 1))
+            exponent = -(value.denominator.bit_length() - 1)
+            tail = rng.choice(("", "1", "0000000000000000000001"))
+            if tail:
+                digits, exponent = digits + tail, exponent - len(tail)
+            texts.append(f"{digits}e{exponent}")
         else:  # more than 18 digits: read
             digits = "".join(rng.choice("0123456789") for _ in range(rng.randint(19, 30)))
             texts.append(f"{digits[0]}.{digits[1:]}e{rng.randint(-340, 320)}")
@@ -2199,11 +2209,6 @@ SUITES: dict[str, list[Op]] = {
 
 # Results that are wrong because of a compiler, not of StringiFor: compiler -> [(reason, predicate)].
 # They are counted and shown apart, never silently: remove an entry when the compiler is fixed.
-def over_18_digits(data: bytes) -> bool:
-    """Return whether a number string has more than 18 digits, not counting the leading zeros."""
-    return len(re.split(rb"[eEdD+-]", data.strip().lstrip(b"+-"))[0].replace(b".", b"").lstrip(b"0")) > 18
-
-
 KNOWN_COMPILER_ISSUES: dict[
     str, list[tuple[str, Callable[[str, tuple[Arg, ...]], bool]]]
 ] = {
@@ -2217,18 +2222,6 @@ KNOWN_COMPILER_ISSUES: dict[
             "nvfortran 26.9: index(string, substring) with assumed-length dummies is wrong when the substring holds a "
             "NUL byte (a reduced case gives 12 for 17)",
             lambda name, call: name.startswith("index") and b"\x00" in call[1],
-        ),
-        (
-            "nvfortran 26.9: the read statement flushes a subnormal R4P to zero; it only serves the few strings of more "
-            "than 18 digits not settled on the first 18",
-            lambda name, call: name == "to_r4" and over_18_digits(call[0]),
-        ),
-    ],
-    "ifx": [
-        (
-            "ifx 2025.3: the read statement is not correctly rounded on some ties, and fails on an overflow; it only "
-            "serves the few strings of more than 18 digits not settled on the first 18",
-            lambda name, call: name in ("to_r4", "to_r8") and over_18_digits(call[0]),
         ),
     ],
 }

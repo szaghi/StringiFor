@@ -296,12 +296,14 @@ contains
    character(len=*), parameter   :: FILE_NAME = 'stringifor_test_differential.tmp' !< File name.
    integer                       :: unit      !< Logical unit.
    integer                       :: i, l      !< Counters.
+   integer                       :: copies    !< Copies of a line.
 
    is_ok = .true.
    do i=1, CASES / 50
       content = ''
       do l=1, random_integer(0, 6)
-         content = content//repeat(random_string(max_len=8), random_integer(1, 300))//new_line('a') ! up to 2400 chars
+         copies = random_integer(1, 300) ! not in the call: nvfortran 26.9 evaluates the NCOPIES of REPEAT twice
+         content = content//repeat(random_string(max_len=8), copies)//new_line('a') ! up to 2400 chars
       enddo
       if (random_integer(0, 1)==1) content = content//random_string(max_len=8) ! last line without terminator
       open(newunit=unit, file=FILE_NAME, access='stream', form='unformatted', status='replace')
@@ -431,7 +433,9 @@ contains
       call astring%read_number(real8, iostat=iostat)
       ref_iostat = 1
       if (astring%is_number()) read(chars, *, iostat=ref_iostat) ref_real8
-      if (iostat==0.and.ref_iostat/=0) then ! a compiler's read may fail past the range of the kind (ifx)
+      if (astring%is_integer().and.len_trim(adjustl(chars))>18) then ! nvfortran's read wraps these, even into a real
+         continue
+      elseif (iostat==0.and.ref_iostat/=0) then ! a compiler's read may fail past the range of the kind (ifx)
          is_ok = is_ok.and.(abs(real8)<tiny(real8).or.abs(real8)>huge(real8))
       elseif ((iostat==0).neqv.(ref_iostat==0)) then
          is_ok = .false.
@@ -441,7 +445,9 @@ contains
       call astring%read_number(real4, iostat=iostat)
       ref_iostat = 1
       if (astring%is_number()) read(chars, *, iostat=ref_iostat) ref_real4
-      if (iostat==0.and.ref_iostat/=0) then ! a compiler's read may fail past the range of the kind (ifx)
+      if (astring%is_integer().and.len_trim(adjustl(chars))>18) then ! nvfortran's read wraps these, even into a real
+         continue
+      elseif (iostat==0.and.ref_iostat/=0) then ! a compiler's read may fail past the range of the kind (ifx)
          is_ok = is_ok.and.(abs(real4)<tiny(real4).or.abs(real4)>huge(real4))
       elseif ((iostat==0).neqv.(ref_iostat==0)) then
          is_ok = .false.
@@ -502,14 +508,16 @@ contains
    case(3)
       chars = trim(LIMITS(random_integer(1, size(LIMITS))))
    case default
-      chars = repeat(' ', random_integer(0, 2))//random_sign()
+      c = random_integer(0, 2) ! not in the call: nvfortran 26.9 evaluates the NCOPIES of REPEAT twice
+      chars = repeat(' ', c)//random_sign()
       chars = chars//random_digits(20)
       if (random_integer(0, 1)==1) chars = chars//'.'//random_digits(20)
       if (random_integer(0, 1)==1) then
          c = random_integer(1, 4)
          chars = chars//'eEdD'(c:c)//random_sign()//random_digits(3)
       endif
-      chars = chars//repeat(' ', random_integer(0, 1))
+      c = random_integer(0, 1)
+      chars = chars//repeat(' ', c)
    endselect
    endfunction random_number_string
 

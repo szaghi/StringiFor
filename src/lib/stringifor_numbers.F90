@@ -11,9 +11,12 @@ implicit none
 private
 public :: decimal_to_r4
 public :: decimal_to_r8
+public :: settle_r4
+public :: settle_r8
 public :: shortest_digits
 
 integer(I8P), parameter :: LOW32 = 4294967295_I8P !< The low 32 bits.
+integer(I8P), parameter :: LIMB = 1000000000_I8P  !< Base of the big integers of the exact comparison.
 
 contains
   elemental function decimal_to_r8(mantissa, exponent) result(number)
@@ -49,6 +52,184 @@ contains
   endif
   number = transfer(int(bits, I4P), number)
   endfunction decimal_to_r4
+
+  elemental function settle_r8(raw, exponent, low) result(number)
+  !< Return the real nearest to a number of more than 18 digits, when its first 18 digits leave two candidates.
+  !<
+  !< See [[settle]]. `raw` is a number accepted by the parser, `exponent` its exponent for the first 18 digits, `low` the
+  !< real nearest to those 18 digits, the lower candidate.
+  character(len=*), intent(in) :: raw      !< The number, as text.
+  integer,          intent(in) :: exponent !< Decimal exponent of the first 18 digits.
+  real(R8P),        intent(in) :: low      !< The lower candidate.
+  real(R8P)                    :: number   !< The number.
+
+  number = transfer(settle(raw, exponent, transfer(low, 1_I8P), 52, 1023), number)
+  endfunction settle_r8
+
+  elemental function settle_r4(raw, exponent, low) result(number)
+  !< Return the real nearest to a number of more than 18 digits, when its first 18 digits leave two candidates.
+  !<
+  !< See [[settle]] and [[settle_r8]].
+  character(len=*), intent(in) :: raw      !< The number, as text.
+  integer,          intent(in) :: exponent !< Decimal exponent of the first 18 digits.
+  real(R4P),        intent(in) :: low      !< The lower candidate.
+  real(R4P)                    :: number   !< The number.
+
+  number = transfer(int(settle(raw, exponent, int(transfer(low, 1_I4P), I8P), 23, 127), I4P), number)
+  endfunction settle_r4
+
+  pure function settle(raw, exponent, low, mantissa_bits, bias) result(bits)
+  !< Return the bits of `low` or of the next float, comparing all the digits with the midpoint of the two, exactly.
+  !<
+  !< The digits D, times 10**q, against the midpoint (2m + 1) * 2**p: each side takes the factors that would be negative
+  !< powers on the other, so both are integers. In base 10**9 a power of ten is mostly a shift of limbs, so the cost is
+  !< linear in the digits.
+  character(len=*), intent(in) :: raw           !< The number, as text.
+  integer,          intent(in) :: exponent      !< Decimal exponent of the first 18 digits.
+  integer(I8P),     intent(in) :: low           !< Bits of the lower candidate, sign clear.
+  integer,          intent(in) :: mantissa_bits !< Bits of the stored mantissa.
+  integer,          intent(in) :: bias          !< Exponent bias.
+  integer(I8P)                 :: bits          !< The bits of the number.
+  character(len=len(raw))      :: digits        !< Significant digits.
+  integer(I8P), allocatable    :: left(:)       !< D * 10**max(q, 0) * 2**max(-p, 0).
+  integer(I8P), allocatable    :: right(:)      !< (2m + 1) * 10**max(-q, 0) * 2**max(p, 0).
+  integer(I8P)                 :: m             !< Integer mantissa of the lower candidate.
+  integer                      :: n             !< Number of digits.
+  integer                      :: q             !< Decimal exponent of all the digits.
+  integer                      :: p             !< Binary exponent of the midpoint.
+  integer                      :: biased        !< Biased exponent of the lower candidate.
+  integer                      :: size_         !< Limbs of the big integers.
+  integer                      :: order         !< Sign of left - right.
+
+  call significant_digits(raw, digits, n)
+  q = exponent - (n - 18)
+  m = ibits(low, 0, mantissa_bits)
+  biased = int(shiftr(low, mantissa_bits))
+  if (biased==0) then
+    p = 1 - bias - mantissa_bits - 1
+  else
+    m = ior(m, shiftl(1_I8P, mantissa_bits))
+    p = biased - bias - mantissa_bits - 1
+  endif
+  size_ = (n + abs(q) + 400) / 9 + 4
+  allocate(left(size_), right(size_))
+  call load_digits(digits(1:n), left)
+  call shift_decimal(left, max(q, 0))
+  call shift_binary(left, max(-p, 0))
+  right = 0_I8P
+  right(1) = mod(2_I8P * m + 1_I8P, LIMB)
+  right(2) = (2_I8P * m + 1_I8P) / LIMB
+  call shift_decimal(right, max(-q, 0))
+  call shift_binary(right, max(p, 0))
+  order = compare(left, right)
+  bits = low
+  if (order>0.or.(order==0.and.iand(low, 1_I8P)==1_I8P)) bits = low + 1_I8P ! above, or a tie to even
+  endfunction settle
+
+  pure subroutine significant_digits(raw, digits, n)
+  !< Return the digits of the mantissa of a number, without the leading zeros and the point.
+  character(len=*), intent(in)  :: raw    !< The number, as text.
+  character(len=*), intent(out) :: digits !< The digits.
+  integer,          intent(out) :: n      !< Number of digits.
+  integer                       :: c      !< Counter.
+
+  n = 0
+  do c=1, len(raw)
+    select case(raw(c:c))
+    case('0':'9')
+      if (n>0.or.raw(c:c)/='0') then
+        n = n + 1
+        digits(n:n) = raw(c:c)
+      endif
+    case(' ', achar(9), '+', '.')
+      if (n>0.and.raw(c:c)/='.') exit
+    case('-')
+      if (n>0) exit
+    case default
+      exit
+    endselect
+  enddo
+  endsubroutine significant_digits
+
+  pure subroutine load_digits(digits, big)
+  !< Load decimal digits in a big integer, 9 digits per limb from the last.
+  character(len=*), intent(in)  :: digits !< The digits.
+  integer(I8P),     intent(out) :: big(:) !< The big integer, low limb first.
+  integer                       :: last   !< Last digit of a limb.
+  integer                       :: l      !< Limb counter.
+  integer                       :: c      !< Digit counter.
+
+  big = 0_I8P
+  last = len(digits)
+  l = 1
+  do while (last>0)
+    do c=max(1, last - 8), last
+      big(l) = big(l) * 10_I8P + (iachar(digits(c:c)) - iachar('0'))
+    enddo
+    last = last - 9
+    l = l + 1
+  enddo
+  endsubroutine load_digits
+
+  pure subroutine shift_decimal(big, power)
+  !< Multiply a big integer by 10**power.
+  integer(I8P), intent(inout) :: big(:) !< The big integer.
+  integer,      intent(in)    :: power  !< The power.
+  integer                     :: limbs  !< Whole limbs of the shift.
+
+  limbs = power / 9
+  if (limbs>0) then
+    big(limbs+1:size(big)) = big(1:size(big)-limbs)
+    big(1:limbs) = 0_I8P
+  endif
+  call multiply_small(big, 10_I8P**mod(power, 9))
+  endsubroutine shift_decimal
+
+  pure subroutine shift_binary(big, power)
+  !< Multiply a big integer by 2**power.
+  integer(I8P), intent(inout) :: big(:) !< The big integer.
+  integer,      intent(in)    :: power  !< The power.
+  integer                     :: left   !< Power left.
+
+  left = power
+  do while (left>0)
+    call multiply_small(big, shiftl(1_I8P, min(left, 29)))
+    left = left - min(left, 29)
+  enddo
+  endsubroutine shift_binary
+
+  pure subroutine multiply_small(big, factor)
+  !< Multiply a big integer by a factor of at most 10**9: a limb times the factor stays far from the signed limit.
+  integer(I8P), intent(inout) :: big(:) !< The big integer.
+  integer(I8P), intent(in)    :: factor !< The factor.
+  integer(I8P)                :: carry  !< The carry.
+  integer(I8P)                :: value  !< A limb times the factor.
+  integer                     :: l      !< Counter.
+
+  if (factor==1_I8P) return
+  carry = 0_I8P
+  do l=1, size(big)
+    value = big(l) * factor + carry
+    big(l) = mod(value, LIMB)
+    carry = value / LIMB
+  enddo
+  endsubroutine multiply_small
+
+  pure function compare(a, b) result(order)
+  !< Return the sign of a - b, two big integers of the same size.
+  integer(I8P), intent(in) :: a(:)  !< First big integer.
+  integer(I8P), intent(in) :: b(:)  !< Second big integer.
+  integer                  :: order !< -1, 0 or 1.
+  integer                  :: l     !< Counter.
+
+  order = 0
+  do l=size(a), 1, -1
+    if (a(l)/=b(l)) then
+      order = merge(1, -1, a(l)>b(l))
+      return
+    endif
+  enddo
+  endfunction compare
 
   elemental subroutine shortest_digits(fraction, biased, mantissa_bits, digits, exponent)
   !< Return the shortest decimal digits * 10**exponent that reads back as the binary float, the closest of them if more

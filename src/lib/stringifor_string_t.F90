@@ -6,7 +6,7 @@ use, intrinsic :: ieee_arithmetic, only : ieee_positive_inf, ieee_quiet_nan, iee
 use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
-use stringifor_numbers, only : decimal_to_r4, decimal_to_r8, shortest_digits
+use stringifor_numbers, only : decimal_to_r4, decimal_to_r8, settle_r4, settle_r8, shortest_digits
 use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
                             utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
                             utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units, &
@@ -5189,12 +5189,15 @@ contains
             return
          endif
          number = decimal_to_r4(mantissa, exponent) ! correctly rounded, whatever the digits and the power of ten
-         ! digits dropped: the number is between mantissa and mantissa+1, settled if both round to the same real
-         if (.not.truncated.or.number==decimal_to_r4(mantissa + 1_I8P, exponent)) then
-            if (negative) number = -number
-            if (present(iostat)) iostat = 0
-            return
+         ! digits dropped: the number is between mantissa and mantissa+1; if they round apart, all the digits settle it
+         if (truncated) then
+            ! the bits, not the reals: ifx and nvfortran compare a subnormal as zero by default
+            if (transfer(number, 1_I4P)/=transfer(decimal_to_r4(mantissa + 1_I8P, exponent), 1_I4P)) &
+               number = settle_r4(self%raw, exponent, number)
          endif
+         if (negative) number = -number
+         if (present(iostat)) iostat = 0
+         return
       endif
       call parse_special_number(raw=self%raw, special=special, negative=negative)
       if (special/=0) then
@@ -5273,12 +5276,15 @@ contains
             return
          endif
          number = decimal_to_r8(mantissa, exponent) ! correctly rounded, whatever the digits and the power of ten
-         ! digits dropped: the number is between mantissa and mantissa+1, settled if both round to the same real
-         if (.not.truncated.or.number==decimal_to_r8(mantissa + 1_I8P, exponent)) then
-            if (negative) number = -number
-            if (present(iostat)) iostat = 0
-            return
+         ! digits dropped: the number is between mantissa and mantissa+1; if they round apart, all the digits settle it
+         if (truncated) then
+            ! the bits, not the reals: ifx and nvfortran compare a subnormal as zero by default
+            if (transfer(number, 1_I8P)/=transfer(decimal_to_r8(mantissa + 1_I8P, exponent), 1_I8P)) &
+               number = settle_r8(self%raw, exponent, number)
          endif
+         if (negative) number = -number
+         if (present(iostat)) iostat = 0
+         return
       endif
       call parse_special_number(raw=self%raw, special=special, negative=negative)
       if (special/=0) then
@@ -7839,7 +7845,7 @@ contains
    is_ok = .false.
    c = 1
    do while (c<=len(raw))
-      if (raw(c:c)/=SPACE) exit
+      if (raw(c:c)/=SPACE.and.raw(c:c)/=TAB) exit
       c = c + 1
    enddo
    if (c>len(raw)) return
@@ -7907,8 +7913,7 @@ contains
             if (d<0.or.d>9) exit
             has_digit = .true.
             d_count = d_count + 1
-            if (exp_value>99999) return
-            exp_value = exp_value * 10 + d
+            if (exp_value<=99999) exp_value = exp_value * 10 + d ! far past the range of any kind: it saturates
             c = c + 1
          enddo
          if (.not.has_digit) return
@@ -7918,7 +7923,7 @@ contains
       endif
    endif
    do while (c<=len(raw))
-      if (raw(c:c)/=SPACE) return
+      if (raw(c:c)/=SPACE.and.raw(c:c)/=TAB) return
       c = c + 1
    enddo
    is_ok = .true.
