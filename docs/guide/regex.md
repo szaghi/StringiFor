@@ -30,6 +30,13 @@ The flags can also start the pattern, as `(?im)`. A malformed pattern sets `iost
 and `iomsg` to what is wrong, and leaves the regex not compiled (it then matches nothing); without `iostat` the program
 stops with the message.
 
+::: warning Backslashes with nvfortran
+nvfortran reads backslash escapes in character literals by default, so `'\d+'` reaches the library as `'d+'`: the pattern
+is valid, it just looks for the letter `d`, and no error tells you. Compile with `-Mbackslash`, or write the backslash as
+`char(92)`. The same goes for the templates of `sub`. gfortran and ifx keep a backslash as it is, unless you pass
+`-fbackslash` or `-assume bscc`.
+:::
+
 <<< @/examples/snippets/regex_tour-errors.f90
 
 Limits, beyond which the pattern is a compile error and never a crash: groups nested 200 deep, counts `{m,n}` up to
