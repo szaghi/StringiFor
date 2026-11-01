@@ -57,6 +57,7 @@ const docs = [
 export default withMermaid({
   title: 'StringiFor Documentation',
   base: '/StringiFor/',
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/StringiFor/logo.svg' }]],
   markdown: {
     math: true,
     languages: ['fortran-free-form', 'fortran-fixed-form'],
@@ -70,6 +71,9 @@ export default withMermaid({
     },
   },
   themeConfig: {
+    logo: '/logo.svg',
+    siteTitle: 'StringiFor',
+    socialLinks: [{ icon: 'github', link: 'https://github.com/szaghi/StringiFor' }],
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Start here', link: '/guide/', activeMatch: '^/guide/(index|installation)' },
@@ -78,7 +82,7 @@ export default withMermaid({
       {
         text: 'Reference',
         link: '/guide/features',
-        activeMatch: '^/guide/(features|basic-io|string-manipulation|numbers|advanced|api-reference)',
+        activeMatch: '^/guide/(features|basic-io|string-manipulation|numbers|unicode|regex|advanced|api-reference)',
       },
       { text: 'API', link: '/api/' },
       {

@@ -4,6 +4,9 @@ layout: home
 hero:
   name: StringiFor
   text: Strings Fortran Manipulator
+  image:
+    src: /logo.svg
+    alt: the StringiFor logo, a thread with beads curved into an S
   tagline: "A string type for modern Fortran with the methods you miss from Python: split, join, replace, strip, slice, justify, regular expressions, cast to and from numbers, read and write files, UTF-8 aware. One type, one module, pure Fortran 2008."
   actions:
     - theme: brand
@@ -104,6 +107,19 @@ A real session with a small StringiFor program: every answer is one method of th
 This is the whole program: a `select case` on the command, one method for each answer.
 
 <<< @/examples/snippets/quickstart.f90
+
+## See it run
+
+Real sessions of small programs, regenerated from their runs with this documentation:
+[regular expressions](/guide/regex), [UTF-8](/guide/unicode) and [numbers](/guide/numbers).
+
+<div class="sf-casts">
+<img src="./examples/images/regex_cast.svg" alt="a terminal session of a small grep and sed built on regex: search with named groups, findall, sub, split, a pattern error, and (a*)*b on 100000 bytes">
+</div>
+<div class="sf-casts">
+<img src="./examples/images/utf8_cast.svg" alt="a terminal session on UTF-8 text: bytes, characters and columns, reverse, alignment by each unit, codepoints, checking and repairing, Unicode whitespace, XML escaping">
+<img src="./examples/images/numbers_cast.svg" alt="a terminal session on numbers: is_integer, is_real, is_number, to_number, read_number with its error, assigning numbers, hex, summing the numbers of a text">
+</div>
 
 ## Grows with your program
 
