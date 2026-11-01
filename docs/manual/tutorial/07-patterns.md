@@ -37,4 +37,4 @@ A malformed pattern gives the byte where the problem is and what it is.
 Reference: [Regular Expressions](/guide/regex).
 :::
 
-Next: the [cookbook](../cookbook), short recipes for everyday tasks.
+Next: [8. Unicode text](./08-unicode).

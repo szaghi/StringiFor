@@ -22,6 +22,7 @@ const docs = [
       { text: '5. Files and paths',           link: '/manual/tutorial/05-files' },
       { text: '6. A polished report',         link: '/manual/tutorial/06-report' },
       { text: '7. Patterns',                  link: '/manual/tutorial/07-patterns' },
+      { text: '8. Unicode text',              link: '/manual/tutorial/08-unicode' },
     ],
   },
   {

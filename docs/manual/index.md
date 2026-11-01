@@ -22,10 +22,11 @@ run; every output shown is the real output of that program.
 | [5. Files and paths](./tutorial/05-files) | `read_file`, `write_file`, `basedir`, `basename`, `extension`, `match` |
 | [6. A polished report](./tutorial/06-report) | `ljust`, `rjust`, `slice`, `justify`, `colorize` |
 | [7. Patterns](./tutorial/07-patterns) | `regex`, `search`, `group`, `finditer`, `sub` |
+| [8. Unicode text](./tutorial/08-unicode) | bytes, characters and columns, `by=`, `width`, `codepoints`, checking and repairing UTF-8, C escapes, `unicode=` |
 
 ```mermaid
 flowchart LR
-  c1[1 first string] --> c2[2 cleaning] --> c3[3 splitting] --> c4[4 numbers] --> c5[5 files] --> c6[6 report]
+  c1[1 first string] --> c2[2 cleaning] --> c3[3 splitting] --> c4[4 numbers] --> c5[5 files] --> c6[6 report] --> c7[7 patterns] --> c8[8 Unicode text]
 ```
 
 ## The cookbook
