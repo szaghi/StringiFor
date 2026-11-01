@@ -457,11 +457,21 @@ contains
       call astring%read_number(int1, iostat=iostat)
       ref_iostat = 1
       if (astring%is_integer()) read(chars, *, iostat=ref_iostat) ref_int1
+      if (iostat/=0.and.ref_iostat==0) then ! nvfortran's read wraps past the range of the kind, without an error
+         call astring%read_number(real8)
+         if (abs(real8)<real(huge(int1), R8P)) is_ok = .false.
+         ref_iostat = 1
+      endif
       if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
       if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.int1==ref_int1
       call astring%read_number(int8, iostat=iostat)
       ref_iostat = 1
       if (astring%is_integer()) read(chars, *, iostat=ref_iostat) ref_int8
+      if (iostat/=0.and.ref_iostat==0) then ! nvfortran's read wraps past the range of the kind, without an error
+         call astring%read_number(real8)
+         if (abs(real8)<real(huge(int8), R8P)) is_ok = .false.
+         ref_iostat = 1
+      endif
       if ((iostat==0).neqv.(ref_iostat==0)) is_ok = .false.
       if (iostat==0.and.ref_iostat==0) is_ok = is_ok.and.int8==ref_int8
       if (.not.is_ok) then

@@ -50,11 +50,12 @@ value is ignored, pass any constant of the wanted kind (`1_I4P`, `1._R8P`). A ca
 integer string, a cast to an integer kind an integer string.
 
 A plain decimal number (a sign, digits, a decimal point, an exponent) is converted without the
-`read` statement, and correctly rounded: any integer in the range of the kind, and any `R4P` or `R8P` real, by one exact
+`read` statement, and correctly rounded: any integer, and any `R4P` or `R8P` real, by one exact
 operation when the digits and the power of ten are exact in the kind and by the Eisel-Lemire algorithm otherwise. About 50
 ns per number with gfortran, against about 500 ns for `read`. A real of more digits is settled on its first 18 when both
 ways of rounding them give the same result, and otherwise by comparing all its digits exactly. So `R4P` and `R8P` do not
 depend on the compiler. `R16P` goes through `read`, so its results are the compiler's.
+An integer past the range of the kind is a failure: `iostat` is positive, the result 0.
 
 ### The forms of a real
 

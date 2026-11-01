@@ -4973,6 +4973,7 @@ contains
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
    logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: fits     !< The integer fits in I8P.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
    integer                                   :: exponent !< Decimal exponent of the number.
@@ -4983,13 +4984,21 @@ contains
    if (allocated(self%raw)) then
       call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
                              is_ok=is_fast)
-      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+      fits = .true.
+      if (is_fast) then
          if (negative) mantissa = -mantissa
-         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+      else
+         call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
+      endif
+      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+         if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I1P)
             if (present(iostat)) iostat = 0
-            return
+         else
+            if (present(iostat)) iostat = 1
+            if (present(iomsg)) iomsg = 'the integer is out of the range of the kind'
          endif
+         return
       endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
@@ -5016,6 +5025,7 @@ contains
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
    logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: fits     !< The integer fits in I8P.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
    integer                                   :: exponent !< Decimal exponent of the number.
@@ -5026,13 +5036,21 @@ contains
    if (allocated(self%raw)) then
       call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
                              is_ok=is_fast)
-      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+      fits = .true.
+      if (is_fast) then
          if (negative) mantissa = -mantissa
-         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+      else
+         call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
+      endif
+      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+         if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I2P)
             if (present(iostat)) iostat = 0
-            return
+         else
+            if (present(iostat)) iostat = 1
+            if (present(iomsg)) iomsg = 'the integer is out of the range of the kind'
          endif
+         return
       endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
@@ -5080,6 +5098,7 @@ contains
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
    logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: fits     !< The integer fits in I8P.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
    integer                                   :: exponent !< Decimal exponent of the number.
@@ -5090,13 +5109,21 @@ contains
    if (allocated(self%raw)) then
       call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
                              is_ok=is_fast)
-      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+      fits = .true.
+      if (is_fast) then
          if (negative) mantissa = -mantissa
-         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+      else
+         call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
+      endif
+      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+         if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I4P)
             if (present(iostat)) iostat = 0
-            return
+         else
+            if (present(iostat)) iostat = 1
+            if (present(iomsg)) iomsg = 'the integer is out of the range of the kind'
          endif
+         return
       endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
@@ -5122,6 +5149,7 @@ contains
    integer                                   :: iostat_ !< IO status code, local variable.
    character(len=99)                         :: iomsg_  !< IO status message, local variable.
    logical                                   :: is_fast  !< The fast path applies.
+   logical                                   :: fits     !< The integer fits in I8P.
    logical                                   :: negative !< The number is negative.
    integer(I8P)                              :: mantissa !< Decimal digits of the number, as an integer.
    integer                                   :: exponent !< Decimal exponent of the number.
@@ -5132,13 +5160,21 @@ contains
    if (allocated(self%raw)) then
       call parse_number_fast(raw=self%raw, is_integer=.true., negative=negative, mantissa=mantissa, exponent=exponent, &
                              is_ok=is_fast)
-      if (is_fast) then ! a plain integer in the range of the kind: exact, the read statement is not needed
+      fits = .true.
+      if (is_fast) then
          if (negative) mantissa = -mantissa
-         if (mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
+      else
+         call parse_long_integer(raw=self%raw, is_plain=is_fast, number=mantissa, fits=fits)
+      endif
+      if (is_fast) then ! a plain integer: exact, the read statement is not needed (nvfortran's wraps past the range)
+         if (fits.and.mantissa>=-int(huge(number), I8P)-1_I8P.and.mantissa<=int(huge(number), I8P)) then
             number = int(mantissa, kind=I8P)
             if (present(iostat)) iostat = 0
-            return
+         else
+            if (present(iostat)) iostat = 1
+            if (present(iomsg)) iomsg = 'the integer is out of the range of the kind'
          endif
+         return
       endif
       iomsg_ = 'the string is not an integer'
       if (self%is_integer()) then
@@ -7747,6 +7783,63 @@ contains
    endsubroutine write_unformatted
 
    ! non type-bound-procedures
+   pure subroutine parse_long_integer(raw, is_plain, number, fits)
+   !< Parse `[blanks][sign]digits[blanks]` of any length: the value if it fits in I8P, whose lowest value has no positive
+   !< counterpart, so the digits accumulate on the negative side.
+   !<
+   !< @note The doctest is not necessary, this being tested by the oracle.
+   character(kind=CK, len=*), intent(in)  :: raw      !< Raw characters data.
+   logical,                   intent(out) :: is_plain !< The string has that form.
+   integer(I8P),              intent(out) :: number   !< The value, if it fits.
+   logical,                   intent(out) :: fits     !< The value fits in I8P.
+   integer(I8P), parameter                :: LOWEST = -huge(1_I8P) - 1_I8P !< Lowest value.
+   logical                                :: negative !< The number is negative.
+   integer                                :: c        !< Character counter.
+   integer                                :: d        !< Value of a digit.
+
+   is_plain = .false.
+   number = 0_I8P
+   fits = .true.
+   negative = .false.
+   c = 1
+   do while (c<=len(raw))
+      if (raw(c:c)/=SPACE.and.raw(c:c)/=TAB) exit
+      c = c + 1
+   enddo
+   if (c>len(raw)) return
+   if (raw(c:c)=='+'.or.raw(c:c)=='-') then
+      negative = raw(c:c)=='-'
+      c = c + 1
+   endif
+   do while (c<=len(raw))
+      d = iachar(raw(c:c)) - iachar('0')
+      if (d<0.or.d>9) exit
+      is_plain = .true.
+      if (fits) then
+         if (number<(LOWEST + d) / 10_I8P) then
+            fits = .false.
+         else
+            number = number * 10_I8P - d
+         endif
+      endif
+      c = c + 1
+   enddo
+   do while (c<=len(raw))
+      if (raw(c:c)/=SPACE.and.raw(c:c)/=TAB) then
+         is_plain = .false.
+         return
+      endif
+      c = c + 1
+   enddo
+   if (.not.negative) then
+      if (number==LOWEST) then
+         fits = .false.
+      else
+         number = -number
+      endif
+   endif
+   endsubroutine parse_long_integer
+
    pure subroutine parse_special_number(raw, special, negative)
    !< Recognize `[blanks][sign]nan[(chars)][blanks]` and `[blanks][sign]inf|infinity[blanks]`, in any case, the special values
    !< the read statement accepts. `special` is SPECIAL_NAN, SPECIAL_INF, or 0 for anything else.

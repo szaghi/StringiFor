@@ -1869,6 +1869,29 @@ def layout_repr(negative: bool, digits: int, exponent: int) -> str:
     return "-" + body if negative else body
 
 
+def integer_reference(data: bytes, bits: int) -> str:
+    """Return the integer of a plain integer string in the range of a kind of those bits, else E."""
+    found = re.fullmatch(rb"[ \t]*([+-]?\d+)[ \t]*", data)
+    if not found:
+        return "E"
+    value = int(found[1])
+    return str(value) if -(2 ** (bits - 1)) <= value < 2 ** (bits - 1) else "E"
+
+
+def integer_texts(rng: random.Random, total: int) -> list[str]:
+    """Return integer strings: the limits of the kinds and their neighbours, long digit runs, and malformed ones."""
+    texts = ["", " ", "+", "-", "1x", "--1", "1.5", "0", "-0", "+0", "000", "0000000000000000000000000000012"]
+    for bits in (8, 16, 32, 64):
+        for limit in (2 ** (bits - 1), -(2 ** (bits - 1))):
+            for offset in (-2, -1, 0, 1, 2):
+                value = limit + offset
+                texts += [str(value), f"+{value}" if value >= 0 else f"-000{-value}", f" \t{value} "]
+    while len(texts) < total:
+        digits = "".join(rng.choice("0123456789") for _ in range(rng.randint(1, 40)))
+        texts.append(rng.choice(("", "+", "-", " ", "\t-")) + rng.choice(("", "00")) + digits + rng.choice(("", " ")))
+    return texts
+
+
 def levenshtein(first: Sequence, second: Sequence) -> int:
     """Return the Levenshtein distance, on the full table."""
     table = [[0] * (len(second) + 1) for _ in range(len(first) + 1)]
@@ -1959,6 +1982,8 @@ def numbers_extra() -> list[tuple[str, tuple[Arg, ...]]]:
         calls += [("to_r8", (data,)), ("to_r4", (data,))]
         if "e" not in text[1:] or rng.random() < 0.1:
             calls += [("is_real", (data,)), ("is_number", (data,))]
+    for text in integer_texts(rng, max(total // 20, 2000)):
+        calls += [(name, (text.encode(),)) for name in ("to_i1", "to_i4", "to_i8")]
     specials8 = [0, 1 << 63, 0x7FF << 52, 0xFFF << 52, 0x7FF8 << 48, 1, (1 << 52) - 1, 1 << 52, (0x7FF << 52) - 1, 3 << 52]
     specials4 = [0, 1 << 31, 0xFF << 23, 0x1FF << 23, 0x7FC << 20, 1, (1 << 23) - 1, 1 << 23, (0xFF << 23) - 1]
     specials8 += [(e << 52) for e in range(1, 2047)]  # the powers of 2: the rounding interval is asymmetric
@@ -2001,6 +2026,9 @@ SUITES: dict[str, list[Op]] = {
     "numbers": [
         Op("to_r8", lambda d, r: [], lambda d: number_bits(d, 64)),
         Op("to_r4", lambda d, r: [], lambda d: number_bits(d, 32)),
+        Op("to_i1", lambda d, r: [], lambda d: integer_reference(d, 8)),
+        Op("to_i4", lambda d, r: [], lambda d: integer_reference(d, 32)),
+        Op("to_i8", lambda d, r: [], lambda d: integer_reference(d, 64)),
         Op("is_real", lambda d, r: [], is_real_reference),
         Op("shortest_r8", lambda d, r: [], lambda c: shortest_r8_reference(c)),
         Op("shortest_r4", lambda d, r: [], lambda c: shortest_r4_reference(c)),

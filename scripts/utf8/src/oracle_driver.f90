@@ -8,7 +8,7 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, int32, int64, output_unit, real32, real64
-use stringifor, only : from_codepoints, I4P, regex, regex_match, scan, shortest, SF_CHARS, SF_COLUMNS, string, strless_natural, &
+use stringifor, only : from_codepoints, I1P, I4P, I8P, regex, regex_match, scan, shortest, SF_CHARS, SF_COLUMNS, string, strless_natural, &
                        strless_nocase, strsort, verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
@@ -29,6 +29,9 @@ type(regex_match)             :: found    !< A match.
 integer                       :: nsub     !< Number of replacements.
 integer                       :: status   !< Status of a compilation.
 real(real64)                  :: r8       !< A number.
+integer(I1P)                  :: i1       !< A number.
+integer(I4P)                  :: i4       !< A number.
+integer(I8P)                  :: i8       !< A number.
 character(len=16)             :: word     !< Bits of a number, in hexadecimal.
 integer(int64)                :: bits8    !< Bits of a number.
 integer(int32)                :: bits4    !< Bits of a number.
@@ -74,6 +77,15 @@ do
     call put_int(s%edit_distance(unhex(arg(3))))
   case ('edit_distance_chars')
     call put_int(s%edit_distance(unhex(arg(3)), by=SF_CHARS))
+  case ('to_i1')
+    call s%read_number(i1, iostat=status)
+    call put_integer(int(i1, int64), status)
+  case ('to_i4')
+    call s%read_number(i4, iostat=status)
+    call put_integer(int(i4, int64), status)
+  case ('to_i8')
+    call s%read_number(i8, iostat=status)
+    call put_integer(i8, status)
   case ('is_real')
     call put_logical(s%is_real())
   case ('is_number')
@@ -533,6 +545,18 @@ contains
 
   write(output_unit, '(a)') hex(raw(astring))
   endsubroutine put_str
+
+  subroutine put_integer(value, status)
+  !< Write an integer result, or E on a failure.
+  integer(int64), intent(in) :: value  !< Result.
+  integer,        intent(in) :: status !< I/O status.
+
+  if (status /= 0) then
+    write(output_unit, '(a)') 'E'
+  else
+    write(output_unit, '(i0)') value
+  endif
+  endsubroutine put_integer
 
   subroutine put_int(value)
   !< Write an integer result.
