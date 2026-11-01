@@ -54,6 +54,19 @@
 
 </div>
 
+## See it run
+
+Real sessions of small programs, regenerated from their runs with the documentation: [regular expressions](https://szaghi.github.io/StringiFor/guide/regex), [UTF-8](https://szaghi.github.io/StringiFor/guide/unicode), [numbers](https://szaghi.github.io/StringiFor/guide/numbers).
+
+<p align="center"><img src="docs/examples/images/regex_cast.svg" alt="a terminal session of a small grep and sed built on regex: search with named groups, findall, sub, split, a pattern error, and (a*)*b on 100000 bytes" width="685"></p>
+
+<table align="center">
+<tr>
+<td><img src="docs/examples/images/utf8_cast.svg" alt="a terminal session on UTF-8 text: bytes, characters and columns, reverse, alignment by each unit, codepoints, checking and repairing, Unicode whitespace, XML escaping" width="407"></td>
+<td><img src="docs/examples/images/numbers_cast.svg" alt="a terminal session on numbers: is_integer, is_real, is_number, to_number, read_number with its error, assigning numbers, hex, summing the numbers of a text" width="382"></td>
+</tr>
+</table>
+
 ## Quick start
 
 One type, `string`, and its methods. This is the whole program behind the session above: a `select case` on the
