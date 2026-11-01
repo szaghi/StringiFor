@@ -4,6 +4,8 @@ title: Numbers
 
 # Numbers
 
+<p align="center"><img src="../examples/images/numbers_cast.svg" alt="a terminal session on numbers: is_integer, is_real, is_number, to_number, read_number with its error, assigning numbers, hex, summing the numbers of a text"></p>
+
 ## The kinds
 
 `use stringifor` exports the portable kinds of [PENF](https://github.com/szaghi/PENF):

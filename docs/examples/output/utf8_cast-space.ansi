@@ -1,0 +1,3 @@
+$ sfu space '\u3000 tidy\u00a0 words \u2003'
+[　 tidy  words  ] ASCII
+[tidy words] Unicode

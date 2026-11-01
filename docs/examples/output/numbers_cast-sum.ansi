@@ -1,0 +1,2 @@
+$ sfn sum 'dt = 1.5, steps: 20, tol -0.5'
+sum = 21.0

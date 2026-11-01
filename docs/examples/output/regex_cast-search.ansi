@@ -1,0 +1,3 @@
+$ sfre search '(?P<user>\w+)@(?P<host>[\w.]+)' 'write to ann@example.org now'
+match: ann@example.org  10  24
+user=ann host=example.org

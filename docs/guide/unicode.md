@@ -15,6 +15,8 @@ The methods on this page read the bytes as UTF-8. They work on *units*: a unit i
 is not part of a well-formed sequence is never merged with its neighbours, dropped or rewritten, unless you ask for it
 with `to_valid_utf8`: Latin-1 text and binary data go through unchanged.
 
+<p align="center"><img src="../examples/images/utf8_cast.svg" alt="a terminal session on UTF-8 text: bytes, characters and columns, reverse, alignment by= each unit, codepoints, checking and repairing, Unicode whitespace, XML escaping"></p>
+
 ## Methods that work on characters
 
 These methods treat a unit as one character, so they never cut a character in two; their positions are still byte

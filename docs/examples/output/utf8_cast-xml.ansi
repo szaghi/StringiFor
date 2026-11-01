@@ -1,0 +1,3 @@
+$ sfu xml 'a<b & "c"'
+a&lt;b &amp; &quot;c&quot;
+read back: T

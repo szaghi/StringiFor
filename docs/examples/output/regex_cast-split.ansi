@@ -1,0 +1,2 @@
+$ sfre split '\s*[,;]\s*' 'a , b;c ;  d'
+a | b | c | d

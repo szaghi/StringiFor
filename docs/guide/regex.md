@@ -14,6 +14,8 @@ Python would find first, and on the syntax it supports it gives the same results
 
 <<< @/examples/output/regex_tour.ansi{ansi}
 
+<p align="center"><img src="../examples/images/regex_cast.svg" alt="a terminal session of a small grep and sed built on regex: search with named groups, findall, sub, split, a pattern error, and (a*)*b on 100000 bytes"></p>
+
 ## Compiling
 
 `call re%compile(pattern[, flags][, iostat][, iomsg])` parses and compiles the pattern. `flags` holds letters:

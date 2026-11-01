@@ -1,0 +1,4 @@
+$ sfu check 'ok\xff!'
+well-formed: F, first error at byte 3
+escaped:  ok\xff!
+repaired: ok�!

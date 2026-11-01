@@ -1,0 +1,2 @@
+$ sfre stress '(a*)*b' 100000
+found: F in 100000 bytes

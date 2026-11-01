@@ -1,0 +1,2 @@
+$ sfre search '(\d+' 'x'
+bad pattern, byte 5: missing ), unterminated group opened at byte 1

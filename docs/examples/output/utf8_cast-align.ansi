@@ -1,0 +1,4 @@
+$ sfu align '\u65e5\u672c\u8a9e'
+|日本語.| 10 bytes
+|日本語.......| 10 characters
+|日本語....| 10 columns

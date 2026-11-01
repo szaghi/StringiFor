@@ -1,0 +1,5 @@
+$ sfn is 42 3.14 6.02e23 abc
+42: integer T, real F, number T
+3.14: integer F, real T, number T
+6.02e23: integer F, real T, number T
+abc: integer F, real F, number F
