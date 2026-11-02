@@ -101,6 +101,11 @@ contains
       case('UNFORMATTED')
          open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
               iomsg=iomsg_, iostat=iostat_, err=10)
+      case default
+         iostat_ = 1 ; iomsg_ = 'unknown form "'//form_%chars()//'": FORMATTED or UNFORMATTED expected'
+         if (present(iostat)) iostat = iostat_
+         if (present(iomsg)) iomsg = iomsg_
+         return
       endselect
       call read_lines(unit=unit, lines=lines, form=form, iomsg=iomsg_, iostat=iostat_, skip_bom=skip_bom)
       10 close(unit)
@@ -149,6 +154,11 @@ contains
          read(unit, err=10, end=10) ch
          if (ch==new_line('a')) l = l + 1
       enddo
+   case default
+      iostat_ = 1 ; iomsg_ = 'unknown form "'//form_%chars()//'": FORMATTED or UNFORMATTED expected'
+      if (present(iostat)) iostat = iostat_
+      if (present(iomsg)) iomsg = iomsg_
+      return
    endselect
    10 rewind(unit)
    if (form_%chars()=='UNFORMATTED'.and.ch/=new_line('a')) l = l + 1 ! last line without line terminator
@@ -235,6 +245,11 @@ contains
       open(newunit=unit, file=file, action='WRITE', iomsg=iomsg_, iostat=iostat_, err=10)
    case('UNFORMATTED')
       open(newunit=unit, file=file, action='WRITE', form='UNFORMATTED', access='STREAM', iomsg=iomsg_, iostat=iostat_, err=10)
+   case default
+      iostat_ = 1 ; iomsg_ = 'unknown form "'//form_%chars()//'": FORMATTED or UNFORMATTED expected'
+      if (present(iostat)) iostat = iostat_
+      if (present(iomsg)) iomsg = iomsg_
+      return
    endselect
    if (present(bom).and.size(lines, dim=1)>0) then
       if (bom.and..not.lines(1)%has_bom()) then

@@ -7,6 +7,7 @@
 #
 # Usage: bash scripts/utf8/build.sh            gfortran, or the compiler in $FC (FC=nvfortran ...)
 #        FFLAGS="-O0 -g" bash scripts/utf8/build.sh   other flags (default -O2)
+#        DEFINES=-D_NVF FC=nvfortran bash scripts/utf8/build.sh   preprocessor defines (default none, as most builds)
 # Prints the directory of the executables on the last line.
 set -euo pipefail
 
@@ -16,9 +17,10 @@ fflags=${FFLAGS:--O2}
 defines=''
 modflag=-J # where the compiler writes the .mod files
 case "$(basename "$fc")" in
-  nvfortran*) defines='-D_NVF'; modflag=-module ;; # no I2P with nvfortran
+  nvfortran*) modflag=-module ;; # no -D_NVF by default: what most nvfortran builds use (issue #53)
   ifx*|ifort*) modflag=-module ;;
 esac
+defines=${DEFINES-$defines}
 tp=$root/src/third_party
 lib_sources=(
   "$tp/PENF/src/lib/penf_global_parameters_variables.F90"

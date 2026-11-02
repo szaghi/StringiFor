@@ -90,7 +90,7 @@ UTF-8 harness (issue #51; `docs/guide/contributing.md`, section *UTF-8 harness*)
 `scripts/utf8/baselines/`, pinned to one CPU), `python3 -I scripts/utf8/gen_unicode_tables.py [--check]` (the generated
 `src/lib/stringifor_unicode_tables.F90`: never edit it by hand). `python3 -I scripts/utf8/gen_number_tables.py [--check]` does the same for `src/lib/stringifor_number_tables.F90`; `build/utf8/gfortran/bin/number_scaling` times the number parsing against `read`. The drivers live in `scripts/utf8/src/`, outside
 `src/`, so FoBiS, make and CMake never build them; `scripts/utf8/build.sh` compiles the library sources itself (any
-`FC`, `-D_NVF` added for nvfortran). Compiler defects found by the oracle go in `KNOWN_COMPILER_ISSUES`
+`FC`, no defines unless `DEFINES` is set: `DEFINES=-D_NVF FC=nvfortran` tests the `_NVF` variant). Compiler defects found by the oracle go in `KNOWN_COMPILER_ISSUES`
 (`scripts/utf8/oracle.py`), never into the reference.
 
 ## Doctest Format (TDD)
@@ -147,7 +147,8 @@ Module-level `glob` and `strjoin` procedures are also exposed publicly.
 
 The source files use `.F90` extension (preprocessed Fortran). Relevant flags:
 - `-DPENF_R16P` — enables 16-byte real (`R16P`) support
-- `_NVF` — disables `I2P` (2-byte integer) for NVIDIA Fortran compatibility
+- `_NVF` — disables `I2P` (2-byte integer) and selects the `repeat` workaround for NVIDIA Fortran; optional with nvfortran 26.9
+  (the oracle passes without it). Workarounds for nvfortran bugs every build hits key on `__NVCOMPILER`, not on `_NVF` alone (issue #53)
 
 ## Fortran Coding Style
 

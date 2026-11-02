@@ -3657,6 +3657,11 @@ contains
          case('UNFORMATTED')
             open(newunit=unit, file=file, status='OLD', action='READ', form='UNFORMATTED', access='STREAM', &
                  iomsg=iomsg_, iostat=iostat_, err=10)
+         case default
+            iostat_ = 1 ; iomsg_ = 'unknown form "'//form_%chars()//'": FORMATTED or UNFORMATTED expected'
+            if (present(iostat)) iostat = iostat_
+            if (present(iomsg)) iomsg = iomsg_
+            return
          endselect
          call self%read_lines(unit=unit, form=form, iomsg=iomsg_, iostat=iostat_, skip_bom=skip_bom)
          10 close(unit)
@@ -3800,6 +3805,11 @@ contains
          endif
          call append_to_buffer(buffer=line, length=line_len, piece=ch)
       enddo
+   case default
+      iostat_ = 1 ; iomsg_ = 'unknown form "'//form_%chars()//'": FORMATTED or UNFORMATTED expected'
+      if (present(iostat)) iostat = iostat_
+      if (present(iomsg)) iomsg = iomsg_
+      return
    endselect
    if (is_iostat_eor(iostat_)) iostat_ = 0                 ! the end of the record is the regular end of a line
    if (is_iostat_end(iostat_).and.line_len>0) iostat_ = 0 ! last line without line terminator
@@ -5888,6 +5898,11 @@ contains
       open(newunit=unit, file=file, action='WRITE', iomsg=iomsg_, iostat=iostat_, err=10)
    case('UNFORMATTED')
       open(newunit=unit, file=file, action='WRITE', form='UNFORMATTED', access='STREAM', iomsg=iomsg_, iostat=iostat_, err=10)
+   case default
+      iostat_ = 1 ; iomsg_ = 'unknown form "'//form_%chars()//'": FORMATTED or UNFORMATTED expected'
+      if (present(iostat)) iostat = iostat_
+      if (present(iomsg)) iomsg = iomsg_
+      return
    endselect
    if (present(bom)) then
       if (bom.and..not.self%has_bom()) call write_bom(unit=unit, form=form_%chars(), iostat=iostat_, iomsg=iomsg_)
@@ -6839,8 +6854,10 @@ contains
    ! rhs may be a part of lhs%raw (`astring = astring%raw(2:)`): the old data are freed only after rhs is read
    allocate(character(kind=CK, len=len(rhs)) :: copy)
    copy(:) = rhs
-#ifdef _NVF
-   lhs%raw = copy ! nvfortran 26.9: move_alloc of a deferred-length character keeps the old length of `to`
+#if defined(_NVF) || defined(__NVCOMPILER)
+   ! nvfortran 26.9: move_alloc of a deferred-length character keeps the old length of `to`; keyed on the compiler,
+   ! not only on _NVF, because a build may well use nvfortran without defining it (issue #53)
+   lhs%raw = copy
 #else
    call move_alloc(from=copy, to=lhs%raw)
 #endif
