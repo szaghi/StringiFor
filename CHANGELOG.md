@@ -4,6 +4,11 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.12.0] — 2026-11-03
+### Added
+- **encodings**: Convert other encodings to UTF-8, read byte order marks
+
+
 ## [1.11.2] — 2026-11-02
 ### Fixed
 - **string_t**: Apply the nvfortran move_alloc workaround without _NVF
