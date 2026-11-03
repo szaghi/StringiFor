@@ -172,6 +172,42 @@ gfortran and ifx keep a backslash in a character literal as it is (unless `-fbac
 `-Mbackslash`, or write the backslash as `char(92)`.
 :::
 
+## Other encodings
+
+StringiFor works on UTF-8. Text in another encoding is converted on input by `to_utf8`: US-ASCII, ISO-8859-1
+(Latin-1), windows-1252, UTF-16 and UTF-32, little or big endian.
+
+<<< @/examples/snippets/convert_encoding-whole.f90
+
+<<< @/examples/output/convert_encoding.ansi{ansi}
+
+| Procedure | Returns |
+|---|---|
+| `bom_encoding(bytes)` | the encoding named by the byte order mark starting `bytes`: `UTF-8`, `UTF-16LE`, `UTF-16BE`, `UTF-32LE`, `UTF-32BE`, or `''` |
+| `bom_length(bytes)` | the length of that mark: 3, 2, 4, or 0 |
+| `canonical_encoding(name)` | the canonical name of a supported encoding from its name or an IANA alias (`latin1`, `cp1252`, `utf8`, `ascii`, ...; case ignored), `''` if it is not supported |
+| `call to_utf8(bytes, encoding, utf8, [carry], [is_last], [replacement], [iostat], [iomsg])` | `bytes` converted to UTF-8 |
+
+- Without a byte order mark the bytes do not tell their encoding (`E9` is `é` in Latin-1 and windows-1252, `щ` in
+  KOI8-R): a file format declares it (XML, HTML, a coding comment), or the user knows it. `UTF-16` and `UTF-32` without
+  an endianness are big endian (RFC 2781). `to_utf8` keeps a byte order mark (as U+FEFF): drop it with `bom_length`.
+- A source read in pieces passes `carry` (and `is_last=.false.` but for the last piece): the bytes of a character split
+  by the end of a piece are kept there and prepended to the next one, so the pieces give the same text as the whole.
+
+<<< @/examples/snippets/convert_encoding-pieces.f90
+
+- An invalid sequence becomes `replacement` (U+FFFD by default), and `iostat` is the position of the first one (in
+  `carry` followed by `bytes`), 0 if there is none: a US-ASCII byte above 127, the 5 windows-1252 bytes without a
+  character (81, 8D, 8F, 90, 9D), an unpaired UTF-16 surrogate (each unit), a UTF-32 unit that is not a scalar value, a
+  character incomplete at the end. An encoding not supported gives an empty result and `iostat=-1`. UTF-8 is returned as
+  it is: check it with `utf8_error`.
+
+<<< @/examples/snippets/convert_encoding-invalid.f90
+
+`to_utf8` and `bom_encoding` are checked against Python's codecs (`bytes.decode(errors='replace')`) on the corpus as
+random bytes and as well-formed text in every encoding, converted in pieces of 1 to 7 bytes (`bash scripts/oracle.sh
+encodings`).
+
 ## XML escaping
 
 `escape_xml` makes any text safe as the content of an XML (or HTML) element or as an attribute value; `unescape_xml`

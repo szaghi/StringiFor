@@ -220,6 +220,9 @@ call write_lines(unit, lines[, form][, iostat][, iomsg])
 
 | Procedure | Description |
 |-----------|-------------|
+| `bom_encoding(bytes)`, `bom_length(bytes)` | Encoding (`UTF-8`, `UTF-16LE`, `UTF-16BE`, `UTF-32LE`, `UTF-32BE`, or `''`) and length of the byte order mark starting `bytes` |
+| `canonical_encoding(name)` | Canonical name of a supported encoding from its name or an IANA alias, `''` if not supported |
+| `to_utf8(bytes, encoding, utf8[, carry][, is_last][, replacement][, iostat][, iomsg])` | Subroutine: convert US-ASCII, ISO-8859-1, windows-1252, UTF-16 or UTF-32 to UTF-8, in pieces with `carry`; invalid sequences replaced, the first one's position in `iostat` |
 | `from_codepoints(codes)` | String encoded in UTF-8 from codepoints, the inverse of `codepoints()` |
 | `glob(self, pattern, list)` | Glob search returning matching paths; `self` is a `string` |
 | `strjoin(array[, sep][, is_trim][, is_col])` | Join arrays of strings or characters |

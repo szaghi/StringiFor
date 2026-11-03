@@ -2034,6 +2034,68 @@ SELF_CHECKS = {
 }
 
 
+ENCODINGS: list[tuple[bytes, str]] = [
+    (b"US-ASCII", "ascii"),
+    (b"latin1", "latin-1"),
+    (b"cp1252", "cp1252"),
+    (b"UTF-16LE", "utf-16-le"),
+    (b"UTF-16BE", "utf-16-be"),
+    (b"UTF-32LE", "utf-32-le"),
+    (b"UTF-32BE", "utf-32-be"),
+]
+
+
+def encoded(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (bytes, encoding, chunk): the data as random bytes, and its text encoded (well formed), in pieces 1..7."""
+    found: list[tuple[Arg, ...]] = []
+    text = data.decode("utf-8", "replace")
+    for name, codec in ENCODINGS:
+        found.append((data, name, rng.randint(1, 7)))
+        good = text.encode(codec, "replace")
+        found.append((good, name, rng.randint(1, 7)))
+    return found
+
+
+def codec_of(name: bytes) -> str:
+    """Return the Python codec of an encoding name of ENCODINGS."""
+    return dict(ENCODINGS)[name]
+
+
+def to_utf8_reference(data: bytes, name: bytes, chunk: int) -> bytes:
+    """Python bytes.decode(errors='replace'): the pieces do not change the result."""
+    return data.decode(codec_of(name), "replace").encode("utf-8")
+
+
+def first_error_reference(data: bytes, name: bytes, chunk: int) -> int:
+    """Return the position (from 1) of the first invalid sequence, 0 if there is none."""
+    try:
+        data.decode(codec_of(name))
+    except UnicodeDecodeError as error:
+        return error.start + 1
+    return 0
+
+
+def bom_reference(data: bytes) -> bytes:
+    """Return the encoding named by the byte order mark of data, empty if there is none."""
+    for mark, name in (
+        (b"\xff\xfe\x00\x00", b"UTF-32LE"),
+        (b"\x00\x00\xfe\xff", b"UTF-32BE"),
+        (b"\xef\xbb\xbf", b"UTF-8"),
+        (b"\xff\xfe", b"UTF-16LE"),
+        (b"\xfe\xff", b"UTF-16BE"),
+    ):
+        if data.startswith(mark):
+            return name
+    return b""
+
+
+def with_marks(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (bytes,): the data, and the data after each byte order mark (or a part of one)."""
+    marks = [b"\xff\xfe\x00\x00", b"\x00\x00\xfe\xff", b"\xef\xbb\xbf", b"\xff\xfe", b"\xfe\xff"]
+    mark = rng.choice(marks)
+    return [(data,), (mark + data,), (mark[: rng.randint(1, len(mark))] + data,)]
+
+
 SUITES: dict[str, list[Op]] = {
     "edit": [
         Op("edit_distance", edit_pairs, lambda d, t: levenshtein(d, t)),
@@ -2240,6 +2302,11 @@ SUITES: dict[str, list[Op]] = {
             lambda d, m: compact_space(d, unicode=True, sep=m),
         ),
         Op("space_each", codepoint_lists, space_each),
+    ],
+    "encodings": [
+        Op("to_utf8", encoded, to_utf8_reference),
+        Op("to_utf8_error", encoded, first_error_reference),
+        Op("bom_encoding", with_marks, bom_reference),
     ],
     "xml": [
         Op("escape_xml", single, escape_xml),

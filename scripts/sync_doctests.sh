@@ -14,7 +14,7 @@ set -euo pipefail
 
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 build=$root/exe # the build directory of the mode tests-gnu-debug, git-ignored
-modules="stringifor stringifor_regex stringifor_string_t"
+modules="stringifor stringifor_encodings stringifor_regex stringifor_string_t"
 
 cd "$root"
 rm -rf "$build/obj" "$build/mod" "$build/doctests-src"

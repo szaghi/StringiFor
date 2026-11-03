@@ -37,6 +37,7 @@ lib_sources=(
   "$root/src/lib/stringifor_utf8.F90"
   "$root/src/lib/stringifor_string_t.F90"
   "$root/src/lib/stringifor_regex.F90"
+  "$root/src/lib/stringifor_encodings.F90"
   "$root/src/lib/stringifor.F90"
 )
 for src in "${lib_sources[@]}"; do

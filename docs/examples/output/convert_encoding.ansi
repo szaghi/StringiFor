@@ -1,0 +1,5 @@
+$ convert_encoding
+UTF-16LE: café
+ISO-8859-1: café
+café
+a� first invalid sequence at byte 3

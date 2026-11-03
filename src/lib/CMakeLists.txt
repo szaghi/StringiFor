@@ -9,6 +9,7 @@ SET(CMAKE_Fortran_MODULE_DIRECTORY "${PROJECT_BINARY_DIR}/modules")
 set(LIB StringiFor)
 add_library(${LIB}
         stringifor.F90
+        stringifor_encodings.F90
         stringifor_regex.F90
         stringifor_string_t.F90
         stringifor_number_tables.F90

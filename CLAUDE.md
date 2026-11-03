@@ -115,6 +115,7 @@ A method cannot be invoked on a function result in Fortran (`astring%upper()%is_
 ### Source Layout
 
 - **`src/lib/stringifor.F90`** — Top-level public module. A thin wrapper that re-exports everything from `stringifor_string_t`, adds PENF numeric kinds (`I1P`–`I8P`, `R4P`–`R16P`), and provides module-level file I/O subroutines (`read_file`, `read_lines`, `write_file`, `write_lines`).
+- **`src/lib/stringifor_encodings.F90`** — Other encodings to UTF-8: `to_utf8` (US-ASCII, ISO-8859-1, windows-1252, UTF-16/UTF-32 LE/BE; pieces with `carry`, invalid sequences replaced as Python `errors='replace'`), `bom_encoding`/`bom_length`, `canonical_encoding` (IANA aliases). Checked by `bash scripts/oracle.sh encodings` against Python codecs. Module procedures only (no `string` method); internal helpers take explicit arguments (nvfortran: internal procedures read stale host values).
 - **`src/lib/stringifor_string_t.F90`** — Core implementation. Defines the `string` derived type and all its Type Bound Procedures (TBPs). This is where all string methods live.
 - **`src/third_party/`** — Dependencies fetched by `fobis fetch` (declared in the `[dependencies]` section of `fobos`, pinned in `src/third_party/fobos.lock`; not git submodules):
   - **PENF** — Portable numeric kind parameters (`I1P`, `R4P`, etc.) and `str()` conversion

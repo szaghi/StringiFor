@@ -8,7 +8,7 @@
 !< The driver does not use the methods under test to parse its input: lines, fields and hexadecimal are handled here.
 program oracle_driver
 use, intrinsic :: iso_fortran_env, only : error_unit, input_unit, int32, int64, output_unit, real32, real64
-use stringifor, only : from_codepoints, I1P, I4P, I8P, regex, regex_match, scan, shortest, SF_CHARS, SF_COLUMNS, string, strless_natural, &
+use stringifor, only : bom_encoding, from_codepoints, to_utf8, I1P, I4P, I8P, regex, regex_match, scan, shortest, SF_CHARS, SF_COLUMNS, string, strless_natural, &
                        strless_nocase, strsort, verify
 implicit none
 character(len=:), allocatable :: line     !< Current line.
@@ -363,6 +363,12 @@ do
         call put_int(nsub)
       endif
     endselect
+  case ('to_utf8', 'to_utf8_error') ! converted in pieces of int_arg(4) bytes, the carry between them
+    t = unhex(arg(3))
+    call convert_in_pieces(s%raw, t%raw, int_arg(4), arg(1) == 'to_utf8')
+  case ('bom_encoding')
+    t = bom_encoding(s%raw)
+    call put_str(t)
   case ('width_each')
     codes = int_list(arg(2))
     allocate(widths(size(codes)))
@@ -378,6 +384,40 @@ do
 enddo
 
 contains
+  subroutine convert_in_pieces(bytes, encoding, chunk, is_text)
+  !< Convert bytes to UTF-8 in pieces of chunk bytes, then write the result (is_text) or the first error position.
+  character(len=*), intent(in)  :: bytes    !< Bytes.
+  character(len=*), intent(in)  :: encoding !< Encoding.
+  integer,          intent(in)  :: chunk    !< Size of the pieces.
+  logical,          intent(in)  :: is_text  !< Write the result, else the position of the first error.
+  character(len=:), allocatable :: utf8     !< Result of a piece.
+  character(len=:), allocatable :: carry    !< Carry between pieces.
+  type(string)                  :: whole    !< Whole result.
+  integer                       :: first    !< First byte of a piece.
+  integer                       :: status   !< Status of a piece.
+  integer                       :: error    !< Position of the first error.
+  integer                       :: before   !< Bytes before the current piece, carry excluded.
+
+  whole = ''
+  carry = ''
+  error = 0
+  first = 1
+  do
+    before = first - 1 - len(carry)
+    call to_utf8(bytes=bytes(first:min(len(bytes), first+chunk-1)), encoding=encoding, utf8=utf8, carry=carry, &
+                 is_last=first+chunk>len(bytes), iostat=status)
+    if (status > 0.and.error == 0) error = before + status
+    whole = whole//utf8
+    first = first + chunk
+    if (first > len(bytes)) exit
+  enddo
+  if (is_text) then
+    call put_str(whole)
+  else
+    call put_int(error)
+  endif
+  endsubroutine convert_in_pieces
+
   function arg(i) result(value)
   !< Return the field i, trimmed to its length.
   integer, intent(in)           :: i     !< Field number.

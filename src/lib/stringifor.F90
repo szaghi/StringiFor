@@ -8,12 +8,14 @@ use stringifor_string_t, only : adjustl, adjustr, count, index, len_trim, repeat
                                 SF_BYTES, SF_CHARS, SF_COLUMNS, &
                                 string, strjoin, strless, strless_natural, strless_nocase, strsort, strsort_less
 use stringifor_string_t, only : shortest
+use stringifor_encodings, only : bom_encoding, bom_length, canonical_encoding, to_utf8
 use stringifor_regex, only : regex, regex_match, re_findall, re_fullmatch, re_search, re_split, re_sub
 
 implicit none
 private
 save
 ! expose StingiFor objects
+public :: bom_encoding, bom_length, canonical_encoding, to_utf8
 public :: CK
 public :: SF_BYTES, SF_CHARS, SF_COLUMNS
 public :: from_codepoints
