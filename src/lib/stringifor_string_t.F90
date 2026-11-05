@@ -511,29 +511,27 @@ contains
    integer(I4P), allocatable                       :: b(:)     !< Units of the other.
    integer                                         :: i        !< Counter.
    type(string)                                    :: wrapped  !< The other, as a string.
+   logical                                         :: by_chars !< Count in characters.
 
-   by_units: block
-      logical :: chars !< Count in characters.
-
-      chars = .false.
-      if (present(by)) chars = by==SF_CHARS
-      if (chars) then
-         if (allocated(self%raw)) then
-            a = self%codepoints()
-         else
-            allocate(a(0))
-         endif
-         wrapped%raw = other
-         b = wrapped%codepoints()
+   ! No BLOCK here: ifx 2026.2 rejects allocate of a local of a pure procedure inside a BLOCK (issue #54).
+   by_chars = .false.
+   if (present(by)) by_chars = by==SF_CHARS
+   if (by_chars) then
+      if (allocated(self%raw)) then
+         a = self%codepoints()
       else
-         if (allocated(self%raw)) then
-            a = [(iachar(self%raw(i:i)), i=1, len(self%raw))]
-         else
-            allocate(a(0))
-         endif
-         b = [(iachar(other(i:i)), i=1, len(other))]
+         allocate(a(0))
       endif
-   endblock by_units
+      wrapped%raw = other
+      b = wrapped%codepoints()
+   else
+      if (allocated(self%raw)) then
+         a = [(iachar(self%raw(i:i)), i=1, len(self%raw))]
+      else
+         allocate(a(0))
+      endif
+      b = [(iachar(other(i:i)), i=1, len(other))]
+   endif
    if (size(a)<size(b)) then
       distance = levenshtein(b, a)
    else
