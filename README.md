@@ -1,5 +1,10 @@
 <div align="center">
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/public/logo/stringifor-logo-dark.svg">
+  <img src="docs/public/logo/stringifor-logo.svg" width="128" alt="StringiFor">
+</picture>
+
 # StringiFor
 #### Strings Fortran Manipulator, with steroids
 

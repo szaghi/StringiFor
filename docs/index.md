@@ -5,8 +5,9 @@ hero:
   name: StringiFor
   text: Strings Fortran Manipulator
   image:
-    src: /logo.svg
-    alt: the StringiFor logo, an S cut on the diagonal with its two halves displaced
+    light: /logo/stringifor-logo.svg
+    dark: /logo/stringifor-logo-dark.svg
+    alt: the StringiFor logo, a brushstroke S cut on the diagonal with its two halves slid apart along the cut
   tagline: "A string type for modern Fortran with the methods you miss from Python: split, join, replace, strip, slice, justify, regular expressions, cast to and from numbers, read and write files, UTF-8 aware. One type, one module, pure Fortran 2008."
   actions:
     - theme: brand
@@ -26,73 +27,72 @@ hero:
       link: https://github.com/szaghi/StringiFor
 
 features:
-  - icon: 🔤
+  - icon: { light: /icons/light/string-type.svg, dark: /icons/dark/string-type.svg, width: 44, height: 44 }
     title: A real string type
     details: "One type holding a string of any length: arrays whose elements have different lengths, no trim() everywhere, no silent truncation."
     link: /manual/tutorial/01-first-string
     linkText: A first string
-  - icon: 🔗
+  - icon: { light: /icons/light/drop-in.svg, dark: /icons/dark/drop-in.svg, width: 44, height: 44 }
     title: A drop-in for character
     details: "Assignment, //, the comparison operators and the intrinsics (trim, index, len_trim, repeat, ...) accept a string wherever a character goes."
     link: /guide/basic-io
     linkText: Strings and I/O
-  - icon: ✂️
+  - icon: { light: /icons/light/split.svg, dark: /icons/dark/split.svg, width: 44, height: 44 }
     title: Split, join, slice
     details: "split and partition into tokens (the empty CSV fields kept, if you want), join arrays back, slice with a stride, reverse characters or words, replace, strip, compact whitespace, squeeze repeats, transliterate sets of characters."
     link: /guide/string-manipulation
     linkText: String manipulation
-  - icon: 🔠
+  - icon: { light: /icons/light/layout.svg, dark: /icons/dark/layout.svg, width: 44, height: 44 }
     title: Case and layout
     details: "upper, lower, capitalize, camelCase, snake_case, Start Case; letters, digits, punctuation and blanks told apart; pad, center or justify to a width, expand tabs, wrap a paragraph in fully justified lines."
     link: /guide/string-manipulation#case-conversion
     linkText: Case conversion
-  - icon: 🔢
+  - icon: { light: /icons/light/numbers.svg, dark: /icons/dark/numbers.svg, width: 44, height: 44 }
     title: Numbers in, numbers out
     details: "Assign any integer or real kind to a string, cast back with to_number, or with read_number and an error status; ask is_number, is_integer, is_real; hexadecimal representation with hex."
     link: /guide/numbers
     linkText: Numbers
-  - icon: 📁
+  - icon: { light: /icons/light/files.svg, dark: /icons/dark/files.svg, width: 44, height: 44 }
     title: Files and paths
     details: "Read a file into an array of lines or one string, write it back, read line by line; basedir, basename, extension, glob, wildcard match, temporary names."
     link: /guide/advanced
     linkText: Files and paths
-  - icon: ⚖️
+  - icon: { light: /icons/light/compare.svg, dark: /icons/dark/compare.svg, width: 44, height: 44 }
     title: Comparisons that know more
     details: "Longest common prefix of many strings, version numbers compared field by field, start_with, end_with, count."
     link: /guide/string-manipulation#comparing
     linkText: Comparing
-  - icon: 🎨
+  - icon: { light: /icons/light/encode.svg, dark: /icons/dark/encode.svg, width: 44, height: 44 }
     title: Encoding and colours
     details: "Base64 encode and decode, escape and unescape, ANSI colours and styles for the terminal."
     link: /guide/advanced#colours-for-the-terminal
     linkText: Colours
-  - icon: 🔍
+  - icon: { light: /icons/light/regex.svg, dark: /icons/dark/regex.svg, width: 44, height: 44 }
     title: Regular expressions
     details: "regex: search, match, groups by number or name, findall, split, sub with templates. The results of Python's re, in time linear in the text whatever the pattern: no catastrophic backtracking."
     link: /guide/regex
     linkText: Regular expressions
-  - icon: 🌐
+  - icon: { light: /icons/light/utf-8.svg, dark: /icons/dark/utf-8.svg, width: 44, height: 44 }
     title: UTF-8 and Unicode
     details: "Methods that never cut a character in two; lengths and positions in characters or display columns with by=; check and repair UTF-8, C and XML escapes, Unicode whitespace, byte order marks, strsort."
     link: /guide/unicode
     linkText: Unicode and UTF-8
-  - icon: ⚡
+  - icon: { light: /icons/light/elemental.svg, dark: /icons/dark/elemental.svg, width: 44, height: 44 }
     title: Elemental by design
     details: "Almost every method is pure or elemental: apply it to a whole array of strings in one statement, use it in pure procedures."
     link: /manual/cookbook#a-method-on-every-element-of-an-array
     linkText: Arrays of strings
-  - icon: 🧪
+  - icon: { light: /icons/light/doctest.svg, dark: /icons/dark/doctest.svg, width: 44, height: 44 }
     title: Tested by its own documentation
     details: "Every method carries doctests in its source; every example of these pages is a program that is compiled and run to produce the output shown."
     link: /manual/
     linkText: The examples
-  - icon: 🛠️
+  - icon: { light: /icons/light/fortran.svg, dark: /icons/dark/fortran.svg, width: 44, height: 44 }
     title: Standard Fortran, any build
     details: "Fortran 2008, built with FoBiS, fpm, CMake or Make. Three small dependencies, fetched for you."
     link: /guide/installation
     linkText: Installation
-  - icon: 🔓
-    title: Multi-licensed
+  - title: Multi-licensed
     details: "GPL v3 for FOSS projects; BSD 2-Clause, BSD 3-Clause or MIT for closed source and commercial ones: pick the license that fits."
     link: #copyrights
     linkText: Copyrights

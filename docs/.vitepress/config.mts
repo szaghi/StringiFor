@@ -57,7 +57,18 @@ const docs = [
 export default withMermaid({
   title: 'StringiFor Documentation',
   base: '/StringiFor/',
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/StringiFor/logo.svg' }]],
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/StringiFor/favicon/favicon.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/StringiFor/favicon/favicon-32.png' }],
+    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/StringiFor/favicon/favicon-180.png' }],
+    ['meta', { name: 'theme-color', content: '#f4efe8', media: '(prefers-color-scheme: light)' }],
+    ['meta', { name: 'theme-color', content: '#100e15', media: '(prefers-color-scheme: dark)' }],
+    // the fonts of the identity: Inter ships with VitePress, Shippori Mincho is only the hero name
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@800&text=StringiFor&display=swap' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap' }],
+  ],
   markdown: {
     math: true,
     languages: ['fortran-free-form', 'fortran-fixed-form'],
@@ -71,7 +82,7 @@ export default withMermaid({
     },
   },
   themeConfig: {
-    logo: '/logo.svg',
+    logo: { light: '/favicon/favicon.svg', dark: '/favicon/favicon-dark.svg', alt: 'StringiFor' },
     siteTitle: 'StringiFor',
     socialLinks: [{ icon: 'github', link: 'https://github.com/szaghi/StringiFor' }],
     nav: [
