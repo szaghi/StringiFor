@@ -7,6 +7,9 @@ website    = https://szaghi.github.io/StringiFor
 email      = stefano.zaghi@gmail.com
 authors    = Stefano Zaghi
 
+[scaffold]
+toolchain_image = ghcr.io/szaghi/fortran-toolchains:gnu-16.2
+
 [dependencies]
 deps_dir = src/third_party
 BeFoR64  = https://github.com/szaghi/BeFoR64

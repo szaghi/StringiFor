@@ -2,7 +2,15 @@
 
 ## Prerequisites
 
-A Fortran 2008+ compliant compiler is required. GNU gfortran ≥ 9.2.0 and Intel Fortran ≥ 19.0.4 are known to work.
+A Fortran 2008+ compliant compiler is required. The CI tests GNU gfortran 16.2 (tests, coverage, documentation
+examples), 14.2 (doctests, UTF-8 harness) and 14 on macOS, and Intel ifx.
+
+::: warning gfortran 14.3 or newer for reading strings
+gfortran 13.3 and 14.2 (the versions tested) end a list-directed read into a `string` with an error:
+`read *, first, second` on the input `"two words" three` stops with `End of file`. gfortran 14.3 and 16.2 read it. The
+bug is in the compiler; StringiFor does not work around it. Ubuntu 24.04 ships gfortran 13.3 as `gfortran` and 14.2 as
+`gfortran-14`: use a newer compiler to read strings this way.
+:::
 
 ## Download
 

@@ -15,17 +15,15 @@ permissions:
 
 jobs:
   docs-examples:
-    name: docs examples / gfortran-14
-    runs-on: ubuntu-24.04
+    name: docs examples / gfortran-16.2
+    runs-on: ubuntu-latest
+    # the toolchain image of ci.yml: gfortran 13.3 and 14.2 (Ubuntu 24.04's) end a list-directed read into a string
+    # (read_stdin) with "End of file"; 14.3 and 16.2 read it; the supported compilers are in docs/guide/installation.md
+    container: ghcr.io/szaghi/fortran-toolchains:gnu-16.2
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
-    - name: Setup build environment
-      uses: ./.github/actions/setup-build-env
-      with:
-        gcc-version: '14'
 
     - name: Fetch dependencies
       run: fobis fetch

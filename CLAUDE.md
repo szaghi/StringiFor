@@ -54,6 +54,11 @@ make COMPILER=intel TESTS=yes
 
 CI also builds and runs the tests with ifx on Ubuntu and gfortran-14 on macOS (`.github/workflows/compilers.yml`,
 project-owned); where the compiler has no REAL(16) (gfortran on Apple silicon) the R16P tests are excluded.
+`ci.yml` (tests, coverage) and the build job of `docs.yml` run in the container `ghcr.io/szaghi/fortran-toolchains:gnu-16.2`
+(gfortran 16.2, FoBiS, formal; `[scaffold] toolchain_image` in `fobos`), as `docs-examples.yml`; `doctests-sync.yml`
+and `utf8-harness.yml` stay on the runner with Ubuntu's gfortran 14.2 (`setup-build-env`; the doctest sync needs `cpp` on
+`PATH`: without it, in a bare `ubuntu:24.04` container, the regenerated copies differ from the tracked ones in
+whitespace, mechanism not traced).
 
 ```bash
 # After fobis build, run all test executables
@@ -178,7 +183,7 @@ The visual identity (Sumi, mark 3.3 Ofude in Akebono) lives in `docs/public/{log
 
 The pages are organised like FLAP's (`~/fortran/FLAP`): one linear sidebar in `docs/.vitepress/config.mts` (Start here, Tutorial, Recipes, Reference, Project), the tutorial and the cookbook in `docs/manual/`, the reference in `docs/guide/`.
 
-Every code sample and output of the tutorial, cookbook and reference is generated: the programs in `docs/examples/src` (`!run ID COMMAND` lines declare the runs shown, `!region NAME` ... `!endregion NAME` the parts included alone, `!as NAME` the name its runs call it by, `!image ID` an SVG of a run, `!cast NAME ID ...` an animated SVG of a terminal session) are built and run by `bash scripts/docs_examples.sh`, which rewrites `docs/examples/snippets`, `docs/examples/output` and `docs/examples/images`; pages include them with `<<< @/examples/snippets/NAME.f90` and `<<< @/examples/output/ID.ansi{ansi}`. Never paste an output by hand: add a run, rerun the script and commit the result. The `Docs examples` workflow (`.github/workflows/docs-examples.yml`, project-owned, gfortran-14) fails on any difference, so the outputs must not depend on the compiler: print with explicit formats. The quick start in `README.md` is a copy of `docs/examples/snippets/quickstart.f90`: update it when that program changes. Do not name an example after a shell keyword or a common command (`case`, `split`, `join`).
+Every code sample and output of the tutorial, cookbook and reference is generated: the programs in `docs/examples/src` (`!run ID COMMAND` lines declare the runs shown, `!region NAME` ... `!endregion NAME` the parts included alone, `!as NAME` the name its runs call it by, `!image ID` an SVG of a run, `!cast NAME ID ...` an animated SVG of a terminal session) are built and run by `bash scripts/docs_examples.sh`, which rewrites `docs/examples/snippets`, `docs/examples/output` and `docs/examples/images`; pages include them with `<<< @/examples/snippets/NAME.f90` and `<<< @/examples/output/ID.ansi{ansi}`. Never paste an output by hand: add a run, rerun the script and commit the result. The `Docs examples` workflow (`.github/workflows/docs-examples.yml`, project-owned, gfortran 16.2 in the toolchain image: 13.3 and 14.2 end the list-directed read of `read_stdin` with `End of file`, a compiler bug deliberately not worked around, stated in `docs/guide/installation.md`) fails on any difference, so the outputs must not depend on the compiler: print with explicit formats. The quick start in `README.md` is a copy of `docs/examples/snippets/quickstart.f90`: update it when that program changes. Do not name an example after a shell keyword or a common command (`case`, `split`, `join`).
 
 ## Dependency Setup
 
