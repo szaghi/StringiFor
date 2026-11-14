@@ -22,3 +22,30 @@ git = "https://github.com/szaghi/FACE"
 
 [dependencies.PENF]
 git = "https://github.com/szaghi/PENF"
+
+# the hand-written tests of src/tests (not fpm's test/), run by `fpm test`; the doctests next to them are run by
+# fobis doctests and scripts/run_tests.sh, which compare their output with the .result files
+[build]
+auto-executables = false
+auto-examples = false
+auto-tests = false
+
+[[test]]
+name = "stringifor_test_csv_naive_parser"
+source-dir = "src/tests/stringifor"
+main = "stringifor_test_csv_naive_parser.f90"
+
+[[test]]
+name = "stringifor_test_differential"
+source-dir = "src/tests/stringifor"
+main = "stringifor_test_differential.f90"
+
+[[test]]
+name = "stringifor_test_parse_large_csv"
+source-dir = "src/tests/stringifor"
+main = "stringifor_test_parse_large_csv.f90"
+
+[[test]]
+name = "stringifor_test_scaling"
+source-dir = "src/tests/stringifor"
+main = "stringifor_test_scaling.f90"

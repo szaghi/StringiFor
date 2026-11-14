@@ -352,11 +352,13 @@ contains
    type(string)                  :: astring                      !< A random string.
    character(len=:), allocatable :: pattern                      !< A random pattern.
    integer                       :: i, c                         !< Counters.
+   integer                       :: n                            !< Length of the pattern.
 
    is_ok = .true.
    do i=1, 10 * CASES
       astring = random_string(max_len=8)
-      allocate(character(len=random_integer(0, 8)) :: pattern)
+      n = random_integer(0, 8) ! not in the type-spec: gfortran 16.2 takes a sibling internal function there for an
+      allocate(character(len=n) :: pattern) ! external one (-Wimplicit-interface, an error under fpm's flags)
       do c=1, len(pattern)
          pattern(c:c) = PATTERN_ALPHABET(random_integer(1, len(PATTERN_ALPHABET)):)
       enddo
@@ -512,10 +514,12 @@ contains
                                                  '9223372036854775807', '-9223372036854775808', '9223372036854775808', '1e18']
    character(len=:), allocatable :: chars                           !< Random string.
    integer                       :: c                               !< Counter.
+   integer                       :: n                               !< Length of the junk string.
 
    select case(random_integer(1, 20))
    case(1:2)
-      allocate(character(len=random_integer(0, 10)) :: chars)
+      n = random_integer(0, 10) ! not in the type-spec: see check_match
+      allocate(character(len=n) :: chars)
       do c=1, len(chars)
          chars(c:c) = JUNK(random_integer(1, len(JUNK)):)
       enddo
@@ -554,8 +558,10 @@ contains
    integer, intent(in)           :: max_len !< Maximum length.
    character(len=:), allocatable :: digits  !< Random digits.
    integer                       :: c       !< Counter.
+   integer                       :: n       !< Number of digits.
 
-   allocate(character(len=random_integer(0, max_len)) :: digits)
+   n = random_integer(0, max_len) ! not in the type-spec: see check_match
+   allocate(character(len=n) :: digits)
    do c=1, len(digits)
       digits(c:c) = achar(iachar('0') + random_integer(0, 9))
    enddo
