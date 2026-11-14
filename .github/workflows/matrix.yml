@@ -1,0 +1,30 @@
+name: Matrix
+
+# The project's script on every toolchain of the fobos [scaffold] matrix (Linux ones in their images, macOS and
+# Windows set up on their runners), by the reusable workflow of fortran-toolchains
+# (https://github.com/szaghi/fortran-toolchains); matrix_display gives GUI programs a display. Managed by fobis
+# scaffold while [scaffold] matrix is set; the script is the project's.
+on:
+  push:
+    branches: ["**"]
+    tags-ignore: ["**"]
+  pull_request:
+
+# a newer push to the same ref supersedes the running check
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  matrix:
+    uses: szaghi/fortran-toolchains/.github/workflows/matrix.yml@v1
+    with:
+      toolchains: 'linux-gnu linux-oneapi macos-gnu'
+      script: 'scripts/ci/matrix.sh'
+      display: false
+      apt-packages: ''
+      brew-packages: ''
+      msys2-packages: ''

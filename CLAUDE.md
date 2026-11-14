@@ -52,8 +52,10 @@ make COMPILER=intel TESTS=yes
 
 ## Running Tests
 
-CI also builds and runs the tests with ifx on Ubuntu and gfortran-14 on macOS (`.github/workflows/compilers.yml`,
-project-owned); where the compiler has no REAL(16) (gfortran on Apple silicon) the R16P tests are excluded.
+CI also builds and runs the tests on every toolchain of `[scaffold] matrix` (`linux-gnu linux-oneapi macos-gnu`:
+`matrix.yml`, scaffold-managed, runs the project's `scripts/ci/matrix.sh`): on linux-gnu the makefile build
+(`make TESTS=yes`), elsewhere the FoBiS build with the toolchain's compiler (ifx 2026.2, Homebrew's gfortran 16);
+where the compiler has no REAL(16) (gfortran on Apple silicon) the R16P tests are excluded.
 Every scaffold workflow is a thin caller of a reusable workflow of `szaghi/fortran-toolchains` pinned at `@v1` (repo
 `~/fortran/fortran-toolchains`), rendered from the `fobos` `[scaffold]` section; `toolchain = linux-gnu` is the `gnu-16.2`
 image (gfortran 16.2, FoBiS, formal), where `ci.yml` (coverage), `docs.yml`, `fpm.yml` (`fpm = true`: the hand-written

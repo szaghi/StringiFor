@@ -12,6 +12,7 @@ toolchain     = linux-gnu
 docs_examples = docs/examples
 doctests_sync = src/tests
 fpm           = true
+matrix        = linux-gnu linux-oneapi macos-gnu
 
 [dependencies]
 deps_dir = src/third_party
