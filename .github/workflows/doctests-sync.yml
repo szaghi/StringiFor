@@ -1,47 +1,28 @@
 name: Doctests sync
 
-# Project-owned workflow (not managed by `fobis scaffold`): the doctests are extracted from the library sources and
-# run; their tracked copies in src/tests, built by make and CMake, must match what the sources contain.
-
+# The committed doctests must match the library sources they are extracted from: scripts/sync_doctests.sh extracts
+# them in the project's toolchain image, then any change or new file under the fobos [scaffold] doctests_sync paths
+# fails with the diff, by the reusable workflow of fortran-toolchains (https://github.com/szaghi/fortran-toolchains).
+# CI runs them. Managed by fobis scaffold while [scaffold] doctests_sync is set.
 on:
   push:
     branches: ["**"]
     tags-ignore: ["**"]
   pull_request:
 
+# a newer push to the same ref supersedes the running check
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
-  doctests-sync:
-    name: doctests sync / gfortran-14
-    runs-on: ubuntu-24.04
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Setup build environment
-      uses: ./.github/actions/setup-build-env
-      with:
-        gcc-version: '14'
-
-    - name: Fetch dependencies
-      run: fobis fetch
-
-    - name: Extract and run the doctests
-      run: bash scripts/sync_doctests.sh
-
-    - name: Check the tracked copies of the doctests
-      run: |
-        git add --intent-to-add src/tests
-        git diff --exit-code -- src/tests || {
-          echo "::error::src/tests is out of date: run 'bash scripts/sync_doctests.sh' and commit the result"
-          exit 1
-        }
-
-    - name: Build and run the tracked tests with make
-      run: |
-        rm -rf exe
-        make TESTS=yes
-        bash scripts/run_tests.sh
+  check:
+    uses: szaghi/fortran-toolchains/.github/workflows/generated.yml@v1
+    with:
+      command: bash scripts/sync_doctests.sh
+      paths: 'src/tests'
+      toolchain: 'linux-gnu'
+      apt-packages: ''

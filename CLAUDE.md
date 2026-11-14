@@ -54,11 +54,13 @@ make COMPILER=intel TESTS=yes
 
 CI also builds and runs the tests with ifx on Ubuntu and gfortran-14 on macOS (`.github/workflows/compilers.yml`,
 project-owned); where the compiler has no REAL(16) (gfortran on Apple silicon) the R16P tests are excluded.
-`ci.yml` (tests, coverage) and the build job of `docs.yml` run in the container `ghcr.io/szaghi/fortran-toolchains:gnu-16.2`
-(gfortran 16.2, FoBiS, formal; `[scaffold] toolchain_image` in `fobos`), as `docs-examples.yml`; `doctests-sync.yml`
-and `utf8-harness.yml` stay on the runner with Ubuntu's gfortran 14.2 (`setup-build-env`; the doctest sync needs `cpp` on
-`PATH`: without it, in a bare `ubuntu:24.04` container, the regenerated copies differ from the tracked ones in
-whitespace, mechanism not traced).
+Every scaffold workflow is a thin caller of a reusable workflow of `szaghi/fortran-toolchains` pinned at `@v1` (repo
+`~/fortran/fortran-toolchains`), rendered from the `fobos` `[scaffold]` section; `toolchain = linux-gnu` is the `gnu-16.2`
+image (gfortran 16.2, FoBiS, formal), where `ci.yml` (coverage), `docs.yml`, `fpm.yml` (`fpm = true`: the hand-written
+tests declared in `fpm.toml`), `docs-examples.yml` (`docs_examples = docs/examples`) and `doctests-sync.yml`
+(`doctests_sync = src/tests`: `scripts/sync_doctests.sh` must leave `src/tests` unchanged; it needs `cpp` on `PATH`:
+without it, in a bare `ubuntu:24.04` container, the regenerated copies differ from the tracked ones in whitespace,
+mechanism not traced) run. The project-owned `utf8-harness.yml` runs in the same image.
 
 ```bash
 # After fobis build, run all test executables
@@ -88,7 +90,7 @@ Doctests gotchas:
   `fobis build`, CMake and `make TESTS=yes` compile (the makefile and CMake pick up every program in `src/tests/*/`,
   there is no list to maintain): after adding or changing a doctest, regenerate them with
   `bash scripts/sync_doctests.sh` and commit the result. The `Doctests sync` workflow
-  (`.github/workflows/doctests-sync.yml`, project-owned) fails if they differ from what the sources contain.
+  (`.github/workflows/doctests-sync.yml`, scaffold-managed) fails if they differ from what the sources contain.
 
 UTF-8 harness (issue #51; `docs/guide/contributing.md`, section *UTF-8 harness*): `bash scripts/oracle.sh SUITE`
 (methods against a Python reference over a byte-string corpus), `bash scripts/bench.sh run|compare` (timings against
@@ -183,7 +185,7 @@ The visual identity (Sumi, mark 3.3 Ofude in Akebono) lives in `docs/public/{log
 
 The pages are organised like FLAP's (`~/fortran/FLAP`): one linear sidebar in `docs/.vitepress/config.mts` (Start here, Tutorial, Recipes, Reference, Project), the tutorial and the cookbook in `docs/manual/`, the reference in `docs/guide/`.
 
-Every code sample and output of the tutorial, cookbook and reference is generated: the programs in `docs/examples/src` (`!run ID COMMAND` lines declare the runs shown, `!region NAME` ... `!endregion NAME` the parts included alone, `!as NAME` the name its runs call it by, `!image ID` an SVG of a run, `!cast NAME ID ...` an animated SVG of a terminal session) are built and run by `bash scripts/docs_examples.sh`, which rewrites `docs/examples/snippets`, `docs/examples/output` and `docs/examples/images`; pages include them with `<<< @/examples/snippets/NAME.f90` and `<<< @/examples/output/ID.ansi{ansi}`. Never paste an output by hand: add a run, rerun the script and commit the result. The `Docs examples` workflow (`.github/workflows/docs-examples.yml`, project-owned, gfortran 16.2 in the toolchain image: 13.3 and 14.2 end the list-directed read of `read_stdin` with `End of file`, a compiler bug deliberately not worked around, stated in `docs/guide/installation.md`) fails on any difference, so the outputs must not depend on the compiler: print with explicit formats. The quick start in `README.md` is a copy of `docs/examples/snippets/quickstart.f90`: update it when that program changes. Do not name an example after a shell keyword or a common command (`case`, `split`, `join`).
+Every code sample and output of the tutorial, cookbook and reference is generated: the programs in `docs/examples/src` (`!run ID COMMAND` lines declare the runs shown, `!region NAME` ... `!endregion NAME` the parts included alone, `!as NAME` the name its runs call it by, `!image ID` an SVG of a run, `!cast NAME ID ...` an animated SVG of a terminal session) are built and run by `bash scripts/docs_examples.sh`, which rewrites `docs/examples/snippets`, `docs/examples/output` and `docs/examples/images`; pages include them with `<<< @/examples/snippets/NAME.f90` and `<<< @/examples/output/ID.ansi{ansi}`. Never paste an output by hand: add a run, rerun the script and commit the result. The `Docs examples` workflow (`.github/workflows/docs-examples.yml`, scaffold-managed, gfortran 16.2 in the toolchain image: 13.3 and 14.2 end the list-directed read of `read_stdin` with `End of file`, a compiler bug deliberately not worked around, stated in `docs/guide/installation.md`) fails on any difference, so the outputs must not depend on the compiler: print with explicit formats. The quick start in `README.md` is a copy of `docs/examples/snippets/quickstart.f90`: update it when that program changes. Do not name an example after a shell keyword or a common command (`case`, `split`, `join`).
 
 ## Dependency Setup
 
