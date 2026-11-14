@@ -71,4 +71,5 @@ test_passed(1) = most_expensive//'' == 'Chevy Venture "Extended Edition Very Lar
 print "(A,L1)", 'The most expensive car is : '//most_expensive//', is correct? ', test_passed(1)
 
 print "(A,L1)", new_line('a')//'Are all tests passed? ', all(test_passed)
+if (.not.all(test_passed)) error stop 1
 endprogram stringifor_test_csv_naive_parser
