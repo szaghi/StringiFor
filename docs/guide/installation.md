@@ -12,6 +12,21 @@ bug is in the compiler; StringiFor does not work around it. Ubuntu 24.04 ships g
 `gfortran-14`: use a newer compiler to read strings this way.
 :::
 
+## One-line install
+
+```bash
+curl -fsSL https://github.com/szaghi/StringiFor/releases/latest/download/install.sh | bash
+```
+
+It installs the latest release into `~/.local` with the build system you choose among those StringiFor ships
+(`--build fobis|fpm|cmake|make`: a menu asks when you do not say), the compiler you name (`--fc`, `--gnu`, `--intel`),
+one install per compiler (`lib/stringifor/<compiler>-<version>/`, `include/stringifor/<compiler>-<version>/`), and
+makes it usable through pkg-config (`pkg-config --cflags --libs stringifor`, with
+`PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig`). The release carries StringiFor's dependencies (BeFoR64, FACE, PENF), so
+CMake and make need no network. Pass options after `bash -s --`, e.g. `... | bash -s -- --build cmake --prefix
+/opt/stringifor`; `--help` lists them all, `--uninstall` removes the install. The installer is FoBiS's
+([One-line installer](https://szaghi.github.io/FoBiS/cookbook/installer)).
+
 ## Download
 
 Clone the repository:

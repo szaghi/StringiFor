@@ -14,6 +14,14 @@ doctests_sync = src/tests
 fpm           = true
 matrix        = linux-gnu linux-oneapi macos-gnu
 
+# the one-line installer, scripts/install.sh (FoBiS#217): StringiFor's static library modes for the fobis build, where
+# the make build leaves the library and the modules
+[installer]
+mode_gnu   = stringifor-static-gnu
+mode_intel = stringifor-static-intel
+make_lib   = lib
+make_mod   = lib/mod
+
 [dependencies]
 deps_dir = src/third_party
 BeFoR64  = https://github.com/szaghi/BeFoR64
