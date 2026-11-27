@@ -7,7 +7,7 @@ use befor64, only : b64_decode, b64_encode
 use face, only : colorize
 use penf, only : I1P, I2P, I4P, I8P, R4P, R8P, R16P, str
 use stringifor_numbers, only : decimal_to_r4, decimal_to_r8, settle_r4, settle_r8, shortest_digits
-use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
+use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_casefold, utf8_char_pos, utf8_decode, &
                             utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
                             utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units, &
                             utf8_unit_width, utf8_width, utf8_punct_len, utf8_space_len, utf8_white_space
@@ -106,6 +106,7 @@ type :: string
     procedure, pass(self) :: justify          !< Return the words of the string packed into fully justified lines.
     procedure, pass(self) :: len_last_word    !< Return the length of the last word of the string.
     procedure, pass(self) :: ljust            !< Return the string left justified in a given width.
+    procedure, pass(self) :: casefold         !< Return the string with the full Unicode case folding.
     procedure, pass(self) :: lower            !< Return a string with all lowercase characters.
     procedure, pass(self) :: lstrip           !< Return a string with the leading characters removed.
     procedure, pass(self) :: partition        !< Split string at separator and return the 3 parts (before, the separator and after).
@@ -3464,6 +3465,46 @@ contains
       stripped%raw = strip_set(raw=self%raw, set=strip_characters(remove=remove, whitespace=whitespace, unicode=unicode), &
                                left=.true., right=.false.)
    endfunction lstrip
+
+   elemental function casefold(self) result(folded)
+   !< Return the string with the full Unicode case folding, for caseless matching: two strings that differ only in case
+   !< have the same folding.
+   !<
+   !< @note As Python `str.casefold`: every well-formed UTF-8 character is replaced by its full case folding
+   !< (CaseFolding.txt of the Unicode Character Database 17.0.0, statuses C and F), so the string may grow (the German
+   !< sharp s U+00DF folds to `ss`) or shrink (the Kelvin sign U+212A folds to `k`). ASCII folds as [[string:lower]].
+   !< The folding is not a normalization: compare the NFC forms of the strings if they can hold decomposed characters. A
+   !< byte that is not part of a well-formed sequence is kept as it is. A not allocated string gives a not allocated one.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< type(string) :: folded
+   !< logical      :: test_passed(6)
+   !< astring = 'Stra'//char(195)//char(159)//'e'
+   !< folded = astring%casefold()
+   !< test_passed(1) = folded//''=='strasse'
+   !< astring = 'STRASSE'
+   !< test_passed(2) = astring%casefold()==folded
+   !< astring = 'A'//char(255)//'B'//char(206)
+   !< folded = astring%casefold()
+   !< test_passed(3) = folded//''=='a'//char(255)//'b'//char(206)
+   !< astring = ''
+   !< folded = astring%casefold()
+   !< test_passed(4) = folded%is_allocated().and.folded//''==''
+   !< astring = char(206)//char(163)//char(206)//char(145)//char(206)//char(163)//char(207)//char(130)
+   !< folded = astring%casefold()
+   !< test_passed(5) = folded//''==char(207)//char(131)//char(206)//char(177)//char(207)//char(131)//char(207)//char(131)
+   !< call astring%free
+   !< folded = astring%casefold()
+   !< test_passed(6) = .not.folded%is_allocated()
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in) :: self   !< The string.
+   type(string)              :: folded !< The folded string.
+
+   if (allocated(self%raw)) folded%raw = utf8_casefold(self%raw)
+   endfunction casefold
 
    elemental function lower(self)
    !< Return a string with all lowercase characters.

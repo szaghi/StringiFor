@@ -38,6 +38,10 @@ Suites:
   whitespace  Unicode whitespace (Phase 7 of #51): is_space, strip, lstrip, rstrip and compact, ASCII and with
               unicode=.true.; the reference is White_Space of the pinned UCD 17.0.0, checked against Python's
               str.isspace (which adds U+001C..U+001F), on spaced corpus strings and on every scalar value
+  casefold    full Unicode case folding (#55): casefold; the reference is CaseFolding.txt (statuses C and F) of the
+              pinned UCD 17.0.0 with ill-formed bytes kept, cross-checked with Python's str.casefold, which may differ
+              only on the codepoints Python's older UCD calls unassigned (Cn), on corpus strings with cased letters
+              inserted and on every scalar value
   punct       Unicode punctuation (#55): is_punct, ASCII and with unicode=.true.; the reference is General_Category P or
               S of the pinned UCD 17.0.0, cross-checked with Python's unicodedata.category, which may differ only on the
               codepoints Python's older UCD calls unassigned (Cn), on punctuated corpus strings and on every scalar value
@@ -1344,6 +1348,100 @@ def punct_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+_FOLDING: dict[int, str] = {}
+
+
+def folding() -> dict[int, str]:
+    """The full case folding (C and F) of the pinned UCD: codepoint -> folded characters, read once."""
+    if not _FOLDING:
+        import gen_unicode_tables as ucd  # noqa: PLC0415 (only the casefold suite needs it)
+
+        cache = ucd.ROOT / "build" / "utf8" / f"ucd-{ucd.DEFAULT_VERSION}"
+        texts = ucd.fetch(ucd.DEFAULT_VERSION, cache)
+        _FOLDING.update(
+            {code: "".join(map(chr, targets)) for code, targets in ucd.naive_folding(texts["CaseFolding.txt"]).items()}
+        )
+    return _FOLDING
+
+
+def casefold(data: bytes) -> bytes:
+    """Every character replaced by its folding; an ill-formed byte (a lone surrogate of surrogateescape) is kept."""
+    table = folding()
+    return raw("".join(table.get(ord(char), char) for char in text(data)))
+
+
+def casefold_each(codes: list[int]) -> list[bytes]:
+    """The folding of each codepoint encoded alone (a non-scalar value encodes as U+FFFD)."""
+    return [casefold(from_codepoints([code])) for code in codes]
+
+
+# Cased units: ASCII letters; the F foldings U+00DF, U+0130, U+0149, U+01F0, U+0390, U+1E9E, U+1F80, U+FB03; the C
+# ones U+00C0, U+0391, U+03A3, U+03C2, U+0401, U+1E00, U+212A (Kelvin), U+212B (angstrom), U+13F8 (Cherokee, folds to
+# U+13F0), U+A7CB (new in 16.0), U+10400 (Deseret, 4 bytes), U+1E900 (Adlam); letters that do not fold; ill-formed
+# bytes and truncated sequences of cased letters.
+CASE_LIKE = [
+    *(c.encode() for c in "AZaz09 -"),
+    *(
+        chr(c).encode()
+        for c in (
+            0xDF, 0x130, 0x149, 0x1F0, 0x390, 0x1E9E, 0x1F80, 0xFB03, 0xC0, 0x391, 0x3A3, 0x3C2, 0x401, 0x1E00, 0x212A,
+            0x212B, 0x13F8, 0xA7CB, 0x10400, 0x1E900, 0xE9, 0x3B1, 0x4E2D,
+        )
+    ),
+    b"\xdf",
+    b"\xc3",
+    b"\xe1\xba",
+    b"\xf0\x90\x90",
+    b"\xff",
+]
+
+
+def cased(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data,), (a run of cased units,) and (data with runs of them inside it,)."""
+
+    def run() -> bytes:
+        return b"".join(rng.choice(CASE_LIKE) for _ in range(rng.randint(1, 6)))
+
+    pieces = units(data)
+    for _ in range(rng.randint(0, 3)):
+        pieces.insert(rng.randint(0, len(pieces)), run())
+    return [(data,), (run(),), (b"".join(pieces),)]
+
+
+def check_casefold_reference() -> list[str]:
+    """Check the folding against Python's str.casefold: differences only where Python reports Cn (unassigned)."""
+    import unicodedata  # noqa: PLC0415 (only this suite needs it)
+
+    table = folding()
+    differ = [
+        code
+        for code in range(0x110000)
+        if not 0xD800 <= code <= 0xDFFF and table.get(code, chr(code)) != chr(code).casefold()
+    ]
+    failures = [
+        f"U+{code:04X}: folds to {table.get(code, chr(code))!r} here, {chr(code).casefold()!r} in Python "
+        f"{unicodedata.unidata_version} ({unicodedata.category(chr(code))})"
+        for code in differ
+        if unicodedata.category(chr(code)) != "Cn"
+    ]
+    print(
+        f"casefold reference: {len(table)} foldings, {len(differ)} codepoints differ from Python "
+        f"{unicodedata.unidata_version} str.casefold, all on codepoints Python calls Cn: {not failures}"
+    )
+    if any(table.get(code, chr(code)) != chr(code).lower() for code in range(128)):
+        failures.append("the folding of ASCII is not lower()")
+    return failures
+
+
+def casefold_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """The folding of every Unicode scalar value, in blocks."""
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for first in range(0, 0x110000, 4096):
+        block = [c for c in range(first, first + 4096) if not 0xD800 <= c <= 0xDFFF]
+        calls.append(("casefold_each", (block,)))
+    return calls
+
+
 def natural_key(data: bytes) -> list[tuple[int, int, int, bytes]]:
     """Key of the natural order: per run, (first byte, 0, digits, value) for digits, (first byte, 1, 0, run) otherwise.
 
@@ -2104,6 +2202,7 @@ EXTRA = {
     "xml": xml_extra,
     "whitespace": whitespace_extra,
     "punct": punct_extra,
+    "casefold": casefold_extra,
     "sort": sort_extra,
     "regex": regex_extra,
 }
@@ -2112,6 +2211,7 @@ SELF_CHECKS = {
     "xml": check_xml_reference,
     "whitespace": check_space_reference,
     "punct": check_punct_reference,
+    "casefold": check_casefold_reference,
     "sort": check_sort_reference,
     "regex": check_regex_reference,
 }
@@ -2390,6 +2490,10 @@ SUITES: dict[str, list[Op]] = {
         Op("is_punct", punctuated, is_punct),
         Op("is_punct_unicode", punctuated, lambda d: is_punct(d, unicode=True)),
         Op("punct_each", codepoint_lists, punct_each),
+    ],
+    "casefold": [
+        Op("casefold", cased, casefold),
+        Op("casefold_each", codepoint_lists, casefold_each),
     ],
     "encodings": [
         Op("to_utf8", encoded, to_utf8_reference),

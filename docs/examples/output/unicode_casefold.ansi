@@ -1,0 +1,9 @@
+$ unicode_casefold
+T T  Straße
+F T  STRASSE
+F T  strasse
+F F  Strasbourg
+ΣΟΦΟΣ 10 bytes -> σοφοσ 10
+273 K 7 bytes -> 273 k 5
+ﬁle 5 bytes -> file 4
+Maße 5 bytes -> masse 5

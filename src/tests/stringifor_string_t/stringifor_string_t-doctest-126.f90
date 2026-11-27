@@ -1,13 +1,18 @@
 program volatile_doctest
 use stringifor_string_t
  type(string) :: astring
- logical :: test_passed(128)
- integer :: c
- do c=0, 127
- astring = achar(c)
- test_passed(c+1) = (astring%is_punct().eqv.((c>=33.and.c<=47).or.(c>=58.and.c<=64).or. &
- (c>=91.and.c<=96).or.(c>=123.and.c<=126))).and. &
- (astring%is_punct(unicode=.true.).eqv.astring%is_punct())
- enddo
+ logical :: test_passed(6)
+ astring = '!?(),.;'
+ test_passed(1) = astring%is_punct()
+ astring = '!? ok'
+ test_passed(2) = .not.astring%is_punct()
+ astring = ''
+ test_passed(3) = .not.astring%is_punct().and..not.astring%is_punct(unicode=.true.)
+ astring = char(194)//char(171)//char(226)//char(128)//char(148)//char(226)//char(130)//char(172)//char(194)//char(187)//'+'
+ test_passed(4) = astring%is_punct(unicode=.true.).and..not.astring%is_punct()
+ astring = char(194)//char(171)//char(195)//char(169)//char(194)//char(187)
+ test_passed(5) = .not.astring%is_punct(unicode=.true.)
+ astring = '!'//char(128)
+ test_passed(6) = .not.astring%is_punct(unicode=.true.)
  print '(L1)', all(test_passed)
 endprogram volatile_doctest

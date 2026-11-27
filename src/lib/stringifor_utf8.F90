@@ -6,7 +6,7 @@ module stringifor_utf8
 !< U+10FFFF, no truncated sequence) or a single byte that is not part of one. Every procedure works on units, so
 !< ill-formed input is never merged, dropped or rewritten unless a procedure says so.
 use penf, only : I4P, I8P
-use stringifor_unicode_tables, only : in_ranges, PUNCT_SYMBOL_RANGES, WHITE_SPACE_RANGES, WIDE_RANGES, ZERO_WIDTH_RANGES
+use stringifor_unicode_tables, only : case_fold, in_ranges, PUNCT_SYMBOL_RANGES, WHITE_SPACE_RANGES, WIDE_RANGES, ZERO_WIDTH_RANGES
 
 implicit none
 private
@@ -14,6 +14,7 @@ public :: REPLACEMENT_CHARACTER
 public :: ascii_run
 public :: is_ascii
 public :: utf8_byte_pos
+public :: utf8_casefold
 public :: utf8_char_pos
 public :: utf8_decode
 public :: utf8_encode
@@ -451,6 +452,55 @@ contains
    enddo
    if (k == u + 1) position = len(raw) + 1
    endfunction utf8_byte_pos
+
+   pure function utf8_casefold(raw) result(folded)
+   !< Return the bytes with every well-formed character replaced by its full Unicode case folding (CaseFolding.txt,
+   !< statuses C and F): ASCII folds as `lower`, the sharp s U+00DF gives `ss`. A byte that is not part of a well-formed
+   !< sequence is kept as it is.
+   !<
+   !< A folding is at most 3 times longer in UTF-8 than its character (the generator checks it), so the result is built
+   !< in a buffer of 3 times the input.
+   character(len=*), intent(in)  :: raw       !< Bytes.
+   character(len=:), allocatable :: folded    !< Folded bytes.
+   character(len=:), allocatable :: buffer    !< Folded bytes, with room for the longest folding.
+   integer(I4P)                  :: cp        !< Codepoint of a unit, -byte if ill-formed.
+   integer(I4P)                  :: to(3)     !< Folding of a codepoint.
+   integer                       :: nto       !< Codepoints of the folding.
+   integer                       :: i         !< Position in raw.
+   integer                       :: o         !< Bytes written in buffer.
+   integer                       :: n         !< Length of a unit.
+   integer                       :: b         !< Byte value.
+   integer                       :: k         !< Counter.
+   integer                       :: m         !< Length of an encoded codepoint.
+
+   allocate(character(len=3 * len(raw)) :: buffer)
+   o = 0
+   i = 1
+   do while (i <= len(raw))
+      b = byte(raw(i:i))
+      if (b < 128) then
+         if (b >= 65 .and. b <= 90) b = b + 32
+         o = o + 1
+         buffer(o:o) = achar(b)
+         i = i + 1
+         cycle
+      endif
+      call utf8_decode(raw, i, cp, n)
+      if (cp < 0) then
+         o = o + 1
+         buffer(o:o) = raw(i:i)
+      else
+         call case_fold(cp, to, nto)
+         do k = 1, nto
+            m = utf8_encoded_len(to(k))
+            buffer(o + 1:o + m) = utf8_encode(to(k))
+            o = o + m
+         enddo
+      endif
+      i = i + n
+   enddo
+   folded = buffer(1:o)
+   endfunction utf8_casefold
 
    pure function utf8_char_pos(raw, b) result(k)
    !< Return the ordinal of the unit holding byte b, the number of units + 1 for b = len(raw)+1, 0 for any other b out

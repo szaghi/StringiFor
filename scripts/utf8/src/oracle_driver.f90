@@ -42,7 +42,7 @@ do
   if (iostat /= 0) exit
   call split_fields(line, field, lens, nfield)
   if (nfield < 2) call fail('malformed line: '//line)
-  if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each'.and.index(arg(1), 'shortest') /= 1.and.arg(1) /= 'space_each'.and.arg(1) /= 'punct_each'.and.index(arg(1), 'strsort') /= 1) &
+  if (arg(1) /= 'from_codepoints'.and.arg(1) /= 'width_each'.and.index(arg(1), 'shortest') /= 1.and.arg(1) /= 'space_each'.and.arg(1) /= 'punct_each'.and.arg(1) /= 'casefold_each'.and.index(arg(1), 'strsort') /= 1) &
     s = unhex(arg(2)) ! a list of integers, or of strings
   select case (arg(1))
   case ('to_r8')
@@ -314,6 +314,17 @@ do
     enddo
     call put_int_list(widths)
     deallocate(widths)
+  case ('casefold')
+    call put_str(s%casefold())
+  case ('casefold_each')
+    codes = int_list(arg(2))
+    if (allocated(tokens)) deallocate(tokens)
+    allocate(tokens(size(codes)))
+    do k = 1, size(codes)
+      t = from_codepoints(codes(k:k))
+      tokens(k) = t%casefold()
+    enddo
+    call put_list(tokens)
   case ('strsort')
     tokens = str_list(arg(2))
     call strsort(tokens)

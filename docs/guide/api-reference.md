@@ -35,6 +35,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `adjustr()` | Right-adjust (move trailing spaces to the beginning) |
 | `camelcase([sep])` | All words capitalized, separators removed |
 | `capitalize()` | First character upper, rest lower |
+| `casefold()` | Full Unicode case folding (as Python `str.casefold`), for caseless matching: `ß` gives `ss` |
 | `center(width[, fill_char])` | Centered in `width` characters, as Python `str.center` |
 | `colorize([color_fg][, color_bg][, style])` | ANSI terminal colorization via FACE; returns `character` |
 | `common_prefix(other)` / `common_prefix(array)` | Longest common prefix shared with another string/character, or with all elements of a string array |

@@ -27,6 +27,7 @@ The word-level styles split the string in words, at the blanks or at `sep`:
 | `camelcase([sep])` | every word capitalized, separators removed |
 | `snakecase([sep])` | every word lower case, joined by `_` |
 | `is_upper()`, `is_lower()` | true if every character is an upper (lower) case letter |
+| `casefold()` | the full Unicode case folding, for caseless comparison (see [case folding](./unicode#case-folding)) |
 
 ## Character classes
 

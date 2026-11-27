@@ -132,6 +132,32 @@ Python has no `str.ispunct`; `unicodedata.category(c)[0] in 'PS'` is the same te
 Python release (15.0.0 in Python 3.12: the 861 characters assigned in 15.1, 16.0 and 17.0 are unassigned there).
 :::
 
+## Case folding
+
+`casefold()` gives the full Unicode case folding of a string, the form for caseless matching: two strings that differ
+only in case have the same folding. CommonMark matches link reference labels this way. `lower()` is ASCII only and
+maps one character to one, so it misses both the letters beyond ASCII and the foldings that change the length.
+
+<<< @/examples/snippets/unicode_casefold-match.f90
+
+<<< @/examples/snippets/unicode_casefold-forms.f90
+
+<<< @/examples/output/unicode_casefold.ansi{ansi}
+
+The folding is the one of `CaseFolding.txt` (UCD 17.0.0), statuses C and F: 1585 characters fold, 104 of them to 2
+or 3 characters (the sharp s `ß` and its capital `ẞ` to `ss`, the ligatures, the Greek letters with iota subscript).
+A string can grow or shrink in bytes: `ß` (2 bytes) gives `ss` (2), U+0390 (2 bytes) gives 3 characters in 6 bytes,
+the Kelvin sign U+212A (3 bytes) gives `k` (1). The Turkic foldings (status T: `I` to dotless `ı`) are not applied,
+as in Python. A byte that is not part of a well-formed sequence is kept as it is; ASCII folds as `lower()`.
+
+The folding does not normalise: `é` written as `e` plus the combining acute U+0301 and `é` as one character U+00E9
+fold to different strings. Compare the normalised forms (NFC) when the text can hold decomposed characters.
+
+::: info Python
+`casefold()` is Python's `str.casefold()`, with the UCD of the Python release: Python 3.12 (UCD 15.0.0) gives the
+same folding for every character it knows, the 55 differences are characters assigned after 15.0.
+:::
+
 ## Checking and inspecting
 
 <<< @/examples/snippets/utf8_check-inspect.f90
@@ -268,7 +294,9 @@ methods are checked the same way (`bash scripts/oracle.sh xml`), with the refere
 `xml.sax.saxutils` and against expat, an XML parser, which must read every escaped string back unchanged and reject
 every malformed reference. The whitespace methods are checked against White_Space read from the
 pinned UCD, on spaced corpus strings and on every scalar value (`bash scripts/oracle.sh whitespace`), and `is_punct`
-against P and S read the same way (`bash scripts/oracle.sh punct`).
+against P and S read the same way (`bash scripts/oracle.sh punct`). `casefold` is checked against `CaseFolding.txt`
+read on its own, on corpus strings with cased letters inserted and on every scalar value, and the reference against
+Python's `str.casefold` (`bash scripts/oracle.sh casefold`).
 
 ## Unicode data
 
@@ -282,8 +310,8 @@ downloads the files it needs, checks each one against its pinned SHA-256 and wri
 | `ZERO_WIDTH_RANGES` | General_Category Mn, Me, Cf (not U+00AD), Hangul jamo medial and final | `extracted/DerivedGeneralCategory.txt` | [display width](#display-width) |
 | `WHITE_SPACE_RANGES` | White_Space | `PropList.txt` | [whitespace](#whitespace) |
 | `PUNCT_SYMBOL_RANGES` | General_Category P (Pc, Pd, Ps, Pe, Pi, Pf, Po) or S (Sm, Sc, Sk, So): 9473 codepoints | `extracted/DerivedGeneralCategory.txt` | [punctuation](#punctuation-and-symbols) |
-| `CASE_FOLD_RUNS` | full case folding, status C (one character to one): 1481 foldings in 196 runs of equal offset | `CaseFolding.txt` | — |
-| `CASE_FOLD_FULL` | full case folding, status F (one character to 2 or 3): 104 foldings | `CaseFolding.txt` | — |
+| `CASE_FOLD_RUNS` | full case folding, status C (one character to one): 1481 foldings in 196 runs of equal offset | `CaseFolding.txt` | [case folding](#case-folding) |
+| `CASE_FOLD_FULL` | full case folding, status F (one character to 2 or 3): 104 foldings | `CaseFolding.txt` | [case folding](#case-folding) |
 
 The case folding leaves out the statuses S (the simple folding of the characters that have an F one) and T (the
 Turkic dotted and dotless i). `--check` fails if the committed module is not what the pinned files give or if a table
