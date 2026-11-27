@@ -1,8 +1,8 @@
 program volatile_doctest
 use stringifor_regex
- type(regex) :: re
+ type(regex)       :: re
  type(regex_match) :: m
- logical :: test_passed(3)
+ logical           :: test_passed(3)
  call re%compile('a|ab')
  m = re%fullmatch('ab')
  test_passed(1) = m%group(0)=='ab'

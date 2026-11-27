@@ -1,8 +1,8 @@
 program volatile_doctest
 use stringifor_regex
- type(regex) :: re
+ type(regex)                    :: re
  type(regex_match), allocatable :: m(:)
- logical :: test_passed(3)
+ logical                        :: test_passed(3)
  call re%compile('\d+')
  m = re%finditer('a1 b22 c333')
  test_passed(1) = size(m)==3.and.m(3)%group(0)=='333'.and.all(m(2)%span(0)==[5, 6])

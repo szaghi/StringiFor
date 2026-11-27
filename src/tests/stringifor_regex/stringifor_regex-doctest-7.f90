@@ -1,8 +1,8 @@
 program volatile_doctest
 use stringifor_regex
- type(regex) :: re
+ type(regex)               :: re
  type(string), allocatable :: p(:)
- logical :: test_passed(3)
+ logical                   :: test_passed(3)
  call re%compile('\s*[,;]\s*')
  p = re%split('a , b;c ;  d')
  test_passed(1) = size(p)==4.and.p(4)=='d'

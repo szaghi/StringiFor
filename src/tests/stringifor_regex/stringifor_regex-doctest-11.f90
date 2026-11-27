@@ -1,7 +1,7 @@
 program volatile_doctest
 use stringifor_regex
- type(regex) :: re
- type(regex_match) :: m
+ type(regex)               :: re
+ type(regex_match)         :: m
  type(string), allocatable :: g(:)
  call re%compile('(\w+)@(\w+)\.(\w+)')
  m = re%search('mail: ann@example.org')

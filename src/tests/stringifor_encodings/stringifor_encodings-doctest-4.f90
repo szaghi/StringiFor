@@ -2,8 +2,8 @@ program volatile_doctest
 use stringifor_encodings
  character(len=:), allocatable :: utf8
  character(len=:), allocatable :: carry
- integer :: iostat
- logical :: test_passed(5)
+ integer                       :: iostat
+ logical                       :: test_passed(5)
  call to_utf8(bytes='caf'//char(233), encoding='latin1', utf8=utf8)
  test_passed(1) = utf8=='caf'//char(195)//char(169)
  call to_utf8(bytes=char(128)//'5', encoding='windows-1252', utf8=utf8)

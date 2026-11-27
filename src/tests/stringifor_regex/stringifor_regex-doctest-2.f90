@@ -1,8 +1,8 @@
 program volatile_doctest
 use stringifor_regex
- type(regex) :: re
+ type(regex)       :: re
  type(regex_match) :: m
- logical :: test_passed(4)
+ logical           :: test_passed(4)
  call re%compile('(?P<key>\w+)\s*=\s*(?P<value>\w*)')
  m = re%search('# x = 1, y=two')
  test_passed(1) = m%found.and.all(m%span(0) == [3, 7])

@@ -1,9 +1,9 @@
 program volatile_doctest
 use stringifor_regex
  type(regex) :: re
- integer :: iostat
+ integer     :: iostat
  character(len=99) :: iomsg
- logical :: test_passed(6)
+ logical     :: test_passed(6)
  call re%compile('(\d+)-(\d+)', iostat=iostat)
  test_passed(1) = iostat==0.and.re%group_count()==2
  call re%compile('a(b', iostat=iostat, iomsg=iomsg)
