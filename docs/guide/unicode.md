@@ -247,3 +247,19 @@ methods are checked the same way (`bash scripts/oracle.sh xml`), with the refere
 `xml.sax.saxutils` and against expat, an XML parser, which must read every escaped string back unchanged and reject
 every malformed reference. The whitespace methods are checked against White_Space read from the
 pinned UCD, on spaced corpus strings and on every scalar value (`bash scripts/oracle.sh whitespace`).
+
+## Unicode data
+
+The character properties come from the Unicode Character Database 17.0.0. `scripts/utf8/gen_unicode_tables.py`
+downloads the files it needs, checks each one against its pinned SHA-256 and writes them as tables into
+`src/lib/stringifor_unicode_tables.F90` (generated, never edited by hand):
+
+| Table | Property | UCD file | Used by |
+|---|---|---|---|
+| `WIDE_RANGES` | East_Asian_Width W or F | `EastAsianWidth.txt` | [display width](#display-width) |
+| `ZERO_WIDTH_RANGES` | General_Category Mn, Me, Cf (not U+00AD), Hangul jamo medial and final | `extracted/DerivedGeneralCategory.txt` | [display width](#display-width) |
+| `WHITE_SPACE_RANGES` | White_Space | `PropList.txt` | [whitespace](#whitespace) |
+| `PUNCT_SYMBOL_RANGES` | General_Category P (Pc, Pd, Ps, Pe, Pi, Pf, Po) or S (Sm, Sc, Sk, So): 9473 codepoints | `extracted/DerivedGeneralCategory.txt` | — |
+
+`--check` fails if the committed module is not what the pinned files give, and `--check-driver` looks every codepoint
+0..10FFFF up in each table and compares the result with a separate reading of the files.

@@ -5,12 +5,13 @@
 !< both the tables and the lookup are checked on the whole codespace.
 program check_tables
 use penf, only : I4P
-use stringifor_unicode_tables, only : in_ranges, WHITE_SPACE_RANGES, WIDE_RANGES, ZERO_WIDTH_RANGES
+use stringifor_unicode_tables, only : in_ranges, PUNCT_SYMBOL_RANGES, WHITE_SPACE_RANGES, WIDE_RANGES, ZERO_WIDTH_RANGES
 implicit none
 
 call scan_table('WIDE_RANGES', WIDE_RANGES)
 call scan_table('ZERO_WIDTH_RANGES', ZERO_WIDTH_RANGES)
 call scan_table('WHITE_SPACE_RANGES', WHITE_SPACE_RANGES)
+call scan_table('PUNCT_SYMBOL_RANGES', PUNCT_SYMBOL_RANGES)
 
 contains
   subroutine scan_table(name, ranges)

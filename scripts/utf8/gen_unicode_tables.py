@@ -16,6 +16,8 @@ Tables (sorted, disjoint, non-adjacent ranges of codepoints):
   ZERO_WIDTH_RANGES   General_Category Mn, Me or Cf except U+00AD (extracted/DerivedGeneralCategory.txt), plus the
                       Hangul jamo medial vowels and final consonants U+1160..U+11FF and U+D7B0..U+D7FF: no column
   WHITE_SPACE_RANGES  White_Space (PropList.txt)
+  PUNCT_SYMBOL_RANGES General_Category P or S (Pc, Pd, Ps, Pe, Pi, Pf, Po, Sm, Sc, Sk, So; DerivedGeneralCategory.txt):
+                      punctuation and symbols, the Unicode punctuation of CommonMark
 """
 
 from __future__ import annotations
@@ -42,7 +44,8 @@ PINNED = {  # version -> file -> SHA-256 (recorded at the first download, 2026-1
 }
 HANGUL_JAMO_MEDIAL_FINAL = [(0x1160, 0x11FF), (0xD7B0, 0xD7FF)]
 SOFT_HYPHEN = 0x00AD
-TABLES = ("WIDE_RANGES", "ZERO_WIDTH_RANGES", "WHITE_SPACE_RANGES")
+PUNCT_SYMBOL_CATEGORIES = frozenset(("Pc", "Pd", "Ps", "Pe", "Pi", "Pf", "Po", "Sm", "Sc", "Sk", "So"))
+TABLES = ("WIDE_RANGES", "ZERO_WIDTH_RANGES", "WHITE_SPACE_RANGES", "PUNCT_SYMBOL_RANGES")
 
 
 class UcdError(Exception):
@@ -124,10 +127,16 @@ def tables(texts: dict[str, str]) -> dict[str, list[tuple[int, int]]]:
     space = [
         (f, la) for f, la, v in records(texts["PropList.txt"]) if v == "White_Space"
     ]
+    punct = [
+        (f, la)
+        for f, la, v in records(texts["extracted/DerivedGeneralCategory.txt"])
+        if v in PUNCT_SYMBOL_CATEGORIES
+    ]
     return {
         "WIDE_RANGES": merge(wide),
         "ZERO_WIDTH_RANGES": merge(zero),
         "WHITE_SPACE_RANGES": merge(space),
+        "PUNCT_SYMBOL_RANGES": merge(punct),
     }
 
 
@@ -152,6 +161,7 @@ def module_text(version: str, built: dict[str, list[tuple[int, int]]]) -> str:
         "WIDE_RANGES": "East_Asian_Width W or F: two display columns.",
         "ZERO_WIDTH_RANGES": "Mn, Me, Cf (not U+00AD), Hangul jamo medial/final: no display column.",
         "WHITE_SPACE_RANGES": "White_Space property.",
+        "PUNCT_SYMBOL_RANGES": "General_Category P (Pc, Pd, Ps, Pe, Pi, Pf, Po) or S (Sm, Sc, Sk, So).",
     }
     parts = [
         "!< Unicode property tables of StringiFor, generated: do not edit.",
@@ -226,7 +236,39 @@ def naive_sets(texts: dict[str, str]) -> dict[str, set[int]]:
         "WIDE_RANGES": collect(texts["EastAsianWidth.txt"], {"W", "F"}),
         "ZERO_WIDTH_RANGES": zero,
         "WHITE_SPACE_RANGES": collect(texts["PropList.txt"], {"White_Space"}),
+        "PUNCT_SYMBOL_RANGES": collect(
+            texts["extracted/DerivedGeneralCategory.txt"], set(PUNCT_SYMBOL_CATEGORIES)
+        ),
     }
+
+
+def declared_totals(text: str) -> dict[str, int]:
+    """Return the "# Total code points: N" of each block of an extracted UCD file, keyed by the value of the block."""
+    totals: dict[str, int] = {}
+    value = None
+    for line in text.splitlines():
+        if line.startswith("# Total code points:"):
+            if value is not None:
+                totals[value] = totals.get(value, 0) + int(line.split(":")[1])
+            value = None
+        elif value is None and line and not line.startswith("#"):
+            value = line.split("#", 1)[0].split(";")[1].strip()
+    return totals
+
+
+def counts_check(texts: dict[str, str], built: dict[str, list[tuple[int, int]]]) -> list[str]:
+    """Compare the size of the tables with the totals the UCD files declare; return the failures and print the counts."""
+    failures = []
+    general = declared_totals(texts["extracted/DerivedGeneralCategory.txt"])
+    found = sum(last - first + 1 for first, last in built["PUNCT_SYMBOL_RANGES"])
+    declared = sum(general.get(category, 0) for category in sorted(PUNCT_SYMBOL_CATEGORIES))
+    print(
+        f"gen_unicode_tables: PUNCT_SYMBOL_RANGES {found} codepoints in {len(built['PUNCT_SYMBOL_RANGES'])} ranges, "
+        f"DerivedGeneralCategory.txt declares {declared} for P+S"
+    )
+    if found != declared:
+        failures.append(f"PUNCT_SYMBOL_RANGES has {found} codepoints, the UCD declares {declared}")
+    return failures
 
 
 def check_driver(driver: Path, texts: dict[str, str]) -> int:
@@ -276,7 +318,13 @@ def main() -> int:
         return 1
     if args.check_driver:
         return check_driver(args.check_driver, texts)
-    text = module_text(args.version, tables(texts))
+    built = tables(texts)
+    failures = counts_check(texts, built)
+    for failure in failures:
+        print(f"gen_unicode_tables: {failure}", file=sys.stderr)
+    if failures:
+        return 1
+    text = module_text(args.version, built)
     if args.check:
         same = MODULE.exists() and MODULE.read_text(encoding="ascii") == text
         if not same:
