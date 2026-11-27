@@ -4,6 +4,23 @@ All notable changes to this project are documented here.
 Versions follow [Semantic Versioning](https://semver.org/).
 Format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.12.2] — 2026-11-27
+### Added
+- **install**: The one-line installer
+
+- **unicode**: The table of punctuation and symbols (General_Category P or S)
+
+- **string**: Is_punct(unicode=.true.), the Unicode punctuation and symbols
+
+- **unicode**: The full case-folding table (CaseFolding.txt, C and F)
+
+- **string**: Casefold(), the full Unicode case folding
+
+
+### Documentation
+- **identity**: Apply the Sumi visual identity (mark 3.3 Ofude in Akebono)
+
+
 ## [1.12.1] — 2026-11-06
 ### Fixed
 - **string_t**: Build edit_distance with ifx 2026.2
