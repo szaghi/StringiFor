@@ -1,0 +1,6 @@
+$ unicode_punct
+T T  !?
+F T  «»
+F T  —€
+F F  ©2026
+F F  *é*

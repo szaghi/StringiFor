@@ -38,6 +38,9 @@ Suites:
   whitespace  Unicode whitespace (Phase 7 of #51): is_space, strip, lstrip, rstrip and compact, ASCII and with
               unicode=.true.; the reference is White_Space of the pinned UCD 17.0.0, checked against Python's
               str.isspace (which adds U+001C..U+001F), on spaced corpus strings and on every scalar value
+  punct       Unicode punctuation (#55): is_punct, ASCII and with unicode=.true.; the reference is General_Category P or
+              S of the pinned UCD 17.0.0, cross-checked with Python's unicodedata.category, which may differ only on the
+              codepoints Python's older UCD calls unassigned (Cn), on punctuated corpus strings and on every scalar value
   xml         XML escaping (Phase 6 of #51): escape_xml, unescape_xml, xml_error and the round trip, on every byte and
               every 2-byte string too; the reference is checked first against xml.sax.saxutils and against expat, which
               must read every escaped string back and reject every malformed reference
@@ -1263,6 +1266,84 @@ def whitespace_extra() -> list[tuple[str, tuple[Arg, ...]]]:
     return calls
 
 
+ASCII_PUNCT = "".join(chr(c) for c in range(33, 127) if not chr(c).isalnum())
+
+
+def punct_symbols() -> set[int]:
+    """The codepoints of General_Category P or S in the pinned UCD."""
+    return ucd_sets()["PUNCT_SYMBOL_RANGES"]
+
+
+def is_punct(data: bytes, unicode: bool = False) -> bool:
+    """True if every unit is punctuation (C ispunct, or General_Category P or S); false for a null string."""
+    chars = text(data)
+    if unicode:
+        table = punct_symbols()
+        return bool(chars) and all(ord(char) in table for char in chars)
+    return bool(chars) and all(char in ASCII_PUNCT for char in chars)
+
+
+def punct_each(codes: list[int]) -> list[int]:
+    """1 if the codepoint encoded alone is P or S, 0 if not (a non-scalar value encodes as U+FFFD, which is So)."""
+    return [int(is_punct(from_codepoints([code]), unicode=True)) for code in codes]
+
+
+# Punctuation-like units: ASCII punctuation, P and S beyond ASCII (U+00A1 Po, U+00AB Pi, U+00A9 So, U+00B4 Sk,
+# U+2014 Pd, U+20AC Sc, U+2212 Sm, U+3001 Po, U+FF01 Po, U+1F600 So, U+20C1 Sc new in 17.0), characters that are not
+# (letters, digits, marks U+0301, U+00AD Cf, space, U+00A0 Zs), ill-formed bytes and truncated sequences of P or S.
+PUNCT_LIKE = [
+    *(c.encode() for c in "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"),
+    *(chr(c).encode() for c in (0xA1, 0xAB, 0xA9, 0xB4, 0x2014, 0x20AC, 0x2212, 0x3001, 0xFF01, 0x1F600, 0x20C1)),
+    *(c.encode() for c in ("a", "Z", "0", " ", "\u0301", "\u00ad", "\u00a0", "\u00e9")),
+    b"\xab",
+    b"\xc2",
+    b"\xe2\x80",
+    b"\xf0\x9f\x98",
+]
+
+
+def punctuated(data: bytes, rng: random.Random) -> list[tuple[Arg, ...]]:
+    """Calls (data,), (a run of punctuation-like units,) and (that run with the units of data inside it,)."""
+
+    def run() -> bytes:
+        return b"".join(rng.choice(PUNCT_LIKE) for _ in range(rng.randint(1, 5)))
+
+    pieces = units(data)
+    for _ in range(rng.randint(0, 3)):
+        pieces.insert(rng.randint(0, len(pieces)), run())
+    return [(data,), (run(),), (run() + b"".join(pieces) + run(),)]
+
+
+def check_punct_reference() -> list[str]:
+    """Check P+S against Python's unicodedata.category: differences only where Python reports Cn (unassigned)."""
+    import unicodedata  # noqa: PLC0415 (only this suite needs it)
+
+    ours = punct_symbols()
+    python = {code for code in range(0x110000) if unicodedata.category(chr(code))[0] in "PS"}
+    failures = [
+        f"U+{code:04X}: P or S {'here only' if code in ours else 'in Python only'} "
+        f"(Python {unicodedata.unidata_version}: {unicodedata.category(chr(code))})"
+        for code in sorted(ours ^ python)
+        if unicodedata.category(chr(code)) != "Cn"
+    ]
+    print(
+        f"punct reference: {len(ours)} P+S codepoints, Python {unicodedata.unidata_version} {len(python)}, "
+        f"{len(ours ^ python)} different, all on codepoints Python calls Cn: {not failures}"
+    )
+    if {chr(c) for c in ours if c < 128} != set(ASCII_PUNCT) or len(ASCII_PUNCT) != 32:
+        failures.append("the ASCII punctuation is not the ASCII part of P+S")
+    return failures
+
+
+def punct_extra() -> list[tuple[str, tuple[Arg, ...]]]:
+    """P or S of every Unicode scalar value, in blocks."""
+    calls: list[tuple[str, tuple[Arg, ...]]] = []
+    for first in range(0, 0x110000, 4096):
+        block = [c for c in range(first, first + 4096) if not 0xD800 <= c <= 0xDFFF]
+        calls.append(("punct_each", (block,)))
+    return calls
+
+
 def natural_key(data: bytes) -> list[tuple[int, int, int, bytes]]:
     """Key of the natural order: per run, (first byte, 0, digits, value) for digits, (first byte, 1, 0, run) otherwise.
 
@@ -2022,6 +2103,7 @@ EXTRA = {
     "columns": columns_extra,
     "xml": xml_extra,
     "whitespace": whitespace_extra,
+    "punct": punct_extra,
     "sort": sort_extra,
     "regex": regex_extra,
 }
@@ -2029,6 +2111,7 @@ SELF_CHECKS = {
     "escape": check_escape_reference,
     "xml": check_xml_reference,
     "whitespace": check_space_reference,
+    "punct": check_punct_reference,
     "sort": check_sort_reference,
     "regex": check_regex_reference,
 }
@@ -2302,6 +2385,11 @@ SUITES: dict[str, list[Op]] = {
             lambda d, m: compact_space(d, unicode=True, sep=m),
         ),
         Op("space_each", codepoint_lists, space_each),
+    ],
+    "punct": [
+        Op("is_punct", punctuated, is_punct),
+        Op("is_punct_unicode", punctuated, lambda d: is_punct(d, unicode=True)),
+        Op("punct_each", codepoint_lists, punct_each),
     ],
     "encodings": [
         Op("to_utf8", encoded, to_utf8_reference),

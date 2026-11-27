@@ -44,7 +44,9 @@ The word-level styles split the string in words, at the blanks or at `sep`:
 | `is_space()` | whitespace: space, tab, new line, vertical tab, form feed, carriage return (as C `isspace`) |
 | `is_lower()`, `is_upper()` | not uppercase, not lowercase letters |
 
-The classes are the ASCII ones. A null string is in no class, as in Python.
+The classes are the ASCII ones; `is_punct` and `is_space` take `unicode=.true.` for the Unicode ones (see
+[punctuation and symbols](./unicode#punctuation-and-symbols) and [whitespace](./unicode#whitespace)). A null string is
+in no class, as in Python.
 
 ## Cleaning and replacing
 

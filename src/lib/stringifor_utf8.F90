@@ -6,7 +6,7 @@ module stringifor_utf8
 !< U+10FFFF, no truncated sequence) or a single byte that is not part of one. Every procedure works on units, so
 !< ill-formed input is never merged, dropped or rewritten unless a procedure says so.
 use penf, only : I4P, I8P
-use stringifor_unicode_tables, only : in_ranges, WHITE_SPACE_RANGES, WIDE_RANGES, ZERO_WIDTH_RANGES
+use stringifor_unicode_tables, only : in_ranges, PUNCT_SYMBOL_RANGES, WHITE_SPACE_RANGES, WIDE_RANGES, ZERO_WIDTH_RANGES
 
 implicit none
 private
@@ -21,6 +21,7 @@ public :: utf8_encoded_len
 public :: utf8_first_error
 public :: utf8_in_set
 public :: utf8_nth_unit
+public :: utf8_punct_len
 public :: utf8_unit_index
 public :: utf8_scan
 public :: utf8_space_len
@@ -379,6 +380,30 @@ contains
       endif
    endselect
    endfunction utf8_space_len
+
+   pure function utf8_punct_len(raw, i) result(n)
+   !< Return the length in bytes of the unit starting at byte i if it is Unicode punctuation or a symbol (General_Category
+   !< P or S), 0 if not.
+   !<
+   !< In ASCII these are the 32 characters of C `ispunct`. An ill-formed byte is neither.
+   character(len=*), intent(in) :: raw !< Bytes.
+   integer,          intent(in) :: i   !< Position of the first byte, 1 <= i <= len(raw).
+   integer                      :: n   !< Length of the unit, 0 if the unit is not punctuation or a symbol.
+   integer(I4P)                 :: cp  !< Codepoint of the unit.
+
+   n = 0
+   select case (byte(raw(i:i)))
+   case (33:47, 58:64, 91:96, 123:126)
+      n = 1
+   case (128:)
+      call utf8_decode(raw, i, cp, n)
+      if (cp < 0) then
+         n = 0
+      elseif (.not.in_ranges(cp, PUNCT_SYMBOL_RANGES)) then
+         n = 0
+      endif
+   endselect
+   endfunction utf8_punct_len
 
    pure function utf8_white_space() result(units)
    !< Return every character with the Unicode White_Space property, encoded in UTF-8 one after the other.

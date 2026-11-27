@@ -56,6 +56,7 @@ jobs:
         bash scripts/oracle.sh xml
         bash scripts/oracle.sh encodings
         bash scripts/oracle.sh whitespace
+        bash scripts/oracle.sh punct
         bash scripts/oracle.sh sort
         bash scripts/oracle.sh regex
 

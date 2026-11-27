@@ -10,7 +10,7 @@ use stringifor_numbers, only : decimal_to_r4, decimal_to_r8, settle_r4, settle_r
 use stringifor_utf8, only : REPLACEMENT_CHARACTER, is_ascii, utf8_byte_pos, utf8_char_pos, utf8_decode, &
                             utf8_encode, utf8_encoded_len, utf8_first_error, utf8_in_set, utf8_nth_unit, &
                             utf8_scan, utf8_subpart_len, utf8_unit_index, utf8_unit_len, utf8_units, &
-                            utf8_unit_width, utf8_width, utf8_space_len, utf8_white_space
+                            utf8_unit_width, utf8_width, utf8_punct_len, utf8_space_len, utf8_white_space
 
 implicit none
 private
@@ -6333,34 +6333,72 @@ contains
    is_number = (self%is_integer(allow_spaces=allow_spaces).or.self%is_real(allow_spaces=allow_spaces))
    endfunction is_number
 
-   elemental function is_punct(self)
+   elemental function is_punct(self, unicode)
    !< Return true if all characters in the string are punctuation characters.
    !<
    !< @note The punctuation characters are the printable ASCII ones that are not letters, digits or space (as C `ispunct`).
+   !< With `unicode=.true.` they are the characters whose Unicode General_Category is punctuation (P: Pc, Pd, Ps, Pe, Pi,
+   !< Pf, Po) or a symbol (S: Sm, Sc, Sk, So), as the Unicode punctuation of CommonMark: in ASCII the same 32 characters,
+   !< beyond it e.g. the guillemets U+00AB and U+00BB, the em dash U+2014, the euro sign U+20AC, the copyright sign
+   !< U+00A9. A byte that is not part of a well-formed UTF-8 sequence is not punctuation.
    !< A null or not allocated string gives false.
    !<
    !<```fortran
    !< type(string) :: astring
-   !< logical      :: test_passed(3)
+   !< logical      :: test_passed(6)
    !< astring = '!?(),.;'
    !< test_passed(1) = astring%is_punct()
    !< astring = '!? ok'
    !< test_passed(2) = .not.astring%is_punct()
    !< astring = ''
-   !< test_passed(3) = .not.astring%is_punct()
+   !< test_passed(3) = .not.astring%is_punct().and..not.astring%is_punct(unicode=.true.)
+   !< astring = char(194)//char(171)//char(226)//char(128)//char(148)//char(226)//char(130)//char(172)//char(194)//char(187)//'+'
+   !< test_passed(4) = astring%is_punct(unicode=.true.).and..not.astring%is_punct()
+   !< astring = char(194)//char(171)//char(195)//char(169)//char(194)//char(187)
+   !< test_passed(5) = .not.astring%is_punct(unicode=.true.)
+   !< astring = '!'//char(128)
+   !< test_passed(6) = .not.astring%is_punct(unicode=.true.)
    !< print '(L1)', all(test_passed)
    !<```
    !=> T <<<
-   class(string), intent(in) :: self !< The string.
-   logical                   :: is_punct !< Result of the test.
-   integer                   :: c        !< Character counter.
+   !<
+   !<```fortran
+   !< type(string) :: astring
+   !< logical      :: test_passed(128)
+   !< integer      :: c
+   !< do c=0, 127
+   !<   astring = achar(c)
+   !<   test_passed(c+1) = (astring%is_punct().eqv.((c>=33.and.c<=47).or.(c>=58.and.c<=64).or. &
+   !<                                                (c>=91.and.c<=96).or.(c>=123.and.c<=126))).and. &
+   !<                      (astring%is_punct(unicode=.true.).eqv.astring%is_punct())
+   !< enddo
+   !< print '(L1)', all(test_passed)
+   !<```
+   !=> T <<<
+   class(string), intent(in)           :: self     !< The string.
+   logical,       intent(in), optional :: unicode  !< The punctuation is Unicode P or S, not ASCII.
+   logical                             :: is_punct !< Result of the test.
+   logical                             :: unicode_ !< The punctuation is Unicode P or S, local variable.
+   integer                             :: c        !< Byte counter.
+   integer                             :: n        !< Length of a punctuation unit, 0 if not punctuation.
 
    is_punct = .false.
    if (allocated(self%raw)) then
-      do c=1, len(self%raw)
-         is_punct = is_punct_char(self%raw(c:c))
-         if (.not.is_punct) exit
-      enddo
+      unicode_ = .false. ; if (present(unicode)) unicode_ = unicode
+      if (unicode_) then
+         c = 1
+         do while (c<=len(self%raw))
+            n = utf8_punct_len(self%raw, c)
+            is_punct = n>0
+            if (.not.is_punct) exit
+            c = c + n
+         enddo
+      else
+         do c=1, len(self%raw)
+            is_punct = is_punct_char(self%raw(c:c))
+            if (.not.is_punct) exit
+         enddo
+      endif
    endif
    endfunction is_punct
 

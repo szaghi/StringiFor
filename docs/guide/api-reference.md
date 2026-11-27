@@ -91,7 +91,7 @@ These generic interfaces shadow Fortran intrinsics so they accept `type(string)`
 | `is_integer([allow_spaces])` | `logical` | True if string represents an integer |
 | `is_lower()` | `logical` | True if all characters are lowercase |
 | `is_number([allow_spaces])` | `logical` | True if string represents an integer or real |
-| `is_punct()` | `logical` | True if all characters are punctuation (as C `ispunct`) |
+| `is_punct([unicode])` | `logical` | True if all characters are punctuation (as C `ispunct`; `unicode=.true.`: Unicode General_Category P or S) |
 | `is_real([allow_spaces])` | `logical` | True if string represents a real: a decimal point or an exponent is required, an integer is not a real |
 | `is_space([unicode])` | `logical` | True if all characters are whitespace (as C `isspace`; `unicode=.true.`: Unicode White_Space) |
 | `is_upper()` | `logical` | True if all characters are uppercase |

@@ -111,6 +111,27 @@ as whitespace, which White_Space does not. `bytes.split()` and `bytes.strip()` u
 default here.
 :::
 
+## Punctuation and symbols
+
+By default `is_punct` is ASCII: the 32 printable characters that are not letters, digits or space, as C `ispunct`.
+`unicode=.true.` makes it true for the characters whose General_Category is punctuation (P: connector, dash, open,
+close, initial and final quote, other) or a symbol (S: math, currency, modifier, other), the *Unicode punctuation* of
+CommonMark, which decides for example whether a `*` next to it can open or close emphasis.
+
+<<< @/examples/snippets/unicode_punct-classes.f90
+
+<<< @/examples/output/unicode_punct.ansi{ansi}
+
+P and S (UCD 17.0.0, `extracted/DerivedGeneralCategory.txt`) hold 9473 characters; in ASCII they are the same 32 as
+`ispunct`, so `unicode=.true.` only adds characters beyond ASCII: guillemets, dashes, typographic quotes, currency signs,
+the CJK and fullwidth punctuation, mathematical operators, arrows, emoji. A byte that is not part of a well-formed
+sequence is never punctuation.
+
+::: info Python
+Python has no `str.ispunct`; `unicodedata.category(c)[0] in 'PS'` is the same test, with the UCD version of the
+Python release (15.0.0 in Python 3.12: the 861 characters assigned in 15.1, 16.0 and 17.0 are unassigned there).
+:::
+
 ## Checking and inspecting
 
 <<< @/examples/snippets/utf8_check-inspect.f90
@@ -246,7 +267,8 @@ Python's `unicode_escape` codec, and on the round trip of every 2-byte string (`
 methods are checked the same way (`bash scripts/oracle.sh xml`), with the reference checked against Python's
 `xml.sax.saxutils` and against expat, an XML parser, which must read every escaped string back unchanged and reject
 every malformed reference. The whitespace methods are checked against White_Space read from the
-pinned UCD, on spaced corpus strings and on every scalar value (`bash scripts/oracle.sh whitespace`).
+pinned UCD, on spaced corpus strings and on every scalar value (`bash scripts/oracle.sh whitespace`), and `is_punct`
+against P and S read the same way (`bash scripts/oracle.sh punct`).
 
 ## Unicode data
 
@@ -259,7 +281,7 @@ downloads the files it needs, checks each one against its pinned SHA-256 and wri
 | `WIDE_RANGES` | East_Asian_Width W or F | `EastAsianWidth.txt` | [display width](#display-width) |
 | `ZERO_WIDTH_RANGES` | General_Category Mn, Me, Cf (not U+00AD), Hangul jamo medial and final | `extracted/DerivedGeneralCategory.txt` | [display width](#display-width) |
 | `WHITE_SPACE_RANGES` | White_Space | `PropList.txt` | [whitespace](#whitespace) |
-| `PUNCT_SYMBOL_RANGES` | General_Category P (Pc, Pd, Ps, Pe, Pi, Pf, Po) or S (Sm, Sc, Sk, So): 9473 codepoints | `extracted/DerivedGeneralCategory.txt` | — |
+| `PUNCT_SYMBOL_RANGES` | General_Category P (Pc, Pd, Ps, Pe, Pi, Pf, Po) or S (Sm, Sc, Sk, So): 9473 codepoints | `extracted/DerivedGeneralCategory.txt` | [punctuation](#punctuation-and-symbols) |
 
 `--check` fails if the committed module is not what the pinned files give, and `--check-driver` looks every codepoint
 0..10FFFF up in each table and compares the result with a separate reading of the files.
