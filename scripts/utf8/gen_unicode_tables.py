@@ -18,6 +18,12 @@ Tables (sorted, disjoint, non-adjacent ranges of codepoints):
   WHITE_SPACE_RANGES  White_Space (PropList.txt)
   PUNCT_SYMBOL_RANGES General_Category P or S (Pc, Pd, Ps, Pe, Pi, Pf, Po, Sm, Sc, Sk, So; DerivedGeneralCategory.txt):
                       punctuation and symbols, the Unicode punctuation of CommonMark
+
+Full case folding (CaseFolding.txt, statuses C and F; S and T are left out), looked up by `case_fold`:
+  CASE_FOLD_RUNS      the simple foldings (status C, one codepoint to one), as runs [first, last, stride, delta]:
+                      the codepoints first, first+stride, ..., last fold to themselves plus delta
+  CASE_FOLD_FULL      the foldings to 2 or 3 codepoints (status F), one column [codepoint, to1, to2, to3] each, 0 for
+                      no codepoint; C and F never share a codepoint
 """
 
 from __future__ import annotations
@@ -34,18 +40,35 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 MODULE = ROOT / "src" / "lib" / "stringifor_unicode_tables.F90"
 DEFAULT_VERSION = "17.0.0"
-FILES = ("EastAsianWidth.txt", "extracted/DerivedGeneralCategory.txt", "PropList.txt")
+FILES = (
+    "EastAsianWidth.txt",
+    "extracted/DerivedGeneralCategory.txt",
+    "PropList.txt",
+    "CaseFolding.txt",
+)
 PINNED = {  # version -> file -> SHA-256 (recorded at the first download, 2026-10-30)
     "17.0.0": {
         "EastAsianWidth.txt": "ea7ce50f3444a050333448dffef1cadd9325af55cbb764b4a2280faf52170a33",
         "extracted/DerivedGeneralCategory.txt": "d62e5bab70ca74f099343f71224fa051cb1fdd61a1ab45c0488c44cfc0b6102e",
         "PropList.txt": "130dcddcaadaf071008bdfce1e7743e04fdfbc910886f017d9f9ac931d8c64dd",
+        # recorded at the first download, 2026-11-27 (issue #55)
+        "CaseFolding.txt": "ff8d8fefbf123574205085d6714c36149eb946d717a0c585c27f0f4ef58c4183",
     },
 }
 HANGUL_JAMO_MEDIAL_FINAL = [(0x1160, 0x11FF), (0xD7B0, 0xD7FF)]
 SOFT_HYPHEN = 0x00AD
-PUNCT_SYMBOL_CATEGORIES = frozenset(("Pc", "Pd", "Ps", "Pe", "Pi", "Pf", "Po", "Sm", "Sc", "Sk", "So"))
-TABLES = ("WIDE_RANGES", "ZERO_WIDTH_RANGES", "WHITE_SPACE_RANGES", "PUNCT_SYMBOL_RANGES")
+PUNCT_SYMBOL_CATEGORIES = frozenset(
+    ("Pc", "Pd", "Ps", "Pe", "Pi", "Pf", "Po", "Sm", "Sc", "Sk", "So")
+)
+TABLES = (
+    "WIDE_RANGES",
+    "ZERO_WIDTH_RANGES",
+    "WHITE_SPACE_RANGES",
+    "PUNCT_SYMBOL_RANGES",
+)
+FOLD_TABLES = ("CASE_FOLD_RUNS", "CASE_FOLD_FULL")
+FOLD_STATUSES = ("C", "F")  # full case folding; S (simple) and T (Turkic) are not used
+MAX_FOLD_GROWTH = 3  # bytes of a folding over bytes of its codepoint, at most: casefold allocates 3 times the input
 
 
 class UcdError(Exception):
@@ -140,8 +163,61 @@ def tables(texts: dict[str, str]) -> dict[str, list[tuple[int, int]]]:
     }
 
 
-def fortran_table(name: str, ranges: list[tuple[int, int]], purpose: str) -> str:
-    """Return the declaration of a table as a Fortran parameter, a range per column."""
+def foldings(text: str) -> tuple[list[tuple[int, int]], list[tuple[int, list[int]]]]:
+    """Parse CaseFolding.txt: the C mappings (codepoint, target) and the F ones (codepoint, targets), sorted."""
+    simple, full = [], []
+    for line in text.splitlines():
+        data = line.split("#", 1)[0].strip()
+        if not data:
+            continue
+        code, status, mapping = (field.strip() for field in data.split(";")[:3])
+        targets = [int(target, 16) for target in mapping.split()]
+        if status == "C":
+            simple.append((int(code, 16), targets[0]))
+        elif status == "F":
+            full.append((int(code, 16), targets))
+    return sorted(simple), sorted(full)
+
+
+def fold_runs(simple: list[tuple[int, int]]) -> list[tuple[int, int, int, int]]:
+    """Group the simple foldings into runs (first, last, stride, delta) of consecutive mappings with the same delta."""
+    runs: list[list[int]] = []
+    count = 0  # mappings in the last run
+    for code, target in simple:
+        delta = target - code
+        if (
+            runs
+            and runs[-1][3] == delta
+            and (count == 1 or code - runs[-1][1] == runs[-1][2])
+        ):
+            if count == 1:
+                runs[-1][2] = code - runs[-1][1]
+            runs[-1][1] = code
+            count += 1
+        else:
+            runs.append([code, code, 1, delta])
+            count = 1
+    return [(first, last, stride, delta) for first, last, stride, delta in runs]
+
+
+def fold_tables(text: str) -> dict[str, list[tuple[int, ...]]]:
+    """Build CASE_FOLD_RUNS and CASE_FOLD_FULL from the text of CaseFolding.txt."""
+    simple, full = foldings(text)
+    return {
+        "CASE_FOLD_RUNS": fold_runs(simple),
+        "CASE_FOLD_FULL": [
+            (code, *targets, *([0] * (3 - len(targets)))) for code, targets in full
+        ],
+    }
+
+
+def utf8_len(code: int) -> int:
+    """Length in bytes of the UTF-8 encoding of a scalar value."""
+    return 1 if code < 0x80 else 2 if code < 0x800 else 3 if code < 0x10000 else 4
+
+
+def fortran_table(name: str, ranges: list[tuple[int, ...]], purpose: str) -> str:
+    """Return the declaration of a table as a Fortran parameter, a range (or record) per column."""
     numbers = [str(value) for pair in ranges for value in pair]
     lines, line = [], "  "
     for i, number in enumerate(numbers):
@@ -150,25 +226,29 @@ def fortran_table(name: str, ranges: list[tuple[int, int]], purpose: str) -> str
             lines.append(line.rstrip() + " &")
             line = "  "
         line += item + " "
-    lines.append(line.rstrip() + "], [2, " + str(len(ranges)) + "])")
-    head = f"integer(I4P), parameter :: {name}(1:2, 1:{len(ranges)}) = reshape([ &"
+    rows = len(ranges[0])
+    lines.append(line.rstrip() + f"], [{rows}, " + str(len(ranges)) + "])")
+    head = f"integer(I4P), parameter :: {name}(1:{rows}, 1:{len(ranges)}) = reshape([ &"
     return "\n".join([f"! {purpose}", head, *lines])
 
 
-def module_text(version: str, built: dict[str, list[tuple[int, int]]]) -> str:
+def module_text(version: str, built: dict[str, list[tuple[int, ...]]]) -> str:
     """Return the Fortran module."""
     purposes = {
         "WIDE_RANGES": "East_Asian_Width W or F: two display columns.",
         "ZERO_WIDTH_RANGES": "Mn, Me, Cf (not U+00AD), Hangul jamo medial/final: no display column.",
         "WHITE_SPACE_RANGES": "White_Space property.",
         "PUNCT_SYMBOL_RANGES": "General_Category P (Pc, Pd, Ps, Pe, Pi, Pf, Po) or S (Sm, Sc, Sk, So).",
+        "CASE_FOLD_RUNS": "Case folding C, one codepoint to one: runs [first, last, stride, delta], first..last by stride.",
+        "CASE_FOLD_FULL": "Case folding F, one codepoint to 2 or 3: [codepoint, to1, to2, to3], 0 for no codepoint.",
     }
     parts = [
         "!< Unicode property tables of StringiFor, generated: do not edit.",
         "!<",
         f"!< Generated by scripts/utf8/gen_unicode_tables.py from the Unicode Character Database {version}",
-        "!< (EastAsianWidth.txt, extracted/DerivedGeneralCategory.txt, PropList.txt). Each table is a sorted list of",
-        "!< disjoint, non-adjacent ranges of codepoints, one column [first, last] per range; `in_ranges` searches one.",
+        "!< (EastAsianWidth.txt, extracted/DerivedGeneralCategory.txt, PropList.txt, CaseFolding.txt). Each property",
+        "!< table is a sorted list of disjoint, non-adjacent ranges of codepoints, one column [first, last] per range;",
+        "!< `in_ranges` searches one. The case folding (statuses C and F) is two tables, looked up by `case_fold`.",
         "module stringifor_unicode_tables",
         "!< Unicode property tables of StringiFor, generated: do not edit.",
         "use penf, only : I4P",
@@ -177,10 +257,16 @@ def module_text(version: str, built: dict[str, list[tuple[int, int]]]) -> str:
         "private",
         "public :: UCD_VERSION",
         *(f"public :: {name}" for name in TABLES),
+        "public :: CASE_FOLD_RUNS",
+        "public :: CASE_FOLD_FULL",
+        "public :: case_fold",
         "public :: in_ranges",
         "",
         f"character(len=*), parameter :: UCD_VERSION = '{version}' !< Version of the Unicode Character Database.",
-        *(fortran_table(name, built[name], purposes[name]) for name in TABLES),
+        *(
+            fortran_table(name, built[name], purposes[name])
+            for name in (*TABLES, *FOLD_TABLES)
+        ),
         "",
         "contains",
         "   pure function in_ranges(codepoint, ranges) result(found)",
@@ -207,6 +293,50 @@ def module_text(version: str, built: dict[str, list[tuple[int, int]]]) -> str:
         "      endif",
         "   enddo",
         "   endfunction in_ranges",
+        "",
+        "   pure subroutine case_fold(codepoint, folded, n)",
+        "   !< Return the full case folding of a codepoint (CaseFolding.txt, statuses C and F): 1 to 3 codepoints, the",
+        "   !< codepoint itself if it has no folding.",
+        "   integer(I4P), intent(in)  :: codepoint  !< Codepoint.",
+        "   integer(I4P), intent(out) :: folded(3)  !< The folding, folded(1:n).",
+        "   integer,      intent(out) :: n          !< Number of codepoints of the folding.",
+        "   integer                   :: low        !< First candidate.",
+        "   integer                   :: high       !< Last candidate.",
+        "   integer                   :: middle     !< Candidate tested.",
+        "",
+        "   folded = 0",
+        "   folded(1) = codepoint",
+        "   n = 1",
+        "   if (codepoint < CASE_FOLD_RUNS(1, 1)) return",
+        "   low = 1",
+        "   high = size(CASE_FOLD_FULL, dim=2)",
+        "   do while (low <= high)",
+        "      middle = (low + high) / 2",
+        "      if (codepoint < CASE_FOLD_FULL(1, middle)) then",
+        "         high = middle - 1",
+        "      elseif (codepoint > CASE_FOLD_FULL(1, middle)) then",
+        "         low = middle + 1",
+        "      else",
+        "         folded = CASE_FOLD_FULL(2:4, middle)",
+        "         n = count(folded > 0)",
+        "         return",
+        "      endif",
+        "   enddo",
+        "   low = 1",
+        "   high = size(CASE_FOLD_RUNS, dim=2)",
+        "   do while (low <= high)",
+        "      middle = (low + high) / 2",
+        "      if (codepoint < CASE_FOLD_RUNS(1, middle)) then",
+        "         high = middle - 1",
+        "      elseif (codepoint > CASE_FOLD_RUNS(2, middle)) then",
+        "         low = middle + 1",
+        "      else",
+        "         if (mod(codepoint - CASE_FOLD_RUNS(1, middle), CASE_FOLD_RUNS(3, middle)) == 0) &",
+        "            folded(1) = codepoint + CASE_FOLD_RUNS(4, middle)",
+        "         return",
+        "      endif",
+        "   enddo",
+        "   endsubroutine case_fold",
         "endmodule stringifor_unicode_tables",
     ]
     return "\n".join(parts) + "\n"
@@ -256,27 +386,85 @@ def declared_totals(text: str) -> dict[str, int]:
     return totals
 
 
-def counts_check(texts: dict[str, str], built: dict[str, list[tuple[int, int]]]) -> list[str]:
+def counts_check(
+    texts: dict[str, str], built: dict[str, list[tuple[int, ...]]]
+) -> list[str]:
     """Compare the size of the tables with the totals the UCD files declare; return the failures and print the counts."""
     failures = []
     general = declared_totals(texts["extracted/DerivedGeneralCategory.txt"])
     found = sum(last - first + 1 for first, last in built["PUNCT_SYMBOL_RANGES"])
-    declared = sum(general.get(category, 0) for category in sorted(PUNCT_SYMBOL_CATEGORIES))
+    declared = sum(
+        general.get(category, 0) for category in sorted(PUNCT_SYMBOL_CATEGORIES)
+    )
     print(
         f"gen_unicode_tables: PUNCT_SYMBOL_RANGES {found} codepoints in {len(built['PUNCT_SYMBOL_RANGES'])} ranges, "
         f"DerivedGeneralCategory.txt declares {declared} for P+S"
     )
     if found != declared:
-        failures.append(f"PUNCT_SYMBOL_RANGES has {found} codepoints, the UCD declares {declared}")
+        failures.append(
+            f"PUNCT_SYMBOL_RANGES has {found} codepoints, the UCD declares {declared}"
+        )
+    lines = {
+        status: texts["CaseFolding.txt"].count(f"; {status}; ")
+        for status in FOLD_STATUSES
+    }
+    in_runs = sum(
+        (last - first) // stride + 1
+        for first, last, stride, _ in built["CASE_FOLD_RUNS"]
+    )
+    in_full = len(built["CASE_FOLD_FULL"])
+    print(
+        f"gen_unicode_tables: CASE_FOLD_RUNS {in_runs} C foldings in {len(built['CASE_FOLD_RUNS'])} runs, "
+        f"CASE_FOLD_FULL {in_full} F foldings; CaseFolding.txt has {lines['C']} C and {lines['F']} F lines"
+    )
+    if (in_runs, in_full) != (lines["C"], lines["F"]):
+        failures.append(
+            f"the folding tables hold {in_runs} C and {in_full} F, the file {lines['C']} and {lines['F']}"
+        )
+    growth = max(
+        sum(utf8_len(code) for code in targets if code) / utf8_len(row[0])
+        for row in built["CASE_FOLD_FULL"]
+        for targets in [row[1:]]
+    )
+    growth = max(
+        growth,
+        *(
+            utf8_len(code + delta) / utf8_len(code)
+            for first, last, stride, delta in built["CASE_FOLD_RUNS"]
+            for code in range(first, last + 1, stride)
+        ),
+    )
+    if growth > MAX_FOLD_GROWTH:
+        failures.append(
+            f"a folding grows {growth} times in UTF-8, more than {MAX_FOLD_GROWTH}"
+        )
     return failures
 
 
+def naive_folding(text: str) -> dict[int, tuple[int, ...]]:
+    """The full case folding (C and F) of every codepoint that has one, by a separate reading (for --check-driver)."""
+    pattern = re.compile(r"^([0-9A-F]{4,6}); ([CF]); ([0-9A-F ]+);")
+    found: dict[int, tuple[int, ...]] = {}
+    for line in text.splitlines():
+        match = pattern.match(line)
+        if match:
+            found[int(match.group(1), 16)] = tuple(
+                int(code, 16) for code in match.group(3).split()
+            )
+    return found
+
+
 def check_driver(driver: Path, texts: dict[str, str]) -> int:
-    """Compare the ranges the Fortran lookup finds over 0..10FFFF with the naive sets."""
+    """Compare the ranges and the foldings the Fortran lookup finds over 0..10FFFF with the naive reading."""
     output = subprocess.run([driver], capture_output=True, text=True, check=True).stdout
     found: dict[str, set[int]] = {name: set() for name in TABLES}
+    folded: dict[int, tuple[int, ...]] = {}
     for line in output.splitlines():
-        name, first, last = line.split()
+        name, *values = line.split()
+        if name == "CASE_FOLD":
+            folded[int(values[0])] = tuple(int(code) for code in values[1:])
+            continue
+        first, last = values
         found[name].update(range(int(first), int(last) + 1))
     failures = 0
     for name, expected in naive_sets(texts).items():
@@ -285,6 +473,21 @@ def check_driver(driver: Path, texts: dict[str, str]) -> int:
         failures += status != "ok"
         print(
             f"{name:20s} {len(expected):7d} codepoints: {len(extra)} extra, {len(missing)} missing  {status}"
+        )
+    expected_fold = naive_folding(texts["CaseFolding.txt"])
+    wrong = sorted(
+        code
+        for code in expected_fold.keys() | folded.keys()
+        if expected_fold.get(code) != folded.get(code)
+    )
+    status = "ok" if not wrong else "MISMATCH"
+    failures += status != "ok"
+    print(
+        f"{'CASE_FOLD':20s} {len(expected_fold):7d} codepoints fold: {len(wrong)} differ  {status}"
+    )
+    for code in wrong[:20]:
+        print(
+            f"  U+{code:04X}: UCD {expected_fold.get(code)}, lookup {folded.get(code)}"
         )
     return 1 if failures else 0
 
@@ -318,7 +521,7 @@ def main() -> int:
         return 1
     if args.check_driver:
         return check_driver(args.check_driver, texts)
-    built = tables(texts)
+    built = {**tables(texts), **fold_tables(texts["CaseFolding.txt"])}
     failures = counts_check(texts, built)
     for failure in failures:
         print(f"gen_unicode_tables: {failure}", file=sys.stderr)

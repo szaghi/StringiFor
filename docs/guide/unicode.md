@@ -282,6 +282,10 @@ downloads the files it needs, checks each one against its pinned SHA-256 and wri
 | `ZERO_WIDTH_RANGES` | General_Category Mn, Me, Cf (not U+00AD), Hangul jamo medial and final | `extracted/DerivedGeneralCategory.txt` | [display width](#display-width) |
 | `WHITE_SPACE_RANGES` | White_Space | `PropList.txt` | [whitespace](#whitespace) |
 | `PUNCT_SYMBOL_RANGES` | General_Category P (Pc, Pd, Ps, Pe, Pi, Pf, Po) or S (Sm, Sc, Sk, So): 9473 codepoints | `extracted/DerivedGeneralCategory.txt` | [punctuation](#punctuation-and-symbols) |
+| `CASE_FOLD_RUNS` | full case folding, status C (one character to one): 1481 foldings in 196 runs of equal offset | `CaseFolding.txt` | — |
+| `CASE_FOLD_FULL` | full case folding, status F (one character to 2 or 3): 104 foldings | `CaseFolding.txt` | — |
 
-`--check` fails if the committed module is not what the pinned files give, and `--check-driver` looks every codepoint
-0..10FFFF up in each table and compares the result with a separate reading of the files.
+The case folding leaves out the statuses S (the simple folding of the characters that have an F one) and T (the
+Turkic dotted and dotless i). `--check` fails if the committed module is not what the pinned files give or if a table
+does not hold as many entries as the file declares, and `--check-driver` looks every codepoint 0..10FFFF up in each
+table, and folds it, and compares the result with a separate reading of the files.

@@ -35,8 +35,10 @@ built with any compiler (`FC=nvfortran ...`); their products go to `build/utf8/`
 - `bash scripts/bench.sh run -o NEW.csv` and `bash scripts/bench.sh compare BASELINE.csv NEW.csv`: timings of the
   methods the work touches; the comparison fails when an ASCII timing is more than 5% slower than the baseline in
   `scripts/utf8/baselines/` (re-measure a failing timing before calling it a regression).
-- `python3 -I scripts/utf8/gen_unicode_tables.py`: regenerates `src/lib/stringifor_unicode_tables.F90` from the
-  pinned Unicode Character Database; never edit that module by hand. `--check` verifies it.
+- `python3 -I scripts/utf8/gen_unicode_tables.py`: regenerates `src/lib/stringifor_unicode_tables.F90` (property
+  tables and case folding) from the pinned Unicode Character Database (`EastAsianWidth.txt`,
+  `extracted/DerivedGeneralCategory.txt`, `PropList.txt`, `CaseFolding.txt`); never edit that module by hand.
+  `--check` verifies it, `--check-driver build/utf8/gfortran/bin/check_tables` checks its lookup on every codepoint.
 
 The `UTF-8 harness` workflow runs the corpus self-test, the table checks and the oracle suites.
 
